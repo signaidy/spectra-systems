@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { HeaderNav } from "@/components/home/headerNav";
-import { LogInButton } from "@/components/home/logInButton";
+import { SignInButton } from "@/components/home/signInButton";
 
 export function Header() {
   return (
-    <header className="h-20 border-b">
+    <header className="h-20 border-b shadow">
       <div className="container flex justify-between items-center h-full">
         <Image
           src={`/zen-logo.png`}
@@ -14,7 +14,7 @@ export function Header() {
           priority
         />
         <HeaderNav />
-        <LogInButton />
+        <SignInButton />
       </div>
     </header>
   );
