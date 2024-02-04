@@ -75,35 +75,29 @@
 								<div class="px-4 py-2">Jane</div>
 							</div>
 							<div class="grid grid-cols-2">
+								<div class="px-4 py-2 font-semibold">Passport number</div>
+								<div class="px-4 py-2">xxxxxxx</div>
+							</div>
+                            <div class="grid grid-cols-2">
 								<div class="px-4 py-2 font-semibold">Last Name</div>
 								<div class="px-4 py-2">Doe</div>
 							</div>
+	
 							<div class="grid grid-cols-2">
-								<div class="px-4 py-2 font-semibold">Gender</div>
-								<div class="px-4 py-2">Female</div>
+								<div class="px-4 py-2 font-semibold">Age</div>
+								<div class="px-4 py-2">xxxxxxxxx</div>
 							</div>
-							<div class="grid grid-cols-2">
-								<div class="px-4 py-2 font-semibold">Contact No.</div>
-								<div class="px-4 py-2">+11 998001001</div>
-							</div>
-							<div class="grid grid-cols-2">
-								<div class="px-4 py-2 font-semibold">Current Address</div>
-								<div class="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
-							</div>
-							<div class="grid grid-cols-2">
-								<div class="px-4 py-2 font-semibold">Permanant Address</div>
-								<div class="px-4 py-2">Arlington Heights, IL, Illinois</div>
-							</div>
-							<div class="grid grid-cols-2">
+                            <div class="grid grid-cols-2">
 								<div class="px-4 py-2 font-semibold">Email.</div>
 								<div class="px-4 py-2">
 									<a class="text-blue-800" href="mailto:jane@example.com">jane@example.com</a>
 								</div>
 							</div>
 							<div class="grid grid-cols-2">
-								<div class="px-4 py-2 font-semibold">Birthday</div>
-								<div class="px-4 py-2">Feb 06, 1998</div>
+								<div class="px-4 py-2 font-semibold">Origin country</div>
+								<div class="px-4 py-2">Arlington Heights, IL, Illinois</div>
 							</div>
+					
 						</div>
 					</div>
 				</div>
