@@ -1,23 +1,13 @@
 <script>
-    import AirlineImage from '../assets/airline.svg';
+	import AirlineImage from '../assets/airline.svg';
 </script>
-
-<style>
-    .bar {
-        width: 400px;
-    }
-    </style>    
-
 
 <header>
 	<nav class="p-6">
 		<div class="flex justify-between items-center">
-			<img
-				class="pr-6 border-r-2"
-				src={AirlineImage}
-				title="logo"
-				alt="logo"
-			/>
+			<a href="/home">
+				<img class="pr-6 border-r-2" src={AirlineImage} title="logo" alt="logo" />
+			</a>
 			<div class="flex justify-between flex-grow">
 				<div class="flex ml-6 items-center">
 					<form class="flex items-center">
@@ -67,6 +57,7 @@
 							d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25c0-.05.01-.09.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"
 						/>
 					</svg>
+					<a href="/profile">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="2.5em"
@@ -81,21 +72,15 @@
 							clip-rule="evenodd"
 						/>
 					</svg>
+				</a>
 				</div>
 			</div>
 		</div>
 	</nav>
-	<!-- Section Hero -->
-	<div class="container mx-auto bg-gray-400 h-96 rounded-md flex items-center">
-		<div class="sm:ml-20 text-gray-50 text-center sm:text-left">
-			<h1 class="text-5xl font-bold mb-4">
-				Book saunas <br />
-				everywhere.
-			</h1>
-			<p class="text-lg inline-block sm:block">
-				The largest online community to rent saunas in Finland.
-			</p>
-			<button class="mt-8 px-4 py-2 bg-gray-600 rounded">Browse saunas</button>
-		</div>
-	</div>
 </header>
+
+<style>
+	.bar {
+		width: 400px;
+	}
+</style>
