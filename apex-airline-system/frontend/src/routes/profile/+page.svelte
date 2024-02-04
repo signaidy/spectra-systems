@@ -5,8 +5,8 @@
 
 <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
 
-<div class="bgpf bg-green-200">
-	<div class="w-full text-white bg-main-color">
+<div class="bgpf">
+	<div class="w-full text-white">
 		<div>
 			<Header />
 		</div>
@@ -17,7 +17,7 @@
 			<!-- Left Side -->
 			<div class="w-full md:w-3/12 md:mx-2">
 				<!-- Profile Card -->
-				<div class="bg-white p-3 border-t-4 border-green-400">
+				<div class="bg-white p-3 border-t-4 border-blue-400">
 					<div class="image overflow-hidden">
 						<img
 							class="h-auto w-full mx-auto"
@@ -116,10 +116,7 @@
 
     .bgpf {
         height: 995px;
+        background-color:#f1f2f3;
     }
-
-	.bg-main-color {
-		background-color: var(--main-color);
-	}
 
 </style>

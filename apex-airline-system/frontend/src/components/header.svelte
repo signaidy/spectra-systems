@@ -2,7 +2,7 @@
 	import AirlineImage from '../assets/airline.svg';
 </script>
 
-<header>
+<header class="bg-blue-400">
 	<nav class="p-6">
 		<div class="flex justify-between items-center">
 			<a href="/home">
