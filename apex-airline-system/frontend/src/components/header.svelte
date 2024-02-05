@@ -1,6 +1,10 @@
 <script>
 	import AirlineImage from '../assets/airline.svg';
+	import TabImage from '../assets/TabImage.svg'
 </script>
+
+
+<link class="tabimage" rel="icon" type="image/svg" href={TabImage}/> 
 
 <header class="bg-blue-400">
 	<nav class="p-6">
@@ -83,4 +87,5 @@
 	.bar {
 		width: 400px;
 	}
+
 </style>
