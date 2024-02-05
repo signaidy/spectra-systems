@@ -1,5 +1,9 @@
 @Entity
 @Table(name = "reservation")
+
+
+
+
 public class Reservation {
 
     @Id
@@ -27,8 +31,8 @@ public class Reservation {
     private String location;
 
     public Reservation(Long id, User user, String hotel, Date dateStart,
-                       Date dateEnd, String roomNumber, String reservationNumber,
-                       String location) {
+            Date dateEnd, String roomNumber, String reservationNumber,
+            String location) {
         this.id = id;
         this.user = user;
         this.hotel = hotel;
@@ -41,3 +45,4 @@ public class Reservation {
 
     // Getters, setters, constructors, and other methods...
 }
+
