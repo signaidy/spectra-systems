@@ -18,24 +18,24 @@ import {
 
 const frameworks = [
   {
-    value: "next.js",
-    label: "Next.js",
+    value: "new york",
+    label: "New York",
   },
   {
-    value: "sveltekit",
-    label: "SvelteKit",
+    value: "sidney",
+    label: "Sidney",
   },
   {
-    value: "nuxt.js",
-    label: "Nuxt.js",
+    value: "kuwait",
+    label: "Kuwait",
   },
   {
-    value: "remix",
-    label: "Remix",
+    value: "greenland",
+    label: "Greenland",
   },
   {
-    value: "astro",
-    label: "Astro",
+    value: "new delhi",
+    label: "New Delhi",
   },
 ];
 

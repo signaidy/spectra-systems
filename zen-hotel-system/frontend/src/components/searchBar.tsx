@@ -24,7 +24,7 @@ function SearchBarElement({
 export function SearchBar() {
   return (
     <div className="flex container items-center justify-center ">
-      <div className="flex gap-x-3 bg-background  rounded-md p-3 items-center">
+      <div className="flex gap-x-3 bg-background shadow rounded-md p-3 items-center">
         <SearchBarElement title="Where to?">
           <LocationPicker />
         </SearchBarElement>
