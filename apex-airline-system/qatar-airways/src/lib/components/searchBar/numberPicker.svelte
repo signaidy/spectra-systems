@@ -21,7 +21,7 @@
     <span class="sr-only">Decrease</span>
   </Button>
   <div class="flex flex-col text-center">
-    <div class="text-l font-bold tracking-tighter">
+    <div class="font-bold tracking-tighter">
       {passengers}
     </div>
     <div class="text-[0.70rem] uppercase text-muted-foreground">Passengers</div>
