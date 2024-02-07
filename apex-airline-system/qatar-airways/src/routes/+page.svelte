@@ -1,2 +1,11 @@
-<h1 class="text-5xl">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+  import SearchBar from "$lib/components/searchBar/searchBar.svelte";
+</script>
+
+<div
+  class="h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover"
+>
+  <div class="flex container justify-center items-center h-full">
+    <SearchBar />
+  </div>
+</div>
