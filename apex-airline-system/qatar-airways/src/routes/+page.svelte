@@ -5,7 +5,7 @@
 <div
   class="h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover"
 >
-  <div class="flex container justify-center items-center h-full">
+  <div class="flex flex-col container justify-center items-center h-full">
     <SearchBar />
   </div>
 </div>

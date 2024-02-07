@@ -7,6 +7,7 @@
     Bolt,
     WalletCards,
     AreaChart,
+    LogOut,
   } from "lucide-svelte";
 
   const routes = [
@@ -58,4 +59,7 @@
       {route.label}
     </Button>
   {/each}
+  <Button class="justify-normal">
+    <LogOut class="shrink-0 mr-2 h-4 w-4" />Log Out
+  </Button>
 </nav>

@@ -10,8 +10,8 @@
       <img src={logo} alt="Avianca Logo" />
     </a>
     <nav class="flex gap-x-3 text-sm font-bold">
-      <div>About Us</div>
+      <Button href="/administration" variant="ghost" class="font-bold">User Dashboard</Button>
     </nav>
-    <Button>Join | Sign In <CircleUserRound class="ml-2" /></Button>
+    <Button href="/signin">Join | Sign In <CircleUserRound class="ml-2" /></Button>
   </div>
 </header>
