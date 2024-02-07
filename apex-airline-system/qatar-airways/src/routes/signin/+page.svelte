@@ -8,8 +8,11 @@
   class="h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
 >
   <div class="flex container justify-center items-center h-full">
-    <form class="flex flex-col gap-y-10 rounded-lg p-8 bg-background">
-      <div class="font-bold text-xl">Sign In</div>
+    <form class="flex flex-col gap-y-5 rounded-lg p-8 bg-background">
+      <div class="flex flex-col">
+        <div class="font-bold text-xl">Sign In</div>
+        <Button variant="link" class="p-0 self-baseline" href="/login">Already have an account? Log In</Button>
+      </div>
       <div class="grid grid-cols-2 gap-x-10">
         <div class="flex flex-col gap-y-5">
           <div class="flex flex-col gap-y-2">
