@@ -1,10 +1,9 @@
 <script>
 	import AirlineImage from '../assets/airline.svg';
-	import TabImage from '../assets/TabImage.svg'
+	import TabImage from '../assets/TabImage.svg';
 </script>
 
-
-<link class="tabimage" rel="icon" type="image/svg" href={TabImage}/> 
+<link class="tabimage" rel="icon" type="image/svg" href={TabImage} />
 
 <header class="bg-blue-400">
 	<nav class="p-6">
@@ -49,6 +48,13 @@
 				</div>
 
 				<div class="md:flex space-x-6 hidden">
+					<a href="/administration">
+						<svg xmlns="http://www.w3.org/2000/svg" width="2.5em"
+						height="2.5em" viewBox="0 0 20 20" {...$$props}>
+							<circle cx="10" cy="10" r="1.75" fill="currentColor" />
+							<path fill="currentColor" d="M15 1H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2m0 9.75l-1.37.25a3.7 3.7 0 0 1-.38.93l.82 1.07L13 14.07l-1.12-.82a3.7 3.7 0 0 1-.93.38l-.2 1.37h-1.5L9 13.63a3.7 3.7 0 0 1-.93-.38L7 14.07L5.93 13l.82-1.12a3.7 3.7 0 0 1-.38-.88L5 10.75v-1.5L6.37 9a3.7 3.7 0 0 1 .38-.93L5.93 7L7 5.93l1.12.82A3.7 3.7 0 0 1 9 6.37L9.25 5h1.5L11 6.37a3.7 3.7 0 0 1 .93.38L13 5.93L14.07 7l-.82 1.12a3.7 3.7 0 0 1 .38.93l1.37.2z" />
+						</svg>
+					</a>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="2.5em"
@@ -62,21 +68,21 @@
 						/>
 					</svg>
 					<a href="/profile">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="2.5em"
-						height="2.5em"
-						viewBox="0 0 24 24"
-						{...$$props}
-					>
-						<path
-							fill="currentColor"
-							fill-rule="evenodd"
-							d="M12 4a8 8 0 0 0-6.96 11.947A4.99 4.99 0 0 1 9 14h6a4.99 4.99 0 0 1 3.96 1.947A8 8 0 0 0 12 4m7.943 14.076A9.959 9.959 0 0 0 22 12c0-5.523-4.477-10-10-10S2 6.477 2 12a9.958 9.958 0 0 0 2.057 6.076l-.005.018l.355.413A9.98 9.98 0 0 0 12 22a9.947 9.947 0 0 0 5.675-1.765a10.055 10.055 0 0 0 1.918-1.728l.355-.413zM12 6a3 3 0 1 0 0 6a3 3 0 0 0 0-6"
-							clip-rule="evenodd"
-						/>
-					</svg>
-				</a>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="2.5em"
+							height="2.5em"
+							viewBox="0 0 24 24"
+							{...$$props}
+						>
+							<path
+								fill="currentColor"
+								fill-rule="evenodd"
+								d="M12 4a8 8 0 0 0-6.96 11.947A4.99 4.99 0 0 1 9 14h6a4.99 4.99 0 0 1 3.96 1.947A8 8 0 0 0 12 4m7.943 14.076A9.959 9.959 0 0 0 22 12c0-5.523-4.477-10-10-10S2 6.477 2 12a9.958 9.958 0 0 0 2.057 6.076l-.005.018l.355.413A9.98 9.98 0 0 0 12 22a9.947 9.947 0 0 0 5.675-1.765a10.055 10.055 0 0 0 1.918-1.728l.355-.413zM12 6a3 3 0 1 0 0 6a3 3 0 0 0 0-6"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -87,5 +93,4 @@
 	.bar {
 		width: 400px;
 	}
-
 </style>
