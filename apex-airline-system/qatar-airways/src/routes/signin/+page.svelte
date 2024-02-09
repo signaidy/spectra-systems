@@ -5,9 +5,9 @@
 </script>
 
 <div
-  class="h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
+  class="min-h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
 >
-  <div class="flex container justify-center items-center h-full">
+  <div class="flex container p-8 justify-center items-center h-full">
     <form class="flex flex-col gap-y-5 rounded-lg p-8 bg-background">
       <div class="flex flex-col">
         <div class="font-bold text-xl">Sign In</div>
