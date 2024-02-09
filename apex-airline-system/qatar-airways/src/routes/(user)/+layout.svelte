@@ -4,8 +4,7 @@
 
 <div class="flex container h-[calc(100vh-5rem)] overflow-y-auto">
   <NavBar />
-  <div class="flex flex-col py-8 pl-8">
+  <div class="py-8 pl-8 grow">
     <slot />
   </div>
 </div>
-<slot />
