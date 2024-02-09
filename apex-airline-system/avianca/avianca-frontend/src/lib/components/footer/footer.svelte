@@ -18,8 +18,8 @@
   ];
 </script>
 
-<footer class="flex flex-col">
-  <div class="flex container flex-col p-8 border-t gap-y-10">
+<footer class="flex flex-col border-t">
+  <div class="flex container flex-col p-8 gap-y-10">
     <img src={logo} alt="Logo" class="w-[202px] h-[60px]" />
     <div class="flex gap-x-20">
       <Section title="About Us">

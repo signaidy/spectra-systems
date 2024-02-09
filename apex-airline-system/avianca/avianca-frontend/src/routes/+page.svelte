@@ -1,6 +1,7 @@
 <script lang="ts">
   import SearchBar from "$lib/components/searchBar/searchBar.svelte";
-  import Footer from "$lib/components/footer/footer.svelte"
+  import FeaturedFlights from "$lib/components/home/featuredFlights.svelte";
+  import Footer from "$lib/components/footer/footer.svelte";
 </script>
 
 <div
@@ -9,5 +10,6 @@
   <div class="flex flex-col container justify-center items-center h-full">
     <SearchBar />
   </div>
-  <Footer />
 </div>
+<FeaturedFlights />
+<Footer />
