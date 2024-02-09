@@ -20,7 +20,7 @@
     {
       value: "flights",
       label: "Flights",
-      href: "/reservations",
+      href: "/flights",
       icon: BedDouble,
     },
     {
