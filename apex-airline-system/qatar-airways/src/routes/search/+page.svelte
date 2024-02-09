@@ -24,7 +24,7 @@
               <Pyramid class="mx-3 h-5 w-5" />
               <hr class="grow" />
             </div>
-            <div class="text-muted-foreground self-center">1 stop</div>
+            <div class="text-muted-foreground self-center">1 stop, 15h</div>
           </div>
           <div class="flex flex-col">
             <div class="text-3xl font-bold">06:20</div>
@@ -40,12 +40,12 @@
         </Button>
       </div>
       <!-- Right Container -->
-      <div class="flex p-5 gap-x-5">
-        <div class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow">
+      <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">
+        <div class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background">
           <div class="text-sm text-muted-foreground">Tourist</div>
           <div class="text-3xl font-medium tracking-tighter">500 $</div>
         </div>
-        <div class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow">
+        <div class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background">
           <div class="text-sm text-muted-foreground">Business</div>
           <div class="text-3xl font-medium tracking-tighter">1000 $</div>
         </div>
