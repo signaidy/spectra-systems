@@ -1,5 +1,21 @@
+package SpectraSystems.Nexus;
+import java.util.Date;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.TemporalType;
+
+
 @Entity
-@Table(name = "reservation")
+@Table(name = "nexusreservation")
 
 public class Reservation {
 
@@ -14,10 +30,12 @@ public class Reservation {
     @Column(nullable = false)
     private String hotel;
 
-    @Column(nullable = false)
+    @Column(name = "dateStart", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dateStart;
 
-    @Column(nullable = false)
+    @Column(name = "dateEnd", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dateEnd;
 
     private String roomNumber;
