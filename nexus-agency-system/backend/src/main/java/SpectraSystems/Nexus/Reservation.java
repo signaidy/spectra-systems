@@ -50,10 +50,9 @@ public class Reservation {
 
     }
 
-    public Reservation(Long id, Long user, String hotel, Date dateStart,
+    public Reservation(Long user, String hotel, Date dateStart,
             Date dateEnd, String roomNumber, String reservationNumber,
             String location) {
-        this.id = id;
         this.userid = user;
         this.hotel = hotel;
         this.dateStart = dateStart;
