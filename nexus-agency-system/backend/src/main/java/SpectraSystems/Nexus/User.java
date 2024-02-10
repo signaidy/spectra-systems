@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "nexususer")
+@Table(name = "NEXUSUSER")
 public class User {
 
     @Id

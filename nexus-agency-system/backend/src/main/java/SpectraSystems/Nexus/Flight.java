@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "nexusflight")
+@Table(name = "NEXUSFLIGHT")
 public class Flight {
 
     @Id

@@ -15,7 +15,7 @@ import jakarta.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "nexusreservation")
+@Table(name = "NEXUSRESERVATION")
 
 public class Reservation {
 
