@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin
 @RestController
 public class ApexController {
 
@@ -27,8 +29,31 @@ public class ApexController {
 
     @PostMapping("/create-user")
     public Object createUser(@RequestBody User user) {
-        String pw_hash = BCrypt.hashpw(user.password, BCrypt.gensalt());
-        return pw_hash;
+
+        Connection conn = new OracleConnector().getConnection();
+
+        String passwordHash = BCrypt.hashpw(user.password, BCrypt.gensalt());
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+                            user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
+                            user.passportNumber));
+            ResultSet result = query.executeQuery();
+            return new WebSuccess("User created successfully");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to create user");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @GetMapping("/get-user/{id}")

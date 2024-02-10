@@ -3,17 +3,17 @@ package com.apex.backend;
 public class User {
     String email;
     String password;
-    String first_name;
-    String last_name;
-    String origin_country;
-    String passport_number;
+    String firstName;
+    String lastName;
+    String originCountry;
+    String passportNumber;
 
-    public User(String user, String password, String first_name, String last_name, String origin_country, String passport_number) {
-        this.email = user;
+    public User(String email, String password, String firstName, String lastName, String originCountry, String passportNumber) {
+        this.email = email;
         this.password = password;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.origin_country = origin_country;
-        this.passport_number = passport_number;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.originCountry = originCountry;
+        this.passportNumber = passportNumber;
     }
 }
