@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "nexususer")
+@Table(name = "NEXUSUSER")
 public class User {
 
     @Id
@@ -17,10 +17,10 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    private String firstName;
+    private String first_Name;
 
     @Column(nullable = false)
-    private String lastName;
+    private String last_Name;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -36,11 +36,14 @@ public class User {
     
     // Getters, setters, constructors, and other methods...
 
-    public User(Long id, String firstName, String lastName, String email,
+    public User(){
+        
+    }
+
+    public User(String firstName, String lastName, String email,
                 Integer age, String password, String country, String passport) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.first_Name = firstName;
+        this.last_Name = lastName;
         this.email = email;
         this.age = age;
         this.password = password;
@@ -57,19 +60,19 @@ public class User {
     }
 
     public String getFirstName() {
-        return firstName;
+        return first_Name;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.first_Name = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return last_Name;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.last_Name = lastName;
     }
 
     public String getEmail() {

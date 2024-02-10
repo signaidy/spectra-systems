@@ -15,7 +15,7 @@ import jakarta.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "nexusreservation")
+@Table(name = "NEXUSRESERVATION")
 
 public class Reservation {
 
@@ -23,9 +23,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "userid", nullable = false)
-    private User user;
+    @Column(name = "userid", nullable = false)
+    private Long userid;
 
     @Column(nullable = false)
     private String hotel;
@@ -47,11 +46,15 @@ public class Reservation {
     
     // Getters, setters, constructors, and other methods...
 
-    public Reservation(Long id, User user, String hotel, Date dateStart,
+    public Reservation(){
+
+    }
+
+    public Reservation(Long id, Long user, String hotel, Date dateStart,
             Date dateEnd, String roomNumber, String reservationNumber,
             String location) {
         this.id = id;
-        this.user = user;
+        this.userid = user;
         this.hotel = hotel;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -68,12 +71,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUser() {
+        return userid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Long user) {
+        this.userid = user;
     }
 
     public String getHotel() {
