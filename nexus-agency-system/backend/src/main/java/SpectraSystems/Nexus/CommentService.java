@@ -30,7 +30,6 @@ public class CommentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + id));
 
         // Update comment details
-        comment.setUser(commentDetails.getUser());
         comment.setTitle(commentDetails.getTitle());
         comment.setDate(commentDetails.getDate());
         comment.setMessage(commentDetails.getMessage());

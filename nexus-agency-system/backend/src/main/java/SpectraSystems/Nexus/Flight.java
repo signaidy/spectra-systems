@@ -5,13 +5,11 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "NEXUSFLIGHT")
@@ -21,16 +19,15 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "userid", nullable = false)
-    private User user;
+    @Column(name = "userid", nullable = false)
+    private Long userid;
 
     @Column(nullable = false)
     private String flightNumber;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "departureDate", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date departureDate;
 
     @Column(nullable = false)
     private String departureLocation;
@@ -42,11 +39,14 @@ public class Flight {
     
     // Getters, setters, constructors, and other methods...
 
-    public Flight(Long id, User user, String flightNumber, Date date, String departureLocation, String arrivalLocation, Date returnDate) {
-        this.id = id;
-        this.user = user;
+    public Flight(){
+
+    }
+
+    public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate) {
+        this.userid = user;
         this.flightNumber = flightNumber;
-        this.date = date;
+        this.departureDate = departureDate;
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.returnDate = returnDate;
@@ -60,12 +60,12 @@ public class Flight {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUser() {
+        return userid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Long user) {
+        this.userid = user;
     }
 
     public String getFlightNumber() {
@@ -77,11 +77,11 @@ public class Flight {
     }
 
     public Date getDate() {
-        return date;
+        return departureDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(Date departureDate) {
+        this.departureDate = departureDate;
     }
 
     public String getDepartureLocation() {

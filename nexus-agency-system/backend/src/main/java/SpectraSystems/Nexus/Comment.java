@@ -9,8 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.TemporalType;
 
 @Entity
@@ -21,16 +19,15 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "userid", nullable = false)
-    private User user;
+    @Column(name = "userid", nullable = false)
+    private Long userid;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "datepost", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date datePost;
 
 
     @Column(nullable = false)
@@ -38,11 +35,14 @@ public class Comment {
 
     // Getters, setters, constructors, and other methods...
 
-    public Comment(Long id, User user, String title, Date date, String message) {
-        this.id = id;
-        this.user = user;
+    public Comment(){
+
+    }
+
+    public Comment(Long user, String title, Date date, String message) {
+        this.userid = user;
         this.title = title;
-        this.date = date;
+        this.datePost = date;
         this.message = message;
     }
 
@@ -54,12 +54,12 @@ public class Comment {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUser() {
+        return userid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Long user) {
+        this.userid = user;
     }
 
     public String getTitle() {
@@ -71,11 +71,11 @@ public class Comment {
     }
 
     public Date getDate() {
-        return date;
+        return datePost;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(Date datePost) {
+        this.datePost = datePost;
     }
 
     public String getMessage() {

@@ -22,7 +22,12 @@ public class FlightService {
     }
 
     public Flight createFlight(Flight flight) {
-        return flightRepository.save(flight);
+        if (flight != null) {
+            return flightRepository.save(flight);
+        } else {
+            // Handle null flight case, such as throwing an exception or logging a warning
+            return null;
+        }
     }
 
     public Flight updateFlight(Long id, Flight flightDetails) {
