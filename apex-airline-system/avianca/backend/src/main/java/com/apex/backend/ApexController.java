@@ -27,6 +27,45 @@ public class ApexController {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
+    @PostMapping("/login")
+    public Object signIn(@RequestBody User user) {
+        Connection conn = new OracleConnector().getConnection();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format("SELECT * FROM users WHERE email = '%s'", user.email));
+            ResultSet result = query.executeQuery();
+
+            if (!result.next()) {
+                return new WebError("User not found");
+            }
+
+            if (BCrypt.checkpw(user.password, result.getString("password"))) {
+                return new LoggedUser(
+                        result.getString("user_id"),
+                        result.getString("email"),
+                        result.getString("first_name"),
+                        result.getString("last_name"),
+                        result.getString("origin_country"),
+                        result.getString("passport_number"),
+                        result.getString("role"),
+                        result.getString("age"));
+            }
+            return new WebError("Invalid password");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to login");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @PostMapping("/create-user")
     public Object createUser(@RequestBody User user) {
 
@@ -37,11 +76,28 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+                            "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s)",
                             user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
-                            user.passportNumber));
-            ResultSet result = query.executeQuery();
-            return new WebSuccess("User created successfully");
+                            user.passportNumber, user.age));
+            query.executeQuery();
+
+            PreparedStatement retrievalQueery = conn
+                    .prepareStatement(String.format("SELECT * FROM users WHERE email = '%s'", user.email));
+            ResultSet result = retrievalQueery.executeQuery();
+
+            if (!result.next()) {
+                return new WebError("Failed to create user");
+            }
+
+            return new LoggedUser(
+                    result.getString("user_id"),
+                    result.getString("email"),
+                    result.getString("first_name"),
+                    result.getString("last_name"),
+                    result.getString("origin_country"),
+                    result.getString("passport_number"),
+                    result.getString("role"),
+                    result.getString("age"));
         } catch (Throwable e) {
             e.printStackTrace();
             return new WebError("Failed to create user");
