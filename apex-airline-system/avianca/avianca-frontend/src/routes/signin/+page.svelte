@@ -1,33 +1,14 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
+
   import { Label } from "$lib/components/ui/label";
   import { Input } from "$lib/components/ui/input";
   import { Button } from "$lib/components/ui/button";
+  import { Loader2 } from "lucide-svelte";
 
-  let email: string;
-  let password: string;
-  let firstName: string;
-  let lastName: string;
-  let age: string;
-  let originCountry: string;
-  let passportNumber: string;
+  export let form;
 
-  async function handleSubmit() {
-    const result = await fetch("http://localhost:8080/create-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        firstName,
-        lastName,
-        age,
-        originCountry,
-        passportNumber,
-      }),
-    });
-  }
+  let loading = false;
 </script>
 
 <div
@@ -35,64 +16,93 @@
 >
   <div class="flex container p-8 justify-center items-center h-full">
     <form
-      on:submit|preventDefault={handleSubmit}
+      method="POST"
+      use:enhance={() => {
+        loading = true;
+
+        return async ({ update }) => {
+          await update();
+          loading = false;
+        };
+      }}
       class="flex flex-col gap-y-5 rounded-lg p-8 bg-background"
     >
       <div class="flex flex-col">
-        <div class="font-bold text-xl">Sign In</div>
-        <Button variant="link" class="p-0 self-baseline" href="/login"
-          >Already have an account? Log In</Button
-        >
+        <div class="flex items-center">
+          <div class="font-bold text-xl">Sign In</div>
+          <Loader2
+            class="shrink-0 ml-3 h-4 w-4 animate-spin {!loading && 'hidden'}"
+          />
+        </div>
+        <Button variant="link" class="p-0 self-baseline" href="/login">
+          Already have an account? Log In
+        </Button>
+        {#if form?.error}
+          <div class="text-sm text-red-500 font-medium">
+            Error: {form.error}
+          </div>
+        {/if}
       </div>
-      <div class="grid grid-cols-2 gap-x-10">
-        <div class="flex flex-col gap-y-5">
+      <div class="grid grid-cols-2">
+        <div class="flex flex-col gap-y-5 border-r pr-5">
           <div class="flex flex-col gap-y-2">
             <Label for="email">Email</Label>
-            <Input bind:value={email} id="email" type="email" required />
-          </div>
-          <div class="flex flex-col gap-y-2">
-            <Label for="firstName">Names</Label>
-            <Input bind:value={firstName} id="firstName" required />
-          </div>
-          <div class="flex flex-col gap-y-2">
-            <Label for="lastName">Last Names</Label>
-            <Input bind:value={lastName} id="lastName" required />
-          </div>
-          <div class="flex flex-col gap-y-2">
-            <Label for="age">Age</Label>
-            <Input bind:value={age} id="age" type="number" required />
-          </div>
-        </div>
-        <div class="flex flex-col gap-y-5">
-          <div class="flex flex-col gap-y-2">
-            <Label for="originCountry">Country of Origin</Label>
-            <Input bind:value={originCountry} id="originCountry" required />
-          </div>
-          <div class="flex flex-col gap-y-2">
-            <Label for="passportNumber">Passport Number</Label>
-            <Input
-              bind:value={passportNumber}
-              id="passportNumber"
-              type="number"
-              required
-            />
+            <Input id="email" name="email" type="email" required />
           </div>
           <div class="flex flex-col gap-y-2">
             <Label for="password">Password</Label>
             <Input
-              bind:value={password}
               id="password"
+              name="password"
               type="password"
+              autocomplete="new-password"
               required
             />
           </div>
           <div class="flex flex-col gap-y-2">
-            <Label for="captcha">Captcha</Label>
-            <Input id="captcha" />
+            <Label for="confirmedPassword">Confirm Password</Label>
+            <Input
+              id="confirmedPassword"
+              name="confirmedPassword"
+              type="password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <Label for="age">Age</Label>
+            <Input id="age" name="age" type="number" required />
+          </div>
+        </div>
+        <div class="flex flex-col gap-y-5 pl-5">
+          <div class="flex flex-col gap-y-2">
+            <Label for="firstName">Names</Label>
+            <Input id="firstName" name="firstName" required />
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <Label for="lastName">Last Names</Label>
+            <Input id="lastName" name="lastName" required />
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <Label for="originCountry">Country of Origin</Label>
+            <Input id="originCountry" name="originCountry" required />
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <Label for="passportNumber">Passport Number</Label>
+            <Input
+              id="passportNumber"
+              name="passportNumber"
+              type="number"
+              required
+            />
           </div>
         </div>
       </div>
-      <Button type="submit">Sign In</Button>
+      <div class="flex flex-col gap-y-2">
+        <Label for="captcha">🤖?</Label>
+        <!-- <Input id="captcha" /> -->
+      </div>
+      <Button type="submit" disabled={loading}>Sign In</Button>
     </form>
   </div>
 </div>
