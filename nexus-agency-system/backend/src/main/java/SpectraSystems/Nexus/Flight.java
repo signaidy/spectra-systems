@@ -5,11 +5,11 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "NEXUSFLIGHT")
@@ -76,11 +76,11 @@ public class Flight {
         this.flightNumber = flightNumber;
     }
 
-    public Date getDate() {
+    public Date getDepartureDate() {
         return departureDate;
     }
 
-    public void setDate(Date departureDate) {
+    public void setDepartureDate(Date departureDate) {
         this.departureDate = departureDate;
     }
 

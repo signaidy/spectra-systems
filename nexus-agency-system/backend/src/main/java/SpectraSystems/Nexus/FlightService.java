@@ -25,7 +25,6 @@ public class FlightService {
         if (flight != null) {
             return flightRepository.save(flight);
         } else {
-            // Handle null flight case, such as throwing an exception or logging a warning
             return null;
         }
     }
@@ -35,9 +34,7 @@ public class FlightService {
                 .orElseThrow(() -> new ResourceNotFoundException("Flight not found with id: " + id));
 
         // Update flight details
-        flight.setUser(flightDetails.getUser());
         flight.setFlightNumber(flightDetails.getFlightNumber());
-        flight.setDate(flightDetails.getDate());
         flight.setDepartureLocation(flightDetails.getDepartureLocation());
         flight.setArrivalLocation(flightDetails.getArrivalLocation());
         flight.setReturnDate(flightDetails.getReturnDate());
