@@ -3,9 +3,9 @@
   import messi from "$lib/assets/messi.jpg";
 
   export let data;
-  
+
   const userInfo = [
-    { key: "Full Name", value: data.user.firstName + " " + data.user.lastName},
+    { key: "Full Name", value: data.user.firstName + " " + data.user.lastName },
     { key: "Email", value: data.user.email },
     { key: "Password", value: "*********" },
     { key: "Age", value: data.user.age },
@@ -14,8 +14,8 @@
   ];
 </script>
 
-<h1 class="text-xl font-bold">Dashboard</h1>
-<div class="grid grid-cols-2 mt-8 gap-x-8">
+<h1 class="text-xl font-bold mb-8">Dashboard</h1>
+<div class="grid grid-cols-2 gap-x-8">
   <div class="flex flex-col gap-y-3">
     <div class="font-bold">Profile</div>
     <div class="flex flex-col gap-y-2 border rounded-lg p-3">
