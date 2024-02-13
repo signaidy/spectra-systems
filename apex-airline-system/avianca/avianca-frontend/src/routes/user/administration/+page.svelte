@@ -6,12 +6,12 @@
   import Userconfig from "$lib/components/user/user-config/+page.svelte";
   import Flightsinsert from "$lib/components/Flights/+page.svelte";
   import { Button } from "$lib/components/ui/button";
+  import {MoveLeft} from 'lucide-svelte';
 
   let valueselected = "";
 </script>
 
-<h1 class="text-xl font-bold mb-8">Administration</h1>
-<Button href="/user/administration/create-flight">Create Flight</Button>
+<h1 class="text-xl font-bold mb-1">Administration</h1>
 <div>
   <div class="w-full max-w-md mx-auto">
     <div class="px-7 bg-white shadow-lg rounded-2xl mb-5">
@@ -76,5 +76,5 @@
 {#if valueselected == "Users"}
   <Userconfig />
 {:else if valueselected == "Flights"}
-  <Flightsinsert />
+<Button href="/user/administration/create-flight">Create Flight</Button>
 {:else if valueselected == "Tickets"}{:else if valueselected == "Settings"}{:else}{/if}
