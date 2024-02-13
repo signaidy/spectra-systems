@@ -53,6 +53,7 @@ public class ApexController {
         }
     }
 
+    //USER - LOGIN
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
         Connection conn = new OracleConnector().getConnection();
@@ -92,6 +93,7 @@ public class ApexController {
         }
     }
 
+    //USER - SIGN UP
     @PostMapping("/create-user")
     public Object createUser(@RequestBody User user) {
 
@@ -171,4 +173,10 @@ public class ApexController {
             }
         }
     }
+
+    //Airplanes - CRUD
+    
+
+
+
 }
