@@ -27,6 +27,32 @@ public class ApexController {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
+    @PostMapping("/create-flight")
+    public Object createFlight(@RequestBody Flight flight) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO avianca_flights (origin_city, destination_city, type, departure_date, arrival_date) VALUES ('%s', '%s', '%s', '%s', '%s')",
+                            flight.originCity, flight.destinationCity, flight.type, flight.departureDate,
+                            flight.arrivalDate));
+            query.executeQuery();
+
+            return new WebSuccess("Flight created successfully");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to create flight");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
         Connection conn = new OracleConnector().getConnection();
@@ -100,6 +126,10 @@ public class ApexController {
                     result.getString("age"));
         } catch (Throwable e) {
             e.printStackTrace();
+            if (e.getMessage().contains(
+                    "ORA-00001: unique constraint (SYSTEM.EMAIL_UK) violated on table SYSTEM.USERS columns (EMAIL)")) {
+                return new WebError("Email already in use");
+            }
             return new WebError("Failed to create user");
         } finally {
             try {
