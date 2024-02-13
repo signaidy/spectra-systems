@@ -1,48 +1,84 @@
 <script lang="ts">
-    import { User } from "lucide-svelte";
+  import { UserRoundCog } from "lucide-svelte";
+  import { Plane } from "lucide-svelte";
+  import { TicketPercent } from "lucide-svelte";
+  import { Settings } from "lucide-svelte";
+  import Userconfig from "$lib/components/user/user-config/+page.svelte"
+  import Flightsinsert from "$lib/components/Flights/+page.svelte"
+
+  let valueselected = ""; 
+
 </script>
 
-<div
-  class="w-full max-w-md mx-5 bg-white shadow-md rounded-md px-6 py-4 my-6"
->
-  <div class="sm:flex sm:justify-between">
-    <div class="flex items-center">
-        <div class="h-12 w-12 rounded-full">
-            <User/>
+<div>
+  <div class="w-full max-w-md mx-auto">
+    <div class="px-7 bg-white shadow-lg rounded-2xl mb-5">
+      <div class="flex">
+        <div class="flex-1 group">
+          <a
+            on:click={() => valueselected = "Users" }
+            href="#"
+            class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
+          >
+            <span class="block px-1 pt-1 pb-2">
+              <i class="far fa-home text-2xl pt-1 mx-4 block"
+                ><UserRoundCog /></i
+              >
+              <span class="block text-xs">Users</span>
+            </span>
+          </a>
         </div>
-      <div class="ml-2">
-        <h3 class="text-lg text-gray-800 font-medium">Username</h3>
-        <span class="text-gray-600">Email</span>
+        <div class="flex-1 group">
+          <a
+            on:click={() => valueselected = "Flights" }
+            href="#"
+            class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
+          >
+            <span class="block px-1 pt-1 pb-2">
+              <i class="far fa-compass text-2xl pt-1 mx-4 block"><Plane /></i>
+              <span class="block text-xs pb-1">Flights</span>
+            </span>
+            
+          </a>
+        </div>
+        <div class="flex-1 group">
+          <a
+            on:click={() => valueselected = "Tickets" }
+            href="#"
+            class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
+          >
+            <span class="block px-1 pt-1 pb-2">
+              <i class="far fa-search text-2xl pt-1 mx-4 block"
+                ><TicketPercent /></i
+              >
+              <span class="block text-xs pb-1">Tickets</span>
+            </span>
+          </a>
+        </div>
+        <div class="flex-1 group">
+          <a
+            on:click={() => valueselected = "Settings" }
+            href="#"
+            class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
+          >
+            <span class="block px-1 pt-1 pb-2">
+              <i class="far fa-cog text-2xl pt-1 mx-4 block"><Settings /></i>
+              <span class="block text-xs pb-1">Settings</span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="mt-2 sm:mt-0">
-      <button
-        class="flex items-center text-white bg-yellow-600 rounded px-2 py-1 focus:outline-none focus:shadow-outline"
-      >
-        <span class="ml-1 text-sm">Enterprise</span>
-      </button>
-    </div>
   </div>
-  <div class="flex justify-between items-center mt-4">
-    <div>
-      <h4 class="text-gray-600 text-sm">Passport number</h4>
-      <span class="mt-2 text-xl font-medium text-gray-800">----------</span>
-    </div>
-    <div>
-      <h4 class="text-gray-600 text-sm">Origin country</h4>
-      <span class="mt-2 text-xl font-medium text-gray-800">---------------</span>
-    </div>
-    <div>
-      <h4 class="text-gray-600 text-sm">Age</h4>
-      <span class="mt-2 text-xl font-medium text-gray-800">-------</span>
-    </div>
-  </div>
-  <div class="mt-3">
-    <button
-        class="flex items-center text-white bg-black rounded px-2 py-1 focus:outline-none focus:shadow-outline"
-      >
-        <span class="ml-1 text-sm">Edit</span>
-      </button>
-  </div>
-  
 </div>
+
+{#if valueselected == "Users"}
+<Userconfig/>
+{:else if valueselected == "Flights"}
+<Flightsinsert/>
+{:else if valueselected == "Tickets"}
+{:else if valueselected == "Settings"}
+{:else}
+{/if}
+
+
