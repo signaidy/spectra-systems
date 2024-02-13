@@ -1,6 +1,8 @@
 package com.apex.backend;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -53,7 +55,7 @@ public class ApexController {
         }
     }
 
-    //USER - LOGIN
+    // USER - LOGIN
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
         Connection conn = new OracleConnector().getConnection();
@@ -93,7 +95,7 @@ public class ApexController {
         }
     }
 
-    //USER - SIGN UP
+    // USER - SIGN UP
     @PostMapping("/create-user")
     public Object createUser(@RequestBody User user) {
 
@@ -174,9 +176,31 @@ public class ApexController {
         }
     }
 
-    //Airplanes - CRUD
-    
+    // FLIGHT - REGISTRATION
+    @PostMapping("/register-flight")
+    public Object register_flight(@RequestBody Flights flight) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
 
-
-
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO FLIGHTS (origin, destination, departure_date, arrival_date, amount_normal, amount_premium, price_normal, price_premium, type, detail, state) VALUES ('%s', '%s', TO_DATE('%s', 'dd-MM-yyyy'), TO_DATE('%s', 'dd-MM-yyyy'), %s, %s, %s, %s, %s, '%s', 1)",
+                            flight.origin, flight.destination, flight.departure_date, flight.arrival_date,
+                            flight.amount_normal_tickets, flight.amount_premium_tickets,
+                            flight.price_normal, flight.price_premium, flight.type, flight.detail));
+            query.executeQuery();
+            return "Flight created";
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to create flight");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
