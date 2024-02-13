@@ -29,32 +29,6 @@ public class ApexController {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
-    @PostMapping("/create-flight")
-    public Object createFlight(@RequestBody Flight flight) {
-        Connection conn = new OracleConnector().getConnection();
-        try {
-            PreparedStatement query = conn
-                    .prepareStatement(String.format(
-                            "INSERT INTO avianca_flights (origin_city, destination_city, type, departure_date, arrival_date) VALUES ('%s', '%s', '%s', '%s', '%s')",
-                            flight.originCity, flight.destinationCity, flight.type, flight.departureDate,
-                            flight.arrivalDate));
-            query.executeQuery();
-
-            return new WebSuccess("Flight created successfully");
-        } catch (Throwable e) {
-            e.printStackTrace();
-            return new WebError("Failed to create flight");
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     // USER - LOGIN
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
