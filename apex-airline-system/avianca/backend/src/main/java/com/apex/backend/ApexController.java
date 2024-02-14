@@ -1,8 +1,6 @@
 package com.apex.backend;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -177,4 +175,35 @@ public class ApexController {
             }
         }
     }
+
+    //FLIGHT - INVENTORY (GET ALL FLIGHTS INFORMATION)
+    // @GetMapping("/get-user/{id}")
+    // public Object fligh_inventory(@PathVariable Long id) {
+    //     Connection conn = new OracleConnector().getConnection();
+
+    //     try {
+    //         PreparedStatement query = conn
+    //                 .prepareStatement(String.format("SELECT * FROM users WHERE user_id = %d", id));
+    //         ResultSet result = query.executeQuery();
+
+    //         record User(String name, String email) {
+    //         }
+
+    //         if (result.next()) {
+    //             return new User(result.getString("first_name"), result.getString("email"));
+    //         }
+    //         return new WebError("User not found");
+    //     } catch (Throwable e) {
+    //         e.printStackTrace();
+    //         return new WebError("Failed to retrieve user");
+    //     } finally {
+    //         try {
+    //             if (conn != null) {
+    //                 conn.close();
+    //             }
+    //         } catch (SQLException e) {
+    //             e.printStackTrace();
+    //         }
+    //     }
+    // }
 }
