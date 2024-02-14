@@ -25,6 +25,15 @@ export const actions = {
       console.log(key, value);
     }
 
+    if (
+      data.get("touristQuantity") > data.get("touristCapacity") ||
+      data.get("businessQuantity") > data.get("businessCapacity")
+    ) {
+      return fail(400, {
+        error: "The number of tickets cannot exceed the corresponding capacity",
+      });
+    }
+
     try {
       const departureDate = toCalendarDateTime(
         parseDate(data.get("departureDay")),
@@ -53,6 +62,8 @@ export const actions = {
           type: data.get("type"),
           departureDate: departureDate.toString(),
           arrivalDate: arrivalDate.toString(),
+          businessCapacity: data.get("businessCapacity"),
+          touristCapacity: data.get("touristCapacity"),
         }),
       });
       const result = await response.json();
