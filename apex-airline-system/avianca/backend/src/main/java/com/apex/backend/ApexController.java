@@ -1,6 +1,8 @@
 package com.apex.backend;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -278,21 +280,29 @@ public class ApexController {
         try {
 
             PreparedStatement query = conn
-                    .prepareStatement(String.format("SELECT p.user_id, t.ticket_id, t.flight_id, o.name as origin, d.name as destination\n" + //
-                                                "FROM purchase p\n" + //
-                                                "JOIN tickets t ON p.ticket_id = t.ticket_id JOIN flights f ON t.flight_id = f.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id WHERE p.user_id = %d", id
-                                                ));
+                    .prepareStatement(String.format(
+                            "SELECT p.user_id, t.ticket_id, t.flight_id, o.name as origin, d.name as destination\n" + //
+                                    "FROM purchase p\n" + //
+                                    "JOIN tickets t ON p.ticket_id = t.ticket_id JOIN flights f ON t.flight_id = f.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id WHERE p.user_id = %d",
+                            id));
             ResultSet result = query.executeQuery();
 
             record UserTicket(String user_id, String ticket_id, String flight_id, String origin, String destination) {
             }
 
-            if (result.next()) {
-                return new UserTicket(result.getString("user_id"), result.getString("ticket_id"),
+            List<UserTicket> usertickets = new ArrayList<>();
+            while (result.next()) {
+                usertickets.add(new UserTicket(
+                        result.getString("user_id"),
+                        result.getString("ticket_id"),
                         result.getString("flight_id"),
-                        result.getString("origin"), result.getString("destination"));
+                        result.getString("origin"),
+                        result.getString("destination")));
             }
-            return new WebError("This user dosen't have any ticket");
+            if (usertickets.isEmpty()) {
+                return new WebError("This user doesn't have any tickets");
+            }
+            return usertickets;
         } catch (Throwable e) {
             e.printStackTrace();
             return new WebError("Failed to get user tickets");
