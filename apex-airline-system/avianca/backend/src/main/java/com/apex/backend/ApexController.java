@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.time.format.DateTimeFormatter;  
 import org.springframework.web.bind.annotation.CrossOrigin;
+import java.time.LocalDateTime;
 
 @CrossOrigin
 @RestController
@@ -206,4 +208,32 @@ public class ApexController {
     //         }
     //     }
     // }
+
+    //Purchase API
+    @PostMapping("/purchase")
+    public Object purchase(@RequestBody  Purchase purchase) {
+        Connection conn = new OracleConnector().getConnection();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");  
+        LocalDateTime now = LocalDateTime.now();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO PURCHASE (user_id, ticket_id, purchase_date, paymenth_method) VALUES (%s, %s, TO_DATE('%s', 'dd-MM-yyyy'), '%s')",
+                             purchase.user_id, purchase.ticket_id, dtf.format(now), purchase.paymenth_method));
+            query.executeQuery();
+            return "Purchase made";
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to buy ticket");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
