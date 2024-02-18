@@ -271,4 +271,40 @@ public class ApexController {
         }
     }
 
+    // User tickets - API
+    @GetMapping("/user_tickets/{id}")
+    public Object getUsertickets(@PathVariable int id) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format("SELECT p.user_id, t.ticket_id, t.flight_id, o.name as origin, d.name as destination\n" + //
+                                                "FROM purchase p\n" + //
+                                                "JOIN tickets t ON p.ticket_id = t.ticket_id JOIN flights f ON t.flight_id = f.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id WHERE p.user_id = %d", id
+                                                ));
+            ResultSet result = query.executeQuery();
+
+            record UserTicket(String user_id, String ticket_id, String flight_id, String origin, String destination) {
+            }
+
+            if (result.next()) {
+                return new UserTicket(result.getString("user_id"), result.getString("ticket_id"),
+                        result.getString("flight_id"),
+                        result.getString("origin"), result.getString("destination"));
+            }
+            return new WebError("This user dosen't have any ticket");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get user tickets");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
