@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import java.time.format.DateTimeFormatter;  
+import java.time.format.DateTimeFormatter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.time.LocalDateTime;
 
@@ -178,49 +178,50 @@ public class ApexController {
         }
     }
 
-    //FLIGHT - INVENTORY (GET ALL FLIGHTS INFORMATION)
+    // FLIGHT - INVENTORY (GET ALL FLIGHTS INFORMATION)
     // @GetMapping("/get-user/{id}")
     // public Object fligh_inventory(@PathVariable Long id) {
-    //     Connection conn = new OracleConnector().getConnection();
+    // Connection conn = new OracleConnector().getConnection();
 
-    //     try {
-    //         PreparedStatement query = conn
-    //                 .prepareStatement(String.format("SELECT * FROM users WHERE user_id = %d", id));
-    //         ResultSet result = query.executeQuery();
+    // try {
+    // PreparedStatement query = conn
+    // .prepareStatement(String.format("SELECT * FROM users WHERE user_id = %d",
+    // id));
+    // ResultSet result = query.executeQuery();
 
-    //         record User(String name, String email) {
-    //         }
-
-    //         if (result.next()) {
-    //             return new User(result.getString("first_name"), result.getString("email"));
-    //         }
-    //         return new WebError("User not found");
-    //     } catch (Throwable e) {
-    //         e.printStackTrace();
-    //         return new WebError("Failed to retrieve user");
-    //     } finally {
-    //         try {
-    //             if (conn != null) {
-    //                 conn.close();
-    //             }
-    //         } catch (SQLException e) {
-    //             e.printStackTrace();
-    //         }
-    //     }
+    // record User(String name, String email) {
     // }
 
-    //Purchase API
+    // if (result.next()) {
+    // return new User(result.getString("first_name"), result.getString("email"));
+    // }
+    // return new WebError("User not found");
+    // } catch (Throwable e) {
+    // e.printStackTrace();
+    // return new WebError("Failed to retrieve user");
+    // } finally {
+    // try {
+    // if (conn != null) {
+    // conn.close();
+    // }
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // }
+    // }
+    // }
+
+    // Purchase - API
     @PostMapping("/purchase")
-    public Object purchase(@RequestBody  Purchase purchase) {
+    public Object purchase(@RequestBody Purchase purchase) {
         Connection conn = new OracleConnector().getConnection();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
         try {
 
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "INSERT INTO PURCHASE (user_id, ticket_id, purchase_date, paymenth_method) VALUES (%s, %s, TO_DATE('%s', 'dd-MM-yyyy'), '%s')",
-                             purchase.user_id, purchase.ticket_id, dtf.format(now), purchase.paymenth_method));
+                            purchase.user_id, purchase.ticket_id, dtf.format(now), purchase.paymenth_method));
             query.executeQuery();
             return "Purchase made";
         } catch (Throwable e) {
@@ -236,4 +237,38 @@ public class ApexController {
             }
         }
     }
+
+    // Ticket information - API
+    @GetMapping("/ticket-information")
+    public Object getAllticketinfo() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format("Select * FROM Tickets"));
+            ResultSet result = query.executeQuery();
+
+            record Ticket(String ticket_id, String price, String flight_id, String type, String state) {
+            }
+
+            if (result.next()) {
+                return new Ticket(result.getString("ticket_id"), result.getString("price"),
+                        result.getString("flight_id"),
+                        result.getString("type"), result.getString("state"));
+            }
+            return new WebError("Tickets information not accesed");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get tickets information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

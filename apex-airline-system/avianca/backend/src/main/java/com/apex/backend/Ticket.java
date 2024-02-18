@@ -2,15 +2,17 @@ package com.apex.backend;
 
 
 public class Ticket {
-    String ticket_id;
+    Integer ticket_id;
     Integer price;
+    Integer flight_id; 
     Integer type;
     Integer state;
 
-    public Ticket(String ticket_id, Integer price, Integer type, Integer state) {
+    public Ticket(Integer ticket_id, Integer price, Integer flight_id, Integer type, Integer state) {
         this.ticket_id = ticket_id; 
         this.price = price; 
         this.type = type; 
-        this.state = state; 
+        this.state = state;
+        this.flight_id = flight_id;  
     }
 }
