@@ -7,10 +7,14 @@
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
+  import { Textarea } from "$lib/components/ui/textarea";
   // Icons
-  import { PlaneTakeoff } from "lucide-svelte";
-  // Date Utilities
+  import { PlaneTakeoff, Loader2 } from "lucide-svelte";
+  // Utilities
   import { type DateValue } from "@internationalized/date";
+	import { cn } from "$lib/utils";
+
+  export let cities: City[] = [];
 
   let loading = false;
 
@@ -60,7 +64,7 @@
         </div>
         <div class="flex flex-col gap-y-2">
           <div class="font-bold text-sm">Origin City</div>
-          <LocationPicker bind:value={originCity} />
+          <LocationPicker {cities} bind:value={originCity} />
         </div>
       </div>
       <div class="flex flex-col justify-between grow">
@@ -78,12 +82,17 @@
         </div>
         <div class="flex flex-col gap-y-2">
           <div class="font-bold text-sm">Destination City</div>
-          <LocationPicker bind:value={destinationCity} />
+          <LocationPicker {cities} bind:value={destinationCity} />
         </div>
       </div>
     </div>
+    <!-- Details -->
+    <div class="flex flex-col gap-y-3">
+      <Label for="detail" class="font-bold">Flight Details</Label>
+      <Textarea name="detail" placeholder="Enter flight details here..."/>
+    </div>
     <!-- Submit -->
-    <Button type="submit" disabled={loading}>Create Flight</Button>
+    <Button type="submit" disabled={loading}>Create Flight<Loader2 class={cn("ml-3 h-4 w-4 animate-spin", !loading && "hidden")}/></Button>
   </div>
   <!-- Right Container -->
   <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">

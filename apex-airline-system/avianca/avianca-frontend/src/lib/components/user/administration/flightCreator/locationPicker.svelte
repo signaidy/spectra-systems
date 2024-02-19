@@ -5,32 +5,16 @@
   import { Button } from "$lib/components/ui/button";
   import { cn } from "$lib/utils";
   import { tick } from "svelte";
-  const frameworks = [
-    {
-      value: "new york",
-      label: "New York",
-    },
-    {
-      value: "sidney",
-      label: "Sidney",
-    },
-    {
-      value: "tokyo",
-      label: "Tokyo",
-    },
-    {
-      value: "london",
-      label: "London",
-    },
-    {
-      value: "paris",
-      label: "Paris",
-    },
-  ];
+  
+
+  export let cities: City[] = []
+
   let open = false;
+
   export let value = "";
+
   $: selectedValue =
-    frameworks.find((f) => f.value === value)?.label ?? "Select a location...";
+    cities.find((f) => f.cityId === value)?.name ?? "Select a location...";
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
   // rest of the form with the keyboard.
@@ -60,9 +44,9 @@
       <Command.Input placeholder="Search for a location..." />
       <Command.Empty>No location found.</Command.Empty>
       <Command.Group>
-        {#each frameworks as framework}
+        {#each cities as city}
           <Command.Item
-            value={framework.value}
+            value={city.cityId}
             onSelect={(currentValue) => {
               value = currentValue;
               closeAndFocusTrigger(ids.trigger);
@@ -71,10 +55,10 @@
             <Check
               class={cn(
                 "mr-2 h-4 w-4",
-                value !== framework.value && "text-transparent"
+                value !== city.cityId && "text-transparent"
               )}
             />
-            {framework.label}
+            {city.name}
           </Command.Item>
         {/each}
       </Command.Group>

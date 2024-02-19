@@ -6,10 +6,14 @@ import {
   parseDate,
 } from "@internationalized/date";
 
-export function load({ locals }) {
-  return {
-    user: locals.user,
-  };
+export async function load({ locals }) {
+  const response = await fetch("http://localhost:8080/get-cities", {
+    method: "GET",
+  });
+
+  const result = await response.json();
+
+  return { user: locals.user, cities: result };
 }
 
 export const actions = {
@@ -26,11 +30,22 @@ export const actions = {
     }
 
     if (
-      data.get("touristQuantity") > data.get("touristCapacity") ||
-      data.get("businessQuantity") > data.get("businessCapacity")
+      Number(data.get("touristQuantity")) >
+        Number(data.get("touristCapacity")) ||
+      Number(data.get("businessQuantity")) >
+        Number(data.get("businessCapacity"))
     ) {
       return fail(400, {
         error: "The number of tickets cannot exceed the corresponding capacity",
+      });
+    }
+
+    if (
+      Number(data.get("touristPrice")) < 0 ||
+      Number(data.get("businessPrice")) < 0
+    ) {
+      return fail(400, {
+        error: "Price cannot be negative",
       });
     }
 
@@ -59,11 +74,17 @@ export const actions = {
         body: JSON.stringify({
           originCity: data.get("originCity"),
           destinationCity: data.get("destinationCity"),
-          type: data.get("type"),
-          departureDate: departureDate.toString(),
-          arrivalDate: arrivalDate.toString(),
-          businessCapacity: data.get("businessCapacity"),
+          departureDate: departureDate.toString().replace("T", " "),
+          arrivalDate: arrivalDate.toString().replace("T", " "),
           touristCapacity: data.get("touristCapacity"),
+          businessCapacity: data.get("businessCapacity"),
+          touristPrice: data.get("touristPrice"),
+          businessPrice: data.get("businessPrice"),
+          touristQuantity: data.get("touristQuantity"),
+          businessQuantity: data.get("businessQuantity"),
+          // type: data.get("type"),
+          detail: data.get("detail"),
+          type: 0,
         }),
       });
       const result = await response.json();
