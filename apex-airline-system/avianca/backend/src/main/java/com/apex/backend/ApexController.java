@@ -76,15 +76,17 @@ public class ApexController {
     public Object createUser(@RequestBody User user) {
 
         Connection conn = new OracleConnector().getConnection();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime now = LocalDateTime.now();
 
         String passwordHash = BCrypt.hashpw(user.password, BCrypt.gensalt());
 
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s)",
+                            "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age, percentage, entry_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s, %s, TO_DATE('%s', 'dd-MM-yyyy'))",
                             user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
-                            user.passportNumber, user.age));
+                            user.passportNumber, user.age, null, dtf.format(now)));
             query.executeQuery();
 
             PreparedStatement retrievalQueery = conn
@@ -180,38 +182,6 @@ public class ApexController {
         }
     }
 
-    // FLIGHT - INVENTORY (GET ALL FLIGHTS INFORMATION)
-    // @GetMapping("/get-user/{id}")
-    // public Object fligh_inventory(@PathVariable Long id) {
-    // Connection conn = new OracleConnector().getConnection();
-
-    // try {
-    // PreparedStatement query = conn
-    // .prepareStatement(String.format("SELECT * FROM users WHERE user_id = %d",
-    // id));
-    // ResultSet result = query.executeQuery();
-
-    // record User(String name, String email) {
-    // }
-
-    // if (result.next()) {
-    // return new User(result.getString("first_name"), result.getString("email"));
-    // }
-    // return new WebError("User not found");
-    // } catch (Throwable e) {
-    // e.printStackTrace();
-    // return new WebError("Failed to retrieve user");
-    // } finally {
-    // try {
-    // if (conn != null) {
-    // conn.close();
-    // }
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
-
     // Purchase - API
     @PostMapping("/purchase")
     public Object purchase(@RequestBody Purchase purchase) {
@@ -281,23 +251,28 @@ public class ApexController {
 
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "SELECT p.user_id, t.ticket_id, t.flight_id, o.name as origin, d.name as destination\n" + //
+                            "SELECT t.ticket_id, t.price, t.type, t.state, t.flight_id, o.name as origin, d.name as destination, f.departure_date, f.arrival_date\n" + //
                                     "FROM purchase p\n" + //
                                     "JOIN tickets t ON p.ticket_id = t.ticket_id JOIN flights f ON t.flight_id = f.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id WHERE p.user_id = %d",
                             id));
             ResultSet result = query.executeQuery();
 
-            record UserTicket(String user_id, String ticket_id, String flight_id, String origin, String destination) {
+            record UserTicket(String ticket_id, String price, String type, String state, String flight_id, String origin, String destination, String departure_date, String arrival_date) {
             }
 
             List<UserTicket> usertickets = new ArrayList<>();
             while (result.next()) {
                 usertickets.add(new UserTicket(
-                        result.getString("user_id"),
                         result.getString("ticket_id"),
+                        result.getString("price"),
+                        result.getString("type"),
+                        result.getString("state"),
                         result.getString("flight_id"),
                         result.getString("origin"),
-                        result.getString("destination")));
+                        result.getString("destination"), 
+                        result.getString("departure_date"),
+                        result.getString("arrival_date")
+                        ));
             }
             if (usertickets.isEmpty()) {
                 return new WebError("This user doesn't have any tickets");
