@@ -9,3 +9,8 @@ interface User {
   role: "user" | "admin" | "enterprise";
   age: string;
 }
+
+interface City {
+  cityId: string;
+  name: string;
+}
