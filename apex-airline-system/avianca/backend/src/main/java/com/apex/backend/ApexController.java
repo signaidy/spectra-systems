@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import java.util.List;
+import java.util.ArrayList;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -155,22 +157,88 @@ public class ApexController {
     }
 
     // FLIGHT - REGISTRATION
-    @PostMapping("/register-flight")
-    public Object register_flight(@RequestBody Flights flight) {
+    @PostMapping("/create-flight")
+    public Object createFlight(@RequestBody Flight flight) {
         Connection conn = new OracleConnector().getConnection();
-        try {
 
-            PreparedStatement query = conn
+        try {
+            PreparedStatement flightQuery = conn
                     .prepareStatement(String.format(
-                            "INSERT INTO FLIGHTS (origin, destination, departure_date, arrival_date, amount_normal, amount_premium, price_normal, price_premium, type, detail, state) VALUES ('%s', '%s', TO_DATE('%s', 'dd-MM-yyyy'), TO_DATE('%s', 'dd-MM-yyyy'), %s, %s, %s, %s, %s, '%s', 1)",
-                            flight.origin, flight.destination, flight.departure_date, flight.arrival_date,
-                            flight.amount_normal_tickets, flight.amount_premium_tickets,
-                            flight.price_normal, flight.price_premium, flight.type, flight.detail));
-            query.executeQuery();
-            return "Flight created";
+                            "INSERT INTO flights (origin, destination, departure_date, arrival_date, amount_normal, amount_premium, price_normal, price_premium, detail, type, state) VALUES ('%s', '%s', TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), %s, %s, %s, %s, '%s', %s, 1)",
+                            flight.originCity, flight.destinationCity, flight.departureDate, flight.arrivalDate,
+                            flight.touristCapacity, flight.businessCapacity,
+                            flight.touristPrice, flight.businessPrice, flight.detail, flight.type));
+            flightQuery.executeQuery();
+
+            PreparedStatement flightIdQuery = conn.prepareStatement("SELECT MAX(flight_id) as flight_id FROM flights");
+            ResultSet flightIdResult = flightIdQuery.executeQuery();
+
+            PreparedStatement ticketIdQuery = conn.prepareStatement("SELECT MAX(ticket_id) as ticket_id FROM tickets");
+            ResultSet ticketIdResult = ticketIdQuery.executeQuery();
+
+            if (!flightIdResult.next() || !ticketIdResult.next()) {
+                return new WebError("Failed to create flight");
+            }
+
+            int flightId = flightIdResult.getInt("flight_id");
+
+            int ticketId = ticketIdResult.getInt("ticket_id");
+
+            String tickets = "";
+            int counter = 0;
+            for (int i = 0; i < flight.touristQuantity; i++) {
+                counter++;
+                tickets = tickets + String.format(
+                        "INTO tickets (ticket_id, price, flight_id, type, state) VALUES (%s, %s, %s, '%s', '%s') ",
+                        ticketId + counter,
+                        flight.touristPrice, flightId, "economy", "active");
+            }
+            for (int i = 0; i < flight.businessQuantity; i++) {
+                counter++;
+                tickets = tickets + String.format(
+                        "INTO tickets (ticket_id, price, flight_id, type, state) VALUES (%s, %s, %s, '%s', '%s') ",
+                        ticketId + counter,
+                        flight.businessPrice, flightId, "premium", "active");
+            }
+
+            PreparedStatement ticketQuery = conn
+                    .prepareStatement(String.format("INSERT ALL %s SELECT * FROM DUAL", tickets));
+            ticketQuery.executeQuery();
+
+            return new WebSuccess("Flight created successfully");
         } catch (Throwable e) {
             e.printStackTrace();
             return new WebError("Failed to create flight");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Get all Cities - API
+    @GetMapping("/get-cities")
+    public Object getCities() {
+        Connection conn = new OracleConnector().getConnection();
+
+        List<City> cities = new ArrayList<City>();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement("SELECT * FROM cities");
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                cities.add(new City(result.getString("city_id"), result.getString("name")));
+            }
+            return cities;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve cities");
         } finally {
             try {
                 if (conn != null) {
