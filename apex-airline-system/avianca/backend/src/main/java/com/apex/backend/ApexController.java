@@ -252,8 +252,8 @@ public class ApexController {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "SELECT t.ticket_id, t.price, t.type, t.state, t.flight_id, o.name as origin, d.name as destination, f.departure_date, f.arrival_date\n" + //
-                                    "FROM purchase p\n" + //
-                                    "JOIN tickets t ON p.ticket_id = t.ticket_id JOIN flights f ON t.flight_id = f.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id WHERE p.user_id = %d",
+                            "FROM tickets t \n" + //
+                            "JOIN flights f ON t.flight_id = f.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id WHERE t.user_id = %d",
                             id));
             ResultSet result = query.executeQuery();
 

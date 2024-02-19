@@ -9,6 +9,7 @@
     WalletCards,
     AreaChart,
     LogOut,
+    FileClock
   } from "lucide-svelte";
 
   export let user: User;
@@ -26,6 +27,12 @@
       href: "/user/flights",
       icon: BedDouble,
     },
+    {
+      value: "shopping_history",
+      label: "Shopping History",
+      href: "/user/shopping_history",
+      icon: FileClock,
+    }
   ];
 
   const adminRoutes = [
