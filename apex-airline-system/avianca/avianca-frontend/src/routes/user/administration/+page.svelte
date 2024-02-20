@@ -18,8 +18,7 @@
       <div class="flex">
         <div class="flex-1 group">
           <a
-            on:click={() => (valueselected = "Users")}
-            href="#"
+            href="/user/administration/users"
             class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
           >
             <span class="block px-1 pt-1 pb-2">
