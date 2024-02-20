@@ -20,13 +20,12 @@ export const actions = {
   default: async ({ request }) => {
     const data = await request.formData();
 
-    for (const [key, value] of data) {
+    for (const [, value] of data) {
       if (value === "" || value === "undefined") {
         return fail(400, {
           error: "Please fill in all the fields",
         });
       }
-      console.log(key, value);
     }
 
     if (
