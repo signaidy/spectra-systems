@@ -16,42 +16,40 @@
 </script>
 
 {#if editing === false}
-  <div class="flex flex-col">
-    <div class="flex border rounded-lg p-3 w-fit gap-x-3">
-      <div class="h-10 w-10 rounded-full bg-black" />
-      <div class="flex flex-col w-[6.875rem] text-sm gap-y-1 border-r px-2">
-        <div class="font-medium">First Name</div>
-        <div class="text-muted-foreground">{user.firstName}</div>
-      </div>
-      <div class="flex flex-col w-[6.875rem] text-sm gap-y-1 border-r px-2">
-        <div class="font-medium">Last Name</div>
-        <div class="text-muted-foreground">{user.lastName}</div>
-      </div>
-      <div class="flex flex-col text-sm gap-y-1 border-r px-2">
-        <div class="font-medium">Origin Country</div>
-        <div class="text-muted-foreground">{user.originCountry}</div>
-      </div>
-      <div class="flex flex-col text-sm gap-y-1 border-r px-2">
-        <div class="font-medium">Passport Number</div>
-        <div class="text-muted-foreground">{user.passportNumber}</div>
-      </div>
-      <div class="flex flex-col w-[3.75rem] text-sm gap-y-1 border-r px-2">
-        <div class="font-medium">Role</div>
-        <div class="text-muted-foreground">{user.role}</div>
-      </div>
-      <div class="flex flex-col text-sm gap-y-1 border-r px-2">
+  <div class="flex flex-col gap-y-2">
+    <div class="text-sm font-bold">User #{user.userId} - {user.firstName + " " + user.lastName}</div>
+    <div class="flex flex-wrap border rounded-lg gap-x-3 w-fit">
+      <div class="flex flex-col text-sm gap-y-1 border-r p-3">
+        <div class="font-medium">Email</div>
+        <div class="text-muted-foreground">{user.email}</div>
         <div class="font-medium">Age</div>
         <div class="text-muted-foreground">{user.age}</div>
       </div>
-      <div class="flex flex-col text-sm gap-y-1 border-r px-2">
+      <div class="flex flex-col  text-sm gap-y-1 border-r p-3">
+        <div class="font-medium">First Name</div>
+        <div class="text-muted-foreground">{user.firstName}</div>
+        <div class="font-medium">Last Name</div>
+        <div class="text-muted-foreground">{user.lastName}</div>
+      </div>
+      <div class="flex flex-col text-sm gap-y-1 border-r p-3">
+        <div class="font-medium">Origin Country</div>
+        <div class="text-muted-foreground">{user.originCountry}</div>
+        <div class="font-medium">Passport Number</div>
+        <div class="text-muted-foreground">{user.passportNumber}</div>
+      </div>
+      <div class="flex flex-col text-sm gap-y-1 border-r p-3">
+        <div class="font-medium">Role</div>
+        <div class="text-muted-foreground">{user.role}</div>
         <div class="font-medium">Discount Percentage</div>
         <div class="text-muted-foreground">{user.percentage === null ? "0" : user.percentage}%</div>
       </div>
-      <div class="flex flex-col text-sm gap-y-1 border-r px-2">
+      <div class="flex flex-col text-sm gap-y-1 border-r p-3">
         <div class="font-medium">Entry Date</div>
         <div class="text-muted-foreground">{user.entryDate}</div>
       </div>
-      <Button on:click={() => (editing = true)}>Edit</Button>
+      <div class="pr-3 py-3">
+        <Button on:click={() => (editing = true)}>Edit</Button>
+      </div>
     </div>
   </div>
 {:else}
@@ -70,6 +68,8 @@
     }}
   >
     <input type="hidden" name="userId" value={user.userId} />
+    <div class="text-sm font-bold">User #{user.userId} - {user.firstName + " " + user.lastName}</div>
+
     {#if form?.error}
       <div class="text-sm text-red-500 font-medium">
         Error: {form.error}
