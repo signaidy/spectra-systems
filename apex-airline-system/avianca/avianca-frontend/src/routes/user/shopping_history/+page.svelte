@@ -2,9 +2,18 @@
   import { onMount } from "svelte";
   import { Banknote } from "lucide-svelte";
   import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png";
+  import { jsPDF } from "jspdf";
 
   export let data;
   let userid = data.user.userId;
+
+  
+function generatePDF() {
+const doc = new jsPDF();
+doc.text("Hello world!", 10, 10);
+doc.save("a4.pdf");
+}
+
 </script>
 
 <h1 class="text-xl font-bold mb-8">Historical purchases</h1>
@@ -67,6 +76,7 @@
       </div>
       <button
         class="middle none center  rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        on:click={generatePDF}
         data-ripple-light="true">
         Generate PDF
       </button>

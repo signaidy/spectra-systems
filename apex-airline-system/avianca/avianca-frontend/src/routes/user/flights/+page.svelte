@@ -15,8 +15,7 @@
   fetch(`http://localhost:8080/user_tickets/${userid}`)
   .then(response => response.json())
   .then(userfdata => {
-    console.log(userfdata); 
-    userflights = userfdata; 
+    userflights = userfdata
   })
     // const userfdata = await res.json();
     // console.log(data);
@@ -33,6 +32,7 @@
 
 <h1 class="text-xl font-bold mb-8">Booked flights</h1>
 <div>
+  {#if userflights.length>0}
     {#each userflights as {ticket_id, type, state, flight_id, origin, destination, departure_date, arrival_date }}
       <div class="p-10">
         <div
@@ -94,6 +94,11 @@
         </div>
       </div>
     {/each}
+    {:else}
+    <div>
+      <p class="text-gray-500">No flights book yet</p>
+    </div>
+    {/if}
 </div>
 
 

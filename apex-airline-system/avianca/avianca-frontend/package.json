@@ -35,6 +35,7 @@
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.13",
 		"jsonwebtoken": "^9.0.2",
+		"jspdf": "^2.5.1",
 		"lucide-svelte": "^0.323.0",
 		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.1.20"
