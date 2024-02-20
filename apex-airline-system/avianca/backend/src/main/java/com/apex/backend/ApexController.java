@@ -156,6 +156,45 @@ public class ApexController {
         }
     }
 
+    // Get All Users - API
+    @GetMapping("/get-users")
+    public Object getUsers() {
+        Connection conn = new OracleConnector().getConnection();
+
+        List<LoggedUser> users = new ArrayList<LoggedUser>();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement("SELECT * FROM users");
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                users.add(new LoggedUser(
+                        result.getString("user_id"),
+                        result.getString("email"),
+                        result.getString("first_name"),
+                        result.getString("last_name"),
+                        result.getString("origin_country"),
+                        result.getString("passport_number"),
+                        result.getString("role"),
+                        result.getString("age"),
+                        result.getString("percentage"),
+                        result.getString("entry_date")));
+            }
+            return users;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve users");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     // FLIGHT - REGISTRATION
     @PostMapping("/create-flight")
     public Object createFlight(@RequestBody Flight flight) {
