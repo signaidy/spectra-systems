@@ -360,4 +360,54 @@ public class ApexController {
         }
     }
 
+    // Historical purchases - API
+    @GetMapping("/historical_purchases/{id}")
+    public Object getHistoricpurchases(@PathVariable int id) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM Historical_purchases WHERE user_id = %d",
+                            id));
+            ResultSet result = query.executeQuery();
+
+            record User_purchases(String purchase_number, String ticket, String type, String origin, String destination, String purchase_date, String price, String paymenth_method, 
+            String departure_date, String arrival_date, String user_name) {
+            }
+
+            List<User_purchases> historicalPurchases = new ArrayList<>();
+            while (result.next()) {
+                historicalPurchases.add(new User_purchases(
+                        result.getString("purchase_number"),
+                        result.getString("ticket"),
+                        result.getString("type"),
+                        result.getString("origin"),
+                        result.getString("destination"),
+                        result.getString("purchase_date"),
+                        result.getString("price"),
+                        result.getString("paymenth_method"), 
+                        result.getString("departure_date"),
+                        result.getString("arrival_date"),
+                        result.getString("user_name")
+                        ));
+            }
+            if (historicalPurchases.isEmpty()) {
+                return new WebError("This user doesn't have any purchases made");
+            }
+            return historicalPurchases;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get user tickets");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

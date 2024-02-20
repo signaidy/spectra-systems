@@ -7,7 +7,6 @@
   let userid = data.user.userId
 
   const userId = window.localStorage.getItem("user_id");
-  console.log(userId);
 
   let userflights = [];
 
@@ -17,17 +16,8 @@
   .then(userfdata => {
     userflights = userfdata
   })
-    // const userfdata = await res.json();
-    // console.log(data);
-    // return userfdata;
   });
 
-  // const getUserflights = async () => {
-  //   const res = await fetch(`http://localhost:8080/user_tickets/${userid}`);
-  //   const userfdata = await res.json();
-  //   console.log(data);
-  //   return userfdata;
-  // };
 </script>
 
 <h1 class="text-xl font-bold mb-8">Booked flights</h1>
