@@ -31,7 +31,7 @@
         billData.ticket.destination = historicalpurchases[0].destination
         billData.ticket.departure = historicalpurchases[0].departure_date
         billData.ticket.arrival = historicalpurchases[0].arrival_date
-
+        billData.ticket.paymenth_method = historicalpurchases[0].paymenth_method
 
       });
   });
@@ -52,7 +52,8 @@
     origin: "Country",
     destination: "Country",
     departure: "00-00-0000", 
-    arrival: "00-00-0000"
+    arrival: "00-00-0000",
+    paymenth_method: ""
     },
     items: {
       description: "Avianca ticket",
@@ -116,6 +117,10 @@
   doc.text("From:", 10, 62); // Align left
   doc.text(billData.ticket.origin, 50, 62);
   doc.text("To:", 10, 67); // Align left
+
+  doc.text("Payed with:", 10, 77); // Align left
+  doc.text(billData.ticket.paymenth_method, 30, 77);
+
   doc.text(billData.ticket.destination, 50, 67);
   doc.text("Departure date:", 120, 62); // Align left
   doc.text(billData.ticket.departure, 150, 62);
@@ -151,7 +156,7 @@
   doc.text("Subtotal:", 10, y);
   doc.text("$ " + billData.subtotal + ".00", 175, y, { align: "right" });
   y += 7;
-  doc.text("Percentage:", 10, y);
+  doc.text("Discount:", 10, y);
   doc.text("$ " + billData.percentage + ".00", 175, y, { align: "right" });
   y += 7;
   doc.setFontSize(14); // Slightly larger font for total
