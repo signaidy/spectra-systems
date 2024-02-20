@@ -2,9 +2,12 @@
   import { Button } from "$lib/components/ui/button";
   import { CircleUserRound } from "lucide-svelte";
   import logo from "$lib/assets/logo.png";
+  import imageTab from "$lib/assets/Image-Tab.png";
 
   export let data: { user: User | null };
 </script>
+
+<link class="tabimage" rel="icon" type="image/png" href={imageTab}/> 
 
 <header class="h-20 border-b">
   <div class="flex h-full container justify-between items-center">
