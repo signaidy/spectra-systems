@@ -8,6 +8,8 @@ interface User {
   passportNumber: string;
   role: "user" | "admin" | "enterprise";
   age: string;
+  percentage: string;
+  entryDate: string;
 }
 
 interface City {
