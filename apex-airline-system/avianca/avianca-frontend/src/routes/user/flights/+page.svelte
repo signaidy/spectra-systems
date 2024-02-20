@@ -29,10 +29,10 @@
           class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
         >
           <div class="flex flex-row items-baseline flex-nowrap bg-gray-100 p-2">
-            <h1 class="ml-2 uppercase font-bold text-black-500">Flight</h1>
-            <p class="ml-2 font-normal text-gray-500">{flight_id}</p>
-            <h1 class="ml-2 uppercase font-bold text-black-500">Ticket</h1>
-            <p class="ml-2 font-normal text-gray-500">{ticket_id}</p>
+            <h1 class="ml-1 uppercase font-bold text-black-500">Flight</h1>
+            <p class="ml-1 font-normal text-gray-500">{flight_id}</p>
+            <h1 class="ml-1 uppercase font-bold text-black-500">Ticket</h1>
+            <p class="ml-1 font-normal text-gray-500">{ticket_id}</p>
             {#if state == "active"}
             <h1 class="text-green-700 statef">Active</h1> 
             {:else}
