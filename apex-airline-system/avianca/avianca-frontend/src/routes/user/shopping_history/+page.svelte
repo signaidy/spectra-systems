@@ -118,9 +118,9 @@
   doc.text("To:", 10, 67); // Align left
   doc.text(billData.ticket.destination, 50, 67);
   doc.text("Departure date:", 120, 62); // Align left
-  doc.text(billData.ticket.origin, 150, 62);
+  doc.text(billData.ticket.departure, 150, 62);
   doc.text("Arrival date:", 120, 67); // Align left
-  doc.text(billData.ticket.destination, 150, 67);
+  doc.text(billData.ticket.arrival, 150, 67);
 
   // Table Header
   doc.setFontSize(12);
