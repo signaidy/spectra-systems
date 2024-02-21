@@ -1,5 +1,6 @@
 package SpectraSystems.Nexus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,9 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -22,6 +26,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Hash password before saving
         return userRepository.save(user);
     }
 

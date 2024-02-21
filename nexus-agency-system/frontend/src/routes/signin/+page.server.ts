@@ -16,7 +16,7 @@ export const actions = {
     }
     
     try {
-      const response = await fetch("http://localhost:8080/create-user", {
+      const response = await fetch("http://localhost:8080/nexus/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,8 +26,8 @@ export const actions = {
           password: data.get("password"),
           firstName: data.get("firstName"),
           lastName: data.get("lastName"),
-          originCountry: data.get("originCountry"),
-          passportNumber: data.get("passportNumber"),
+          country: data.get("originCountry"),
+          passport: data.get("passportNumber"),
           age: data.get("age"),
         }),
       });
