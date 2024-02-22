@@ -15,7 +15,7 @@
       <img src={logo} alt="Avianca Logo" class="w-[202px] h-[60px]" />
     </a>
     <nav class="flex gap-x-3 text-sm font-bold">
-      <Button href="" variant="ghost" class="font-bold">About Us</Button>
+      <Button href="/aboutus" variant="ghost" class="font-bold">About Us</Button>
     </nav>
     {#if data.user}
       <Button href="/user/dashboard" variant="ghost" class="font-bold">
