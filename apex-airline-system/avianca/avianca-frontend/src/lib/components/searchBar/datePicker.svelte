@@ -12,7 +12,7 @@
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
   });
-  let value: DateValue | undefined = undefined;
+  export let value: DateValue | undefined = undefined;
 </script>
 
 <Popover.Root>

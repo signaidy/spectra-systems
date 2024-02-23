@@ -2,7 +2,7 @@
   import { Button } from "$lib/components/ui/button";
   import { Minus, Plus } from "lucide-svelte";
 
-  let passengers = 1;
+  export let passengers = 1;
 
   function handleClick(adjustment: number) {
     passengers = passengers + adjustment;

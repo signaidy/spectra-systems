@@ -1,19 +1,21 @@
 import { fail } from "@sveltejs/kit";
 
 export async function load({ locals }) {
-  const response = await fetch("http://localhost:8080/get-users", {
-    method: "GET",
-  });
+  async function getUsers() {
+    const response = await fetch("http://localhost:8080/get-users", {
+      method: "GET",
+    });
+    const result = await response.json();
+    return result;
+  }
 
-  const result = await response.json();
-
-  return { user: locals.user, users: result };
+  return { user: locals.user, users: getUsers() };
 }
 
 export const actions = {
   updateUser: async ({ request }) => {
     const data = await request.formData();
-    
+
     for (const [, value] of data) {
       if (value === "" || value === "undefined") {
         return fail(400, {
@@ -41,7 +43,7 @@ export const actions = {
       });
 
       const result = await response.json();
-      console.log(result)
+
       if (result.error) {
         throw new Error(result.error);
       }
