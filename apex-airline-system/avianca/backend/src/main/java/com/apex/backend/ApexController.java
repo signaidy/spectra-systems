@@ -586,4 +586,36 @@ public class ApexController {
         }
     }
 
+     // About Us - UPDATE
+     @PostMapping("/update-aboutus")
+     public Object updateAboutUs(@RequestBody Aboutus au) {
+         Connection conn = new OracleConnector().getConnection();
+ 
+         try {
+             PreparedStatement query = conn
+                     .prepareStatement(String.format(
+                             "UPDATE About_us SET slogan = '%s', gif = '%s', yt = '%s', cards_amount = %d, title_one = '%s', text_one = '%s', img_one = '%s', \n" + //
+                             "TITLE_TWO = '%s', text_two = '%s', img_two = '%s', \n" + //
+                             "title_three = '%s', text_three = '%s', img_three = '%s', \n" + //
+                             "title_four = '%s', text_four = '%s', img_four = '%s' \n" + //
+                             "WHERE ID = 5",
+                             au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one, au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
+                             au.img_three, au.title_four, au.text_four, au.img_four));
+             query.executeQuery();
+ 
+             return new WebSuccess("Aboutus information updated");
+         } catch (Throwable e) {
+             e.printStackTrace();
+             return new WebError("Failed to update information");
+         } finally {
+             try {
+                 if (conn != null) {
+                     conn.close();
+                 }
+             } catch (SQLException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
+
 }
