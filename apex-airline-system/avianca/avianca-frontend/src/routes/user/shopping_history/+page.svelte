@@ -17,13 +17,11 @@
       .then((response) => response.json())
       .then((userpurchases) => {
         historicalpurchases = userpurchases;
+        if (historicalpurchases.length > 0) {
         billData.customer.name = historicalpurchases[0].user_name
         billData.items.total = historicalpurchases[0].price
         billData.items.unitprice = historicalpurchases[0].price
         billData.subtotal = historicalpurchases[0].price
-        // if(historicalpurchases){
-
-        // }
         billData.total = historicalpurchases[0].price
         billData.invoiceNumber = historicalpurchases[0].purchase_number
         billData.date = historicalpurchases[0].purchase_date
@@ -32,7 +30,7 @@
         billData.ticket.departure = historicalpurchases[0].departure_date
         billData.ticket.arrival = historicalpurchases[0].arrival_date
         billData.ticket.paymenth_method = historicalpurchases[0].paymenth_method
-
+        }
       });
   });
 

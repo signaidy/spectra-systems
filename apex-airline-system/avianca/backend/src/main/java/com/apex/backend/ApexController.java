@@ -483,4 +483,57 @@ public class ApexController {
         }
     }
 
+    // FLIGHTS - ALL
+    @GetMapping("/inventory")
+    public Object getInvetory() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT o.name as origin, d.name as destination, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium, f.price_normal, f.price_premium, f.detail, f.type, f.state, f.flight_id \n" + //
+                                                                "FROM flights f \n" + //
+                                                                "JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id"));
+            ResultSet result = query.executeQuery();
+
+            record FLIGHTS(String origin, String destination, String departure_date, String arrival_date, int amount_normal, int amount_premium, int price_normal, int price_premium, 
+            String detail, boolean type, boolean state, int flight_id) {
+            }
+
+            List<FLIGHTS> flight = new ArrayList<>();
+            while (result.next()) {
+                flight.add(new FLIGHTS(
+                        result.getString("origin"),
+                        result.getString("destination"),
+                        result.getString("departure_date"),
+                        result.getString("arrival_date"),
+                        result.getInt("amount_normal"),
+                        result.getInt("amount_premium"),
+                        result.getInt("price_normal"),
+                        result.getInt("price_premium"), 
+                        result.getString("detail"),
+                        result.getBoolean("type"),
+                        result.getBoolean("state"), 
+                        result.getInt("flight_id") 
+                        ));
+            }
+            if (flight.isEmpty()) {
+                return new WebError("Flights haven't been registered");
+            }
+            return flight;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get flights");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }
