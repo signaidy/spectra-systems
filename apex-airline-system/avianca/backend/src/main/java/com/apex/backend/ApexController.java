@@ -535,5 +535,55 @@ public class ApexController {
         }
     }
 
+    // AboutUs - GET INFORMATION
+    @GetMapping("/aboutus")
+    public Object getAbout() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM About_us"));
+            ResultSet result = query.executeQuery();
+
+            record aboutus(String slogan, String gif, String yt, int cards_amoun, String title_one, String text_one, String img_one,
+            String title_two, String text_two, String img_two,
+            String title_three, String text_three, String img_three,
+            String title_four, String text_four, String img_four) {
+            }
+
+            if (result.next()) {
+                return new aboutus(
+                    result.getString("slogan"), 
+                    result.getString("gif"),
+                    result.getString("yt"),
+                    result.getInt("cards_amount"), 
+                    result.getString("title_one"),
+                    result.getString("text_one"),
+                    result.getString("img_one"),
+                    result.getString("title_two"),
+                    result.getString("text_two"),
+                    result.getString("img_two"),
+                    result.getString("title_three"),
+                    result.getString("text_three"),
+                    result.getString("img_three"),
+                    result.getString("title_four"),
+                    result.getString("text_four"),
+                    result.getString("img_four"));
+            }
+                return new WebError("Failed to get about us information");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("API DENIED ACCESS");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

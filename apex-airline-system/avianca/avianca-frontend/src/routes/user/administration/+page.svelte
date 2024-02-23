@@ -76,4 +76,9 @@
   <Userconfig />
 {:else if valueselected == "Flights"}
 <Button href="/user/administration/create-flight">Create Flight</Button>
-{:else if valueselected == "Tickets"}{:else if valueselected == "Settings"}{:else}{/if}
+{:else if valueselected == "Tickets"}
+<p>On maintainance</p>
+
+{:else if valueselected == "Settings"}
+<Button href="#">About us</Button>
+{/if}
