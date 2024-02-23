@@ -5,6 +5,7 @@
   import logo from "$lib/assets/logo.png";
 
   const aboutUsLinks = [
+    { name: "We are avianca", href: "/aboutus" },
     { name: "Destinations", href: "/" },
     { name: "Boarding Rules", href: "/" },
     { name: "Seat Types", href: "/" },
