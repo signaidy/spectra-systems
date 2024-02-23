@@ -1,4 +1,4 @@
-package SpectraSystems.Nexus;
+package SpectraSystems.Nexus.models;
 import java.util.Date;
 
 

@@ -1,8 +1,11 @@
-package SpectraSystems.Nexus;
+package SpectraSystems.Nexus.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import SpectraSystems.Nexus.models.Reservation;
+import SpectraSystems.Nexus.services.ReservationService;
 
 import java.util.List;
 

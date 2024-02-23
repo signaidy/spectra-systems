@@ -1,6 +1,11 @@
-package SpectraSystems.Nexus;
+package SpectraSystems.Nexus.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
+import SpectraSystems.Nexus.models.Flight;
+import SpectraSystems.Nexus.repositories.FlightRepository;
+
 import java.util.List;
 import java.util.Optional;
 
