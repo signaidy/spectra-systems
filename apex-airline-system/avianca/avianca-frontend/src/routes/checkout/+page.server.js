@@ -1,9 +1,13 @@
 
 export const actions = {
+
    default: async({request}) => {
        const formData = await request.formData(); 
+       let method = formData.get("paymenth_method");
+       let amount = formData.get("passengers");
 
-       const response = await fetch("http://localhost:8080/purchase", {
+
+       const response = await fetch(`http://localhost:8080/purchase/${amount}/${method}`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",

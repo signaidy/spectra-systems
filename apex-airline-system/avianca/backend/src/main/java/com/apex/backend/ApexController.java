@@ -731,8 +731,8 @@ public class ApexController {
     }
 
     // Purchase - API
-    @PostMapping("/purchase")
-    public Object purchase(@RequestBody Ticket_purchase ticket) {
+    @PostMapping("/purchase/{amount}/{method}")
+    public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method) {
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
@@ -747,8 +747,8 @@ public class ApexController {
                                                                 "WHERE flight_id = '%d'\n" + //
                                                                 "  AND state = '%s'\n" + //
                                                                 "  AND type = '%s'\n" + //
-                                                                "  AND ROWNUM <= 2 AND user_id IS NULL",
-                            ticket.user_id, ticket.flight_id, ticket.state, ticket.type));
+                                                                "  AND ROWNUM <= '%d' AND user_id IS NULL",
+                            ticket.user_id, ticket.flight_id, ticket.state, ticket.type, amount));
             query.executeQuery();
 
             PreparedStatement tickets_assigned = conn.prepareStatement(String.format("Select DISTINCT(t.ticket_id), t.user_id\n" + //
@@ -770,8 +770,8 @@ public class ApexController {
                       int userId = usertickets.getInt("user_id");
 
                       PreparedStatement purchased_ticket = conn.prepareStatement(String.format(
-                         "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method) VALUES (%d, %d, TO_DATE('%s', 'dd-MM-yyyy'), 'Visa')", 
-                         ticketId, userId, dtf.format(now)));
+                         "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method) VALUES (%d, %d, TO_DATE('%s', 'dd-MM-yyyy'), '%s')", 
+                         ticketId, userId, dtf.format(now), method));
                       purchased_ticket.executeQuery();
 
 
