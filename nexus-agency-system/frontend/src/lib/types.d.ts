@@ -6,6 +6,13 @@ interface User {
   lastName: string;
   originCountry: string;
   passportNumber: string;
-  role: "user" | "admin" | "enterprise";
+  role: "USER" | "ADMIN" | "EMPLOYEE";
   age: string;
+  percentage: string;
+  entryDate: string;
+}
+
+interface City {
+  cityId: string;
+  name: string;
 }

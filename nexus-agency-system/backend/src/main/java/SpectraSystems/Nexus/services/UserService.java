@@ -47,7 +47,6 @@ public class UserService {
         user.setLastName(userDetails.getLastName());
         user.setEmail(userDetails.getEmail());
         user.setAge(userDetails.getAge());
-        user.setPassword(userDetails.getPassword());
         user.setCountry(userDetails.getCountry());
         user.setPassport(userDetails.getPassport());
 

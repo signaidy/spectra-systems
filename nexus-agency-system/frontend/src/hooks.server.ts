@@ -4,7 +4,23 @@ import { redirect, type Handle } from "@sveltejs/kit";
 export const handle: Handle = async ({ event, resolve }) => {
   console.log("handle");
   // Stage 1
-  event.locals.user = authenticateToken(event);
+  let userString  = event.cookies.get("User");
+  const user = userString ? JSON.parse(userString) : null;
+  const mappedUser = {
+    userId: user.id,
+    email: user.email,
+    firstName: user.firstName,
+    iat: 0,
+    lastName: user.lastName,
+    originCountry: user.country,
+    passportNumber: user.passport,
+    role: user.role.replace("ROLE_", "") as "USER" | "ADMIN" | "EMPLOYEE",
+    age: user.age.toString(),
+    percentage: "100",
+    entryDate: user.createdAt,
+  };
+  event.locals.user = mappedUser;
+  console.log(event.locals.user)
 
   if (event.url.pathname.startsWith("/user")) {
     if (!event.locals.user) {
@@ -16,7 +32,7 @@ export const handle: Handle = async ({ event, resolve }) => {
       event.url.pathname.startsWith("/user/purchase-logs") ||
       event.url.pathname.startsWith("/user/analytics")
     ) {
-      if (event.locals.user.role !== "admin") {
+      if (event.locals.user.role !== "ADMIN") {
         throw redirect(303, "/login");
       }
     }
