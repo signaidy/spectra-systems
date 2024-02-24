@@ -26,7 +26,7 @@
       searchParams.append("destinationCity", destinationCity);
       searchParams.append("departureDay", departureDay?.toString()!);
       searchParams.append("passengers", passengers.toString());
-      searchParams.append("type", "one-way");
+      searchParams.append("type", type);
       goto(`/search?${searchParams.toString()}`);
     } else {
       isValid = false;

@@ -28,7 +28,7 @@
       searchParams.append("departureDay", days.start.toString());
       searchParams.append("returnDay", days.end.toString());
       searchParams.append("passengers", passengers.toString());
-      searchParams.append("type", "round-trip");
+      searchParams.append("type", type);
       goto(`/search?${searchParams.toString()}`);
     } else {
       isValid = false;
