@@ -17,8 +17,8 @@
   });
 
   export let value: DateRange | undefined = {
-    start: new CalendarDate(2022, 1, 20),
-    end: new CalendarDate(2022, 1, 20).add({ days: 20 }),
+    start: new CalendarDate(2024, 1, 20),
+    end: new CalendarDate(2024, 1, 20).add({ days: 20 }),
   };
 
   let startValue: DateValue | undefined = undefined;
