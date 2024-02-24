@@ -8,6 +8,7 @@
   import { PlaneTakeoff, PlaneLanding, UsersRound } from "lucide-svelte";
   // Utilities
   import type { DateRange } from "bits-ui";
+  import { goto } from "$app/navigation";
 
   export let cities: Promise<any> = [];
 
@@ -20,13 +21,17 @@
   let passengers: number;
 
   function searchFlights() {
-    if (originCity && destinationCity && days && passengers) {
-      console.log(days.start?.toString());
-      console.log(days.end?.toString());
-      console.log("Passed");
+    if (originCity && destinationCity && days && days.start && days.end && passengers) {
+      const searchParams = new URLSearchParams();
+      searchParams.append("originCity", originCity);
+      searchParams.append("destinationCity", destinationCity);
+      searchParams.append("departureDay", days.start.toString());
+      searchParams.append("returnDay", days.end.toString());
+      searchParams.append("passengers", passengers.toString());
+      searchParams.append("type", type);
+      goto(`/search?${searchParams.toString()}`);
     } else {
       isValid = false;
-      console.log("Failed");
     }
   }
 </script>

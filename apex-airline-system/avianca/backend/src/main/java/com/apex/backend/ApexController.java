@@ -292,6 +292,57 @@ public class ApexController {
         }
     }
 
+    // Get One Way Flights - API
+    @GetMapping("/get-one-way-flights")
+    public Object getOneWayFlights(
+            @RequestParam(value = "originCity", defaultValue = "") String originCity,
+            @RequestParam(value = "destinationCity", defaultValue = "") String destinationCity,
+            @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
+            @RequestParam(value = "passengers", defaultValue = "") String passengers) {
+        Connection conn = new OracleConnector().getConnection();
+
+        List<FlightRecord> flights = new ArrayList<FlightRecord>();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT DISTINCT flights.flight_id, origin.city_id as origin_city_id, origin.name as origin_name, destination.city_id as destination_city_id, destination.name as destination_name, flights.departure_date, flights.arrival_date, flights.price_normal, flights.price_premium, flights.detail, flights.type, flights.state from flights inner join tickets on flights.flight_id = tickets.flight_id inner join cities origin on flights.origin = origin.city_id inner join cities destination on flights.destination = destination.city_id where tickets.user_id is null and flights.origin = %s and flights.destination = %s and TRUNC(flights.departure_date) = TO_DATE('%s', 'YYYY-MM-DD') and tickets.state != 'canceled'",
+                            originCity, destinationCity, departureDay));
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                PreparedStatement countQuery = conn.prepareStatement(String
+                        .format("SELECT (select count(ticket_id) from tickets where flight_id = %s and type = 'economy' and state = 'active' and user_id is null) as economy_quantity, (select count(ticket_id) from tickets where flight_id = %s and type = 'premium' and state = 'active' and user_id is null) as premium_quantity",
+                                result.getInt("flight_id"), result.getInt("flight_id")));
+                ResultSet countResult = countQuery.executeQuery();
+
+                if (!countResult.next()) {
+                    return new WebError("Failed to retrieve flights");
+                }
+
+                flights.add(new FlightRecord(result.getInt("flight_id"), result.getInt("origin_city_id"),
+                        result.getString("origin_name"), result.getInt("destination_city_id"),
+                        result.getString("destination_name"), result.getString("departure_date").toString(),
+                        result.getString("arrival_date"), result.getInt("price_normal"), result.getInt("price_premium"),
+                        result.getString("detail"),
+                        countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity")));
+            }
+
+            return flights;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve flights");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // Get all Cities - API
     @GetMapping("/get-cities")
     public Object getCities() {
@@ -445,8 +496,9 @@ public class ApexController {
                             id));
             ResultSet result = query.executeQuery();
 
-            record User_purchases(String purchase_number, String ticket, String type, String origin, String destination, String purchase_date, String price, String paymenth_method, 
-            String departure_date, String arrival_date, String user_name) {
+            record User_purchases(String purchase_number, String ticket, String type, String origin, String destination,
+                    String purchase_date, String price, String paymenth_method,
+                    String departure_date, String arrival_date, String user_name) {
             }
 
             List<User_purchases> historicalPurchases = new ArrayList<>();
@@ -459,11 +511,10 @@ public class ApexController {
                         result.getString("destination"),
                         result.getString("purchase_date"),
                         result.getString("price"),
-                        result.getString("paymenth_method"), 
+                        result.getString("paymenth_method"),
                         result.getString("departure_date"),
                         result.getString("arrival_date"),
-                        result.getString("user_name")
-                        ));
+                        result.getString("user_name")));
             }
             if (historicalPurchases.isEmpty()) {
                 return new WebError("This user doesn't have any purchases made");
@@ -491,13 +542,15 @@ public class ApexController {
 
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "SELECT o.name as origin, d.name as destination, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium, f.price_normal, f.price_premium, f.detail, f.type, f.state, f.flight_id \n" + //
-                                                                "FROM flights f \n" + //
-                                                                "JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id"));
+                            "SELECT o.name as origin, d.name as destination, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium, f.price_normal, f.price_premium, f.detail, f.type, f.state, f.flight_id \n"
+                                    + //
+                                    "FROM flights f \n" + //
+                                    "JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id"));
             ResultSet result = query.executeQuery();
 
-            record FLIGHTS(String origin, String destination, String departure_date, String arrival_date, int amount_normal, int amount_premium, int price_normal, int price_premium, 
-            String detail, boolean type, boolean state, int flight_id) {
+            record FLIGHTS(String origin, String destination, String departure_date, String arrival_date,
+                    int amount_normal, int amount_premium, int price_normal, int price_premium,
+                    String detail, boolean type, boolean state, int flight_id) {
             }
 
             List<FLIGHTS> flight = new ArrayList<>();
@@ -510,12 +563,11 @@ public class ApexController {
                         result.getInt("amount_normal"),
                         result.getInt("amount_premium"),
                         result.getInt("price_normal"),
-                        result.getInt("price_premium"), 
+                        result.getInt("price_premium"),
                         result.getString("detail"),
                         result.getBoolean("type"),
-                        result.getBoolean("state"), 
-                        result.getInt("flight_id") 
-                        ));
+                        result.getBoolean("state"),
+                        result.getInt("flight_id")));
             }
             if (flight.isEmpty()) {
                 return new WebError("Flights haven't been registered");

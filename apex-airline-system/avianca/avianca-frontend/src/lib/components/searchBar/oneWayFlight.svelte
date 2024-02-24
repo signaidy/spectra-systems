@@ -21,12 +21,13 @@
 
   function searchFlights() {
     if (originCity && destinationCity && departureDay && passengers) {
-      const test = new URLSearchParams();
-      test.append("originCity", originCity);
-      test.append("destinationCity", destinationCity);
-      test.append("departureDay", departureDay?.toString()!);
-      test.append("passengers", passengers.toString());
-      goto(`/search?${test.toString()}`);
+      const searchParams = new URLSearchParams();
+      searchParams.append("originCity", originCity);
+      searchParams.append("destinationCity", destinationCity);
+      searchParams.append("departureDay", departureDay?.toString()!);
+      searchParams.append("passengers", passengers.toString());
+      searchParams.append("type", type);
+      goto(`/search?${searchParams.toString()}`);
     } else {
       isValid = false;
     }
