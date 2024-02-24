@@ -23,7 +23,7 @@ export const actions = {
      const result = await response.json();
      if(!result.ok){
        return {
-           message: "Ticket bought succesfuly"
+           message: "Thanks for your purchase!"
        }
      } else {
        return{ 
