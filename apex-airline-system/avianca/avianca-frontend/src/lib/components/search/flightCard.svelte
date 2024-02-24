@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button";
-  import { ArrowRight, Pyramid } from "lucide-svelte";
-
+  import { Pyramid } from "lucide-svelte";
+  import FlightCardModal from "$lib/components/search/flightCardModal.svelte";
   export let flight: Flight;
   export let passengers: string | null;
+  export let user: User;
+  export let form;
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
@@ -31,12 +32,7 @@
       </div>
     </div>
     <!-- Lower -->
-    <Button variant="link" class="group p-0 self-baseline">
-      Flight Details
-      <ArrowRight
-        class="shrink-0 ml-2 h-4 w-4 transition-transform group-hover:-rotate-45"
-      />
-    </Button>
+    <FlightCardModal {flight} {form} {user}/>
   </div>
   <!-- Right Container -->
   <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">
