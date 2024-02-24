@@ -24,7 +24,7 @@
         <div class="self-start font-bold font-lg mt-5 my-3 bg-background p-3 rounded-lg">Results for flights from {flights[0].originCityName} to {flights[0].destinationCityName} on {$page.url.searchParams.get("departureDay")} for {$page.url.searchParams.get("passengers")} passengers</div>
       {/if}
       {#each flights as flight}
-        <FlightCard {flight} />
+        <FlightCard {flight} passengers={$page.url.searchParams.get("passengers")}/>
       {/each}
     {:catch error}
       <p>{error.message}</p>
