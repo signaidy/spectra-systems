@@ -8,6 +8,7 @@ import SpectraSystems.Nexus.repositories.UserRepository;
 import SpectraSystems.Nexus.dto.JwtAuthenticationResponse;
 import SpectraSystems.Nexus.dto.SignInRequest;
 import SpectraSystems.Nexus.dto.SignUpRequest;
+import SpectraSystems.Nexus.models.Role;
 import SpectraSystems.Nexus.models.User;
 
 @Service
@@ -23,11 +24,14 @@ public class AuthenticationService {
   public JwtAuthenticationResponse signup(SignUpRequest request) {
       var user = User
                   .builder()
-                  .firstName(request.getFirstName())
-                  .lastName(request.getLastName())
+                  .first_Name(request.getFirst_Name())
+                  .last_Name(request.getLast_Name())
                   .email(request.getEmail())
                   .password(passwordEncoder.encode(request.getPassword()))
                   .role(Role.ROLE_USER)
+                  .age(request.getAge())
+                  .country(request.getCountry())
+                  .passport(request.getPassport())
                   .build();
 
       user = userService.save(user);

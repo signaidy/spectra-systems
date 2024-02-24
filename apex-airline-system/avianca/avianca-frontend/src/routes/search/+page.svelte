@@ -1,55 +1,33 @@
 <script lang="ts">
   import SearchBar from "$lib/components/searchBar/searchBar.svelte";
-  import { Button } from "$lib/components/ui/button";
-  import { ArrowRight, Pyramid } from "lucide-svelte";
+  import FlightCard from "$lib/components/search/flightCard.svelte";
+  import FlightCardSkeleton from "$lib/components/search/flightCardSkeleton.svelte";
+  import { page } from "$app/stores";
+
+  export let data;
+  console.log(data)
 </script>
 
 <div
   class="min-h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
 >
   <div class="flex flex-col container items-center p-8 h-full">
-    <SearchBar />
-    <div class="rounded-lg my-10 grid grid-cols-2 bg-background shadow w-full">
-      <!-- Left Container -->
-      <div class="flex flex-col gap-y-5 p-5">
-        <!-- Upper -->
-        <div class="flex gap-x-3">
-          <div class="flex flex-col">
-            <div class="text-3xl font-bold">15:20</div>
-            <div class="text-muted-foreground">BCN</div>
-          </div>
-          <div class="flex flex-col justify-between w-96">
-            <div class="flex items-center h-full">
-              <hr class="grow" />
-              <Pyramid class="mx-3 h-5 w-5" />
-              <hr class="grow" />
-            </div>
-            <div class="text-muted-foreground self-center">1 stop, 15h</div>
-          </div>
-          <div class="flex flex-col">
-            <div class="text-3xl font-bold">06:20</div>
-            <div class="text-muted-foreground">CDG</div>
-          </div>
-        </div>
-        <!-- Lower -->
-        <Button variant="link" class="group p-0 self-baseline">
-          Flight Details
-          <ArrowRight
-            class="shrink-0 ml-2 h-4 w-4 transition-transform group-hover:-rotate-45"
-          />
-        </Button>
-      </div>
-      <!-- Right Container -->
-      <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">
-        <div class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background">
-          <div class="text-sm text-muted-foreground">Tourist</div>
-          <div class="text-3xl font-medium tracking-tighter">500 $</div>
-        </div>
-        <div class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background">
-          <div class="text-sm text-muted-foreground">Business</div>
-          <div class="text-3xl font-medium tracking-tighter">1000 $</div>
-        </div>
-      </div>
-    </div>
+    <SearchBar cities={data.cities}/>
+    {#await data.flights}
+      {#each Array(3).fill(0) as _}
+        <FlightCardSkeleton />
+      {/each}
+    {:then flights}
+      {#if flights.length === 0}
+        <div class="self-start font-bold font-lg mt-5 my-3 bg-background p-3 rounded-lg">No flights found for specified cities on {$page.url.searchParams.get("departureDay")} for {$page.url.searchParams.get("passengers")} passengers</div>
+      {:else}
+        <div class="self-start font-bold font-lg mt-5 my-3 bg-background p-3 rounded-lg">Results for flights from {flights[0].originCityName} to {flights[0].destinationCityName} on {$page.url.searchParams.get("departureDay")} for {$page.url.searchParams.get("passengers")} passengers</div>
+      {/if}
+      {#each flights as flight}
+        <FlightCard {flight} />
+      {/each}
+    {:catch error}
+      <p>{error.message}</p>
+    {/await}
   </div>
 </div>

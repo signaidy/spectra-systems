@@ -1,5 +1,6 @@
 package SpectraSystems.Nexus.services;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.repositories.UserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,10 +62,17 @@ public class UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username){
-                return userRepository.FindByEmail(username).orElseThrow(() -> new UsernameNotFoundException("username not found"));
+                return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("username not found"));
             }
         };
     }
 
-
+    public User save(User newUser) {
+        if (newUser.getId() == null) {
+          newUser.setCreatedAt(LocalDateTime.now());
+        }
+    
+        newUser.setUpdatedAt(LocalDateTime.now());
+        return userRepository.save(newUser);
+      }
 }

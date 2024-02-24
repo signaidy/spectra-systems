@@ -9,7 +9,7 @@ export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8080/nexus/login", {
+      const response = await fetch("http://localhost:8080/nexus/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

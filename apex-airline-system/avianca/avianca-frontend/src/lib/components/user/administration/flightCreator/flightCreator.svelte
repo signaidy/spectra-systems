@@ -6,11 +6,4 @@
   export let cities: City[] = [];
 </script>
 
-<div class="flex flex-col rounded-lg border">
-  <FlightTypePicker bind:value={type} />
-  {#if type === "round-trip"}
-    <RoundTripFlight {cities}/>
-  {:else}
-    <RoundTripFlight {cities} />
-  {/if}
-</div>
+<RoundTripFlight {cities}/>

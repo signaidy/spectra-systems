@@ -14,7 +14,7 @@ public class SignUpRequest {
   String last_Name;
   String email;
   String password;
-  String age;
+  Integer age;
   String country;
   String passport;
 }

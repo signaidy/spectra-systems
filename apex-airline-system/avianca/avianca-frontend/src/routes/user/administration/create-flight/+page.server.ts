@@ -29,6 +29,17 @@ export const actions = {
     }
 
     if (
+      Number(data.get("touristCapacity")) > 800 ||
+      Number(data.get("businessCapacity")) > 800 ||
+      Number(data.get("touristQuantity")) > 800 ||
+      Number(data.get("businessQuantity")) > 800
+    ) {
+      return fail(400, {
+        error: "Capacity and Quantity cannot exceed 800 tickets",
+      });
+    }
+
+    if (
       Number(data.get("touristQuantity")) >
         Number(data.get("touristCapacity")) ||
       Number(data.get("businessQuantity")) >

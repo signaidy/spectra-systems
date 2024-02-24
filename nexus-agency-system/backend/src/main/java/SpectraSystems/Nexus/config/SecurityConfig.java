@@ -50,8 +50,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/nexus/signin", "/nexus/login").permitAll()
-                // .requestMatchers(HttpMethod.GET, "/something")
+                .requestMatchers(HttpMethod.POST, "/nexus/auth/signup", "/nexus/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/nexus/flights", "/nexus/flights/{id}", "/nexus/reservations", "/nexus/reservations/{id}").permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
