@@ -5,7 +5,7 @@ import Link from "next/link";
 export function SignInButton() {
   return (
     <Button asChild className="gap-x-3">
-      <Link href="/login">
+      <Link href="/administration">
         <span>Join </span>
         <span className="text-xs">|</span>
         <span>Sign In</span>

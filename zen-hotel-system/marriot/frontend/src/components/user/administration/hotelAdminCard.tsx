@@ -47,7 +47,7 @@ export function HotelAdminCard({
               <ArrowRight className="ml-1 w-4 h-4" />
             </Button>
             <div className="flex gap-x-3">
-              <Button variant="outline">Update</Button>
+              {/* <Button variant="outline">Update</Button> */}
               <DeleteHotel id={id} />
             </div>
           </div>
