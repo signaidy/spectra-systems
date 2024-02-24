@@ -34,14 +34,13 @@
       loading = false;
     };
   }}
-  class="rounded-lg border-t flex bg-background w-full"
+  class="rounded-lg border flex bg-background w-full"
 >
   <!-- Hidden Inputs to transfer as Form Data -->
   <input type="hidden" name="departureDay" value={departureDay} />
   <input type="hidden" name="arrivalDay" value={arrivalDay} />
   <input type="hidden" name="originCity" value={originCity} />
   <input type="hidden" name="destinationCity" value={destinationCity} />
-  <input type="hidden" name="type" value="one-way" />
   <!-- Left Container -->
   <div class="flex flex-col gap-y-5 p-5 grow">
     <!-- Upper -->
