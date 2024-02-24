@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { writable } from "svelte/store";
+  import { MoveLeft } from "lucide-svelte";
   export let form;
   export let data;
 
@@ -21,7 +21,10 @@
   let image_four = data.aboutus.img_four;
 </script>
 
-<h1 class="text-xl font-bold mb-8">About US - Information</h1>
+<div class="arrowd">
+<a href="/user/administration"><MoveLeft /></a>
+<h1 class="text-xl font-bold mb-3 mt-2">About US - Information</h1>
+</div>
 <div class="flex justify-center items-center">
   <div class="md:w-full w-2/3">
     <form method="POST">
@@ -261,3 +264,9 @@
     </form>
   </div>
 </div>
+
+<style>
+  .arrowd{
+    margin-top: 20px;
+  }
+</style>
