@@ -45,7 +45,7 @@
     {
       value: "administration",
       label: "Administration",
-      href: "/user/administration",
+      href: "/user/administration/users",
       icon: Bolt,
     },
     {
