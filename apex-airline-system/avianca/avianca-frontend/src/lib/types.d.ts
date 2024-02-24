@@ -30,6 +30,8 @@ interface Flight {
   detail: string;
   touristQuantity: number;
   businessQuantity: number;
+  commentaries: Commentary[];
+  rating: Rating;
 }
 
 interface CompleteFlight {
@@ -51,11 +53,28 @@ interface CompleteFlight {
 }
 
 interface Ticket {
-  ticketId: int;
-  price: int;
-  flightId: int;
+  ticketId: number;
+  price: number;
+  flightId: number;
   type: string;
   state: string;
-  userId: int;
+  userId: number;
   userName: string;
+}
+
+interface Commentary {
+  commentId: number;
+  parentCommentId: number;
+  userId: number;
+  content: string;
+  creationDate: string;
+  path: string;
+  flightId: number;
+  userName: string;
+  children: Commentary[];
+}
+
+interface Rating {
+  average: number;
+  count: number;
 }
