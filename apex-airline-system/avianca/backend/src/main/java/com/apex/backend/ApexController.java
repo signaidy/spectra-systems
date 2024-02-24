@@ -11,6 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import oracle.security.o3logon.a;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -373,34 +376,6 @@ public class ApexController {
         }
     }
 
-    // Purchase - API
-    @PostMapping("/purchase")
-    public Object purchase(@RequestBody Purchase purchase) {
-        Connection conn = new OracleConnector().getConnection();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDateTime now = LocalDateTime.now();
-        try {
-
-            PreparedStatement query = conn
-                    .prepareStatement(String.format(
-                            "INSERT INTO PURCHASE (user_id, ticket_id, purchase_date, paymenth_method) VALUES (%s, %s, TO_DATE('%s', 'dd-MM-yyyy'), '%s')",
-                            purchase.user_id, purchase.ticket_id, dtf.format(now), purchase.paymenth_method));
-            query.executeQuery();
-            return "Purchase made";
-        } catch (Throwable e) {
-            e.printStackTrace();
-            return new WebError("Failed to buy ticket");
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     // Ticket information - API
     @GetMapping("/ticket-information")
     public Object getAllticketinfo() {
@@ -670,4 +645,151 @@ public class ApexController {
          }
      }
 
+    // Purchase - API
+    @PostMapping("/purchase")
+    public Object purchase(@RequestBody Ticket_purchase ticket) {
+        Connection conn = new OracleConnector().getConnection();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            int desiredupdates = 2; 
+
+            //PENDIENTE AGREGAR NUMERO DE LIMITANTES POR NUMERO DE PASAJEROS
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "UPDATE TICKETS\n" + //
+                                                                "SET user_id = '%d'\n" + //
+                                                                "WHERE flight_id = '%d'\n" + //
+                                                                "  AND state = '%s'\n" + //
+                                                                "  AND type = '%s'\n" + //
+                                                                "  AND ROWNUM <= 2 AND user_id IS NULL",
+                            ticket.user_id, ticket.flight_id, ticket.state, ticket.type));
+            query.executeQuery();
+
+            PreparedStatement tickets_assigned = conn.prepareStatement(String.format("Select DISTINCT(t.ticket_id), t.user_id\n" + //
+                                "FROM tickets t\n" + //
+                                "JOIN purchase p ON t.ticket_id != p.ticket_id WHERE t.flight_id = '%d' and t.type = '%s' and t.user_id = '%d'", 
+                                ticket.flight_id, ticket.type, ticket.user_id));
+            ResultSet usertickets = tickets_assigned.executeQuery();
+
+            record userTickets(int ticket_id, int user_id) {
+            }
+
+             List<userTickets> usert = new ArrayList<>();
+             while (usertickets.next()) {
+                 usert.add(new userTickets(
+                     usertickets.getInt("ticket_id"), 
+                     usertickets.getInt("user_id")));
+
+                      int ticketId = usertickets.getInt("ticket_id");
+                      int userId = usertickets.getInt("user_id");
+
+                      PreparedStatement purchased_ticket = conn.prepareStatement(String.format(
+                         "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method) VALUES (%d, %d, TO_DATE('%s', 'dd-MM-yyyy'), 'Visa')", 
+                         ticketId, userId, dtf.format(now)));
+                      purchased_ticket.executeQuery();
+
+
+             }
+             if (usert.isEmpty()) {
+                 return new WebError("This user doesn't have any tickets");
+             }
+             return usert;
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to buy ticket");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //Tickets information - Purchase
+    @GetMapping("/availabletickets/{flight_id}/{category}")
+    public Object getTicketstobuy(@PathVariable int flight_id, @PathVariable String category) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT t.ticket_id, t.price, o.name As origin, d.name as destination\n" + //
+                                                                "FROM tickets t\n" + //
+                                                                "JOIN Flights f ON f.flight_id = t.flight_id JOIN cities o ON f.origin = o.city_id JOIN cities d ON f.destination = d.city_id\n" + //
+                                                                "WHERE t.type = '%s' and t.flight_id = '%d' and t.state = 'active' and t.user_id IS null ",
+                            category, flight_id 
+                            ));
+            ResultSet result = query.executeQuery();
+
+            record Availabletickets(String origin, String destination, int price, int ticket_id) {
+            }
+
+            List<Availabletickets> availabletickets = new ArrayList<>();
+            while (result.next()) {
+                availabletickets.add(new Availabletickets(
+                        result.getString("origin"),
+                        result.getString("destination"),
+                        result.getInt("price"),
+                        result.getInt("ticket_id")));
+            }
+            if (availabletickets.isEmpty()) {
+                return new WebError("No tickets available");
+            }
+            return availabletickets;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve data");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+//Tickets available amount - Purchase
+@GetMapping("/ticketsamount/{flight_id}/{category}")
+public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String category) {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "SELECT COUNT(ticket_id) as Tickets_amount\n" + //
+                                                        "FROM tickets \n" + //
+                                                        "WHERE type = '%s' and flight_id = '%d' and state = 'active' and user_id IS null ",
+                        category, flight_id 
+                        ));
+        ResultSet result = query.executeQuery();
+
+        record ticketsamount(int tickets_amount) {
+        }
+            if(result.next()) {
+            return new ticketsamount(
+                    result.getInt("tickets_amount"));
+        } else {
+            return new WebError("No tickets available");
+        }
+        // return result;
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to retrieve data");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 }

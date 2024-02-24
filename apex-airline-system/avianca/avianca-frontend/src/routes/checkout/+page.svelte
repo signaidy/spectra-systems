@@ -1,11 +1,60 @@
 <script>
   import { MoveLeft } from "lucide-svelte";
+  import avianca from "$lib/assets/Avianca-Ticket-logo.png"
   import visaImage from "$lib/assets/visa.png";
   import mastercardImage from "$lib/assets/mastercard.png";
+  import { page } from "$app/stores";
+  import { onMount } from "svelte";
+
+
+  export let data;
+  const userId = window.localStorage.getItem("user_id");
+  let userid = data.user.userId
+
+  let flight_id = $page.url.searchParams.get("flightId")
+  let passengers = $page.url.searchParams.get("passengers")
+  let category = $page.url.searchParams.get("category")
 
   let card = "";
+
+  let availabletickets = [];
+  let ticketsamount_available; 
+
+  let price; 
+  let from;
+  let to; 
+
+  async function handlePayNow() {
+    if (ticketsamount_available > passengers) {
+      alert("Insufficient tickets available. Please select a lower number of passengers.");
+      return; 
+    } 
+  }
+
+  onMount(async () => {
+  fetch(`http://localhost:8080/availabletickets/${flight_id}/${category}`)
+  .then(response => response.json())
+  .then(available => {
+    availabletickets = available
+    if (availabletickets.length > 0) {
+        price = availabletickets[0].price; 
+        from = availabletickets[0].origin; 
+        to = availabletickets[0].destination; 
+  }})
+  });
+
+  onMount(async () => {
+    const response = await fetch(`http://localhost:8080/ticketsamount/${flight_id}/${category}`);
+    const data = await response.json();
+    ticketsamount_available = data.tickets_amount;
+    console.log(ticketsamount_available); 
+  });
+
+
 </script>
 
+
+<form method="POST">
 <div class="min-w-screen min-h-screen bg-gray-50 py-3">
   <div class="px-5">
     <div class="mb-0">
@@ -43,18 +92,18 @@
                 class="overflow-hidden rounded-lg w-16 h-16 bg-gray-50 border border-gray-200"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80"
+                  src={avianca}
                   alt=""
                 />
               </div>
               <div class="flex-grow pl-3">
                 <h6 class="font-semibold uppercase text-gray-600">
-                  CK382638Ñ [TICKET ID]
+                  {category} Flight 
                 </h6>
-                <p class="text-gray-400">x 1 [ACCOUNT OF TICKETS BUYED]</p>
+                <p class="text-gray-400">x {passengers}</p>
               </div>
               <div>
-                <span class="font-semibold text-gray-600 text-xl">$210</span
+                <span class="font-semibold text-gray-600 text-xl">${price * passengers}</span
                 ><span class="font-semibold text-gray-600 text-sm">.00</span>
               </div>
             </div>
@@ -62,10 +111,10 @@
           <div class="mb-6 pb-6 border-b border-gray-200 text-gray-800">
             <div class="w-full flex mb-3 items-center">
               <div class="flex-grow">
-                <span class="text-gray-600">Subtotal</span>
+                <span class="text-gray-600">Unitary price</span>
               </div>
               <div class="pl-3">
-                <span class="font-semibold">$190.91</span>
+                <span class="font-semibold">${price}.00</span>
               </div>
             </div>
             <div class="w-full flex items-center">
@@ -73,7 +122,7 @@
                 <span class="text-gray-600">Discount</span>
               </div>
               <div class="pl-3">
-                <span class="font-semibold">$19.09</span>
+                <span class="font-semibold">$00.00</span>
               </div>
             </div>
           </div>
@@ -85,7 +134,7 @@
                 <span class="text-gray-600">Total</span>
               </div>
               <div class="pl-3">
-                <span class="font-semibold">$210.00</span>
+                <span class="font-semibold">${price * passengers}.00</span>
               </div>
             </div>
           </div>
@@ -96,10 +145,10 @@
           >
             <div class="w-full flex mb-3 items-center">
               <div class="w-32">
-                <span class="text-gray-600 font-semibold">Ticket type</span>
+                <span class="text-gray-600 font-semibold">Leaving from:</span>
               </div>
               <div class="flex-grow pl-3">
-                <span>Standard</span>
+                <span>{from}</span>
               </div>
             </div>
             <div class="w-full flex items-center">
@@ -107,7 +156,7 @@
                 <span class="text-gray-600 font-semibold">Going to: </span>
               </div>
               <div class="flex-grow pl-3">
-                <span>Australia</span>
+                <span>{to}</span>
               </div>
             </div>
           </div>
@@ -220,11 +269,16 @@
           <div>
             <button
               class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-2 font-semibold"
-              ><i class="mdi mdi-lock-outline mr-1"></i> PAY NOW</button
+              on:click={handlePayNow}
+              ><i class="mdi mdi-lock-outline mr-1"></i>Pay Now</button
             >
           </div>
         </div>
       </div>
     </div>
   </div>
+  <input type="hidden" name="user_id" value={userid}>
+  <input type="hidden" name="paymenth_method" value={card}>
+  <input type="hidden" name="user_id" value={userid}>
 </div>
+</form>
