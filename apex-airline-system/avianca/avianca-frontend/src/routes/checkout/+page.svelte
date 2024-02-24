@@ -8,8 +8,8 @@
 
 
   export let data;
-  const userId = window.localStorage.getItem("user_id");
   let userid = data.user.userId
+
 
   let flight_id = $page.url.searchParams.get("flightId")
   let passengers = $page.url.searchParams.get("passengers")
@@ -23,9 +23,10 @@
   let price; 
   let from;
   let to; 
+  let state = "active"; 
 
   async function handlePayNow() {
-    if (ticketsamount_available > passengers) {
+    if (ticketsamount_available < passengers) {
       alert("Insufficient tickets available. Please select a lower number of passengers.");
       return; 
     } 
@@ -47,7 +48,6 @@
     const response = await fetch(`http://localhost:8080/ticketsamount/${flight_id}/${category}`);
     const data = await response.json();
     ticketsamount_available = data.tickets_amount;
-    console.log(ticketsamount_available); 
   });
 
 
@@ -279,6 +279,12 @@
   </div>
   <input type="hidden" name="user_id" value={userid}>
   <input type="hidden" name="paymenth_method" value={card}>
-  <input type="hidden" name="user_id" value={userid}>
+  <input type="hidden" name="passengers" value={passengers}>
+  <input type="hidden" name="flight_id" value={flight_id}>
+  <input type="hidden" name="category" value={category}>
+  <input type="hidden" name="state" value={state}>
+
+
+
 </div>
 </form>
