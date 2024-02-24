@@ -314,13 +314,34 @@ public class ApexController {
             ResultSet result = query.executeQuery();
 
             while (result.next()) {
+                List<CommentaryRecord> commentaries = new ArrayList<CommentaryRecord>();
+
                 PreparedStatement countQuery = conn.prepareStatement(String
                         .format("SELECT (select count(ticket_id) from tickets where flight_id = %s and type = 'economy' and state = 'active' and user_id is null) as economy_quantity, (select count(ticket_id) from tickets where flight_id = %s and type = 'premium' and state = 'active' and user_id is null) as premium_quantity",
                                 result.getInt("flight_id"), result.getInt("flight_id")));
                 ResultSet countResult = countQuery.executeQuery();
 
-                if (!countResult.next()) {
+                PreparedStatement commentariesQuery = conn.prepareStatement(String.format(
+                        "SELECT comments.comment_id, comments.parent_comment_id, comments.user_id, comments.content, comments.creation_date, comments.path, comments.flight_id, users.first_name from comments inner join users on comments.user_id = users.user_id where comments.flight_id = %s",
+                        result.getInt("flight_id")));
+                ResultSet commentariesResult = commentariesQuery.executeQuery();
+
+                PreparedStatement ratingsQuery = conn.prepareStatement(String.format(
+                        "SELECT ratingAverage(%s) as rating, COUNT(ratings.rating_id) as count from ratings where flight_id = %s",
+                        result.getInt("flight_id"), result.getInt("flight_id")));
+                ResultSet ratingsResult = ratingsQuery.executeQuery();
+
+                if (!countResult.next() || !ratingsResult.next()) {
                     return new WebError("Failed to retrieve flights");
+                }
+
+                while (commentariesResult.next()) {
+                    commentaries.add(new CommentaryRecord(commentariesResult.getInt("comment_id"),
+                            commentariesResult.getInt("parent_comment_id"),
+                            commentariesResult.getInt("user_id"), commentariesResult.getString("content"),
+                            commentariesResult.getString("creation_date"),
+                            commentariesResult.getString("path"), commentariesResult.getInt("flight_id"),
+                            commentariesResult.getString("first_name"), new ArrayList<CommentaryRecord>()));
                 }
 
                 flights.add(new FlightRecord(result.getInt("flight_id"), result.getInt("origin_city_id"),
@@ -328,7 +349,9 @@ public class ApexController {
                         result.getString("destination_name"), result.getString("departure_date").toString(),
                         result.getString("arrival_date"), result.getInt("price_normal"), result.getInt("price_premium"),
                         result.getString("detail"),
-                        countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity")));
+                        countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"), commentaries,
+                        new RatingRecord(
+                                ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
             }
 
             return flights;
@@ -342,6 +365,64 @@ public class ApexController {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    @PostMapping("/create-commentary")
+    public Object createCommentary(@RequestBody Commentary commentary) {
+        Connection conn = new OracleConnector().getConnection();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO comments (parent_comment_id, user_id, content, creation_date, path, flight_id) VALUES (%s, %s, '%s', CURRENT_DATE, '/', %s)",
+                            commentary.parentId, commentary.userId, commentary.content, commentary.flightId));
+            query.executeQuery();
+
+            return new WebSuccess("Commentary created successfully");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to create commentary");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new WebError("Failed to create commentary");
+            }
+        }
+    }
+
+    @PostMapping("/create-rating")
+    public Object createRating(@RequestBody Rating rating) {
+        Connection conn = new OracleConnector().getConnection();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO ratings (user_id, flight_id, value) VALUES (%s, %s, %s)",
+                            rating.userId, rating.flightId, rating.value));
+            query.executeQuery();
+
+            return new WebSuccess("Rating created successfully");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            if (e.getMessage().contains(
+                    "ORA-20001: ")) {
+                return new WebError("You already have left a rating.");
+            }
+            return new WebError("Failed to create rating");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new WebError("Failed to create rating");
             }
         }
     }
