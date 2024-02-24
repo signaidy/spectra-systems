@@ -1,6 +1,5 @@
 <script>
   import RoborError from "../lib/assets/roboterror.gif";
-  export let status;
 </script>
 
 <div class="text-center grid place-items-center space">
