@@ -2,8 +2,15 @@
   let informationabout = getAboutInformation();
 
   async function getAboutInformation() {
-    const response = await fetch("http://localhost:8080/aboutus");
+    const response = await fetch("http://localhost:8080/nexus/aboutus/1", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    console.log(response)
     const aboutdata = await response.json();
+    console.log(aboutdata)
     return aboutdata;
   }
 </script>
@@ -101,12 +108,12 @@
 
     <section class="container mx-auto px- py-2 lg:py-7 mt-10">
       <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3">
-        {#if data.cards_amoun >= 1 }
+        {#if data.cardsAmount >= 1 }
         <div
           class="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl"
         >
           <img
-            src={data.img_one}
+            src={data.imgOne}
             alt="bg"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -115,22 +122,22 @@
             <h4
               class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-center text-white"
             >
-              {data.title_one}
+              {data.titleOne}
             </h4>
             <p
               class="block antialiased font-sans text-base font-light leading-relaxed text-center text-white my-2 font-normal"
             >
-              {data.text_one}
+              {data.textOne}
             </p>
           </div>
         </div>
         {/if}
-        {#if data.cards_amoun >= 2}
+        {#if data.cardsAmount >= 2}
         <div
           class="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl"
         >
           <img
-            src={data.img_two}
+            src={data.imgTwo}
             alt="bg"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -139,22 +146,22 @@
             <h4
               class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-center text-white"
             >
-              {data.title_two}
+              {data.titleTwo}
             </h4>
             <p
               class="block antialiased font-sans text-base font-light leading-relaxed text-center text-white my-2 font-normal"
             >
-              {data.text_two}
+              {data.textTwo}
             </p>
           </div>
         </div>
         {/if}
-        {#if data.cards_amoun >= 3}
+        {#if data.cardsAmount >= 3}
         <div
           class="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl"
         >
           <img
-            src={data.img_three}
+            src={data.imgThree}
             alt="bg"
             class="absolute inset-0 h-full w-full object-cover object-center rotationimg"
           />
@@ -163,22 +170,22 @@
             <h4
               class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-center text-white"
             >
-              {data.title_three}
+              {data.titleThree}
             </h4>
             <p
               class="block antialiased font-sans text-base font-light leading-relaxed text-center text-white my-2 font-normal"
             >
-              {data.text_three}
+              {data.textThree}
             </p>
           </div>
         </div>
         {/if}
-        {#if data.cards_amoun == 4}
+        {#if data.cardsAmount == 4}
         <div
           class="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl"
         >
           <img
-            src={data.img_four}
+            src={data.imgFour}
             alt="bg"
             class="absolute inset-0 h-full w-full object-cover object-center rotationimg"
           />
@@ -187,12 +194,12 @@
             <h4
               class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-center text-white"
             >
-              {data.title_four}
+              {data.titleFour}
             </h4>
             <p
               class="block antialiased font-sans text-base font-light leading-relaxed text-center text-white my-2 font-normal"
             >
-              {data.text_four}
+              {data.textFour}
             </p>
           </div>
         </div>

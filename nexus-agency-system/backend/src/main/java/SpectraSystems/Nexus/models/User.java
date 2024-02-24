@@ -51,6 +51,8 @@ public class User implements UserDetails{
 
     private String passport;
 
+    private Integer percentage;
+
     @Enumerated(EnumType.STRING)
     Role role;
     
@@ -82,6 +84,10 @@ public class User implements UserDetails{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setPercentage(Integer Percentage) {
+        this.percentage = Percentage;
     }
 
     public String getFirstName() {

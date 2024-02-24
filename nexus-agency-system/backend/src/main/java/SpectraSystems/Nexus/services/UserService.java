@@ -45,10 +45,11 @@ public class UserService {
 
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        user.setEmail(userDetails.getEmail());
         user.setAge(userDetails.getAge());
         user.setCountry(userDetails.getCountry());
         user.setPassport(userDetails.getPassport());
+        user.setPercentage(userDetails.getPercentage());
+        user.setRole(userDetails.getRole());
 
         return userRepository.save(user);
     }
