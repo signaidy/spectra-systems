@@ -22,7 +22,20 @@ export const actions = {
           slogan: formData.get("slogan"),
           gif: formData.get("gif"),
           yt: formData.get("yt"),
-          cards_amoun: formData.get("cardsamount")
+          cards_amoun: formData.get("cardsamount"),
+          title_one: formData.get("t1"), 
+          text_one: formData.get("tx1"), 
+          img_one: formData.get("img1"), 
+          title_two: formData.get("t2"), 
+          text_two: formData.get("tx2"), 
+          img_two: formData.get("img2"), 
+          title_three: formData.get("t3"), 
+          text_three: formData.get("tx3"), 
+          img_three: formData.get("img3"), 
+          title_four: formData.get("t4"), 
+          text_four: formData.get("tx4"), 
+          img_four: formData.get("img4"), 
+
         }),
       });
       const result = await response.json();
