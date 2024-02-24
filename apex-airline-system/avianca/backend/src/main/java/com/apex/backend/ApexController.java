@@ -877,4 +877,53 @@ public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String
         }
     }
 }
+
+// Historical purchases - API
+@GetMapping("/purchaselogs")
+public Object getpurchaselogs() {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "SELECT * FROM Historical_purchases"));
+        ResultSet result = query.executeQuery();
+
+        record purchases(String purchase_number, String ticket, String type, String origin, String destination,
+                String purchase_date, String price, String paymenth_method,
+                String departure_date, String arrival_date, String user_name) {
+        }
+
+        List<purchases> purchaseslogs = new ArrayList<>();
+        while (result.next()) {
+            purchaseslogs.add(new purchases(
+                    result.getString("purchase_number"),
+                    result.getString("ticket"),
+                    result.getString("type"),
+                    result.getString("origin"),
+                    result.getString("destination"),
+                    result.getString("purchase_date"),
+                    result.getString("price"),
+                    result.getString("paymenth_method"),
+                    result.getString("departure_date"),
+                    result.getString("arrival_date"),
+                    result.getString("user_name")));
+        }
+        if (purchaseslogs.isEmpty()) {
+            return new WebError("This user doesn't have any purchases made");
+        }
+        return purchaseslogs;
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to get user tickets");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 }
