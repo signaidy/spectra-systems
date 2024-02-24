@@ -5,8 +5,10 @@
   export let data;
 </script>
 
-<a href="/user/administration" class="mb-4"><MoveLeft /></a>
-<h1 class="text-xl font-bold mb-8">Create Flight</h1>
+<div class="flex items-center mt-4 mb-8 gap-x-3">
+  <a href="/user/administration"><MoveLeft /></a>
+  <h1 class="text-xl font-bold">Create Flight</h1>
+</div>
 {#if form?.error}
   <div class="text-sm text-red-500 font-medium mb-2">
     Error: {form.error}
