@@ -49,3 +49,13 @@ interface CompleteFlight {
   businessCapacity: number;
   state: number;
 }
+
+interface Ticket {
+  ticketId: int;
+  price: int;
+  flightId: int;
+  type: string;
+  state: string;
+  userId: int;
+  userName: string;
+}
