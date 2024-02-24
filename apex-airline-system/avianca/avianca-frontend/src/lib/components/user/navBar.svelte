@@ -64,7 +64,7 @@
 </script>
 
 <nav
-  class="flex flex-col gap-y-3 py-8 pr-8 border-r sticky top-0 overflow-y-auto"
+  class="flex flex-col gap-y-3 py-8 pr-8 border-r sticky top-0 overflow-y-auto shrink-0"
 >
   {#each routes as route}
     <Button href={route.href} class="justify-normal">

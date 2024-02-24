@@ -65,7 +65,7 @@
       {route.label}
     </Button>
   {/each}
-  {#if user.role === "admin" || user.role === "enterprise"}
+  {#if user.role === "ADMIN" || user.role === "EMPLOYEE"}
     <div class="text-sm border-b-primary border-b font-medium pb-1">
       Administrator
     </div>

@@ -17,7 +17,7 @@
 
 {#if editing === false}
   <div class="flex flex-col gap-y-2">
-    <div class="text-sm font-bold">User #{user.userId} - {user.firstName + " " + user.lastName}</div>
+    <div class="text-sm font-bold">User #{user.id} - {user.firstName + " " + user.lastName}</div>
     <div class="flex flex-wrap border rounded-lg gap-x-3 w-fit">
       <div class="flex flex-col text-sm gap-y-1 border-r p-3">
         <div class="font-medium">Email</div>
@@ -33,19 +33,27 @@
       </div>
       <div class="flex flex-col text-sm gap-y-1 border-r p-3">
         <div class="font-medium">Origin Country</div>
-        <div class="text-muted-foreground">{user.originCountry}</div>
+        <div class="text-muted-foreground">{user.country}</div>
         <div class="font-medium">Passport Number</div>
-        <div class="text-muted-foreground">{user.passportNumber}</div>
+        <div class="text-muted-foreground">{user.passport}</div>
       </div>
       <div class="flex flex-col text-sm gap-y-1 border-r p-3">
         <div class="font-medium">Role</div>
-        <div class="text-muted-foreground">{user.role}</div>
+        <div class="text-muted-foreground">
+            {#if user.role === 'ROLE_USER'}
+                user
+            {:else if user.role === 'ROLE_ADMIN'}
+                admin
+            {:else if user.role === 'ROLE_EMPLOYEE'}
+                employee
+            {/if}
+        </div>
         <div class="font-medium">Discount Percentage</div>
         <div class="text-muted-foreground">{user.percentage === null ? "0" : user.percentage}%</div>
       </div>
       <div class="flex flex-col text-sm gap-y-1 border-r p-3">
         <div class="font-medium">Entry Date</div>
-        <div class="text-muted-foreground">{user.entryDate}</div>
+        <div class="text-muted-foreground">{user.createdAt}</div>
       </div>
       <div class="pr-3 py-3">
         <Button on:click={() => (editing = true)}>Edit</Button>
@@ -67,8 +75,8 @@
       };
     }}
   >
-    <input type="hidden" name="userId" value={user.userId} />
-    <div class="text-sm font-bold">User #{user.userId} - {user.firstName + " " + user.lastName}</div>
+    <input type="hidden" name="userId" value={user.id} />
+    <div class="text-sm font-bold">User #{user.id} - {user.firstName + " " + user.lastName}</div>
 
     {#if form?.error}
       <div class="text-sm text-red-500 font-medium">
@@ -90,12 +98,12 @@
           <Input
             id="originCountry"
             name="originCountry"
-            value={user.originCountry}
+            value={user.country}
           />
         </div>
         <div class="flex flex-col text-sm gap-y-1">
           <div class="font-medium">Entry Date</div>
-          <div class="text-muted-foreground">{user.entryDate}</div>
+          <div class="text-muted-foreground">{user.createdAt}</div>
         </div>
       </div>
       <div class="flex flex-col gap-y-3">
@@ -104,7 +112,7 @@
           <Input
             id="passportNumber"
             name="passportNumber"
-            value={user.passportNumber}
+            value={user.passport}
           />
         </div>
         <div class="flex flex-col text-sm gap-y-1">
@@ -114,9 +122,9 @@
             id="role"
             class="rounded-md border border-input px-3 py-2 bg-background text-sm h-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-            <option value="enterprise">Enterprise</option>
+            <option value="ROLE_USER">User</option>
+            <option value="ROLE_ADMIN">Admin</option>
+            <option value="ROLE_EMPLOYEE">Enterprise</option>
           </select>
         </div>
         <div class="flex flex-col text-sm gap-y-1">

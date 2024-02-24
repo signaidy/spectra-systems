@@ -12,7 +12,7 @@
   <h1 class="text-xl font-bold">Users Administration</h1>
 </div>
 
-<div class="flex flex-col gap-y-8">
+<div class="flex flex-col gap-y-3">
   {#await data.users}
     {#each Array(3).fill(0) as _}
       <UserCardSkeleton />
