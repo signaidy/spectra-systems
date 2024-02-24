@@ -535,5 +535,87 @@ public class ApexController {
         }
     }
 
+    // AboutUs - GET INFORMATION
+    @GetMapping("/aboutus")
+    public Object getAbout() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM About_us"));
+            ResultSet result = query.executeQuery();
+
+            record aboutus(String slogan, String gif, String yt, int cards_amoun, String title_one, String text_one, String img_one,
+            String title_two, String text_two, String img_two,
+            String title_three, String text_three, String img_three,
+            String title_four, String text_four, String img_four) {
+            }
+
+            if (result.next()) {
+                return new aboutus(
+                    result.getString("slogan"), 
+                    result.getString("gif"),
+                    result.getString("yt"),
+                    result.getInt("cards_amount"), 
+                    result.getString("title_one"),
+                    result.getString("text_one"),
+                    result.getString("img_one"),
+                    result.getString("title_two"),
+                    result.getString("text_two"),
+                    result.getString("img_two"),
+                    result.getString("title_three"),
+                    result.getString("text_three"),
+                    result.getString("img_three"),
+                    result.getString("title_four"),
+                    result.getString("text_four"),
+                    result.getString("img_four"));
+            }
+                return new WebError("Failed to get about us information");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("API DENIED ACCESS");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+     // About Us - UPDATE
+     @PostMapping("/update-aboutus")
+     public Object updateAboutUs(@RequestBody Aboutus au) {
+         Connection conn = new OracleConnector().getConnection();
+ 
+         try {
+             PreparedStatement query = conn
+                     .prepareStatement(String.format(
+                             "UPDATE About_us SET slogan = '%s', gif = '%s', yt = '%s', cards_amount = %d, title_one = '%s', text_one = '%s', img_one = '%s', \n" + //
+                             "TITLE_TWO = '%s', text_two = '%s', img_two = '%s', \n" + //
+                             "title_three = '%s', text_three = '%s', img_three = '%s', \n" + //
+                             "title_four = '%s', text_four = '%s', img_four = '%s' \n" + //
+                             "WHERE ID = 5",
+                             au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one, au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
+                             au.img_three, au.title_four, au.text_four, au.img_four));
+             query.executeQuery();
+ 
+             return new WebSuccess("Aboutus information updated");
+         } catch (Throwable e) {
+             e.printStackTrace();
+             return new WebError("Failed to update information");
+         } finally {
+             try {
+                 if (conn != null) {
+                     conn.close();
+                 }
+             } catch (SQLException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
 
 }
