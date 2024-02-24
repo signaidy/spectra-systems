@@ -343,6 +343,40 @@ public class ApexController {
         }
     }
 
+    @GetMapping("/get-all-tickets")
+    public Object getAllTickets() {
+        Connection conn = new OracleConnector().getConnection();
+
+        List<TicketRecord> tickets = new ArrayList<TicketRecord>();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(
+                            "SELECT tickets.ticket_id, tickets.user_id, tickets.flight_id, tickets.type, tickets.state, tickets.price, users.first_name from tickets left join users on tickets.user_id = users.user_id");
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                tickets.add(
+                        new TicketRecord(result.getInt("ticket_id"), result.getInt("price"), result.getInt("flight_id"),
+                                result.getString("type"), result.getString("state"), result.getInt("user_id"),
+                                result.getString("first_name")));
+            }
+
+            return tickets;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve tickets");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // Get all Flights - API
     @GetMapping("/get-all-flights")
     public Object getFlights() {
