@@ -3,7 +3,6 @@
   import TicketCard from "$lib/components/user/administration/tickets/ticketCard.svelte";
   import TicketCardSkeleton from "$lib/components/user/administration/tickets/ticketCardSkeleton.svelte";
   export let data;
-  console.log(data)
 </script>
 
 <div class="flex items-center mt-4 mb-8 gap-x-3">

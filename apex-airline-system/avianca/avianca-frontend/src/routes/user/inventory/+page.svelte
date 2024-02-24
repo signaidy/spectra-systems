@@ -13,7 +13,6 @@
       .then((data) => {
         inventory = data;
       });
-    console.log(inventory);
   });
 </script>
 

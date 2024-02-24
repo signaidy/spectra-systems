@@ -8,7 +8,6 @@
   let userid = data.user.userId;
 
   const userId = window.localStorage.getItem("user_id");
-  console.log(userId);
 
   let historicalpurchases = [];
 

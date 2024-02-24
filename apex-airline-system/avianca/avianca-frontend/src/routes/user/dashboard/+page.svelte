@@ -30,9 +30,9 @@
     </div>
   </div>
   <div class="flex flex-col gap-y-3">
-    <div class="font-bold">Flights Overview</div>
-    <div class="flex flex-col gap-y-2 border rounded-lg p-3">
-      <div class="text-sm font-medium">No flights booked</div>
+    <div class="font-bold text-background">Flights Overview</div>
+    <div class="flex flex-col gap-y-2 rounded-lg p-3">
+      <div class="text-sm font-medium text-background">No flights booked</div>
     </div>
   </div>
 </div>
