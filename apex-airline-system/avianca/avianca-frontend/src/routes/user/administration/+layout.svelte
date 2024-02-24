@@ -17,7 +17,7 @@
     <TicketPercent class="mr-3 h-4 w-4 shrink-0" />
     <span>Tickets</span>
   </Button>
-  <Button href="#" class="flex">
+  <Button href="/user/administration/update-aboutus" class="flex">
     <Settings class="mr-3 h-4 w-4 shrink-0" />
     <span>Settings</span>
   </Button>
