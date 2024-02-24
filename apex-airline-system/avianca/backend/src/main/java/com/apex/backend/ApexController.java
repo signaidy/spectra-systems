@@ -343,6 +343,88 @@ public class ApexController {
         }
     }
 
+    @GetMapping("/get-all-tickets")
+    public Object getAllTickets() {
+        Connection conn = new OracleConnector().getConnection();
+
+        List<TicketRecord> tickets = new ArrayList<TicketRecord>();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(
+                            "SELECT tickets.ticket_id, tickets.user_id, tickets.flight_id, tickets.type, tickets.state, tickets.price, users.first_name from tickets left join users on tickets.user_id = users.user_id");
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                tickets.add(
+                        new TicketRecord(result.getInt("ticket_id"), result.getInt("price"), result.getInt("flight_id"),
+                                result.getString("type"), result.getString("state"), result.getInt("user_id"),
+                                result.getString("first_name")));
+            }
+
+            return tickets;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve tickets");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Get all Flights - API
+    @GetMapping("/get-all-flights")
+    public Object getFlights() {
+        Connection conn = new OracleConnector().getConnection();
+
+        List<CompleteFlightRecord> flights = new ArrayList<CompleteFlightRecord>();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(
+                            "SELECT DISTINCT flights.flight_id, origin.city_id as origin_city_id, origin.name as origin_name, destination.city_id as destination_city_id, destination.name as destination_name, flights.departure_date, flights.arrival_date, flights.state, flights.amount_normal, flights.amount_premium, flights.price_normal, flights.price_premium, flights.detail, flights.type, flights.state from flights inner join tickets on flights.flight_id = tickets.flight_id inner join cities origin on flights.origin = origin.city_id inner join cities destination on flights.destination = destination.city_id");
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                PreparedStatement countQuery = conn.prepareStatement(String
+                        .format("SELECT (select count(ticket_id) from tickets where flight_id = %s) as economy_quantity, (select count(ticket_id) from tickets where flight_id = %s) as premium_quantity",
+                                result.getInt("flight_id"), result.getInt("flight_id")));
+                ResultSet countResult = countQuery.executeQuery();
+
+                if (!countResult.next()) {
+                    return new WebError("Failed to retrieve flights");
+                }
+
+                flights.add(new CompleteFlightRecord(result.getInt("flight_id"), result.getInt("origin_city_id"),
+                        result.getString("origin_name"), result.getInt("destination_city_id"),
+                        result.getString("destination_name"), result.getString("departure_date").toString(),
+                        result.getString("arrival_date"), result.getInt("price_normal"), result.getInt("price_premium"),
+                        result.getString("detail"),
+                        countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"),
+                        result.getInt("amount_normal"), result.getInt("amount_premium"),
+                        result.getInt("state")));
+            }
+
+            return flights;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve flights");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // Get all Cities - API
     @GetMapping("/get-cities")
     public Object getCities() {
@@ -598,32 +680,33 @@ public class ApexController {
                             "SELECT * FROM About_us"));
             ResultSet result = query.executeQuery();
 
-            record aboutus(String slogan, String gif, String yt, int cards_amoun, String title_one, String text_one, String img_one,
-            String title_two, String text_two, String img_two,
-            String title_three, String text_three, String img_three,
-            String title_four, String text_four, String img_four) {
+            record aboutus(String slogan, String gif, String yt, int cards_amoun, String title_one, String text_one,
+                    String img_one,
+                    String title_two, String text_two, String img_two,
+                    String title_three, String text_three, String img_three,
+                    String title_four, String text_four, String img_four) {
             }
 
             if (result.next()) {
                 return new aboutus(
-                    result.getString("slogan"), 
-                    result.getString("gif"),
-                    result.getString("yt"),
-                    result.getInt("cards_amount"), 
-                    result.getString("title_one"),
-                    result.getString("text_one"),
-                    result.getString("img_one"),
-                    result.getString("title_two"),
-                    result.getString("text_two"),
-                    result.getString("img_two"),
-                    result.getString("title_three"),
-                    result.getString("text_three"),
-                    result.getString("img_three"),
-                    result.getString("title_four"),
-                    result.getString("text_four"),
-                    result.getString("img_four"));
+                        result.getString("slogan"),
+                        result.getString("gif"),
+                        result.getString("yt"),
+                        result.getInt("cards_amount"),
+                        result.getString("title_one"),
+                        result.getString("text_one"),
+                        result.getString("img_one"),
+                        result.getString("title_two"),
+                        result.getString("text_two"),
+                        result.getString("img_two"),
+                        result.getString("title_three"),
+                        result.getString("text_three"),
+                        result.getString("img_three"),
+                        result.getString("title_four"),
+                        result.getString("text_four"),
+                        result.getString("img_four"));
             }
-                return new WebError("Failed to get about us information");
+            return new WebError("Failed to get about us information");
         } catch (Throwable e) {
             e.printStackTrace();
             return new WebError("API DENIED ACCESS");
@@ -638,36 +721,38 @@ public class ApexController {
         }
     }
 
-     // About Us - UPDATE
-     @PostMapping("/update-aboutus")
-     public Object updateAboutUs(@RequestBody Aboutus au) {
-         Connection conn = new OracleConnector().getConnection();
- 
-         try {
-             PreparedStatement query = conn
-                     .prepareStatement(String.format(
-                             "UPDATE About_us SET slogan = '%s', gif = '%s', yt = '%s', cards_amount = %d, title_one = '%s', text_one = '%s', img_one = '%s', \n" + //
-                             "TITLE_TWO = '%s', text_two = '%s', img_two = '%s', \n" + //
-                             "title_three = '%s', text_three = '%s', img_three = '%s', \n" + //
-                             "title_four = '%s', text_four = '%s', img_four = '%s' \n" + //
-                             "WHERE ID = 5",
-                             au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one, au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
-                             au.img_three, au.title_four, au.text_four, au.img_four));
-             query.executeQuery();
- 
-             return new WebSuccess("Aboutus information updated");
-         } catch (Throwable e) {
-             e.printStackTrace();
-             return new WebError("Failed to update information");
-         } finally {
-             try {
-                 if (conn != null) {
-                     conn.close();
-                 }
-             } catch (SQLException e) {
-                 e.printStackTrace();
-             }
-         }
-     }
+    // About Us - UPDATE
+    @PostMapping("/update-aboutus")
+    public Object updateAboutUs(@RequestBody Aboutus au) {
+        Connection conn = new OracleConnector().getConnection();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "UPDATE About_us SET slogan = '%s', gif = '%s', yt = '%s', cards_amount = %d, title_one = '%s', text_one = '%s', img_one = '%s', \n"
+                                    + //
+                                    "TITLE_TWO = '%s', text_two = '%s', img_two = '%s', \n" + //
+                                    "title_three = '%s', text_three = '%s', img_three = '%s', \n" + //
+                                    "title_four = '%s', text_four = '%s', img_four = '%s' \n" + //
+                                    "WHERE ID = 5",
+                            au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one,
+                            au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
+                            au.img_three, au.title_four, au.text_four, au.img_four));
+            query.executeQuery();
+
+            return new WebSuccess("Aboutus information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

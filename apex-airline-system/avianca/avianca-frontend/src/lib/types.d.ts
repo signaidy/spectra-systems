@@ -31,3 +31,31 @@ interface Flight {
   touristQuantity: number;
   businessQuantity: number;
 }
+
+interface CompleteFlight {
+  flightId: number;
+  originCityId: number;
+  originCityName: string;
+  destinationCityId: number;
+  destinationCityName: string;
+  departureDate: string;
+  arrivalDate: string;
+  touristPrice: number;
+  businessPrice: number;
+  detail: string;
+  touristQuantity: number;
+  businessQuantity: number;
+  touristCapacity: number;
+  businessCapacity: number;
+  state: number;
+}
+
+interface Ticket {
+  ticketId: int;
+  price: int;
+  flightId: int;
+  type: string;
+  state: string;
+  userId: int;
+  userName: string;
+}

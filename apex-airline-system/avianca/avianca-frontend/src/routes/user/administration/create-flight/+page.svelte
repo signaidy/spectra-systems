@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex items-center mt-4 mb-8 gap-x-3">
-  <a href="/user/administration"><MoveLeft /></a>
+  <a href="/user/administration/flights"><MoveLeft /></a>
   <h1 class="text-xl font-bold">Create Flight</h1>
 </div>
 {#if form?.error}
