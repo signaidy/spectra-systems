@@ -1,5 +1,7 @@
 package com.apex.backend;
 
+import java.util.List;
+
 public record FlightRecord(
                 int flightId,
                 int originCityId,
@@ -12,6 +14,8 @@ public record FlightRecord(
                 int businessPrice,
                 String detail,
                 int touristQuantity,
-                int businessQuantity) {
+                int businessQuantity,
+                List<CommentaryRecord> commentaries,
+                RatingRecord rating) {
 
 }
