@@ -2,6 +2,7 @@ package SpectraSystems.Nexus.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import SpectraSystems.Nexus.models.Reservation;
@@ -37,6 +38,7 @@ public class ReservationController {
 
     // Endpoint to create a new reservation
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         Reservation createdReservation = reservationService.createReservation(reservation);
         return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
@@ -44,6 +46,7 @@ public class ReservationController {
 
     // Endpoint to update an existing reservation
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Reservation> updateReservation(@PathVariable("id") Long id, @RequestBody Reservation reservationDetails) {
         Reservation updatedReservation = reservationService.updateReservation(id, reservationDetails);
         return new ResponseEntity<>(updatedReservation, HttpStatus.OK);
@@ -51,6 +54,7 @@ public class ReservationController {
 
     // Endpoint to delete a reservation by ID
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteReservation(@PathVariable("id") Long id) {
         reservationService.deleteReservation(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

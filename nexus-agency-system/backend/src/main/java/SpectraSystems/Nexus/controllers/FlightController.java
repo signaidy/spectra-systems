@@ -2,6 +2,7 @@ package SpectraSystems.Nexus.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import SpectraSystems.Nexus.models.Flight;
@@ -37,6 +38,7 @@ public class FlightController {
 
     // Endpoint to create a new flight
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
         Flight createdFlight = flightService.createFlight(flight);
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
@@ -44,6 +46,7 @@ public class FlightController {
 
     // Endpoint to update an existing flight
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Flight> updateFlight(@PathVariable("id") Long id, @RequestBody Flight flightDetails) {
         Flight updatedFlight = flightService.updateFlight(id, flightDetails);
         return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
@@ -51,6 +54,7 @@ public class FlightController {
 
     // Endpoint to delete a flight by ID
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteFlight(@PathVariable("id") Long id) {
         flightService.deleteFlight(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

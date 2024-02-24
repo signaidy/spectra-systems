@@ -16,7 +16,7 @@ export const actions = {
     }
     
     try {
-      const response = await fetch("http://localhost:8080/nexus/signin", {
+      const response = await fetch("http://localhost:8080/nexus/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,8 +24,8 @@ export const actions = {
         body: JSON.stringify({
           email: data.get("email"),
           password: data.get("password"),
-          firstName: data.get("firstName"),
-          lastName: data.get("lastName"),
+          first_Name: data.get("firstName"),
+          last_Name: data.get("lastName"),
           country: data.get("originCountry"),
           passport: data.get("passportNumber"),
           age: data.get("age"),

@@ -36,6 +36,8 @@ public class Flight {
     private String arrivalLocation;
 
     private Date returnDate;
+
+    private Long rating;
     
     // Getters, setters, constructors, and other methods...
 
@@ -54,6 +56,10 @@ public class Flight {
 
     public Long getId() {
         return id;
+    }
+
+    public void setRating(){
+        this.rating = rating;
     }
 
     public void setId(Long id) {

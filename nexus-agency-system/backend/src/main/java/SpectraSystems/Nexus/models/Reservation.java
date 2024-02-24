@@ -41,6 +41,8 @@ public class Reservation {
     private String reservationNumber;
 
     private String location;
+
+    private Long rating;
     
     // Getters, setters, constructors, and other methods...
 
