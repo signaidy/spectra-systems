@@ -51,7 +51,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/nexus/auth/signup", "/nexus/auth/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/nexus/flights", "/nexus/flights/{id}", "/nexus/reservations", "/nexus/reservations/{id}", "/nexus/aboutus", "/nexus/aboutus/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/nexus/flights", "/nexus/flights/{id}", "/nexus/reservations", "/nexus/reservations/{id}", "/nexus/aboutus", "/nexus/aboutus/{id}", "/nexus/flights/avianca/flights", "/nexus/flights/avianca/cities").permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())

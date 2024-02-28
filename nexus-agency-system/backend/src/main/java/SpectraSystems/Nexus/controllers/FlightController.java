@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.services.FlightService;
 
@@ -41,6 +42,18 @@ public class FlightController {
     public ResponseEntity<List<Flight>> getAllFlightsByUserId(@PathVariable Long userId) {
         List<Flight> flights = flightService.getAllFlightsByUserId(userId);
         return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
+
+    @GetMapping("/avianca/flights")
+    public ResponseEntity<List<Flight>> getAllFlightsFromOtherBackend() {
+        List<Flight> flights = flightService.getAllFlightsFromOtherBackend();
+        return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
+
+    @GetMapping("/avianca/cities")
+    public ResponseEntity<List<City>> getAllCitiesFromOtherBackend() {
+        List<City> cities = flightService.getAllCitiesFromOtherBackend();
+        return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
     // Endpoint to create a new flight

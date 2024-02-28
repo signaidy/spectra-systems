@@ -5,17 +5,22 @@ import org.springframework.stereotype.Service;
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
+import SpectraSystems.Nexus.models.City;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class FlightService {
     private final FlightRepository flightRepository;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public FlightService(FlightRepository flightRepository) {
+    public FlightService(FlightRepository flightRepository, RestTemplate restTemplate) {
         this.flightRepository = flightRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<Flight> getAllFlights() {
@@ -36,6 +41,20 @@ public class FlightService {
         } else {
             return null;
         }
+    }
+
+    public List<Flight> getAllFlightsFromOtherBackend() {
+        // Make a request to the other backend to get all flights
+        // Replace "localhost:8081/get-all-flights" with the actual port
+        Flight[] flights = restTemplate.getForObject("http://localhost:8081/get-all-flights", Flight[].class);
+        return Arrays.asList(flights);
+    }
+
+    public List<City> getAllCitiesFromOtherBackend() {
+        // Make a request to the other backend to get cities
+        // Replace "localhost:8081/get-cities" with the actual Port
+        City[] cities = restTemplate.getForObject("http://localhost:8081/get-cities", City[].class);
+        return Arrays.asList(cities);
     }
 
     public Flight updateFlight(Long id, Flight flightDetails) {
