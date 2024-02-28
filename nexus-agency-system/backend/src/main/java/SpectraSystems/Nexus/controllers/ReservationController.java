@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.services.ReservationService;
 
@@ -26,6 +27,12 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> getAllReservations() {
         List<Reservation> reservations = reservationService.getAllReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Reservation>> getAllReservationsByUserId(@PathVariable Long userId) {
+        List<Reservation> Reservations = reservationService.getAllReservationsByUserId(userId);
+        return new ResponseEntity<>(Reservations, HttpStatus.OK);
     }
 
     // Endpoint to retrieve a reservation by ID

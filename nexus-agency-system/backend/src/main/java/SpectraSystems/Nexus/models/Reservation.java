@@ -70,6 +70,10 @@ public class Reservation {
         this.id = id;
     }
 
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
+
     public Long getUser() {
         return userid;
     }

@@ -25,6 +25,10 @@ public class FlightService {
     public Optional<Flight> getFlightById(Long id) {
         return flightRepository.findById(id);
     }
+    
+    public List<Flight> getAllFlightsByUserId(Long userId) {
+        return flightRepository.findByUserid(userId);
+    }
 
     public Flight createFlight(Flight flight) {
         if (flight != null) {

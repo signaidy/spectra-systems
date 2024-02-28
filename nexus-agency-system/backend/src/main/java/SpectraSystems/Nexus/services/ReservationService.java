@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
+import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
 
@@ -24,6 +25,10 @@ public class ReservationService {
 
     public Optional<Reservation> getReservationById(Long id) {
         return reservationRepository.findById(id);
+    }
+
+    public List<Reservation> getAllReservationsByUserId(Long userId) {
+        return reservationRepository.findByUserid(userId);
     }
 
     public Reservation createReservation(Reservation reservation) {

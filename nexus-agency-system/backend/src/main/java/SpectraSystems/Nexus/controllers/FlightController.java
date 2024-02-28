@@ -36,6 +36,13 @@ public class FlightController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Endpoint to retrieve all flights by userID
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Flight>> getAllFlightsByUserId(@PathVariable Long userId) {
+        List<Flight> flights = flightService.getAllFlightsByUserId(userId);
+        return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
+
     // Endpoint to create a new flight
     @PostMapping
     @PreAuthorize("hasRole('USER')")

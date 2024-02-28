@@ -58,7 +58,7 @@ public class Flight {
         return id;
     }
 
-    public void setRating(){
+    public void setRating(Long rating){
         this.rating = rating;
     }
 

@@ -8,22 +8,22 @@
   
     const userId = window.localStorage.getItem("user_id");
   
-    let userflights = [];
+    let userReservations = [];
   
     onMount(async () => {
-    fetch(`http://localhost:8080/nexus/flights/user/${userid}`)
+    fetch(`http://localhost:8080/nexus/reservations/user/${userid}`)
     .then(response => response.json())
     .then(userfdata => {
-      userflights = userfdata
+      userReservations = userfdata
     })
     });
   
   </script>
   
-  <h1 class="text-xl font-bold mb-8">Booked flights</h1>
+  <h1 class="text-xl font-bold mb-8">Booked Hotel Rooms</h1>
   <div>
-    {#if userflights.length>0}
-      {#each userflights as {ticket_id, type, state, flight_id, origin, destination, departure_date, arrival_date }}
+    {#if userReservations.length>0}
+      {#each userReservations as {ticket_id, type, state, flight_id, origin, destination, departure_date, arrival_date }}
         <div class="p-10">
           <div
             class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
