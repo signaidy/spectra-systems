@@ -14,6 +14,9 @@ const config = {
       padding: "2rem",
     },
     extend: {
+      fontFamily: {
+        satisfy: "var(--font-satisfy)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
