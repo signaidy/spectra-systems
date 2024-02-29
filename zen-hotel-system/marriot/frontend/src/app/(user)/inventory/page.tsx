@@ -2,18 +2,18 @@ import { Suspense } from "react";
 // Components
 import { Hotels } from "@/components/user/inventory/hotels";
 import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
+import { SectionTitle } from "@/components/user/sectionTitle";
 // UI Components
 import { Input } from "@/components/ui/input";
-import { InformativeTooltip } from "@/components/ui/informativeTooltip";
 
 export default function InventoryHome() {
   return (
-    <div className="flex flex-col gap-y-3 py-8 pl-8 w-full">
+    <>
       <div className="flex flex-col gap-y-3">
-        <div className="flex gap-x-3">
-          <h1 className="font-bold text-xl">Inventory</h1>
-          <InformativeTooltip description="View and Search for Available Hotels" />
-        </div>
+        <SectionTitle
+          title="Inventory"
+          description="View and Search for Available Hotels"
+        />
         <Input placeholder="Search for a hotel" />
       </div>
       <Suspense
@@ -25,6 +25,6 @@ export default function InventoryHome() {
       >
         <Hotels />
       </Suspense>
-    </div>
+    </>
   );
 }
