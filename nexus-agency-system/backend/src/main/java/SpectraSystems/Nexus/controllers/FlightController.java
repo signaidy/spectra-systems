@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
+import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.services.FlightService;
 
 import java.util.List;
@@ -45,8 +46,19 @@ public class FlightController {
     }
 
     @GetMapping("/avianca/flights")
-    public ResponseEntity<List<Flight>> getAllFlightsFromOtherBackend() {
-        List<Flight> flights = flightService.getAllFlightsFromOtherBackend();
+    public ResponseEntity<List<externalFlight>> getAllFlightsFromOtherBackend() {
+        List<externalFlight> flights = flightService.getAllFlightsFromOtherBackend();
+        return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
+
+    @GetMapping("/avianca/one-way-flights")
+    public ResponseEntity<List<externalFlight>> getOneWayFlightsFromOtherBackend(
+        @RequestParam(value = "originCity") Long originCityId,
+        @RequestParam(value = "destinationCity") Long destinationCityId,
+        @RequestParam(value = "departureDay") String departureDay,
+        @RequestParam(value = "passengers") int passengers
+    ) {
+        List<externalFlight> flights = flightService.getOneWayFlightsFromOtherBackend(originCityId, destinationCityId, departureDay, passengers);
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 

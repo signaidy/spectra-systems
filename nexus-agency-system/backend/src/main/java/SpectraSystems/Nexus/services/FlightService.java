@@ -1,12 +1,17 @@
 package SpectraSystems.Nexus.services;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
+import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.models.City;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,18 +48,49 @@ public class FlightService {
         }
     }
 
-    public List<Flight> getAllFlightsFromOtherBackend() {
-        // Make a request to the other backend to get all flights
-        // Replace "localhost:8081/get-all-flights" with the actual port
-        Flight[] flights = restTemplate.getForObject("http://localhost:8081/get-all-flights", Flight[].class);
-        return Arrays.asList(flights);
+    public List<externalFlight> getAllFlightsFromOtherBackend() {
+        ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
+            "http://localhost:8081/get-all-flights",
+            HttpMethod.GET,
+            null,
+            externalFlight[].class
+        );
+        externalFlight[] externalFlights = responseEntity.getBody();
+        return Arrays.asList(externalFlights);
+    }
+
+    public List<externalFlight> getOneWayFlightsFromOtherBackend(
+        Long originCity,
+        Long destinationCity,
+        String departureDay,
+        int passengers
+    ) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8081/get-one-way-flights")
+                .queryParam("originCity", originCity)
+                .queryParam("destinationCity", destinationCity)
+                .queryParam("departureDay", departureDay)
+                .queryParam("passengers", passengers);
+
+        ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
+            builder.toUriString(),
+            HttpMethod.GET,
+            null,
+            externalFlight[].class
+        );
+        externalFlight[] externalFlights = responseEntity.getBody();
+        return Arrays.asList(externalFlights);
     }
 
     public List<City> getAllCitiesFromOtherBackend() {
         // Make a request to the other backend to get cities
         // Replace "localhost:8081/get-cities" with the actual Port
-        City[] cities = restTemplate.getForObject("http://localhost:8081/get-cities", City[].class);
-        return Arrays.asList(cities);
+        ResponseEntity<List<City>> responseEntity = restTemplate.exchange(
+        "http://localhost:8081/get-cities",
+        HttpMethod.GET,
+        null,
+        new ParameterizedTypeReference<List<City>>() {}
+    );
+    return responseEntity.getBody();
     }
 
     public Flight updateFlight(Long id, Flight flightDetails) {

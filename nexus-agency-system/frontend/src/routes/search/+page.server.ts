@@ -1,15 +1,20 @@
 import { fail } from "@sveltejs/kit";
 
-export function load({ locals, url }) {
+export function load({ locals, url, cookies }) {
   async function getOneWayFlights() {
+    const token = cookies.get('token');
     const response = await fetch(
-      `http://localhost:8080/get-one-way-flights?${url.searchParams.toString()}`,
+      `http://localhost:8080/nexus/flights/avianca/one-way-flights?${url.searchParams.toString()}`,
       {
         method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       }
     );
 
     const result = await response.json();
+    console.log(result)
 
     function assignChildren(commentaries: Commentary[]): Commentary[] {
       const commentariesById: { [key: number]: Commentary } = {};
