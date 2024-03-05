@@ -2,7 +2,7 @@
   let informationabout = getAboutInformation();
 
   async function getAboutInformation() {
-    const response = await fetch("http://localhost:8081/aboutus");
+    const response = await fetch("http://localhost:8080/aboutus");
     const aboutdata = await response.json();
     return aboutdata;
   }

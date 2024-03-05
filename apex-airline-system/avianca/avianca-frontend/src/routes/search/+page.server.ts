@@ -3,7 +3,7 @@ import { fail } from "@sveltejs/kit";
 export function load({ locals, url }) {
   async function getOneWayFlights() {
     const response = await fetch(
-      `http://localhost:8081/get-one-way-flights?${url.searchParams.toString()}`,
+      `http://localhost:8080/get-one-way-flights?${url.searchParams.toString()}`,
       {
         method: "GET",
       }
@@ -45,7 +45,7 @@ export function load({ locals, url }) {
   }
 
   async function getCities() {
-    const response = await fetch("http://localhost:8081/get-cities", {
+    const response = await fetch("http://localhost:8080/get-cities", {
       method: "GET",
     });
 
@@ -64,7 +64,7 @@ export const actions = {
   createCommentary: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8081/create-commentary", {
+      const response = await fetch("http://localhost:8080/create-commentary", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export const actions = {
   createRating: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8081/create-rating", {
+      const response = await fetch("http://localhost:8080/create-rating", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
