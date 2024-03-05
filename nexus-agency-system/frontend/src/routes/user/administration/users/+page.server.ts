@@ -30,18 +30,17 @@ export const actions = {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/update-user", {
-        method: "POST",
+      const response = await fetch(`http://localhost:8080/nexus/users/${data.get("userId")}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          userId: data.get("userId"),
           firstName: data.get("firstName"),
           lastName: data.get("lastName"),
-          originCountry: data.get("originCountry"),
-          passportNumber: data.get("passportNumber"),
+          Country: data.get("country"),
+          Passport: data.get("passport"),
           role: data.get("role"),
           age: data.get("age"),
           percentage: data.get("percentage"),
