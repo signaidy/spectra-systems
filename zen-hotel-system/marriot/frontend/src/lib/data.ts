@@ -9,6 +9,6 @@ export async function getHotels(): Promise<Hotel[]> {
     const data = await response.json();
     return data;
   } catch (e) {
-    return [];
+    throw new Error("Failed to Retrieve Hotels");
   }
 }
