@@ -1,6 +1,6 @@
 export function load({ locals }) {
   async function getCities() {
-    const response = await fetch("http://localhost:8081/get-cities", {
+    const response = await fetch("http://localhost:8080/get-cities", {
       method: "GET",
     });
 

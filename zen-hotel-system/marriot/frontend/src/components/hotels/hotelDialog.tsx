@@ -49,7 +49,7 @@ export function HotelDialog() {
           <ArrowRight className="ml-1 w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl max-h-[70vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[70vh] overflow-y-auto custom-scrollbar">
         {/* <DialogHeader>
           <DialogTitle>View Hotel</DialogTitle>
           <DialogDescription>
