@@ -8,6 +8,7 @@ import SpectraSystems.Nexus.models.Comment;
 import SpectraSystems.Nexus.services.CommentService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/nexus/comments")
@@ -30,9 +31,12 @@ public class CommentController {
     // Endpoint to retrieve a comment by ID
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable("id") Long id) {
-        return commentService.getCommentById(id)
-                .map(comment -> new ResponseEntity<>(comment, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<Comment> commentOptional = commentService.getCommentById(id);
+        if (commentOptional.isPresent()) {
+            return new ResponseEntity<>(commentOptional.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     // Endpoint to create a new comment

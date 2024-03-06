@@ -10,6 +10,8 @@ import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.models.City;
+import SpectraSystems.Nexus.models.Comment;
+
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,6 +23,9 @@ import java.util.Optional;
 public class FlightService {
     private final FlightRepository flightRepository;
     private final RestTemplate restTemplate;
+    @Autowired
+    private CommentService commentService; 
+    private List<Comment> commentaries;
 
     @Autowired
     public FlightService(FlightRepository flightRepository, RestTemplate restTemplate) {
@@ -65,6 +70,7 @@ public class FlightService {
         String departureDay,
         int passengers
     ) {
+        // Call the other backend to get flights
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
                 .queryParam("originCity", originCity)
                 .queryParam("destinationCity", destinationCity)
@@ -77,7 +83,16 @@ public class FlightService {
             null,
             externalFlight[].class
         );
+        
+        // Get flights from the other backend
         externalFlight[] externalFlights = responseEntity.getBody();
+        
+        // Embed comments from your database
+        for (externalFlight flight : externalFlights) {
+            List<Comment> comments = commentService.getCommentsByFlightId(flight.getFlightId());
+            flight.setCommentaries(comments);
+        }
+        
         return Arrays.asList(externalFlights);
     }
 

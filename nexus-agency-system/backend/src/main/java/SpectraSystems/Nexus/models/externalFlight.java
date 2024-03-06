@@ -1,6 +1,7 @@
 package SpectraSystems.Nexus.models;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -10,6 +11,7 @@ public class externalFlight {
     private String originCityName;
     private Long destinationCityId;
     private String destinationCityName;
+    private List<Comment> commentaries;
     
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date departureDate;
@@ -147,6 +149,10 @@ public class externalFlight {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public void setCommentaries(List<Comment> commentaries) {
+        this.commentaries = commentaries;
     }
 }
 

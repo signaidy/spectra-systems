@@ -14,9 +14,12 @@ export function load({ locals, url, cookies }) {
     );
 
     const result = await response.json();
-    console.log(result)
 
     function assignChildren(commentaries: Commentary[]): Commentary[] {
+      if (!commentaries || commentaries.length === 0) {
+        return [];
+      }
+
       const commentariesById: { [key: number]: Commentary } = {};
 
       commentaries.forEach((commentary) => {
@@ -66,13 +69,16 @@ export function load({ locals, url, cookies }) {
 }
 
 export const actions = {
-  createCommentary: async ({ request }) => {
+  createCommentary: async ({ request, cookies }) => {
     const data = await request.formData();
+    const token = cookies.get('token');
     try {
-      const response = await fetch("http://localhost:42069/create-commentary", {
+      const response = await fetch("http://localhost:42069/nexus/comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+
         },
         body: JSON.stringify({
           parentId: data.get("parentId"),
@@ -94,31 +100,31 @@ export const actions = {
       }
     }
   },
-  createRating: async ({ request }) => {
-    const data = await request.formData();
-    try {
-      const response = await fetch("http://localhost:42069/create-rating", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: data.get("userId"),
-          flightId: data.get("flightId"),
-          value: data.get("rating"),
-        }),
-      });
-      const result = await response.json();
+  // createRating: async ({ request }) => {
+  //   const data = await request.formData();
+  //   try {
+  //     const response = await fetch("http://localhost:42069/create-rating", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         userId: data.get("userId"),
+  //         flightId: data.get("flightId"),
+  //         value: data.get("rating"),
+  //       }),
+  //     });
+  //     const result = await response.json();
 
-      if (result.error) {
-        throw new Error(result.error);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        return fail(500, {
-          error: error.message,
-        });
-      }
-    }
-  },
+  //     if (result.error) {
+  //       throw new Error(result.error);
+  //     }
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       return fail(500, {
+  //         error: error.message,
+  //       });
+  //     }
+  //   }
+  // },
 };
