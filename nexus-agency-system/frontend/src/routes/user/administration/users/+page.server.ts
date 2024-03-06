@@ -3,7 +3,7 @@ import { fail } from "@sveltejs/kit";
 export async function load({ locals, cookies }) {
   async function getUsers() {
     const token = cookies.get("token")
-    const response = await fetch("http://localhost:8080/nexus/users", {
+    const response = await fetch("http://localhost:42069/nexus/users", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -30,17 +30,17 @@ export const actions = {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/nexus/users/${data.get("userId")}`, {
+      const response = await fetch(`http://localhost:42069/nexus/users/${data.get("userId")}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           firstName: data.get("firstName"),
           lastName: data.get("lastName"),
-          Country: data.get("country"),
-          Passport: data.get("passport"),
+          country: data.get("originCountry"),
+          passport: data.get("passportNumber"),
           role: data.get("role"),
           age: data.get("age"),
           percentage: data.get("percentage"),

@@ -4,7 +4,7 @@ export function load({ locals, url, cookies }) {
   async function getOneWayFlights() {
     const token = cookies.get('token');
     const response = await fetch(
-      `http://localhost:8080/nexus/flights/avianca/one-way-flights?${url.searchParams.toString()}`,
+      `http://localhost:42069/nexus/flights/avianca/one-way-flights?${url.searchParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -50,7 +50,7 @@ export function load({ locals, url, cookies }) {
   }
 
   async function getCities() {
-    const response = await fetch("http://localhost:8080/nexus/flights/avianca/cities", {
+    const response = await fetch("http://localhost:42069/nexus/flights/avianca/cities", {
       method: "GET",
     });
 
@@ -69,7 +69,7 @@ export const actions = {
   createCommentary: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8080/create-commentary", {
+      const response = await fetch("http://localhost:42069/create-commentary", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export const actions = {
   createRating: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8080/create-rating", {
+      const response = await fetch("http://localhost:42069/create-rating", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -50,7 +50,7 @@ public class FlightService {
 
     public List<externalFlight> getAllFlightsFromOtherBackend() {
         ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
-            "http://localhost:8081/get-all-flights",
+            "http://localhost:8080/get-all-flights",
             HttpMethod.GET,
             null,
             externalFlight[].class
@@ -65,7 +65,7 @@ public class FlightService {
         String departureDay,
         int passengers
     ) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8081/get-one-way-flights")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
                 .queryParam("originCity", originCity)
                 .queryParam("destinationCity", destinationCity)
                 .queryParam("departureDay", departureDay)
@@ -83,9 +83,8 @@ public class FlightService {
 
     public List<City> getAllCitiesFromOtherBackend() {
         // Make a request to the other backend to get cities
-        // Replace "localhost:8081/get-cities" with the actual Port
         ResponseEntity<List<City>> responseEntity = restTemplate.exchange(
-        "http://localhost:8081/get-cities",
+        "http://localhost:8080/get-cities",
         HttpMethod.GET,
         null,
         new ParameterizedTypeReference<List<City>>() {}
