@@ -1,14 +1,17 @@
-import type { Hotel } from "@/lib/interfaces";
+const { MongoClient } = require("mongodb");
 
-export async function getHotels(): Promise<Hotel[]> {
+const client = new MongoClient(process.env.MONGODB_URI);
+
+export async function getHotels() {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/get-hotels`,
-      { next: { tags: ["hotels"] } }
-    );
-    const data = await response.json();
-    return data;
+    const database = client.db("marriot-db");
+    const hotelsCollection = database.collection("hotels");
+
+    const hotels = hotelsCollection.find().toArray();
+    
+    return hotels;
   } catch (e) {
+    console.log(e);
     throw new Error("Failed to Retrieve Hotels");
   }
 }
