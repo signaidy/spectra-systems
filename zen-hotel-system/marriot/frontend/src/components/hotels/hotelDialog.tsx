@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -50,12 +47,6 @@ export function HotelDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[70vh] overflow-y-auto custom-scrollbar">
-        {/* <DialogHeader>
-          <DialogTitle>View Hotel</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. 
-          </DialogDescription>
-        </DialogHeader> */}
         <div className="flex flex-col gap-y-1 ">
           <h1 className="text-xl font-bold">The Grand Budapest Hotel</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
