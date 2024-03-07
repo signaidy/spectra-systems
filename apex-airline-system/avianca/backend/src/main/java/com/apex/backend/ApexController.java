@@ -1023,7 +1023,8 @@ public Object getHeader() {
         String Section,
         String Link_Section,
         String Link_Profile,
-        String Link_Login) {
+        String Link_Login, 
+        String Logo) {
         }
 
         if (result.next()) {
@@ -1032,7 +1033,9 @@ public Object getHeader() {
                     result.getString("Section"),
                     result.getString("Link_Section"),
                     result.getString("Link_Profile"),
-                    result.getString("Link_Login")
+                    result.getString("Link_Login"), 
+                    result.getString("Logo")
+
       );
         }
         return new WebError("Failed to get header information");

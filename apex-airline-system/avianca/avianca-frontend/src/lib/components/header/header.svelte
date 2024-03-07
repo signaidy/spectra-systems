@@ -36,7 +36,7 @@ async function getHeaderInformation() {
   <div class="flex h-full container justify-between items-center">
     <a href="/">
       <div class="flex">
-      <img src="https://i.ibb.co/KGJV2hW/Image-Tab-1.png" alt="Avianca Logo" class="w-[55px] h-[50px]" /><p class="satisfy-regular">{datahead.Text_Logo}</p>
+      <img src={datahead.Logo} alt="Avianca Logo" class="w-[55px] h-[50px]" /><p class="satisfy-regular">{datahead.Text_Logo}</p>
     </div>
     </a>
     <nav class="flex gap-x-3 text-sm font-bold">
