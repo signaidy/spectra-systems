@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { SearchBar } from "@/components/searchBar/searchBar";
-import { HotelCard } from "@/components/user/inventory/hotelCard";
+import { HotelCard } from "@/components/hotels/hotelCard";
 
 export default function SearchHome() {
   return (
-    <section className="relative min-h-[calc(100vh-4.813rem)] bg-fixed">
+    <section className="relative min-h-[calc(100vh-4.813rem)]">
       <Image
         src="/home-bg.jpg"
         alt="Decorative Background"

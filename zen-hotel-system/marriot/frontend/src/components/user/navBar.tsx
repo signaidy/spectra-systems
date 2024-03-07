@@ -56,7 +56,7 @@ const routes = [
 export function NavBar() {
   const currentPath = usePathname();
   return (
-    <nav className="flex flex-col py-8 pr-8 border-r gap-y-3 shrink-0 overflow-y-auto">
+    <nav className="flex flex-col py-8 pr-8 border-r gap-y-3 shrink-0 sticky top-0 overflow-y-auto custom-scrollbar">
       {routes.map((route) => (
         <NavButton
           variant={currentPath.includes(route.value) ? "default" : "secondary"}

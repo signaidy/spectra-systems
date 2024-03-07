@@ -1,5 +1,5 @@
 import { getHotels } from "@/lib/data";
-import { HotelCard } from "@/components/user/inventory/hotelCard";
+import { HotelCard } from "@/components/hotels/hotelCard";
 
 export async function Hotels() {
   const hotels = await getHotels();
@@ -8,10 +8,10 @@ export async function Hotels() {
     <>
       {hotels.length === 0 && (
         <div className="flex justify-center items-center h-full">
-          <h1 className="text-2xl font-bold">No Hotels Found</h1>
+          <h1 className="text-xl font-bold">No Hotels Found</h1>
         </div>
       )}
-      {hotels.map((hotel) => (
+      {hotels.map((hotel: Hotel) => (
         <HotelCard
           key={hotel._id}
           name={hotel.name}
