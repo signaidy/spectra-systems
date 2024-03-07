@@ -44,12 +44,12 @@ export function HotelCard({
           <HotelDialog />
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
-          <div className="flex gap-x-1 items-end">
-            <div className="font-bold text-xl">255</div>
+          {/* <div className="flex gap-x-1 items-end">
+            <div className="font-bold text-xl">255</div>  
             <div className="text-sm mb-[2px] text-muted-foreground">
               USD / Night
             </div>
-          </div>
+          </div> */}
           <Button>View Rates</Button>
         </div>
       </div>
