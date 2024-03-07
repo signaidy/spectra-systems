@@ -1007,4 +1007,46 @@ public Object getpurchaselogs() {
         }
     }
 }
+
+// Header - GET INFORMATION
+@GetMapping("/header")
+public Object getHeader() {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "SELECT * FROM Header"));
+        ResultSet result = query.executeQuery();
+
+        record Header(String Text_Logo,
+        String Section,
+        String Link_Section,
+        String Link_Profile,
+        String Link_Login) {
+        }
+
+        if (result.next()) {
+            return new Header(
+                    result.getString("Text_Logo"),
+                    result.getString("Section"),
+                    result.getString("Link_Section"),
+                    result.getString("Link_Profile"),
+                    result.getString("Link_Login")
+      );
+        }
+        return new WebError("Failed to get header information");
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("API Incorrect");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 }
