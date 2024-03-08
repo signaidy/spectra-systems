@@ -1,9 +1,4 @@
-<script lang="ts">
-    import { MoveLeft } from "lucide-svelte";
-  </script>
-
-<div class="flex items-center mt-4 mb-8 gap-x-3">
-    <a href="/user/administration"><MoveLeft /></a>
+<div class="flex items-center mt-5 mb-8 gap-x-3">
     <h1 class="text-xl font-bold">Page Settings</h1>
 </div>
 <div>

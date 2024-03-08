@@ -1,14 +1,11 @@
 <script lang="ts">
   import UserCard from "$lib/components/user/users/UserCard.svelte";
   import UserCardSkeleton from "$lib/components/user/users/UserCardSkeleton.svelte";
-  import { MoveLeft } from "lucide-svelte";
-
   export let data;
   export let form;
 </script>
 
 <div class="flex items-center mt-4 mb-8 gap-x-3">
-  <a href="/user/administration"><MoveLeft /></a>
   <h1 class="text-xl font-bold">Users Administration</h1>
 </div>
 
