@@ -1061,9 +1061,7 @@ public Object updateHeader(@RequestBody Header head) {
     try {
         PreparedStatement query = conn
                 .prepareStatement(String.format(
-                        "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = %s, LINK_LOGIN = '%s', LOGO = '%s',\n"
-                                + //
-                                "WHERE ID = 21",
+                        "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = '%s', LINK_LOGIN = '%s', LOGO = '%s' WHERE ID = 21",
                         head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login, head.Logo));
         query.executeQuery();
 
