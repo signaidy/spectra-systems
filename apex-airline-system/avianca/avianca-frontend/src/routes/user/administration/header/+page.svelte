@@ -26,8 +26,8 @@
           <input
             class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none"
             type="text"
-            name="slogan"
-            id="slogan"
+            name="Text_Logo"
+            id="Text_Logo"
             placeholder={data.head.Text_Logo}
             bind:value={Text}
           />
@@ -44,8 +44,8 @@
             <input
               class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none"
               type="text"
-              name="tx1"
-              id="tx1"
+              name="Logo"
+              id="Logo"
               placeholder={data.head.Logo}
               bind:value={Logo}
             />
@@ -57,8 +57,8 @@
           <input
             class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none"
             type="text"
-            name="gif"
-            id="gif"
+            name="Section"
+            id="Section"
             placeholder={data.head.Section}
             bind:value={Section}
           />
@@ -70,8 +70,8 @@
           <input
             class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none"
             type="text"
-            name="yt"
-            id="yt"
+            name="Link_Section"
+            id="Link_Section"
             placeholder={data.head.Link_Section}
             bind:value={Link_Section}
           />
@@ -84,8 +84,8 @@
           <input
             class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none"
             type="text"
-            name="cardsamount"
-            id="cardsamount"
+            name="Link_Profile"
+            id="Link_Profile"
             placeholder={data.head.Link_Profile}
             bind:value={Link_Profile}
           />
@@ -97,8 +97,8 @@
             <input
               class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none"
               type="text"
-              name="t1"
-              id="t1"
+              name="Link_Login"
+              id="Link_Login"
               placeholder={data.head.Link_Login}
               bind:value={Link_Login}
             />
