@@ -1052,4 +1052,33 @@ public Object getHeader() {
         }
     }
 }
+
+//Header - UPDATE
+@PostMapping("/update-header")
+public Object updateHeader(@RequestBody Header head) {
+    Connection conn = new OracleConnector().getConnection();
+
+    try {
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = %s, LINK_LOGIN = '%s', LOGO = '%s',\n"
+                                + //
+                                "WHERE ID = 21",
+                        head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login, head.Logo));
+        query.executeQuery();
+
+        return new WebSuccess("Header information updated");
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to update information");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 }

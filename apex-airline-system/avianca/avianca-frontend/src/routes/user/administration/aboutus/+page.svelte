@@ -22,7 +22,7 @@
 </script>
 
 <div class="arrowd">
-<a href="/user/administration"><MoveLeft /></a>
+<a href="/user/administration/settings"><MoveLeft /></a>
 <h1 class="text-xl font-bold mb-3 mt-2">About US - Information</h1>
 </div>
 <div class="flex justify-center items-center">
