@@ -851,8 +851,12 @@ public class ApexController {
                       int userId = usertickets.getInt("user_id");
 
                       PreparedStatement purchased_ticket = conn.prepareStatement(String.format(
-                         "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method) VALUES (%d, %d, TO_DATE('%s', 'dd-MM-yyyy'), '%s')", 
-                         ticketId, userId, dtf.format(now), method));
+                         "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method)\n" + //
+                                                          "SELECT %d, %d, TO_DATE('%s', 'dd-MM-yyyy'), '%s'\n" + //
+                                                          "WHERE NOT EXISTS (\n" + //
+                                                          "  SELECT 1 FROM purchase\n" + //
+                                                          "  WHERE ticket_id = %d AND user_id = %d)", 
+                         ticketId, userId, dtf.format(now), method, ticketId, userId));
                       purchased_ticket.executeQuery();
 
 
