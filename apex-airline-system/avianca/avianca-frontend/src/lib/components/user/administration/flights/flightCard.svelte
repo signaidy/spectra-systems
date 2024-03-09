@@ -1,6 +1,23 @@
 <script lang="ts">
   import logo from "$lib/assets/tetra.png";
   export let flight: CompleteFlight;
+
+  async function Cancellation() {
+  try {
+    console.log(flight.flightId); 
+    const response = await fetch(`http://localhost:8080/cancelation/${flight.flightId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+      }),
+    });
+  } catch (error) {
+    console.error('API error:', error);
+  }
+}
+
+
+
 </script>
 
 <div class="flex flex-col border my-8 rounded-lg">
@@ -57,4 +74,21 @@
       <div>{flight.detail}</div>
     </div>
   </div>
+  <div class="spbtn object-right">
+    {#if flight.state == 1}
+    <button
+    class="text-white bg-red-600 rounded px-3 py-1 focus:outline-none focus:shadow-outline object-right"
+    on:click={Cancellation}
+  >
+    <span class="ml-1 text-sm">Cancel</span>
+  </button>
+  {/if}
+  </div>
 </div>
+
+<style>
+  .spbtn{
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+</style>
