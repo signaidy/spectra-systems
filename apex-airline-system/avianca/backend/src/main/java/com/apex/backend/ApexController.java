@@ -369,6 +369,7 @@ public class ApexController {
         }
     }
 
+    //Comments - Insert - API
     @PostMapping("/create-commentary")
     public Object createCommentary(@RequestBody Commentary commentary) {
         Connection conn = new OracleConnector().getConnection();
@@ -396,6 +397,7 @@ public class ApexController {
         }
     }
 
+    // Ratings - Insert - API
     @PostMapping("/create-rating")
     public Object createRating(@RequestBody Rating rating) {
         Connection conn = new OracleConnector().getConnection();
@@ -427,6 +429,7 @@ public class ApexController {
         }
     }
 
+    // Get all Tickets - API
     @GetMapping("/get-all-tickets")
     public Object getAllTickets() {
         Connection conn = new OracleConnector().getConnection();
@@ -818,9 +821,6 @@ public class ApexController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
         try {
-            int desiredupdates = 2; 
-
-            //PENDIENTE AGREGAR NUMERO DE LIMITANTES POR NUMERO DE PASAJEROS
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE TICKETS\n" + //
@@ -1073,6 +1073,39 @@ public Object updateHeader(@RequestBody Header head) {
     } catch (Throwable e) {
         e.printStackTrace();
         return new WebError("Failed to update information");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+//FLight and Tickets - Cancelation
+@PostMapping("/cancelation/{flight_id}")
+public Object updateFlightandTickets(@PathVariable int flight_id) {
+    Connection conn = new OracleConnector().getConnection();
+
+    try {
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "UPDATE FLIGHTS SET State = 0 WHERE FLIGHT_ID = %d",
+                        flight_id));
+        query.executeQuery();
+
+        PreparedStatement ticketquery = conn
+                .prepareStatement(String.format(
+                        "UPDATE TICKETS SET State = 'canceled' WHERE FLIGHT_ID = %d",
+                        flight_id));
+        ticketquery.executeQuery();
+
+        return new WebSuccess("Flight and tickets canceled");
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to execute operation");
     } finally {
         try {
             if (conn != null) {
