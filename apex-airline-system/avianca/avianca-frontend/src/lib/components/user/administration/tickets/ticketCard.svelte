@@ -7,7 +7,11 @@
 <div class="flex flex-col border rounded-lg w-fit">
   <div class="flex gap-x-3 p-3 bg-muted">
     <div class="font-bold">Ticket #{ticket.ticketId}</div>
+    {#if ticket.state == 'active'}
     <div class="capitalize font-bold text-green-600">{ticket.state}</div>
+    {:else}
+    <div class="capitalize font-bold text-red-600">{ticket.state}</div>
+    {/if}
   </div>
   <div class="flex flex-col p-3 gap-y-2">
     <div class="flex flex-col gap-y-1">
