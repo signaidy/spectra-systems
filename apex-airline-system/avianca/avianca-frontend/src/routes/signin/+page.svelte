@@ -1,6 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-
+  import Captcha from "$lib/assets/Captcha.png"; 
   import { Label } from "$lib/components/ui/label";
   import { Input } from "$lib/components/ui/input";
   import { Button } from "$lib/components/ui/button";
@@ -9,6 +9,9 @@
   export let form;
 
   let loading = false;
+
+
+
 </script>
 
 <div
@@ -98,9 +101,14 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col gap-y-2">
-        <Label for="captcha">🤖?</Label>
-        <!-- <Input id="captcha" /> -->
+      <div class="verification-container">
+        <div class="flex flex-col gap-y-2">
+          <div class="text-blue-800 flex justify-center items-center ml-10">
+            <input type="checkbox" class="mr-2"/>
+            <span class="mb-1">I'm not a robot</span>
+            <img class="w-[50px] h-[50px] ml-2" src={Captcha} alt="Captcha">
+          </div>
+          </div>
       </div>
       <Button type="submit" disabled={loading}>Sign In</Button>
     </form>
