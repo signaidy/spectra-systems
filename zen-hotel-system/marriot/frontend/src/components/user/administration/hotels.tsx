@@ -12,14 +12,7 @@ export async function Hotels() {
         </div>
       )}
       {hotels.map((hotel: Hotel) => (
-        <HotelCard
-          key={hotel._id}
-          name={hotel.name}
-          description={hotel.description}
-          location={`${hotel.location.city}, ${hotel.location.state}, ${hotel.location.country}`}
-          reviewAverage={hotel.reviews.average}
-          reviewCount={hotel.reviews.count}
-        />
+        <HotelCard key={hotel._id} {...hotel} />
       ))}
     </>
   );
