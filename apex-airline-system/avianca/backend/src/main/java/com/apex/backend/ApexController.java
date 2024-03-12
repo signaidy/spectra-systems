@@ -1116,4 +1116,41 @@ public Object updateFlightandTickets(@PathVariable int flight_id) {
         }
     }
 }
+
+//User Discount - GET
+@GetMapping("/discount/{id}")
+public Object getDiscount(@PathVariable int id) {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "SELECT percentage FROM USERS WHERE user_id = %d",
+                        id));
+        ResultSet result = query.executeQuery();
+
+        record Discount(int discount) {
+        }
+
+        if (result.next()) {
+            return new Discount(
+                    result.getInt("percentage")
+      );
+        }
+        return new WebError("Failed to get user Discount");
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to retrieve information");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
 }

@@ -9,7 +9,17 @@
 
   const userId = window.localStorage.getItem("user_id");
 
+  let discount; 
+
   let historicalpurchases = [];
+
+  onMount(async () => {
+    const response = await fetch(
+      `http://localhost:8080/discount/${userid}`
+    );
+    const data = await response.json();
+    discount = data.discount;
+  });
 
   onMount(async () => {
     fetch(`http://localhost:8080/historical_purchases/${userid}`)

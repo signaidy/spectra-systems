@@ -6,7 +6,6 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   export let data;
-
   export let isOpen = false;
 
   let userid = data.user.userId;
@@ -19,6 +18,7 @@
 
   let availabletickets = [];
   let ticketsamount_available;
+  let discount; 
 
   let price;
   let from;
@@ -55,6 +55,15 @@
     const data = await response.json();
     ticketsamount_available = data.tickets_amount;
   });
+
+  onMount(async () => {
+    const response = await fetch(
+      `http://localhost:8080/discount/${userid}`
+    );
+    const data = await response.json();
+    discount = data.discount;
+  });
+
 </script>
 
 {#if isOpen}
@@ -143,7 +152,11 @@
                   <span class="text-gray-600">Discount</span>
                 </div>
                 <div class="pl-3">
-                  <span class="font-semibold">$00.00</span>
+                  {#if discount > 0}
+                  <span class="font-semibold">${price * passengers * (discount/100)}.00</span>
+                  {:else }
+                  <span class="font-semibold">${discount}.00</span>
+                  {/if}
                 </div>
               </div>
             </div>
@@ -155,7 +168,11 @@
                   <span class="text-gray-600">Total</span>
                 </div>
                 <div class="pl-3">
+                  {#if discount > 0}
+                  <span class="font-semibold">${(price * passengers)- (price * passengers * (discount/100))}.00</span>
+                  {:else }
                   <span class="font-semibold">${price * passengers}.00</span>
+                  {/if}
                 </div>
               </div>
             </div>
