@@ -639,7 +639,7 @@ public class ApexController {
 
             record User_purchases(String purchase_number, String ticket, String type, String origin, String destination,
                     String purchase_date, String price, String paymenth_method,
-                    String departure_date, String arrival_date, String user_name) {
+                    String departure_date, String arrival_date, String user_name, int user_id) {
             }
 
             List<User_purchases> historicalPurchases = new ArrayList<>();
@@ -655,7 +655,8 @@ public class ApexController {
                         result.getString("paymenth_method"),
                         result.getString("departure_date"),
                         result.getString("arrival_date"),
-                        result.getString("user_name")));
+                        result.getString("user_name"), 
+                        result.getInt("user_id")));
             }
             if (historicalPurchases.isEmpty()) {
                 return new WebError("This user doesn't have any purchases made");
@@ -963,7 +964,7 @@ public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String
     }
 }
 
-// Historical purchases - API
+// Purchase logs - API
 @GetMapping("/purchaselogs")
 public Object getpurchaselogs() {
     Connection conn = new OracleConnector().getConnection();

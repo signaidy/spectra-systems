@@ -6,11 +6,7 @@
 
   export let data;
   let userid = data.user.userId;
-
-  const userId = window.localStorage.getItem("user_id");
-
   let discount; 
-
   let historicalpurchases = [];
 
   onMount(async () => {
@@ -29,9 +25,18 @@
       });
   });
 
+  onMount(async () => {
+    const response = await fetch(
+      `http://localhost:8080/header`
+    );
+    const data = await response.json();
+    billData.company.name = data.Text_Logo;
+  });
+
+
   let billData = {
     company: {
-      name: "Your company name",
+      name: "",
       address: "Company Address",
       logo: aviancalogo
     },
@@ -59,7 +64,7 @@
     total: "80.50",
   };
 
-  function generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name) {
+  function generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name, user_id) {
   const doc = new jsPDF({ unit: "mm", format: [210, 297] }); // A4 format
 
   // Set document properties (optional)
@@ -136,11 +141,19 @@
   doc.text("$ " + price + ".00", 175, y, { align: "right" });
   y += 7;
   doc.text("Discount:", 10, y);
-  doc.text("$ " + billData.percentage + ".00", 175, y, { align: "right" });
+  if (discount > 0) { 
+  doc.text("$ " + (price * (discount/100)) + ".00", 175, y, { align: "right" });
+  } else { 
+    doc.text("$ " + billData.percentage + ".00", 175, y, { align: "right" });
+  }
   y += 7;
   doc.setFontSize(14); // Slightly larger font for total
   doc.text("Total:", 10, y, { fontStyle: "bold" }); // Bold total
-  doc.text("$ " + price + ".00", 175, y, { align: "right", fontStyle: "bold" });
+  if (discount > 0) { 
+  doc.text("$ " + ((price) - (price * (discount/100))) + ".00", 175, y, { align: "right", fontStyle: "bold" });
+  } else { 
+    doc.text("$ " + ((price) - (price * (discount/100))) + ".00", 175, y, { align: "right", fontStyle: "bold" });
+  }
 
   // Save the PDF
   doc.save("invoice.pdf");
@@ -151,7 +164,7 @@
 
 <div>
   {#if historicalpurchases.length > 0}
-    {#each historicalpurchases as { purchase_number, ticket, type, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name }}
+    {#each historicalpurchases as { purchase_number, ticket, type, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name, user_id }}
       <div class="p-10">
         <div
           class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
@@ -201,7 +214,11 @@
               <p class="text-black-500">
                 <span class="font-bold">Price</span>
               </p>
+              {#if discount > 0}
+              <p class="text-gray-500">$ {price - (price * (discount/100))}.00</p>
+              {:else}
               <p class="text-gray-500">$ {price}.00</p>
+              {/if}
             </div>
           </div>
           <button
