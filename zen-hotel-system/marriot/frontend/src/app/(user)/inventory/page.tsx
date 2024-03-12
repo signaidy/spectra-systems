@@ -16,7 +16,7 @@ export default function InventoryHome() {
       <InventorySearchBar />
       <Suspense
         fallback={
-          <div className="flex flex-col gap-y-3 pt-5 pb-8 pr-8">
+          <div className="flex flex-col gap-y-3 pt-5 mb-8 mr-8">
             {Array(2)
               .fill(0)
               .map((_, index) => (
@@ -25,7 +25,7 @@ export default function InventoryHome() {
           </div>
         }
       >
-        <div className="flex flex-col gap-y-3 pt-5 pb-8 pr-8">
+        <div className="flex flex-col gap-y-3 pt-5 mb-8 mr-8">
           <Hotels />
         </div>
       </Suspense>

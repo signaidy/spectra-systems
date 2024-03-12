@@ -1,35 +1,106 @@
 "use server";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 
-export async function createHotel() {
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/create-hotel`, {
-      method: "POST",
-    });
-    revalidateTag("hotels");
-  } catch (e) {
-    if (e instanceof Error) {
-      return {
-        error: `${e.name}: ${e.message}`,
-        message: "Database Error: Failed to Create Hotel.",
-      };
-    }
-  }
-}
+const { MongoClient } = require("mongodb");
 
-export async function deleteHotel(id: string) {
+const client = new MongoClient(process.env.MONGODB_URI);
+
+export async function createHotel(prevState: any, formData: FormData) {
   try {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-hotel/${id}`, {
-      method: "DELETE",
-    });
-    revalidateTag("hotels");
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    if (!rawFormData.city) {
+      return {
+        error: "Please select a location.",
+      };
+    }
+
+    const database = client.db("marriot-db");
+    const hotels = database.collection("hotels");
+
+    const hotel = {
+      name: rawFormData.name,
+      description: rawFormData.description,
+      amenities: JSON.parse(rawFormData.amenities as string),
+      picture: rawFormData.picture,
+      location: {
+        street: rawFormData.street,
+        city: rawFormData.city,
+        state: rawFormData.state,
+        country: rawFormData.country,
+        address: rawFormData.address,
+      },
+      reviews: {
+        count: 0,
+        average: 0,
+      },
+      rooms: {
+        juniorSuite: {
+          picture: rawFormData.juniorSuitePicture,
+          price: Number(rawFormData.juniorSuitePrice),
+          description: rawFormData.juniorSuiteDescription,
+          maxOccupancy: Number(rawFormData.juniorSuiteMaxOccupancy),
+          beds: {
+            amount: Number(rawFormData.juniorSuiteBedsAmount),
+            size: rawFormData.juniorSuiteBedsSize,
+          },
+          roomSize: rawFormData.juniorSuiteRoomSize,
+          totalRooms: Number(rawFormData.juniorSuiteTotalRooms),
+          reservedRooms: 0,
+        },
+        standardSuite: {
+          picture: rawFormData.standardSuitePicture,
+          price: Number(rawFormData.standardSuitePrice),
+          description: rawFormData.standardSuiteDescription,
+          maxOccupancy: Number(rawFormData.standardSuiteMaxOccupancy),
+          beds: {
+            amount: Number(rawFormData.standardSuiteBedsAmount),
+            size: rawFormData.standardSuiteBedsSize,
+          },
+          roomSize: rawFormData.standardSuiteRoomSize,
+          totalRooms: Number(rawFormData.standardSuiteTotalRooms),
+          reservedRooms: 0,
+        },
+        doubleSuite: {
+          picture: rawFormData.doubleSuitePicture,
+          price: Number(rawFormData.doubleSuitePrice),
+          description: rawFormData.doubleSuiteDescription,
+          maxOccupancy: Number(rawFormData.doubleSuiteMaxOccupancy),
+          beds: {
+            amount: Number(rawFormData.doubleSuiteBedsAmount),
+            size: rawFormData.doubleSuiteBedsSize,
+          },
+          roomSize: rawFormData.doubleSuiteRoomSize,
+          totalRooms: Number(rawFormData.doubleSuiteTotalRooms),
+          reservedRooms: 0,
+        },
+        bigSuite: {
+          picture: rawFormData.bigSuitePicture,
+          price: Number(rawFormData.bigSuitePrice),
+          description: rawFormData.bigSuiteDescription,
+          maxOccupancy: Number(rawFormData.bigSuiteMaxOccupancy),
+          beds: {
+            amount: Number(rawFormData.bigSuiteBedsAmount),
+            size: rawFormData.bigSuiteBedsSize,
+          },
+          roomSize: rawFormData.bigSuiteRoomSize,
+          totalRooms: Number(rawFormData.bigSuiteTotalRooms),
+          reservedRooms: 0,
+        },
+      },
+      commentaries: [],
+    };
+
+    await hotels.insertOne(hotel);
   } catch (e) {
     if (e instanceof Error) {
+      // console.log(e);
       return {
-        error: `${e.name}: ${e.message}`,
-        message: "Database Error: Failed to Delete Hotel.",
+        error: "Database Error: Failed to Create Hotel.",
       };
     }
   }
+
+  redirect("/administration/hotels");
 }
