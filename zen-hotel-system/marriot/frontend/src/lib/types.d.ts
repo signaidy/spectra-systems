@@ -8,7 +8,7 @@ declare global {
     children: Commentary[];
   }
 
-  interface Location {
+  interface HotelLocation {
     _id: string;
     street: string;
     city: string;
