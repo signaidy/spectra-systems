@@ -16,20 +16,6 @@
       .then((response) => response.json())
       .then((userpurchases) => {
         historicalpurchases = userpurchases;
-        if (historicalpurchases.length > 0) {
-        billData.customer.name = historicalpurchases[0].user_name
-        billData.items.total = historicalpurchases[0].price
-        billData.items.unitprice = historicalpurchases[0].price
-        billData.subtotal = historicalpurchases[0].price
-        billData.total = historicalpurchases[0].price
-        billData.invoiceNumber = historicalpurchases[0].purchase_number
-        billData.date = historicalpurchases[0].purchase_date
-        billData.ticket.origin = historicalpurchases[0].origin
-        billData.ticket.destination = historicalpurchases[0].destination
-        billData.ticket.departure = historicalpurchases[0].departure_date
-        billData.ticket.arrival = historicalpurchases[0].arrival_date
-        billData.ticket.paymenth_method = historicalpurchases[0].paymenth_method
-        }
       });
   });
 
@@ -58,31 +44,17 @@
       unitprice: "0", 
       total: "20.00",
     }, 
-    // items: [
-    //   {
-    //     description: "Avianca ticket",
-    //     // quantity: 2,
-    //     // unitPrice: 10.00,
-    //     total: 20.00,
-    //   },
-    //   {
-    //     description: "Service 2",
-    //     quantity: 1,
-    //     unitPrice: 50.00,
-    //     total: 50.00,
-    //   },
-    // ],
     subtotal: "70.00",
     percentage: "0", // Assuming 15% tax
     total: "80.50",
   };
 
-  function generatePDF() {
+  function generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name) {
   const doc = new jsPDF({ unit: "mm", format: [210, 297] }); // A4 format
 
   // Set document properties (optional)
   doc.setProperties({
-    title: `Invoice ${billData.invoiceNumber}`,
+    title: `Invoice ${purchase_number}`,
     subject: "Invoice from " + billData.company.name,
   });
 
@@ -100,29 +72,29 @@
 
   // Customer Information
   doc.text("Bill To:", 140, 34, { fontStyle: "bold" }); // Bold "Bill To"
-  doc.text(billData.customer.name, 140, 39);
+  doc.text(user_name, 140, 39);
 
   // Invoice Details
   doc.setFontSize(10);
   doc.text("Invoice Number:", 10, 48); // Align left
-  doc.text(billData.invoiceNumber, 50, 48);
+  doc.text(purchase_number, 50, 48);
   doc.text("Invoice Date:", 10, 54); // Align left
-  doc.text(billData.date, 50, 54);
+  doc.text(purchase_date, 50, 54);
 
   //Flight information
   doc.setFontSize(10);
   doc.text("From:", 10, 62); // Align left
-  doc.text(billData.ticket.origin, 50, 62);
+  doc.text(origin, 50, 62);
   doc.text("To:", 10, 67); // Align left
 
   doc.text("Payed with:", 10, 77); // Align left
-  doc.text(billData.ticket.paymenth_method, 30, 77);
+  doc.text(paymenth_method, 30, 77);
 
-  doc.text(billData.ticket.destination, 50, 67);
+  doc.text(destination, 50, 67);
   doc.text("Departure date:", 120, 62); // Align left
-  doc.text(billData.ticket.departure, 150, 62);
+  doc.text(departure_date, 150, 62);
   doc.text("Arrival date:", 120, 67); // Align left
-  doc.text(billData.ticket.arrival, 150, 67);
+  doc.text(arrival_date, 150, 67);
 
   // Table Header
   doc.setFontSize(12);
@@ -141,8 +113,8 @@
   // billData.items.forEach((item) => {
     doc.text(billData.items.description, 10, y);
     doc.text(billData.items.quantity.toString(), 70, y);
-    doc.text("$ " + billData.items.unitprice + ".00", 130, y, { align: "right" });
-    doc.text("$ " + billData.items.total + ".00", 175, y, { align: "right" });
+    doc.text("$ " + price + ".00", 130, y, { align: "right" });
+    doc.text("$ " + price + ".00", 175, y, { align: "right" });
     y += 5;
   // });
 
@@ -151,14 +123,14 @@
   doc.line(10, y + 2, 190, y + 2);
   y += 7;
   doc.text("Subtotal:", 10, y);
-  doc.text("$ " + billData.subtotal + ".00", 175, y, { align: "right" });
+  doc.text("$ " + price + ".00", 175, y, { align: "right" });
   y += 7;
   doc.text("Discount:", 10, y);
   doc.text("$ " + billData.percentage + ".00", 175, y, { align: "right" });
   y += 7;
   doc.setFontSize(14); // Slightly larger font for total
   doc.text("Total:", 10, y, { fontStyle: "bold" }); // Bold total
-  doc.text("$ " + billData.total + ".00", 175, y, { align: "right", fontStyle: "bold" });
+  doc.text("$ " + price + ".00", 175, y, { align: "right", fontStyle: "bold" });
 
   // Save the PDF
   doc.save("invoice.pdf");
@@ -224,7 +196,7 @@
           </div>
           <button
             class="middle none center rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            on:click={generatePDF}
+            on:click={generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name)}
             data-ripple-light="true"
           >
             Generate PDF
