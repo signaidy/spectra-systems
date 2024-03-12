@@ -10,6 +10,7 @@ export function HotelCardSkeleton() {
           <div className="h-7 w-[142px] bg-muted-foreground rounded-lg mt-auto" />
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
+          <div className="h-7 w-28 bg-muted-foreground rounded-lg" />
           <div className="h-10 w-[107px] bg-muted-foreground rounded-lg" />
         </div>
       </div>
