@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Server;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -439,14 +441,14 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(
-                            "SELECT tickets.ticket_id, tickets.user_id, tickets.flight_id, tickets.type, tickets.state, tickets.price, users.first_name from tickets left join users on tickets.user_id = users.user_id");
+                            "SELECT tickets.ticket_id, tickets.user_id, tickets.flight_id, tickets.type, tickets.state, tickets.price, users.first_name, users.email from tickets left join users on tickets.user_id = users.user_id");
             ResultSet result = query.executeQuery();
 
             while (result.next()) {
                 tickets.add(
                         new TicketRecord(result.getInt("ticket_id"), result.getInt("price"), result.getInt("flight_id"),
                                 result.getString("type"), result.getString("state"), result.getInt("user_id"),
-                                result.getString("first_name")));
+                                result.getString("first_name"), result.getString("email")));
             }
 
             return tickets;
@@ -1118,6 +1120,32 @@ public Object updateFlightandTickets(@PathVariable int flight_id) {
     }
 }
 
+//Tickets Individual - Cancelation
+@PostMapping("/ticketcanceled/{ticket_id}")
+public Object updateIndividualTicket(@PathVariable int ticket_id) {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "UPDATE TICKETS SET User_ID = NULL WHERE TICKET_ID = %d",
+                        ticket_id));
+        query.executeQuery();
+
+        return new WebSuccess("User Ticket canceled");
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to execute operation");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 //User Discount - GET
 @GetMapping("/discount/{id}")
 public Object getDiscount(@PathVariable int id) {
@@ -1152,6 +1180,41 @@ public Object getDiscount(@PathVariable int id) {
         }
     }
 }
+
+// //User Email - GET
+// @GetMapping("/email/{id}")
+// public Object getDiscount(@PathVariable int id) {
+//     Connection conn = new OracleConnector().getConnection();
+//     try {
+
+//         PreparedStatement query = conn
+//                 .prepareStatement(String.format(
+//                         "SELECT percentage FROM USERS WHERE user_id = %d",
+//                         id));
+//         ResultSet result = query.executeQuery();
+
+//         record Discount(int discount) {
+//         }
+
+//         if (result.next()) {
+//             return new Discount(
+//                     result.getInt("percentage")
+//       );
+//         }
+//         return new WebError("Failed to get user Discount");
+//     } catch (Throwable e) {
+//         e.printStackTrace();
+//         return new WebError("Failed to retrieve information");
+//     } finally {
+//         try {
+//             if (conn != null) {
+//                 conn.close();
+//             }
+//         } catch (SQLException e) {
+//             e.printStackTrace();
+//         }
+//     }
+// }
 
 
 }

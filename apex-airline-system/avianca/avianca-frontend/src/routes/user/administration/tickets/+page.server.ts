@@ -8,5 +8,5 @@ export async function load({ locals }) {
     return result;
   }
 
-  return { user: locals.user, tickets: getAllTickets() };
+  return { user: locals.user, tickets: getAllTickets()};
 }

@@ -1,17 +1,17 @@
-<script lang="ts">
+<script lang="ts" src="https://www.google.com/recaptcha/api.js" async defer>
   import { enhance } from "$app/forms";
-  import Captcha from "$lib/assets/Captcha.png"; 
+  // import Captcha from "$lib/assets/Captcha.png";
   import { Label } from "$lib/components/ui/label";
   import { Input } from "$lib/components/ui/input";
   import { Button } from "$lib/components/ui/button";
   import { Loader2 } from "lucide-svelte";
-
   export let form;
 
   let loading = false;
 
-
-
+  // function enabledSubmit(response) {
+  // document.getElementsByNamu('enviar')[0].disabled = false;
+  // }
 </script>
 
 <div
@@ -102,15 +102,29 @@
         </div>
       </div>
       <div class="verification-container">
-        <div class="flex flex-col gap-y-2">
-          <div class="text-blue-800 flex justify-center items-center ml-10">
-            <input type="checkbox" class="mr-2"/>
-            <span class="mb-1">I'm not a robot</span>
-            <img class="w-[50px] h-[50px] ml-2" src={Captcha} alt="Captcha">
-          </div>
-          </div>
+        <div class="flex flex-col gap-y-2 items-center">
+          <html>
+            <head>
+              <title>reCAPTCHA demo: Simple page</title>
+              <script
+                src="https://www.google.com/recaptcha/api.js"
+                async
+                defer
+              ></script>
+            </head>
+            <body>
+              <form action="?" method="POST">
+                <div
+                  class="g-recaptcha"
+                  data-sitekey="6LfqapMpAAAAAHquHP9eo_lto-64CBjze61uwUVA"
+                ></div>
+                <br />
+              </form>
+            </body>
+          </html>
+        </div>
       </div>
-      <Button type="submit" disabled={loading}>Sign In</Button>
+      <Button type="submit" disabled={loading} name="enviar">Sign In</Button>
     </form>
   </div>
 </div>

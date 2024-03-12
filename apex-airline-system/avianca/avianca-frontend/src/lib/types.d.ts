@@ -60,6 +60,7 @@ interface Ticket {
   state: string;
   userId: number;
   userName: string;
+  email: string; 
 }
 
 interface Commentary {
