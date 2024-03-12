@@ -9,35 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 // Icons
-import {
-  ArrowRight,
-  Star,
-  MapPin,
-  Wifi,
-  Dumbbell,
-  Dog,
-  ParkingSquare,
-  EggFried,
-  Check,
-  MessageSquare,
-} from "lucide-react";
+import { ArrowRight, Star, MapPin, Check, MessageSquare } from "lucide-react";
 
-function Amenitie({
-  title,
-  icon,
-}: {
-  title: string;
-  icon: React.ReactElement;
-}) {
-  return (
-    <div className="flex items-center">
-      {icon}
-      <div>{title}</div>
-    </div>
-  );
-}
-
-export function HotelDialog() {
+export function HotelDialog(props: Hotel) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -48,23 +22,18 @@ export function HotelDialog() {
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[70vh] overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-y-1 ">
-          <h1 className="text-xl font-bold">The Grand Budapest Hotel</h1>
+          <h1 className="text-xl font-bold">{props.name}</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
-            <div>4</div>
+            <div>{props.reviews.average}</div>
             <Star className="w-4 h-4 text-black fill-yellow-500" />
-            <div>(23 reviews)</div>
+            <div>({props.reviews.count} reviews)</div>
             <div>|</div>
             <MapPin className="w-4 h-4 text-black fill-red-700" />
-            <div>New York</div>
+            <div>{props.location.address}</div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
-            <p className="text-sm">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio
-              quibusdam tempore veritatis blanditiis quos, eos saepe nemo!
-              Quaerat distinctio cumque aperiam quo quos rem odio, pariatur
-              libero voluptatibus, aut nam.
-            </p>
+            <p className="text-sm">{props.description}</p>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Rooms</div>
@@ -74,13 +43,27 @@ export function HotelDialog() {
                 .map((_, i) => (
                   <div key={i} className="relative h-52">
                     <Image
-                      src="/hotel-background.jpg"
+                      src={
+                        i === 0
+                          ? props.rooms.juniorSuite.picture
+                          : i === 1
+                          ? props.rooms.standardSuite.picture
+                          : i === 2
+                          ? props.rooms.doubleSuite.picture
+                          : props.rooms.bigSuite.picture
+                      }
                       fill
                       alt="Room Image"
                       className="object-cover rounded-lg border"
                     />
                     <div className="text-xs border font-bold absolute top-0 right-0 bg-background p-1 rounded-bl-lg rounded-tr-lg">
-                      Deluxe Room
+                      {i === 0
+                        ? "Junior"
+                        : i === 1
+                        ? "Standard"
+                        : i === 2
+                        ? "Double"
+                        : "Big"}
                     </div>
                   </div>
                 ))}
@@ -89,30 +72,13 @@ export function HotelDialog() {
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Amenities</div>
             <p className="text-sm grid grid-cols-3 gap-y-5">
-              <Amenitie
-                title="Free Wi-Fi"
-                icon={<Wifi className="h-4 w-4 mr-3" />}
-              />
-              <Amenitie
-                title="Gym"
-                icon={<Dumbbell className="h-4 w-4 mr-3" />}
-              />
-              <Amenitie
-                title="Pet Friendly"
-                icon={<Dog className="h-4 w-4 mr-3" />}
-              />
-              <Amenitie
-                title="Parking"
-                icon={<ParkingSquare className="h-4 w-4 mr-3" />}
-              />
-              <Amenitie
-                title="Free Food"
-                icon={<EggFried className="h-4 w-4 mr-3" />}
-              />
-              <Amenitie
-                title="Pool"
-                icon={<Check className="h-4 w-4 mr-3" />}
-              />
+              {props.amenities.map((amenity, index) => (
+                <Amenity
+                  key={index}
+                  title={amenity}
+                  icon={<Check className="w-4 h-4 mr-3" />}
+                />
+              ))}
             </p>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
@@ -186,5 +152,14 @@ export function HotelDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function Amenity({ title, icon }: { title: string; icon: React.ReactElement }) {
+  return (
+    <div className="flex items-center">
+      {icon}
+      <div>{title}</div>
+    </div>
   );
 }
