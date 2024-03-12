@@ -1,6 +1,6 @@
 import { SectionTitle } from "@/components/user/sectionTitle";
 
-export default function DashboardHome() {
+export default function PurchaseLogsHome() {
   return (
     <>
       <SectionTitle
