@@ -95,7 +95,7 @@ export async function createHotel(prevState: any, formData: FormData) {
     await hotels.insertOne(hotel);
   } catch (e) {
     if (e instanceof Error) {
-      // console.log(e);
+      console.log(e);
       return {
         error: "Database Error: Failed to Create Hotel.",
       };
