@@ -1,10 +1,12 @@
 "use server";
 import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { format } from "date-fns";
 
-const { MongoClient } = require("mongodb");
+import { MongoClient, ObjectId } from "mongodb";
 
-const client = new MongoClient(process.env.MONGODB_URI);
+const client = new MongoClient(process.env.MONGODB_URI!);
 
 export async function createHotel(prevState: any, formData: FormData) {
   try {
@@ -94,13 +96,47 @@ export async function createHotel(prevState: any, formData: FormData) {
 
     await hotels.insertOne(hotel);
   } catch (e) {
-    if (e instanceof Error) {
-      console.log(e);
-      return {
-        error: "Database Error: Failed to Create Hotel.",
-      };
-    }
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Hotel.",
+    };
   }
 
   redirect("/administration/hotels");
+}
+
+export async function createCommentary(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    if (!rawFormData.message) {
+      return {
+        error: "Please enter a message.",
+      };
+    }
+
+    const commentary = {
+      _id: Date.now().toString(),
+      parentId: rawFormData.parentId || "",
+      userId: rawFormData.userId || "",
+      userName: rawFormData.userName || "Anonymous",
+      date: format(new Date(), "MM/dd/yyyy HH:mm"),
+      message: rawFormData.message,
+    };
+
+    const database = client.db("marriot-db");
+    const hotels = database.collection("hotels");
+
+    await hotels.updateOne(
+      { _id: new ObjectId(rawFormData.hotelId as string) },
+      { $push: { commentaries: commentary } }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Commentary.",
+    };
+  }
+
+  revalidatePath("/");
 }
