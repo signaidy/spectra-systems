@@ -42,14 +42,6 @@ onMount(async () => {
       });
   });
 
-  // onMount(async () => {
-  //   fetch(`http://localhost:8080/get-city/${}`)
-  //     .then((response) => response.json())
-  //     .then((citiesinformation) => {
-  //       cities = citiesinformation;
-  //       return cities
-  //     });
-  // });
 
 </script>
 

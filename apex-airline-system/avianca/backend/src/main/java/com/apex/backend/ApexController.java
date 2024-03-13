@@ -1180,39 +1180,6 @@ public class ApexController {
         }
     }
 
-    // Individual City - GET
-    @GetMapping("/get-city/{city_name}")
-    public Object getUniqueCity(@PathVariable String city_name) {
-        Connection conn = new OracleConnector().getConnection();
-        try {
-            PreparedStatement query = conn
-                    .prepareStatement(String.format(
-                            "SELECT CITY_ID FROM CITIES WHERE Name = '%s'",
-                            city_name));
-            ResultSet result = query.executeQuery();
-
-            record individualcity(int city_id) {
-            }
-
-            if (result.next()) {
-                return new individualcity(
-                        result.getInt("city_id"));
-            }
-            return new WebError("Failed to get city ID");
-        } catch (Throwable e) {
-            e.printStackTrace();
-            return new WebError("API DENIED ACCESS");
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     // Update flight
     @PostMapping("/update-flight/{flight_id}")
     public Object updateFlight(@RequestBody CityFlight cityf,  @PathVariable int flight_id) {
