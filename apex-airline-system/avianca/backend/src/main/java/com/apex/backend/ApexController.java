@@ -1182,45 +1182,14 @@ public class ApexController {
 
     // Update flight
     @PostMapping("/update-flight/{flight_id}")
-    public Object updateFlight(@RequestBody CityFlight cityf,  @PathVariable int flight_id) {
+    public Object updateFlight(@RequestBody Flight flight,  @PathVariable int flight_id) {
         Connection conn = new OracleConnector().getConnection();
 
         try {
-            PreparedStatement origincity = conn
-                    .prepareStatement(String.format(
-                            "SELECT CITY_ID FROM CITIES WHERE name = '%s'",
-                            cityf.originCityFlight));
-            origincity.executeQuery();
-            ResultSet originSet = origincity.executeQuery();
-            if (originSet.next()) { 
-                System.err.println("IM IN");
-                int origincityid = originSet.getInt(1); 
-                PreparedStatement query = conn
-                        .prepareStatement(String.format(
-                                "UPDATE FLIGHTS SET Origin = %d WHERE FLIGHT_ID = %d",
-                                origincityid, flight_id));
-                query.executeQuery();
-                }
-            
-            PreparedStatement destinationcity = conn
-                    .prepareStatement(String.format(
-                            "SELECT CITY_ID FROM CITIES WHERE name = '%s'",
-                            cityf.destinationCityFlight));
-            destinationcity.executeQuery();
-            ResultSet destinationSet = destinationcity.executeQuery();
-            if (destinationSet.next()) { 
-            int destinationcityid = destinationSet.getInt(1); 
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE FLIGHTS SET Destination = %d WHERE FLIGHT_ID = %d",
-                            destinationcityid, flight_id));
-            query.executeQuery();
-            } 
-
-            PreparedStatement query = conn
-                    .prepareStatement(String.format(
-                            "UPDATE FLIGHTS SET Departure_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), Arrival_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), Detail = '%s' WHERE FLIGHT_ID = %d",
-                            cityf.departureDate, cityf.arrivalDate, cityf.detail, flight_id));
+                            "UPDATE FLIGHTS SET Origin = %d, Destination = %d, Departure_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD'), Arrival_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD'), Detail = '%s' WHERE FLIGHT_ID = %d",
+                            flight.originCity, flight.destinationCity ,flight.departureDate, flight.arrivalDate, flight.detail, flight_id));
             query.executeQuery();
 
             return new WebSuccess("Flight updated successfully");
