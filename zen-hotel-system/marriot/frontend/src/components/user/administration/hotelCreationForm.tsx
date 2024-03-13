@@ -1,6 +1,7 @@
 "use client";
 import { useFormState } from "react-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
 import { useState } from "react";
 // Data
 import { createHotel } from "@/lib/actions";
@@ -14,7 +15,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 // Icons
 import { Hotel, Star, DoorOpen, Check, Trash2 } from "lucide-react";
-import { useEffect } from "react";
 
 export function HotelCreationForm({
   locations,

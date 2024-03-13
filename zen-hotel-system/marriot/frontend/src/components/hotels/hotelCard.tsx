@@ -11,7 +11,6 @@ export function HotelCard(props: Hotel) {
       <div className="relative">
         <Image
           src={props.picture}
-          sizes="(min-width: 1536px) 535px, (min-width: 1280px) 425px, (min-width: 1024px) 230px"
           alt={`${props.name} Hotel Image`}
           fill
           className="object-cover rounded-l-md"
