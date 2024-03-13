@@ -1,4 +1,7 @@
 import Image from "next/image";
+// Components
+import { Commentary } from "@/components/hotels/commentary";
+import { CommentaryForm } from "@/components/hotels/commentaryForm";
 // UI Components
 import { Button } from "@/components/ui/button";
 import {
@@ -7,9 +10,8 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 // Icons
-import { ArrowRight, Star, MapPin, Check, MessageSquare } from "lucide-react";
+import { ArrowRight, Star, MapPin, Check } from "lucide-react";
 
 export function HotelDialog(props: Hotel) {
   return (
@@ -20,7 +22,7 @@ export function HotelDialog(props: Hotel) {
           <ArrowRight className="ml-1 w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl max-h-[70vh] overflow-y-auto custom-scrollbar">
+      <DialogContent className="max-w-3xl max-h-[75vh] overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-y-1 ">
           <h1 className="text-xl font-bold">{props.name}</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
@@ -72,83 +74,40 @@ export function HotelDialog(props: Hotel) {
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Amenities</div>
             <p className="text-sm grid grid-cols-3 gap-y-5">
-              {props.amenities.map((amenity, index) => (
-                <Amenity
-                  key={index}
-                  title={amenity}
-                  icon={<Check className="w-4 h-4 mr-3" />}
-                />
-              ))}
+              {props.amenities.length > 0
+                ? props.amenities.map((amenity, index) => (
+                    <Amenity
+                      key={index}
+                      title={amenity}
+                      icon={<Check className="w-4 h-4 mr-3" />}
+                    />
+                  ))
+                : "This hotel has no amenities."}
             </p>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Commentaries</div>
-            <form className="flex gap-x-2 mb-2">
-              <Input type="text" placeholder="Add a comment" />
-              <Button>Comment</Button>
-            </form>
+            <CommentaryForm hotelId={props._id} />
             {/* Thread Container */}
             <div className="flex flex-col gap-y-8">
-              {/* Single */}
-              <div className="flex flex-col gap-y-1 text-sm border-l rounded-tl-2xl">
-                <div className="flex gap-x-2 items-center">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500" />
-                  <div className="flex items-center gap-x-1">
-                    <div className="font-bold">Messi</div>
-                    <div className="text-foreground font-extralight">
-                      • 03/03/2024
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-y-px pl-9">
-                  <p>Great hotel!</p>
-                  <Button variant="ghost" className="w-fit p-0">
-                    Reply <MessageSquare className="h-4 w-4 ml-1" />
-                  </Button>
-                </div>
-                {/* Nested Single */}
-                <div className="ml-9 flex flex-col gap-y-1 mt-2 text-sm border-l rounded-tl-2xl">
-                  <div className="flex gap-x-2 items-center">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500" />
-                    <div className="flex items-center gap-x-1">
-                      <div className="font-bold">Messi</div>
-                      <div className="text-foreground font-extralight">
-                        • 03/03/2024
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-y-px pl-9">
-                    <p>Great hotel!</p>
-                    <Button variant="ghost" className="w-fit p-0">
-                      Reply <MessageSquare className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="ml-9 flex flex-col gap-y-1 mt-2 text-sm border-l rounded-tl-2xl">
-                  <div className="flex gap-x-2 items-center">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500" />
-                    <div className="flex items-center gap-x-1">
-                      <div className="font-bold">Messi</div>
-                      <div className="text-foreground font-extralight">
-                        • 03/03/2024
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-y-px pl-9">
-                    <p>Great hotel!</p>
-                    <Button variant="ghost" className="w-fit p-0">
-                      Reply <MessageSquare className="h-4 w-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-                {/* End Nested Single */}
-              </div>
-              {/* End Single */}
+              {props.commentaries.length > 0
+                ? props.commentaries.map((commentary, index) => (
+                    <Commentary
+                      key={index}
+                      _id={commentary._id}
+                      hotelId={props._id}
+                      userName={commentary.userName}
+                      date={commentary.date}
+                      message={commentary.message}
+                      Children={commentary.children}
+                    />
+                  ))
+                : "No commentaries yet."}
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">View Rates</Button>
+          <Button>View Rates</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
