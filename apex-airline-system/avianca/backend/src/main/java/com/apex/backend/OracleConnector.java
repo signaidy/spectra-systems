@@ -10,9 +10,9 @@ public class OracleConnector {
         try {
             OracleDataSource ods = new OracleDataSource();
             ods = new OracleDataSource();
-            ods.setURL("");
-            ods.setUser("");
-            ods.setPassword("");
+            ods.setURL("jdbc:oracle:thin:@64.23.141.91:1521/FREE");
+            ods.setUser("system");
+            ods.setPassword("admin");
             conn = ods.getConnection();
         } catch (SQLException e) {
             System.out.println("Failed to connect to the database.");
