@@ -5,11 +5,13 @@
   import LocationPicker from "$lib/components/user/administration/flightCreator/locationPicker.svelte";
   import { type DateValue } from "@internationalized/date";
   import { onMount } from "svelte";
+  import { Input } from "$lib/components/ui/input";
+  import { Label } from "$lib/components/ui/label";
   import {
-  toCalendarDateTime,
-  parseTime,
-  parseDate,
-} from "@internationalized/date";
+    toCalendarDateTime,
+    parseTime,
+    parseDate,
+  } from "@internationalized/date";
 
   export let flight: CompleteFlight;
 
@@ -45,14 +47,19 @@
     }
   }
 
-   function UpdateFlight(flightId, departureDay, arrivalDay, originCity, destinationCity) {
+  function UpdateFlight(flightId, departureDay,arrivalDay, originCity, destinationCity) {
     const detailFlight = document.getElementById("detail").value;
+    const departureTime = document.getElementById("departureTime").value;
+    const arrivalTime = document.getElementById("arrivalTime").value;
 
-    const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day}`
-    const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day}`
+    console.log(departureTime);
+    console.log(arrivalTime);
 
-    console.log(departureDateFormated); 
-    console.log(arrivalDateFormated); 
+    const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day} ${departureTime}`;
+    const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day} ${arrivalTime}`;
+
+    console.log(departureDateFormated);
+    console.log(arrivalDateFormated);
 
     try {
       const response = fetch(
@@ -65,9 +72,8 @@
             destinationCity: destinationCity,
             departureDate: departureDateFormated,
             arrivalDate: arrivalDateFormated,
-            detail: detailFlight
-
-        }),
+            detail: detailFlight,
+          }),
         }
       );
     } catch (error) {
@@ -193,6 +199,8 @@
             </p>
           </div>
           <DatePicker bind:value={departureDay} />
+          <Label for="departureTime" class="font-bold mt-2">Departure Time</Label>
+          <Input type="time" id="departureTime" name="departureTime" />
         </div>
         <div class="flex flex-col gap-y-1">
           <div class="font-medium">
@@ -201,6 +209,8 @@
             </p>
           </div>
           <DatePicker bind:value={arrivalDay} />
+          <Label for="arrivalTime" class="font-bold mt-2">Arrival Time</Label>
+          <Input type="time" id="arrivalTime" name="arrivalTime" />
         </div>
       </div>
       <div class="flex flex-col gap-y-2">
@@ -259,7 +269,13 @@
         <Button on:click={() => (edit = false)}>Go back</Button>
         <button
           class="text-white bg-indigo-600 rounded px-2 py-2 focus:outline-none focus:shadow-outline object-right"
-          on:click={UpdateFlight(flight.flightId, departureDay, arrivalDay, originCity, destinationCity)}
+          on:click={UpdateFlight(
+            flight.flightId,
+            departureDay,
+            arrivalDay,
+            originCity,
+            destinationCity
+          )}
         >
           <span class="ml-1 text-sm">Confirm changes</span>
         </button>

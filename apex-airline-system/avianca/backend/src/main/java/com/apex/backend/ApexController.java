@@ -1188,7 +1188,7 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE FLIGHTS SET Origin = %d, Destination = %d, Departure_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD'), Arrival_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD'), Detail = '%s' WHERE FLIGHT_ID = %d",
+                            "UPDATE FLIGHTS SET Origin = %d, Destination = %d, Departure_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), Arrival_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), Detail = '%s' WHERE FLIGHT_ID = %d",
                             flight.originCity, flight.destinationCity ,flight.departureDate, flight.arrivalDate, flight.detail, flight_id));
             query.executeQuery();
 
