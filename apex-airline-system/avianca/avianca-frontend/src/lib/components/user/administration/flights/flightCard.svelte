@@ -7,11 +7,6 @@
   import { onMount } from "svelte";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
-  import {
-    toCalendarDateTime,
-    parseTime,
-    parseDate,
-  } from "@internationalized/date";
 
   export let flight: CompleteFlight;
 
@@ -47,19 +42,19 @@
     }
   }
 
-  function UpdateFlight(flightId, departureDay,arrivalDay, originCity, destinationCity) {
+  async function UpdateFlight(
+    flightId,
+    departureDay,
+    arrivalDay,
+    originCity,
+    destinationCity
+  ) {
     const detailFlight = document.getElementById("detail").value;
     const departureTime = document.getElementById("departureTime").value;
     const arrivalTime = document.getElementById("arrivalTime").value;
 
-    console.log(departureTime);
-    console.log(arrivalTime);
-
     const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day} ${departureTime}`;
     const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day} ${arrivalTime}`;
-
-    console.log(departureDateFormated);
-    console.log(arrivalDateFormated);
 
     try {
       const response = fetch(
@@ -78,6 +73,14 @@
       );
     } catch (error) {
       console.error("API error:", error);
+    }
+
+    let shouldRefresh = true;
+
+    if (shouldRefresh) {
+      await new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+        window.location.reload()
+      );
     }
   }
 </script>
@@ -199,7 +202,9 @@
             </p>
           </div>
           <DatePicker bind:value={departureDay} />
-          <Label for="departureTime" class="font-bold mt-2">Departure Time</Label>
+          <Label for="departureTime" class="font-bold mt-2"
+            >Departure Time</Label
+          >
           <Input type="time" id="departureTime" name="departureTime" />
         </div>
         <div class="flex flex-col gap-y-1">
