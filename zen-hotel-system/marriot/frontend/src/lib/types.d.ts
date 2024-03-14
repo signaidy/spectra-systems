@@ -1,11 +1,13 @@
 declare global {
+  
   interface Commentary {
     _id: string;
-    userId: number;
+    parentId: string;
+    userId: string;
     userName: string;
-    date: Date;
-    description: string;
-    children: Commentary[];
+    date: string;
+    message: string;
+    children?: Commentary[];
   }
 
   interface HotelLocation {
@@ -93,7 +95,7 @@ declare global {
 
   export interface Reservation {
     _id: string;
-    userId: number;
+    userId: string;
     hotelId: string;
     roomType: string;
     checkIn: Date;

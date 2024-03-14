@@ -21,7 +21,6 @@ export function RoomCard({
       <div className="relative">
         <Image
           src="/hotel-background.jpg"
-          sizes="(min-width: 1536px) 535px, (min-width: 1280px) 425px, (min-width: 1024px) 230px"
           alt={`${name} Hotel Image`}
           fill
           className="object-cover rounded-l-md"

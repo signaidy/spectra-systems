@@ -15,14 +15,14 @@ export default function SearchHome() {
       />
       <div className="container flex flex-col py-8 gap-y-10">
         <SearchBar />
-        <HotelCard
+        {/* <HotelCard
           name="Hotel Name"
           description="
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident nisi eos molestiae, placeat suscipit veniam rerum aliquid, ipsa, totam officiis iusto quam tenetur incidunt omnis unde. Neque consequatur autem quae."
           location="Hotel Location"
           reviewCount={5}
           reviewAverage={4.5}
-        />
+        /> */}
       </div>
     </section>
   );
