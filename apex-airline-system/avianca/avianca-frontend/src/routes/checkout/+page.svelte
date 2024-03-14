@@ -9,17 +9,13 @@
   export let isOpen = false;
 
   let userid = data.user.userId;
-
   let flight_id = $page.url.searchParams.get("flightId");
   let passengers = $page.url.searchParams.get("passengers");
   let category = $page.url.searchParams.get("category");
-
   let card = "";
-
   let availabletickets = [];
   let ticketsamount_available;
   let discount; 
-
   let price;
   let from;
   let to;
