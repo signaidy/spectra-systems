@@ -47,34 +47,12 @@
 
    function UpdateFlight(flightId, departureDay, arrivalDay, originCity, destinationCity) {
     const detailFlight = document.getElementById("detail").value;
-    console.log(flightId); 
-    // console.log(arrivalDay); 
-    console.log(originCity); 
-    console.log(destinationCity); 
-    console.log(detailFlight); 
-
-    console.log
 
     const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day}`
     const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day}`
 
     console.log(departureDateFormated); 
     console.log(arrivalDateFormated); 
-
-
-    // const departureDate = toCalendarDateTime(
-    //     parseDate((departureDay)),
-    //     // parseTime((arrivalDay))
-    //   );
-
-      // console.log(departureDate.toString().replace("T", " ")); 
-
-      // const arrivalDate = toCalendarDateTime(
-      //   parseDate((arrivalDay)),
-      //   // parseTime(data.get("arrivalTime"))
-      // );
-
-      // console.log(arrivalDay.toString().replace("T", " ")); 
 
     try {
       const response = fetch(
@@ -257,12 +235,14 @@
         <div class="flex flex-col gap-y-1">
           <div class="font-medium">Origin</div>
           <div class="text-sm text-muted-foreground">
+            <p>{flight.originCityName}</p>
             <LocationPicker {cities} bind:value={originCity} />
           </div>
         </div>
         <div class="flex flex-col gap-y-1">
           <div class="font-medium">Destination</div>
           <div class="text-sm text-muted-foreground">
+            <p>{flight.destinationCityName}</p>
             <LocationPicker {cities} bind:value={destinationCity} />
           </div>
         </div>
