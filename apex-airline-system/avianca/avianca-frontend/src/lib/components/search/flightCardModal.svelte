@@ -5,14 +5,6 @@
   import { Input } from "$lib/components/ui/input";
   import { ArrowRight, Star, Send } from "lucide-svelte";
 
-//   function enhanceReplyForm() {
-//     console.log("Inside function")
-//   return async ({ update }) => {
-//     createLoading = true;
-//     await update();
-//     createLoading = false;
-//   };
-// }
 
   function renderCommentary(commentary: Commentary): string {
     let padding = 8;

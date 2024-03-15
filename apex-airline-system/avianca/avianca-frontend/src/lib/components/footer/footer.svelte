@@ -6,20 +6,32 @@
 
   let Logo; 
   let Text_Logo; 
+  let footer = getFooterInformation();
 
-  const aboutUsLinks = [
-    { name: "We are avianca", href: "/aboutus" },
-    { name: "Destinations", href: "/" },
-    { name: "Boarding Rules", href: "/" },
-    { name: "Seat Types", href: "/" },
-    { name: "Carriage", href: "/" },
-    { name: "Partners", href: "/" },
-  ];
+  async function getFooterInformation() {
+  const response = await fetch("http://localhost:8080/footer");
+  const footerdata = await response.json();
+  aboutUsLinks.push(
+    { name: footerdata.Section_1, href: footerdata.L1 },
+    { name: footerdata.Section_2, href: footerdata.L2 },
+    { name: footerdata.Section_3, href: footerdata.L3 },
+    { name: footerdata.Section_4, href: footerdata.L4 },
+    { name: footerdata.Section_5, href: footerdata.L5 },
+    { name: footerdata.Section_6, href: footerdata.L6 },
+  );
 
-  const quickLinks = [
-    { name: "Legal Information", href: "/" },
-    { name: "Privacy Policy", href: "/" },
-  ];
+  quickLinks.push(
+    { name: footerdata.Q_1, href: footerdata.Link_quick_1 },
+    { name: footerdata.Q_2, href: footerdata.Link_quick_2 }
+  );
+
+  console.log(footerdata); 
+  return footerdata;
+  }
+
+  const aboutUsLinks = [];
+
+  const quickLinks = [];
 
 onMount(async () => {
     const response = await fetch("http://localhost:8080/header");
@@ -29,44 +41,68 @@ onMount(async () => {
   });
 </script>
 
+{#await footer}
+<div class="flex items-center justify-center w-full h-full mt-10">
+  <div
+    class="flex justify-center items-center space-x-1 text-xl text-gray-700"
+  >
+    <svg
+      fill="none"
+      class="w-8 h-8 animate-spin"
+      viewBox="0 0 32 32"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        clip-rule="evenodd"
+        d="M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z"
+        fill="currentColor"
+        fill-rule="evenodd"
+      />
+    </svg>
+    <div>Loading ...</div>
+  </div>
+</div>
+{:then datafoot}
+
 <footer class="flex flex-col border-t">
   <div class="flex container flex-col p-8 gap-y-10">
     <div class="flex">
       <img src={Logo} alt="Loading..." class="w-[55px] h-[50px]" /><p class="satisfy-regular">{Text_Logo}</p>
     </div>
     <div class="flex gap-x-20">
-      <Section title="About Us">
+      <Section title={datafoot.Title_1}>
         {#each aboutUsLinks as item}
           <Button variant="link" class="p-0 justify-normal" href={item.href}>
             {item.name}
           </Button>
         {/each}
       </Section>
-      <Section title="Quick Links">
+      <Section title={datafoot.Title_2}>
         {#each quickLinks as item}
           <Button variant="link" class="p-0 justify-normal" href={item.href}>
             {item.name}
           </Button>
         {/each}
       </Section>
-      <Section title="Contact Us">
+      <Section title={datafoot.Title_3}>
         <Button variant="link" class="p-0 justify-normal">
-          Carretera a Fraijanes, Finca Santa Isabel, Fraijanes, Guatemala
+          {datafoot.C_1}
         </Button>
         <Button variant="link" class="p-0 justify-normal">
-          +502 6665-3700
+          {datafoot.C_2}
         </Button>
       </Section>
     </div>
   </div>
   <div class="border-t">
     <div
-      class="flex container py-3 px-8 items-center text-muted-foreground text-xs"
+      class="flex justify-center container py-3 px-8 items-center text-muted-foreground text-xs"
     >
-      Avianca 2024 <Copyright class="mx-1 w-3 h-3" />All rights reserved.
+      {datafoot.Copyright} <Copyright class="mx-1 w-3 h-3" />All rights reserved.
     </div>
   </div>
 </footer>
+{/await}
 
 <style>
   .satisfy-regular {

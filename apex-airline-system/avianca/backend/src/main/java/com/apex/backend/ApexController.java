@@ -1207,4 +1207,81 @@ public class ApexController {
         }
     }
 
+    // Header - GET INFORMATION
+    @GetMapping("/footer")
+    public Object getFooter() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM Footer"));
+            ResultSet result = query.executeQuery();
+
+            record Header(
+                String Title_1,
+                    String Section_1,
+                    String L1,
+                    String Section_2,
+                    String L2,
+                    String Section_3,
+                    String L3,
+                    String Section_4,
+                    String L4,
+                    String Section_5,
+                    String L5,
+                    String Section_6,
+                    String L6,
+                String Title_2,
+                    String Q_1,
+                    String Link_quick_1,
+                    String Q_2,
+                    String Linkl_quick_2,
+                String Title_3, 
+                    String C_1,
+                    String C_2, 
+                String Copyright) {
+            }
+
+            if (result.next()) {
+                return new Header(
+                        result.getString("Title_1"),
+                        result.getString("Section_1"),
+                        result.getString("L1"),
+                        result.getString("Section_2"),
+                        result.getString("L2"),
+                        result.getString("Section_3"),
+                        result.getString("L3"),
+                        result.getString("Section_4"),
+                        result.getString("L4"),
+                        result.getString("Section_5"),
+                        result.getString("L5"),
+                        result.getString("Section_6"),
+                        result.getString("L6"),
+                        result.getString("Title_2"),
+                        result.getString("Q_1"),
+                        result.getString("Link_quick_1"), 
+                        result.getString("Q_2"),
+                        result.getString("Link_quick_2"), 
+                        result.getString("Title_3"),
+                        result.getString("C_1"), 
+                        result.getString("C_2"), 
+                        result.getString("Copyright")
+                );
+            }
+            return new WebError("Failed to get footer information");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("API Incorrect");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
