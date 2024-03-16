@@ -1284,6 +1284,37 @@ public class ApexController {
         }
     }
 
+    // Footer - UPDATE
+    @PostMapping("/update-footer")
+    public Object updateFooter(@RequestBody Footer footer) {
+        Connection conn = new OracleConnector().getConnection();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "UPDATE Footer SET Title_1 = '%s', SECTION_1 = '%s', L1 = '%s', SECTION_2 = '%s', L2 = '%s', SECTION_3 = '%s', L3 = '%s', \n" + //
+                            "SECTION_4 = '%s', L4 = '%s', SECTION_5 = '%s', L5 = '%s', SECTION_6 = '%s', L6 = '%s', Title_2 = '%s', \n" + //
+                            "Q_1 = '%s', Link_quick_1 = '%s', Q_2 = '%s', Link_quick_2 = '%s', Title_3 = '%s', C_1 = '%s', C_2 = '%s', copyright = '%s' WHERE ID = 1",
+                            footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3, footer.L3, footer.Section_4, footer.L4,
+                            footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2, footer.Quick_Section_1, footer.Link_quick_1, 
+                            footer.Quick_Section_2, footer.Link_quick_2, footer.Title_3, footer.Contact_1, footer.Contact_2, footer.copyright));
+            query.executeQuery();
+
+            return new WebSuccess("Footer information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
 }
