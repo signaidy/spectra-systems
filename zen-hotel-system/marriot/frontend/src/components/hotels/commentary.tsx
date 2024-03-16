@@ -65,7 +65,7 @@ export function Commentary({
   return (
     <div className="flex flex-col gap-y-1 text-sm border-l rounded-tl-2xl">
       <div className="flex gap-x-2 items-center">
-        <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500" />
+        <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500" />
         <div className="flex items-center gap-x-1">
           <div className="font-bold">{userName}</div>
           <div className="text-foreground font-extralight">• {date}</div>
