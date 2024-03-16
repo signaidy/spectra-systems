@@ -1182,14 +1182,15 @@ public class ApexController {
 
     // Update flight
     @PostMapping("/update-flight/{flight_id}")
-    public Object updateFlight(@RequestBody Flight flight,  @PathVariable int flight_id) {
+    public Object updateFlight(@RequestBody Flight flight, @PathVariable int flight_id) {
         Connection conn = new OracleConnector().getConnection();
 
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE FLIGHTS SET Origin = %d, Destination = %d, Departure_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), Arrival_date = TO_TIMESTAMP('%s', 'YYYY-MM-DD HH24:MI:SS'), Detail = '%s' WHERE FLIGHT_ID = %d",
-                            flight.originCity, flight.destinationCity ,flight.departureDate, flight.arrivalDate, flight.detail, flight_id));
+                            flight.originCity, flight.destinationCity, flight.departureDate, flight.arrivalDate,
+                            flight.detail, flight_id));
             query.executeQuery();
 
             return new WebSuccess("Flight updated successfully");
@@ -1219,7 +1220,7 @@ public class ApexController {
             ResultSet result = query.executeQuery();
 
             record Footer(
-                String Title_1,
+                    String Title_1,
                     String Section_1,
                     String L1,
                     String Section_2,
@@ -1232,15 +1233,15 @@ public class ApexController {
                     String L5,
                     String Section_6,
                     String L6,
-                String Title_2,
+                    String Title_2,
                     String Q_1,
                     String Link_quick_1,
                     String Q_2,
                     String Linkl_quick_2,
-                String Title_3, 
+                    String Title_3,
                     String C_1,
-                    String C_2, 
-                String Copyright) {
+                    String C_2,
+                    String Copyright) {
             }
 
             if (result.next()) {
@@ -1260,14 +1261,13 @@ public class ApexController {
                         result.getString("L6"),
                         result.getString("Title_2"),
                         result.getString("Q_1"),
-                        result.getString("Link_quick_1"), 
+                        result.getString("Link_quick_1"),
                         result.getString("Q_2"),
-                        result.getString("Link_quick_2"), 
+                        result.getString("Link_quick_2"),
                         result.getString("Title_3"),
-                        result.getString("C_1"), 
-                        result.getString("C_2"), 
-                        result.getString("Copyright")
-                );
+                        result.getString("C_1"),
+                        result.getString("C_2"),
+                        result.getString("Copyright"));
             }
             return new WebError("Failed to get footer information");
         } catch (Throwable e) {
@@ -1292,12 +1292,17 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE Footer SET Title_1 = '%s', SECTION_1 = '%s', L1 = '%s', SECTION_2 = '%s', L2 = '%s', SECTION_3 = '%s', L3 = '%s', \n" + //
-                            "SECTION_4 = '%s', L4 = '%s', SECTION_5 = '%s', L5 = '%s', SECTION_6 = '%s', L6 = '%s', Title_2 = '%s', \n" + //
-                            "Q_1 = '%s', Link_quick_1 = '%s', Q_2 = '%s', Link_quick_2 = '%s', Title_3 = '%s', C_1 = '%s', C_2 = '%s', copyright = '%s' WHERE ID = 1",
-                            footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3, footer.L3, footer.Section_4, footer.L4,
-                            footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2, footer.Quick_Section_1, footer.Link_quick_1, 
-                            footer.Quick_Section_2, footer.Link_quick_2, footer.Title_3, footer.Contact_1, footer.Contact_2, footer.copyright));
+                            "UPDATE Footer SET Title_1 = '%s', SECTION_1 = '%s', L1 = '%s', SECTION_2 = '%s', L2 = '%s', SECTION_3 = '%s', L3 = '%s', \n"
+                                    + //
+                                    "SECTION_4 = '%s', L4 = '%s', SECTION_5 = '%s', L5 = '%s', SECTION_6 = '%s', L6 = '%s', Title_2 = '%s', \n"
+                                    + //
+                                    "Q_1 = '%s', Link_quick_1 = '%s', Q_2 = '%s', Link_quick_2 = '%s', Title_3 = '%s', C_1 = '%s', C_2 = '%s', copyright = '%s' WHERE ID = 1",
+                            footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3,
+                            footer.L3, footer.Section_4, footer.L4,
+                            footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2,
+                            footer.Quick_Section_1, footer.Link_quick_1,
+                            footer.Quick_Section_2, footer.Link_quick_2, footer.Title_3, footer.Contact_1,
+                            footer.Contact_2, footer.copyright));
             query.executeQuery();
 
             return new WebSuccess("Footer information updated");
@@ -1315,6 +1320,49 @@ public class ApexController {
         }
     }
 
+    // Partners - GET INFORMATION
+    @GetMapping("/partners")
+    public Object getPartners() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM partners"));
+            ResultSet result = query.executeQuery();
 
+            record Partner(String Title, String Description, String Partener1, String L1, String Partener2, String L2,
+                    String Partener3, String L3,
+                    String Partener4, String L4, String Partener5, String L5) {
+            }
+
+            if (result.next()) {
+                return new Partner(
+                        result.getString("Title"),
+                        result.getString("Description"),
+                        result.getString("Partner_1"),
+                        result.getString("L1"),
+                        result.getString("Partner_2"),
+                        result.getString("L2"),
+                        result.getString("Partner_3"),
+                        result.getString("L3"),
+                        result.getString("Partner_4"),
+                        result.getString("L4"),
+                        result.getString("Partner_5"),
+                        result.getString("L5"));
+            }
+            return new WebError("Failed to get partners");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("API Incorrect");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
