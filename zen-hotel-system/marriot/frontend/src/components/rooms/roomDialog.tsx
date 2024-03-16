@@ -26,7 +26,7 @@ export function RoomDialog() {
           <ArrowRight className="ml-1 w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl max-h-[70vh] overflow-y-auto custom-scrollbar">
+      <DialogContent className="max-w-3xl max-h-[75vh] overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-y-1 ">
           <h1 className="text-xl font-bold">Double Room</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
