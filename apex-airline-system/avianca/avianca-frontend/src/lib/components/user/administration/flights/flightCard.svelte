@@ -266,7 +266,10 @@
         <div class="flex flex-col gap-y-1">
           <div class="font-medium">Flight details</div>
           <div class="text-sm text-muted-foreground">
-            <textarea id="detail" name="detail" placeholder={flight.detail} />
+            <textarea 
+            id="detail" 
+            name="detail" 
+            placeholder={flight.detail} />
           </div>
         </div>
       </div>
