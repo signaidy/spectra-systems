@@ -24,8 +24,6 @@
     { name: footerdata.Q_1, href: footerdata.Link_quick_1 },
     { name: footerdata.Q_2, href: footerdata.Link_quick_2 }
   );
-
-  console.log(footerdata); 
   return footerdata;
   }
 
