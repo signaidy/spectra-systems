@@ -1330,9 +1330,9 @@ public class ApexController {
                             "SELECT * FROM partners"));
             ResultSet result = query.executeQuery();
 
-            record Partner(String Title, String Description, String Partener1, String L1, String Partener2, String L2,
-                    String Partener3, String L3,
-                    String Partener4, String L4, String Partener5, String L5) {
+            record Partner(String Title, String Description, String Partner1, String L1, String Partner2, String L2,
+                    String Partner3, String L3,
+                    String Partner4, String L4, String Partner5, String L5) {
             }
 
             if (result.next()) {

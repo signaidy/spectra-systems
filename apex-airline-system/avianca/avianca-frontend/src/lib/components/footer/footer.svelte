@@ -65,7 +65,7 @@ onMount(async () => {
 <footer class="flex flex-col border-t">
   <div class="flex container flex-col p-8 gap-y-10">
     <div class="flex">
-      <img src={Logo} alt="Loading..." class="w-[55px] h-[50px]" /><p class="satisfy-regular">{Text_Logo}</p>
+      <img src={Logo} alt="Logo" class="w-[55px] h-[50px]" /><p class="satisfy-regular">{Text_Logo}</p>
     </div>
     <div class="flex gap-x-20">
       <Section title={datafoot.Title_1}>

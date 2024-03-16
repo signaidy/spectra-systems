@@ -1,4 +1,18 @@
 <script>
+  import { onMount } from "svelte";
+
+  let Title;
+  let Description;
+  let Partner1;
+  let L1;
+  let Partner2;
+  let L2;
+  let Partner3;
+  let L3;
+  let Partner4;
+  let L4;
+  let Partner5;
+  let L5;
   let informationabout = getAboutInformation();
 
   async function getAboutInformation() {
@@ -6,6 +20,23 @@
     const aboutdata = await response.json();
     return aboutdata;
   }
+
+  onMount(async () => {
+    const response = await fetch("http://localhost:8080/partners");
+    const data = await response.json();
+    Title = data.Title;
+    Description = data.Description;
+    Partner1 = data.Partner1;
+    L1 = data.L1;
+    Partner2 = data.Partner2;
+    L2 = data.L2;
+    Partner3 = data.Partner3;
+    L3 = data.L3;
+    Partner4 = data.Partner4;
+    L4 = data.L4;
+    Partner5 = data.Partner5;
+    L5 = data.L5;
+  });
 </script>
 
 {#await informationabout}
@@ -207,14 +238,12 @@
     <h1
       class="text-3xl lg:text-4xl dark:text-white font-semibold leading-9 md:leading-7 lg:leading-9 text-red-800"
     >
-      Our Trusted Partners
+      {Title}
     </h1>
     <p
       class="text-base leading-6 dark:text-gray-400 text-center text-gray-600 w-full md:w-10/12"
     >
-      We just got featured in the following magazines and it has been the most
-      incredible journey. We work with the best fashion magazines across the
-      world
+      {Description}
     </p>
   </div>
   <div class="dark:bg-gray-800 mb-10">
@@ -222,58 +251,28 @@
       class="grid xl:grid-cols-5 grid-cols-1 md:grid-cols-4 justify-items-center md:justify-items-center xl:justify-items-center md:py-12 gap-y-8 xl:gap-y-0 gap-x-20 py-9 2xl:container 2xl:mx-auto xl:px-20 md:px-6 px-28"
     >
       <div class="text-gray-800 dark:text-white">
-        <a
-          href="https://www.hilton.com/es/hotels/guallhh-hilton-guatemala-city/"
-        >
-          <img
-            class="dark:hidden"
-            src="https://upload.wikimedia.org/wikipedia/commons/1/17/The_Leading_Hotels_of_the_World_logo.svg"
-            alt="Partner 1"
-          />
+        <a href={L1}>
+          <img class="dark:hidden" src={Partner1} alt="Partner1" />
         </a>
       </div>
       <div class="text-gray-800 dark:text-white">
-        <a
-          href="https://www.hilton.com/es/hotels/guallhh-hilton-guatemala-city/"
-        >
-          <img
-            class="dark:hidden"
-            src="https://upload.wikimedia.org/wikipedia/commons/7/74/Radisson_Hotels_logo.svg"
-            alt="Partner 2"
-          />
+        <a href={L2}>
+          <img class="dark:hidden" src={Partner2} alt="Partner 2" />
         </a>
       </div>
       <div class="text-gray-800 dark:text-white">
-        <a
-          href="https://www.hilton.com/es/hotels/guallhh-hilton-guatemala-city/"
-        >
-          <img
-            class="dark:hidden"
-            src="https://upload.wikimedia.org/wikipedia/commons/2/28/Swissotel_Hotels_and_Resorts_logo.svg"
-            alt="Partner 3"
-          /></a
+        <a href={L3}>
+          <img class="dark:hidden" src={Partner3} alt="Partner 3" /></a
         >
       </div>
       <div class="text-gray-800 dark:text-white">
-        <a
-          href="https://www.hilton.com/es/hotels/guallhh-hilton-guatemala-city/"
-        >
-          <img
-            class="dark:hidden"
-            src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Westin_Hotels_Logo.svg"
-            alt="Partner 4"
-          /></a
+        <a href={L4}>
+          <img class="dark:hidden" src={Partner4} alt="Partner 4" /></a
         >
       </div>
       <div class="text-gray-800 dark:text-white">
-        <a
-          href="https://www.hilton.com/es/hotels/guallhh-hilton-guatemala-city/"
-        >
-          <img
-            class="dark:hidden"
-            src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Wyndham_Hotels_%26_Resorts_logo.svg"
-            alt="Partner 5"
-          /></a
+        <a href={L5}>
+          <img class="dark:hidden" src={Partner5} alt="Partner 5" /></a
         >
       </div>
     </div>
