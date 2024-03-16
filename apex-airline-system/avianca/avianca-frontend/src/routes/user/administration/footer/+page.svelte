@@ -25,6 +25,7 @@
     let C1 = data.footer.C_1
     let C2 = data.footer.C_2
     let copycontent = data.footer.Copyright
+    console.log(data.footer); 
   </script>
   
   <div class="arrowd">
