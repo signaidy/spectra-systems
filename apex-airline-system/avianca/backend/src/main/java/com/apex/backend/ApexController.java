@@ -1207,7 +1207,7 @@ public class ApexController {
         }
     }
 
-    // Header - GET INFORMATION
+    // Footer - GET INFORMATION
     @GetMapping("/footer")
     public Object getFooter() {
         Connection conn = new OracleConnector().getConnection();
@@ -1218,7 +1218,7 @@ public class ApexController {
                             "SELECT * FROM Footer"));
             ResultSet result = query.executeQuery();
 
-            record Header(
+            record Footer(
                 String Title_1,
                     String Section_1,
                     String L1,
@@ -1244,7 +1244,7 @@ public class ApexController {
             }
 
             if (result.next()) {
-                return new Header(
+                return new Footer(
                         result.getString("Title_1"),
                         result.getString("Section_1"),
                         result.getString("L1"),
