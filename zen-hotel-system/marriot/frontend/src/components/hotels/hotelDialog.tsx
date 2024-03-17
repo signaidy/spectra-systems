@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 // Components
 import { Commentary } from "@/components/hotels/commentary";
 import { CommentaryForm } from "@/components/hotels/commentaryForm";
@@ -107,7 +108,9 @@ export function HotelDialog(props: Hotel) {
           </div>
         </div>
         <DialogFooter>
-          <Button>View Rates</Button>
+          <Button>
+            <Link href={`/search/${props._id}`}>View Rates</Link>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

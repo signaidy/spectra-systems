@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 // Components
 import { HotelDialog } from "@/components/hotels/hotelDialog";
 // UI Components
@@ -32,12 +33,16 @@ export function HotelCard(props: Hotel) {
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
           <div className="flex gap-x-1 items-end">
-            <div className="font-bold text-xl">{props.rooms.juniorSuite.price}</div>
+            <div className="font-bold text-xl">
+              {props.rooms.juniorSuite.price}
+            </div>
             <div className="text-sm mb-[2px] text-muted-foreground">
               USD / Night
             </div>
           </div>
-          <Button>View Rates</Button>
+          <Button asChild>
+            <Link href={`/search/${props._id}`}>View Rates</Link>
+          </Button>
         </div>
       </div>
     </article>
