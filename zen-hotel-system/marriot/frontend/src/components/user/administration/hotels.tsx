@@ -1,5 +1,5 @@
 import { getHotels } from "@/lib/data";
-import { HotelCard } from "@/components/hotels/hotelCard";
+import { HotelAdministrationCard } from "@/components/hotels/hotelAdministrationCard";
 
 export async function Hotels() {
   const hotels = await getHotels();
@@ -12,7 +12,7 @@ export async function Hotels() {
         </div>
       )}
       {hotels.map((hotel: Hotel) => (
-        <HotelCard key={hotel._id} {...hotel} />
+        <HotelAdministrationCard key={hotel._id} {...hotel} />
       ))}
     </>
   );
