@@ -7,17 +7,20 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 // Icons
-import {
-  ArrowRight,
-  BedDouble,
-  UserRound,
-  Bed,
-  Lamp
-} from "lucide-react";
+import { ArrowRight, BedDouble, UserRound, Bed, Lamp } from "lucide-react";
 
-export function RoomDialog() {
+export function RoomDialog(props: {
+  type: string;
+  picture: string;
+  price: number;
+  description: string;
+  maxOccupancy: number;
+  beds: { amount: number; size: string };
+  roomSize: string;
+  totalRooms: number;
+  reservedRooms: number;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,45 +31,56 @@ export function RoomDialog() {
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[75vh] overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-y-1 ">
-          <h1 className="text-xl font-bold">Double Room</h1>
+          <h1 className="text-xl font-bold">
+            {props.type === "juniorSuite"
+              ? "Junior Suite"
+              : props.type === "standardSuite"
+              ? "Standard Suite"
+              : props.type === "doubleSuite"
+              ? "Double Suite"
+              : "Big Suite"}
+          </h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
             <BedDouble className="w-4 h-4 text-black fill-yellow-500" />
-            <div>5 beds</div>
+            <div>
+              {props.beds.amount} {props.beds.size} Size beds
+            </div>
             <div>|</div>
             <UserRound className="w-4 h-4 text-black fill-red-700" />
-            <div>5 maximum occupancy</div>
+            <div>{props.maxOccupancy} maximum occupancy</div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
-            <p className="text-sm">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio
-              quibusdam tempore veritatis blanditiis quos, eos saepe nemo!
-              Quaerat distinctio cumque aperiam quo quos rem odio, pariatur
-              libero voluptatibus, aut nam.
-            </p>
+            <p className="text-sm">{props.description}</p>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Room View</div>
             <div className="relative h-52">
               <Image
-                src="/hotel-background.jpg"
+                src={props.picture}
                 fill
-                alt="Room Image"
+                alt={`${props.type} Image`}
                 className="object-cover rounded-lg border"
               />
             </div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
-            <div className="flex items-center font-medium text-lg">Beds and Bedding <Bed className="h-4 w-4 ml-3" /></div>
+            <div className="flex items-center font-medium text-lg">
+              Beds and Bedding <Bed className="h-4 w-4 ml-3" />
+            </div>
             <div className="flex flex-col gap-y-5 text-sm">
-              <div>• 4 maximum occupancy</div>
-              <div>• 5 beds</div>
+              <div>• {props.maxOccupancy} maximum occupancy</div>
+              <div>
+                • {props.beds.amount} {props.beds.size} Size beds
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
-            <div className="flex items-center font-medium text-lg">Room Features <Lamp className="h-4 w-4 ml-3" /></div>
+            <div className="flex items-center font-medium text-lg">
+              Room Features <Lamp className="h-4 w-4 ml-3" />
+            </div>
             <div className="flex flex-col gap-y-5 text-sm">
-              <div>• 450sqft/41sqm</div>
+              <div>• {props.roomSize}</div>
             </div>
           </div>
         </div>

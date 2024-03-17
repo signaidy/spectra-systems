@@ -4,7 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 import { useState } from "react";
 // Data
-import { createHotel } from "@/lib/actions";
+import { updateHotel } from "@/lib/actions";
 // Components
 import { LocationPicker } from "@/components/user/administration/locationPicker";
 import { SubmitButton } from "@/components/user/administration/submitButton";
@@ -16,18 +16,20 @@ import { Button } from "@/components/ui/button";
 // Icons
 import { Hotel, Star, DoorOpen, Check, Trash2 } from "lucide-react";
 
-export function HotelCreationForm({
+export function HotelModificationForm({
+  hotel,
   locations,
 }: {
+  hotel: Hotel;
   locations: HotelLocation[];
 }) {
   const { toast } = useToast();
 
   const [amenity, setAmenity] = useState<string>("");
-  const [amenities, setAmenities] = useState<string[]>([]);
+  const [amenities, setAmenities] = useState<string[]>(hotel.amenities);
 
   const initialState = { error: "" };
-  const [state, formAction] = useFormState(createHotel, initialState);
+  const [state, formAction] = useFormState(updateHotel, initialState);
 
   useEffect(() => {
     if (state?.error) {
@@ -44,6 +46,7 @@ export function HotelCreationForm({
       action={formAction}
       className="flex flex-col border p-3 rounded-lg gap-y-5 mb-8 mr-8"
     >
+      <input type="hidden" name="_id" value={hotel._id} />
       <input type="hidden" name="amenities" value={JSON.stringify(amenities)} />
       <div className="flex flex-col gap-y-5 pb-5 border-b">
         <div className="flex text-lg font-bold items-center">
@@ -52,7 +55,7 @@ export function HotelCreationForm({
         </div>
         <div className="flex flex-col gap-y-2">
           <Label htmlFor="name">Hotel Name</Label>
-          <Input id="name" name="name" required defaultValue="Le Méridien" />
+          <Input id="name" name="name" required defaultValue={hotel.name} />
         </div>
         <div className="flex flex-col gap-y-2">
           <Label htmlFor="location">Location</Label>
@@ -64,7 +67,7 @@ export function HotelCreationForm({
             id="picture"
             name="picture"
             required
-            defaultValue="/hotel-background.jpg"
+            defaultValue={hotel.picture}
           />
         </div>
         <div className="flex flex-col gap-y-2">
@@ -73,7 +76,7 @@ export function HotelCreationForm({
             id="description"
             name="description"
             required
-            defaultValue="Escape the ordinary and step into a world of comfort and convenience! Whether you're a solo adventurer, a romantic couple, or a family seeking unforgettable memories, we offer the perfect haven for your stay."
+            defaultValue={hotel.description}
           />
         </div>
         <div className="flex flex-col gap-y-2">
@@ -117,20 +120,41 @@ export function HotelCreationForm({
           <DoorOpen className="h-5 w-5 ml-3" />
         </div>
         <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-          <Suite type="junior" />
-          <Suite type="standard" />
-          <Suite type="double" />
-          <Suite type="big" />
+          <Suite type="junior" {...hotel.rooms.juniorSuite} />
+          <Suite type="standard" {...hotel.rooms.standardSuite} />
+          <Suite type="double" {...hotel.rooms.doubleSuite} />
+          <Suite type="big" {...hotel.rooms.bigSuite} />
         </div>
       </div>
-      <SubmitButton>Create Hotel</SubmitButton>
+      <SubmitButton>Update Hotel</SubmitButton>
     </form>
   );
 }
 
-export function Suite({ type }: { type: string }) {
+export function Suite({
+  type,
+  picture,
+  price,
+  description,
+  maxOccupancy,
+  beds,
+  roomSize,
+  totalRooms,
+  reservedRooms,
+}: {
+  type: string;
+  picture: string;
+  price: number;
+  description: string;
+  maxOccupancy: number;
+  beds: { amount: number; size: string };
+  roomSize: string;
+  totalRooms: number;
+  reservedRooms: number;
+}) {
   return (
     <div className="flex flex-col gap-y-5">
+      <input type="hidden" name={`${type}SuiteReservedRooms`} value={reservedRooms} />
       <div className="flex items-center font-bold capitalize">
         {type} Suite{" "}
         {Array(
@@ -153,7 +177,7 @@ export function Suite({ type }: { type: string }) {
           id={`${type}SuitePicture`}
           name={`${type}SuitePicture`}
           required
-          defaultValue="/hotel-background.jpg"
+          defaultValue={picture}
         />
       </div>
       <div className="flex gap-x-2 gap-y-5">
@@ -164,15 +188,7 @@ export function Suite({ type }: { type: string }) {
             id={`${type}SuitePrice`}
             name={`${type}SuitePrice`}
             required
-            defaultValue={
-              type === "junior"
-                ? 50
-                : type === "standard"
-                ? 100
-                : type === "double"
-                ? 150
-                : 200
-            }
+            defaultValue={price}
           />
         </div>
         <div className="flex flex-col gap-y-2 w-full">
@@ -182,15 +198,7 @@ export function Suite({ type }: { type: string }) {
             id={`${type}SuiteMaxOccupancy`}
             name={`${type}SuiteMaxOccupancy`}
             required
-            defaultValue={
-              type === "junior"
-                ? 1
-                : type === "standard"
-                ? 2
-                : type === "double"
-                ? 6
-                : 8
-            }
+            defaultValue={maxOccupancy}
           />
         </div>
         <div className="flex flex-col gap-y-2 w-full">
@@ -200,7 +208,7 @@ export function Suite({ type }: { type: string }) {
             id={`${type}SuiteTotalRooms`}
             name={`${type}SuiteTotalRooms`}
             required
-            defaultValue={10}
+            defaultValue={totalRooms}
           />
         </div>
       </div>
@@ -211,15 +219,7 @@ export function Suite({ type }: { type: string }) {
             id={`${type}SuiteRoomSize`}
             name={`${type}SuiteRoomSize`}
             required
-            defaultValue={
-              type === "junior"
-                ? "145sqft/13sqm"
-                : type === "standard"
-                ? "160sqft/15sqm"
-                : type === "double"
-                ? "175sqft/17sqm"
-                : "200sqft/19sqm"
-            }
+            defaultValue={roomSize}
           />
         </div>
         <div className="flex flex-col gap-y-2 w-full">
@@ -229,15 +229,7 @@ export function Suite({ type }: { type: string }) {
             id={`${type}SuiteBedsAmount`}
             name={`${type}SuiteBedsAmount`}
             required
-            defaultValue={
-              type === "junior"
-                ? 1
-                : type === "standard"
-                ? 2
-                : type === "double"
-                ? 3
-                : 4
-            }
+            defaultValue={beds.amount}
           />
         </div>
         <div className="flex flex-col gap-y-2 w-full">
@@ -246,15 +238,7 @@ export function Suite({ type }: { type: string }) {
             id={`${type}SuiteBedsSize`}
             name={`${type}SuiteBedsSize`}
             required
-            defaultValue={
-              type === "junior"
-                ? "Twin"
-                : type === "standard"
-                ? "Full"
-                : type === "double"
-                ? "Double"
-                : "King"
-            }
+            defaultValue={beds.size}
           />
         </div>
       </div>
@@ -264,15 +248,7 @@ export function Suite({ type }: { type: string }) {
           id={`${type}SuiteDescription`}
           name={`${type}SuiteDescription`}
           required
-          defaultValue={
-            type === "junior"
-              ? "A cozy suite, featuring a sleeping area and a separate living space, ideal for shorter stays or solo travelers."
-              : type === "standard"
-              ? "Offering a comfortable amount of space, this suite typically includes a separate bedroom and living area, suitable for couples or small families."
-              : type === "double"
-              ? "This suite provides ample living space, featuring two bedrooms and a living area, perfect for families or groups traveling together."
-              : "The most spacious option, a big suite offers a luxurious amount of room, often including multiple bedrooms, a living area, and potentially additional features like a dining area or wet bar, ideal for large groups or extended stays."
-          }
+          defaultValue={description}
         />
       </div>
     </div>

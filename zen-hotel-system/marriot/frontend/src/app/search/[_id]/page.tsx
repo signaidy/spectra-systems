@@ -5,17 +5,12 @@ import { getCities } from "@/lib/data";
 // Components
 import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
 import { SearchBar } from "@/components/searchBar/searchBar";
-import { FilteredHotels } from "@/components/hotels/filteredHotels";
+import { HotelRooms } from "@/components/rooms/hotelRooms";
 
-export default async function SearchHome({
-  searchParams,
+export default async function HotelRoomsHome({
+  params,
 }: {
-  searchParams: {
-    location: string;
-    checkin: string;
-    checkout: string;
-    guests: number;
-  };
+  params: { _id: string };
 }) {
   const cities = await getCities();
 
@@ -38,7 +33,7 @@ export default async function SearchHome({
               <HotelCardSkeleton key={index} />
             ))}
         >
-          <FilteredHotels searchParams={searchParams} />
+          <HotelRooms id={params._id} />
         </Suspense>
       </div>
     </section>

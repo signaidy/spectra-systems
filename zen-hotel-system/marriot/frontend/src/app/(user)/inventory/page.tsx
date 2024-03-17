@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { Hotels } from "@/components/user/inventory/hotels";
 import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
 import { SectionTitle } from "@/components/user/sectionTitle";
-// UI Components
 import { InventorySearchBar } from "@/components/searchBar/inventorySearchBar";
 
 export default function InventoryHome() {
