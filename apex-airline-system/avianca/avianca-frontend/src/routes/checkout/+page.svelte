@@ -58,6 +58,8 @@
     );
     const data = await response.json();
     discount = data.discount;
+    const formData = new FormData();
+    formData.append("Discount", discount);
   });
 
 </script>
@@ -321,5 +323,6 @@
     <input type="hidden" name="flight_id" value={flight_id} />
     <input type="hidden" name="category" value={category} />
     <input type="hidden" name="state" value={state} />
+    <input type="hidden" name="discount" value={discount} />
   </div>
 </form>

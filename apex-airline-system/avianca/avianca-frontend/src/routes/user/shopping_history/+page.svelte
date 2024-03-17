@@ -6,16 +6,7 @@
 
   export let data;
   let userid = data.user.userId;
-  let discount; 
   let historicalpurchases = [];
-
-  onMount(async () => {
-    const response = await fetch(
-      `http://localhost:8080/discount/${userid}`
-    );
-    const data = await response.json();
-    discount = data.discount;
-  });
 
   onMount(async () => {
     fetch(`http://localhost:8080/historical_purchases/${userid}`)
@@ -32,7 +23,14 @@
     const data = await response.json();
     billData.company.name = data.Text_Logo;
   });
-
+  
+  onMount(async () => {
+    const response = await fetch(
+      `http://localhost:8080/footer`
+    );
+    const data = await response.json();
+    billData.company.address = data.C_1;
+  });
 
   let billData = {
     company: {
@@ -64,7 +62,7 @@
     total: "80.50",
   };
 
-  function generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name, user_id) {
+  function generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, discount,  user_name) {
   const doc = new jsPDF({ unit: "mm", format: [210, 297] }); // A4 format
 
   // Set document properties (optional)
@@ -164,7 +162,7 @@
 
 <div>
   {#if historicalpurchases.length > 0}
-    {#each historicalpurchases as { purchase_number, ticket, type, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name, user_id }}
+    {#each historicalpurchases as { purchase_number, ticket, type, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name, discount, user_id }}
       <div class="p-10">
         <div
           class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
@@ -223,7 +221,7 @@
           </div>
           <button
             class="middle none center rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            on:click={generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, user_name)}
+            on:click={generatePDF(purchase_number, origin, destination, purchase_date, price, paymenth_method, arrival_date, departure_date, discount,  user_name)}
             data-ripple-light="true"
           >
             Generate PDF

@@ -4,9 +4,12 @@ export const actions = {
        const formData = await request.formData(); 
        let method = formData.get("paymenth_method");
        let amount = formData.get("passengers");
+       console.log(amount); 
+       let discount = formData.get("discount");
+       console.log(discount); 
 
 
-       const response = await fetch(`http://localhost:8080/purchase/${amount}/${method}`, {
+       const response = await fetch(`http://localhost:8080/purchase/${amount}/${method}/${discount}`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",

@@ -113,7 +113,7 @@ public class ApexController {
                     .prepareStatement(String.format(
                             "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age, percentage, entry_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s, %s, TO_DATE('%s', 'dd-MM-yyyy'))",
                             user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
-                            user.passportNumber, user.age, null, dtf.format(now)));
+                            user.passportNumber, user.age, 0, dtf.format(now)));
             query.executeQuery();
 
             PreparedStatement retrievalQueery = conn
@@ -663,7 +663,7 @@ public class ApexController {
 
             record User_purchases(String purchase_number, String ticket, String type, String origin, String destination,
                     String purchase_date, String price, String paymenth_method,
-                    String departure_date, String arrival_date, String user_name, int user_id) {
+                    String departure_date, String arrival_date, String user_name, int discount, int user_id) {
             }
 
             List<User_purchases> historicalPurchases = new ArrayList<>();
@@ -680,6 +680,7 @@ public class ApexController {
                         result.getString("departure_date"),
                         result.getString("arrival_date"),
                         result.getString("user_name"),
+                        result.getInt("discount"),
                         result.getInt("user_id")));
             }
             if (historicalPurchases.isEmpty()) {
@@ -840,8 +841,8 @@ public class ApexController {
     }
 
     // Purchase - API
-    @PostMapping("/purchase/{amount}/{method}")
-    public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method) {
+    @PostMapping("/purchase/{amount}/{method}/{discount}")
+    public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method, @PathVariable int discount) {
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
@@ -877,12 +878,12 @@ public class ApexController {
                 int userId = usertickets.getInt("user_id");
 
                 PreparedStatement purchased_ticket = conn.prepareStatement(String.format(
-                        "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method)\n" + //
-                                "SELECT %d, %d, TO_DATE('%s', 'dd-MM-yyyy'), '%s'\n" + //
+                        "INSERT INTO purchase (ticket_id, user_id, purchase_date, paymenth_method, discount)\n" + //
+                                "SELECT %d, %d, TO_DATE('%s', 'dd-MM-yyyy'), '%s', %d \n" + //
                                 "WHERE NOT EXISTS (\n" + //
                                 "  SELECT 1 FROM purchase\n" + //
                                 "  WHERE ticket_id = %d AND user_id = %d)",
-                        ticketId, userId, dtf.format(now), method, ticketId, userId));
+                        ticketId, userId, dtf.format(now), method, discount, ticketId, userId));
                 purchased_ticket.executeQuery();
 
             }
@@ -1000,7 +1001,7 @@ public class ApexController {
 
             record purchases(String purchase_number, String ticket, String type, String origin, String destination,
                     String purchase_date, String price, String paymenth_method,
-                    String departure_date, String arrival_date, String user_name) {
+                    String departure_date, String arrival_date, int discount, String user_name) {
             }
 
             List<purchases> purchaseslogs = new ArrayList<>();
@@ -1016,6 +1017,7 @@ public class ApexController {
                         result.getString("paymenth_method"),
                         result.getString("departure_date"),
                         result.getString("arrival_date"),
+                        result.getInt("discount"), 
                         result.getString("user_name")));
             }
             if (purchaseslogs.isEmpty()) {

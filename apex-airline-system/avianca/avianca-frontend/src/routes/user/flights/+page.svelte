@@ -9,6 +9,7 @@
   const userId = window.localStorage.getItem("user_id");
 
   let userflights = [];
+  console.log(userid); 
 
   onMount(async () => {
   fetch(`http://localhost:8080/user_tickets/${userid}`)
