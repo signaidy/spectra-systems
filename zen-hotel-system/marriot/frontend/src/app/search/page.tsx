@@ -1,8 +1,24 @@
+import { Suspense } from "react";
 import Image from "next/image";
+// Data
+import { getCities } from "@/lib/data";
+// Components
+import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
 import { SearchBar } from "@/components/searchBar/searchBar";
-import { HotelCard } from "@/components/hotels/hotelCard";
+import { FilteredHotels } from "@/components/hotels/filteredHotels";
 
-export default function SearchHome() {
+export default async function SearchHome({
+  searchParams,
+}: {
+  searchParams: {
+    location: string;
+    checkin: string;
+    checkout: string;
+    guests: number;
+  };
+}) {
+  const cities = await getCities();
+
   return (
     <section className="relative min-h-[calc(100vh-4.813rem)]">
       <Image
@@ -14,15 +30,16 @@ export default function SearchHome() {
         priority
       />
       <div className="container flex flex-col py-8 gap-y-10">
-        <SearchBar />
-        {/* <HotelCard
-          name="Hotel Name"
-          description="
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident nisi eos molestiae, placeat suscipit veniam rerum aliquid, ipsa, totam officiis iusto quam tenetur incidunt omnis unde. Neque consequatur autem quae."
-          location="Hotel Location"
-          reviewCount={5}
-          reviewAverage={4.5}
-        /> */}
+        <SearchBar locations={cities} />
+        <Suspense
+          fallback={Array(2)
+            .fill(0)
+            .map((_, index) => (
+              <HotelCardSkeleton key={index} />
+            ))}
+        >
+          <FilteredHotels searchParams={searchParams} />
+        </Suspense>
       </div>
     </section>
   );
