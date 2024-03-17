@@ -1369,15 +1369,15 @@ public class ApexController {
     @PostMapping("/update-partners")
     public Object updatePartners(@RequestBody Partners partner) {
         Connection conn = new OracleConnector().getConnection();
-
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE Footer SET Title = '%s', Description = '%s', Partner_1 = '%s', L1 = '%s', Partner_2 = '%s', L2 = '%s', Partner_3 = '%s', \n"
+                            "UPDATE Partners SET Title = '%s', Description = '%s', Partner_1 = '%s', L1 = '%s', Partner_2 = '%s', L2 = '%s', Partner_3 = '%s', \n"
                                     + //
-                                    "L3 = '%s', Partner_4 = '%s', L4 = '%s', Partner_5 = '%s', L5= '%s' WHERE ID = 2", 
-                            partner.Title, partner.Description, partner.Partner1, partner.L1, partner.Partner2, partner.L2,
-                            partner.Partner3, partner.L3, partner.Partner4, partner.L4, partner.Partner5, partner.L5 ));
+                                    "L3 = '%s', Partner_4 = '%s', L4 = '%s', Partner_5 = '%s', L5= '%s' WHERE ID = 2",
+                            partner.Title, partner.Description, partner.Partner1, partner.L1, partner.Partner2,
+                            partner.L2,
+                            partner.Partner3, partner.L3, partner.Partner4, partner.L4, partner.Partner5, partner.L5));
             query.executeQuery();
 
             return new WebSuccess("Partners information updated");
