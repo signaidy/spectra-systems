@@ -7,42 +7,7 @@
   import { onMount } from "svelte";
   export let form;
   let loading = false;
-
-  // async function CreateUser() {
-  //   const email = document.getElementById("email").value;
-  //   const password = document.getElementById("password").value;
-  //   const confirmedPassword = document.getElementById("confirmedPassword").value;
-  //   const age = document.getElementById("age").value;
-  //   const firstName = document.getElementById("firstName").value;
-  //   const lastName = document.getElementById("lastName").value;
-  //   const originCountry = document.getElementById("originCountry").value;
-  //   const passportNumber = document.getElementById("passportNumber").value;
-
-  //   if (password !== confirmedPassword) {
-  //     return ({
-  //       error: "Passwords do not match",
-  //     });
-  //   }
-  //   try {
-  //     const response = await fetch(`http://localhost:8080/create-user/${grecaptcha.getResponse()}`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         email: email,
-  //         password: password,
-  //         firstName: firstName,
-  //         lastName: lastName,
-  //         originCountry: originCountry,
-  //         passportNumber: passportNumber,
-  //         age: age,
-  //       }),
-  //     });
-  //   } catch (error) {
-  //     console.error("API error:", error);
-  //   }
-  // }
+  
 </script>
 
 <svelte:head>
@@ -154,7 +119,6 @@
           ></div>
         </div>
       </div>
-      <!-- <p></p> -->
       <Button type="submit" disabled={loading} name="enviar">Sign In</Button>
     </form>
   </div>

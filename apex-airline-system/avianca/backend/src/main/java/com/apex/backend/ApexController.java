@@ -90,7 +90,6 @@ public class ApexController {
     @PostMapping("/create-user/{token}")
     public Object createUser(@RequestBody User user, @PathVariable String token) {
         String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR"; 
-        System.err.println(token);
 
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
