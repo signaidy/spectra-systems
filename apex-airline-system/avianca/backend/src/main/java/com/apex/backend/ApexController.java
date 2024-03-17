@@ -1419,4 +1419,46 @@ public class ApexController {
         }
     }
 
+    // Modification Flight - GET INFORMATION OF RESPECTIVE USERS THAT THE FLIGHT HAVE BEEN MODIFIED
+     @GetMapping("/modification-notification/{flightid}")
+     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
+         Connection conn = new OracleConnector().getConnection();
+         try {
+             PreparedStatement query = conn
+                     .prepareStatement(String.format(
+                             "SELECT concat(u.first_name,' ', u.last_name) as username, u.email, t.ticket_id\n" + //
+                                                                  "FROM tickets t\n" + //
+                                                                  "Join Users u ON t.user_id = u.user_id where t.flight_id = %d",
+                             flightid));
+             ResultSet result = query.executeQuery();
+
+             record userinformation(String name, String email, int ticket) {
+             }
+
+            List<userinformation> userinformations = new ArrayList<>();
+            while (result.next()) {
+                userinformations.add(new userinformation(
+                    result.getString("username"), 
+                    result.getString("email"),
+                         result.getInt("ticket_id")));
+            }
+            if (userinformations.isEmpty()) {
+                return new WebError("No information retrieve available");
+            }
+            return userinformations;
+         } catch (Throwable e) {
+             e.printStackTrace();
+             return new WebError("Failed to retrieve information");
+         } finally {
+             try {
+                 if (conn != null) {
+                     conn.close();
+                 }
+             } catch (SQLException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
+ 
+
 }

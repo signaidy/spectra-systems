@@ -42,13 +42,7 @@
     }
   }
 
-  async function UpdateFlight(
-    flightId,
-    departureDay,
-    arrivalDay,
-    originCity,
-    destinationCity
-  ) {
+  async function UpdateFlight(flightId, departureDay, arrivalDay, originCity, destinationCity) {
     const detailFlight = document.getElementById("detail").value;
     const departureTime = document.getElementById("departureTime").value;
     const arrivalTime = document.getElementById("arrivalTime").value;
@@ -75,6 +69,17 @@
       console.error("API error:", error);
     }
 
+    Email.send({
+      SecureToken: "11c78855-54e1-46a7-bc68-6751ad92e0dc",
+      To: email,
+      From: "systemspectracjm@gmail.com",
+      Subject: "Ticket - Cancelation",
+      Body: `Hi: ${userName} <br> 
+    Your ticket with the ID: ${ticketId} was canceled. <br> 
+    <br> Because the following reason: <br> 
+    ${motive}`,
+    })
+
     let shouldRefresh = true;
 
     if (shouldRefresh) {
@@ -84,6 +89,11 @@
     }
   }
 </script>
+
+<svelte:head>
+  <script src="https://smtpjs.com/v3/smtp.js">
+  </script>
+</svelte:head>
 
 {#if edit == false}
   <div class="flex flex-col border my-8 rounded-lg">
