@@ -1,18 +1,58 @@
-<script lang="ts" src="https://www.google.com/recaptcha/api.js" async defer>
+<script lang="ts">
   import { enhance } from "$app/forms";
-  // import Captcha from "$lib/assets/Captcha.png";
   import { Label } from "$lib/components/ui/label";
   import { Input } from "$lib/components/ui/input";
   import { Button } from "$lib/components/ui/button";
   import { Loader2 } from "lucide-svelte";
+  import { onMount } from "svelte";
   export let form;
-
   let loading = false;
 
-  // function enabledSubmit(response) {
-  // document.getElementsByNamu('enviar')[0].disabled = false;
+  // async function CreateUser() {
+  //   const email = document.getElementById("email").value;
+  //   const password = document.getElementById("password").value;
+  //   const confirmedPassword = document.getElementById("confirmedPassword").value;
+  //   const age = document.getElementById("age").value;
+  //   const firstName = document.getElementById("firstName").value;
+  //   const lastName = document.getElementById("lastName").value;
+  //   const originCountry = document.getElementById("originCountry").value;
+  //   const passportNumber = document.getElementById("passportNumber").value;
+
+  //   if (password !== confirmedPassword) {
+  //     return ({
+  //       error: "Passwords do not match",
+  //     });
+  //   }
+  //   try {
+  //     const response = await fetch(`http://localhost:8080/create-user/${grecaptcha.getResponse()}`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email: email,
+  //         password: password,
+  //         firstName: firstName,
+  //         lastName: lastName,
+  //         originCountry: originCountry,
+  //         passportNumber: passportNumber,
+  //         age: age,
+  //       }),
+  //     });
+  //   } catch (error) {
+  //     console.error("API error:", error);
+  //   }
   // }
 </script>
+
+<svelte:head>
+  <script
+    src="https://www.google.com/recaptcha/api.js"
+    async
+    defer
+  >
+  </script>
+</svelte:head>
 
 <div
   class="min-h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
@@ -25,6 +65,10 @@
 
         return async ({ update }) => {
           await update();
+          const token = grecaptcha.getResponse();
+          console.log(token);
+          const formData = new FormData();
+          formData.append("captcha", token); // Add token to form data
           loading = false;
         };
       }}
@@ -103,27 +147,14 @@
       </div>
       <div class="verification-container">
         <div class="flex flex-col gap-y-2 items-center">
-          <html>
-            <head>
-              <title>reCAPTCHA demo: Simple page</title>
-              <script
-                src="https://www.google.com/recaptcha/api.js"
-                async
-                defer
-              ></script>
-            </head>
-            <body>
-              <form action="?" method="POST">
-                <div
-                  class="g-recaptcha"
-                  data-sitekey="6LfqapMpAAAAAHquHP9eo_lto-64CBjze61uwUVA"
-                ></div>
-                <br />
-              </form>
-            </body>
-          </html>
+          <div
+            id ="cap"
+            class="g-recaptcha"
+            data-sitekey="6LfqapMpAAAAAHquHP9eo_lto-64CBjze61uwUVA"
+          ></div>
         </div>
       </div>
+      <!-- <p></p> -->
       <Button type="submit" disabled={loading} name="enviar">Sign In</Button>
     </form>
   </div>

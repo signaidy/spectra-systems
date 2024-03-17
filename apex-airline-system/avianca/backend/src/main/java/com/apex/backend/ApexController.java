@@ -3,16 +3,22 @@ package com.apex.backend;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Server;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import oracle.security.o3logon.a;
 
@@ -81,8 +87,10 @@ public class ApexController {
     }
 
     // USER - SIGN UP
-    @PostMapping("/create-user")
-    public Object createUser(@RequestBody User user) {
+    @PostMapping("/create-user/{token}")
+    public Object createUser(@RequestBody User user, @PathVariable String token) {
+        String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR"; 
+        System.err.println(token);
 
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -91,7 +99,18 @@ public class ApexController {
         String passwordHash = BCrypt.hashpw(user.password, BCrypt.gensalt());
 
         try {
-            PreparedStatement query = conn
+    RestTemplate restTemplate = new RestTemplate();
+    MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+    requestMap.add("secret", secretkey);
+    requestMap.add("response", token);
+
+    ResponseEntity<Map> response = restTemplate.postForEntity(
+            "https://www.google.com/recaptcha/api/siteverify", requestMap, Map.class);
+
+    Map<String, Object> responseBody = response.getBody();
+
+    if ((Boolean) responseBody.get("success")) {
+        PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age, percentage, entry_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s, %s, TO_DATE('%s', 'dd-MM-yyyy'))",
                             user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
@@ -117,7 +136,11 @@ public class ApexController {
                     result.getString("age"),
                     result.getString("percentage"),
                     result.getString("entry_date"));
-        } catch (Throwable e) {
+    } else {
+        return new WebError("Failed to verify reCAPTCHA");
+    }
+
+} catch (Throwable e) {
             e.printStackTrace();
             if (e.getMessage().contains(
                     "ORA-00001: unique constraint (SYSTEM.EMAIL_UK) violated on table SYSTEM.USERS columns (EMAIL)")) {
