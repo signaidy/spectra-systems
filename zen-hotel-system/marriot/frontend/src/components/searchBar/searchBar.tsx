@@ -28,12 +28,10 @@ function SearchBarElement({
   );
 }
 
-export function SearchBar() {
+export function SearchBar({ locations }: { locations: string[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-
-  const locations = ["new york", "sidney", "kuwait", "greenland", "new delhi"];
 
   const [searchInfo, setSearchInfo] = useState<{
     location: string;
@@ -42,8 +40,12 @@ export function SearchBar() {
   }>({
     location: searchParams.get("location") || "",
     date: {
-      from: searchParams.get("checkin") ? new Date(searchParams.get("checkin")!) : new Date(),
-      to: searchParams.get("checkout") ? new Date(searchParams.get("checkout")!) : addDays(new Date(), 20),
+      from: searchParams.get("checkin")
+        ? new Date(searchParams.get("checkin")!)
+        : new Date(),
+      to: searchParams.get("checkout")
+        ? new Date(searchParams.get("checkout")!)
+        : addDays(new Date(), 20),
     },
     guests: searchParams.get("guests")
       ? parseInt(searchParams.get("guests")!)
