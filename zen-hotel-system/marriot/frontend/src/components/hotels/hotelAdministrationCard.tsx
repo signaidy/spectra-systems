@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 // Components
 import { HotelDialog } from "@/components/hotels/hotelDialog";
 // UI Components
@@ -28,11 +29,21 @@ export function HotelAdministrationCard(props: Hotel) {
             <div>{props.location.address}</div>
           </div>
           <p className="text-sm line-clamp-3 mt-4">{props.description}</p>
-          <HotelDialog {...props} />
+          <div className="flex gap-x-2 mt-auto">
+            <HotelDialog {...props} />
+            <Button asChild>
+              <Link href={`/administration/hotels/modify-hotel/${props._id}`}>
+                Update Hotel
+              </Link>
+            </Button>
+            <Button variant="destructive">Delete Hotel</Button>
+          </div>
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
           <div className="flex gap-x-1 items-end">
-            <div className="font-bold text-xl">{props.rooms.juniorSuite.price}</div>
+            <div className="font-bold text-xl">
+              {props.rooms.juniorSuite.price}
+            </div>
             <div className="text-sm mb-[2px] text-muted-foreground">
               USD / Night
             </div>
