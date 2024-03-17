@@ -293,6 +293,7 @@ function Amenity({
       {icon}
       <div>{title}</div>
       <Button
+        type="button"
         variant="ghost"
         size="icon"
         className="w-7 h-7 ml-3 group/delete"
