@@ -1460,6 +1460,33 @@ public class ApexController {
              }
          }
      }
+
+    // City - REGISTRATION
+    @PostMapping("/create-city/{city}")
+    public Object createCity(@PathVariable String city) {
+        Connection conn = new OracleConnector().getConnection();
+
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "INSERT INTO CITIES (name) values ('%s')",
+                            city));
+            query.executeQuery();
+            return new WebSuccess("City added successfully");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to add city");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
  
 
 }
