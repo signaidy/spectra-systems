@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { UserRoundCog, Plane, TicketPercent, Settings } from "lucide-svelte";
+  import { UserRoundCog, Plane, TicketPercent, LandPlot, Settings } from "lucide-svelte";
   import { Button } from "$lib/components/ui/button";
 </script>
 
@@ -16,6 +16,10 @@
   <Button href="/user/administration/tickets" class="flex">
     <TicketPercent class="mr-3 h-4 w-4 shrink-0" />
     <span>Tickets</span>
+  </Button>
+  <Button href="/user/administration/cities" class="flex">
+    <LandPlot class="mr-3 h-4 w-4 shrink-0" />
+    <span>Cities</span>
   </Button>
   <Button href="/user/administration/settings" class="flex">
     <Settings class="mr-3 h-4 w-4 shrink-0" />
