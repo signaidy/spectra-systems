@@ -7,11 +7,12 @@
   import { onMount } from "svelte";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
+  import { MoveLeft } from "lucide-svelte";
 
   export let flight: CompleteFlight;
 
   let edit = false;
-
+  let isOpen = false;
   let departureDay: DateValue | undefined;
   let arrivalDay: DateValue | undefined;
   let originCity: string;
@@ -37,52 +38,92 @@
       });
   });
 
-  async function Cancellation() {
+  async function Cancellation(flightID) {
+    const motive = document.getElementById("motive").value;
+
     try {
-      const response = await fetch(
-        `http://localhost:8080/cancelation/${flight.flightId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
+      const usersInformation = await fetch(
+        `http://localhost:8080/modification-notification/${flightID}`
+      ).then((response) => response.json());
+      user = usersInformation;
+
+      for (const userObject of user) {
+        if (userObject.flight_id === flightID) {
+          try {
+            const email = userObject.email;
+            const userName = userObject.name;
+            const ticket = userObject.ticket;
+
+            await Email.send({
+              SecureToken: "11c78855-54e1-46a7-bc68-6751ad92e0dc",
+              To: email,
+              From: "systemspectracjm@gmail.com",
+              Subject: "Flight canceled",
+              Body: `Hi: ${userName} <br> 
+            The flight associated to your ticker number: ${ticket} has been canceled. <br> 
+            <br> <span style="font-weight: bold;">Reason of cancellation</span> <br> 
+            ${motive}`,
+            });
+          } catch (error) {
+            console.error("Error sending email to user:", error);
+          }
         }
-      );
+      }
+      const response = await fetch(`http://localhost:8080/cancelation/${flightID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      if (response.ok) {
+        console.log("Flight updated successfully!");
+        let shouldRefresh = true;
+
+        if (shouldRefresh) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          window.location.reload();
+        }
+      } else {
+        console.error("Flight update failed:", response.status);
+      }
+
     } catch (error) {
       console.error("API error:", error);
     }
   }
 
   async function UpdateFlight(
-  flightId,
-  departureDay,
-  arrivalDay,
-  originCity,
-  destinationCity
-) {
-  try {
-    const usersInformation = await fetch(`http://localhost:8080/modification-notification/${flightId}`)
-        .then((response) => response.json());
-    user = usersInformation;
+    flightId,
+    departureDay,
+    arrivalDay,
+    originCity,
+    destinationCity
+  ) {
+    try {
+      const usersInformation = await fetch(
+        `http://localhost:8080/modification-notification/${flightId}`
+      ).then((response) => response.json());
+      user = usersInformation;
 
-    const detailFlight = document.getElementById("detail").value;
-    const departureTime = document.getElementById("departureTime").value;
-    const arrivalTime = document.getElementById("arrivalTime").value;
-    const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day} ${departureTime}`;
-    const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day} ${arrivalTime}`;
+      const detailFlight = document.getElementById("detail").value;
+      const departureTime = document.getElementById("departureTime").value;
+      const arrivalTime = document.getElementById("arrivalTime").value;
+      const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day} ${departureTime}`;
+      const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day} ${arrivalTime}`;
 
-    for (const userObject of user) {
-      if (userObject.flight_id === flightId) {
-        try {
-          const email = userObject.email;
-          const userName = userObject.name;
-          const ticket = userObject.ticket;
+      for (const userObject of user) {
+        if (userObject.flight_id === flightId) {
+          try {
+            const email = userObject.email;
+            const userName = userObject.name;
+            const ticket = userObject.ticket;
 
-          await Email.send({
-            SecureToken: "11c78855-54e1-46a7-bc68-6751ad92e0dc",
-            To: email,
-            From: "systemspectracjm@gmail.com",
-            Subject: "Avianca has updated your flight",
-            Body: `Hi: ${userName} <br> 
+            await Email.send({
+              SecureToken: "11c78855-54e1-46a7-bc68-6751ad92e0dc",
+              To: email,
+              From: "systemspectracjm@gmail.com",
+              Subject: "Avianca has updated your flight",
+              Body: `Hi: ${userName} <br> 
             The flight associated to your ticker number: ${ticket} has been modified. <br> 
             <br> <span style="font-weight: bold;">This is the new information of the flight:</span> <br> 
             <br> <span style="font-weight: bold;">Departure day: </span> ${departureDateFormated}
@@ -91,51 +132,84 @@
             <br> <span style="font-weight: bold;">Destination city: </span> ${destinationCity}
             <br> <span style="font-weight: bold;">Detail of flight: </span> ${detailFlight} 
           `,
-          });
-        } catch (error) {
-          console.error("Error sending email to user:", error);
+            });
+          } catch (error) {
+            console.error("Error sending email to user:", error);
+          }
         }
       }
-    }
 
-    const response = await fetch(
-      `http://localhost:8080/update-flight/${flightId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          originCity: originCity,
-          destinationCity: destinationCity,
-          departureDate: departureDateFormated,
-          arrivalDate: arrivalDateFormated,
-          detail: detailFlight,
-        }),
+      const response = await fetch(
+        `http://localhost:8080/update-flight/${flightId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            originCity: originCity,
+            destinationCity: destinationCity,
+            departureDate: departureDateFormated,
+            arrivalDate: arrivalDateFormated,
+            detail: detailFlight,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Flight updated successfully!");
+        let shouldRefresh = true;
+
+        if (shouldRefresh) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          window.location.reload();
+        }
+      } else {
+        console.error("Flight update failed:", response.status);
       }
-    );
-
-    if (response.ok) {
-      // Flight updated successfully, proceed with other actions
-      console.log("Flight updated successfully!");
-      let shouldRefresh = true; // Assuming logic to determine refresh
-
-      if (shouldRefresh) {
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second
-        window.location.reload(); // Refresh the page
-      }
-    } else {
-      // Handle flight update failure
-      console.error("Flight update failed:", response.status);
+    } catch (error) {
+      console.error("API error:", error);
     }
-  } catch (error) {
-    console.error("API error:", error);
   }
-}
 </script>
 
 <svelte:head>
   <script src="https://smtpjs.com/v3/smtp.js">
   </script>
 </svelte:head>
+
+{#if isOpen == true}
+  <div
+    class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10"
+  >
+    <div
+      class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white"
+    >
+      <div class="flex mt-5 ml-10">
+        <button on:click={() => (isOpen = false)}><MoveLeft /></button>
+      </div>
+      <div class="w-full">
+        <div class="m-1 max-w-[400px] mx-auto">
+          <div class="mb-8">
+            <h1 class="mb-4 text-3xl font-extrabold">Flight - Cancelation</h1>
+          </div>
+          <div>
+            <span class="motivet">Reason:</span>
+            <textarea
+              required
+              id="motive"
+              class="h-[100px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+          </div>
+          <div class="space-y-10 mt-10">
+            <button
+              class="p-3 bg-red-600 rounded-full text-white w-full font-semibold"
+              on:click={Cancellation(flight.flightId)}>Cancel</button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{/if}
 
 {#if edit == false}
   <div class="flex flex-col border my-8 rounded-lg">
@@ -222,7 +296,7 @@
       {#if flight.state == 1}
         <button
           class="text-white bg-red-600 rounded px-1 py-2 focus:outline-none focus:shadow-outline object-right"
-          on:click={Cancellation}
+          on:click={() => (isOpen = true)}
         >
           <span class="ml-1 text-sm">Cancel</span>
         </button>
