@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import Footer from "$lib/components/footer/footer.svelte";
 
   let Title;
   let Description;
@@ -278,6 +279,7 @@
     </div>
   </div>
 {/await}
+<Footer/>
 
 <style>
   .spaceyt {

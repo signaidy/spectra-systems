@@ -12,7 +12,7 @@
     <p class="text-center text-gray-600 text-sm mt-2">
       Here are some of the frequently asked questions
     </p>
-    <div class="space-y-12 px-2 xl:px-16 mt-12">
+    <div class="space-y-12 px-2 xl:px-16 ">
       <div class="mt-4 flex">
         <div>
           <div class="flex items-center h-16 border-l-4 border-blue-600">
