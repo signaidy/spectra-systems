@@ -14,7 +14,13 @@ import {
 // Icons
 import { ArrowRight, Star, MapPin, Check } from "lucide-react";
 
-export function HotelDialog(props: Hotel) {
+export function HotelDialog({
+  hotel,
+  searchParams,
+}: {
+  hotel: Hotel;
+  searchParams: HotelSearchParams;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -25,18 +31,18 @@ export function HotelDialog(props: Hotel) {
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[75vh] overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-y-1 ">
-          <h1 className="text-xl font-bold">{props.name}</h1>
+          <h1 className="text-xl font-bold">{hotel.name}</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
-            <div>{props.reviews.average}</div>
+            <div>{hotel.reviews.average}</div>
             <Star className="w-4 h-4 text-black fill-yellow-500" />
-            <div>({props.reviews.count} reviews)</div>
+            <div>({hotel.reviews.count} reviews)</div>
             <div>|</div>
             <MapPin className="w-4 h-4 text-black fill-red-700" />
-            <div>{props.location.address}</div>
+            <div>{hotel.location.address}</div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
-            <p className="text-sm">{props.description}</p>
+            <p className="text-sm">{hotel.description}</p>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Rooms</div>
@@ -48,12 +54,12 @@ export function HotelDialog(props: Hotel) {
                     <Image
                       src={
                         i === 0
-                          ? props.rooms.juniorSuite.picture
+                          ? hotel.rooms.juniorSuite.picture
                           : i === 1
-                          ? props.rooms.standardSuite.picture
+                          ? hotel.rooms.standardSuite.picture
                           : i === 2
-                          ? props.rooms.doubleSuite.picture
-                          : props.rooms.bigSuite.picture
+                          ? hotel.rooms.doubleSuite.picture
+                          : hotel.rooms.bigSuite.picture
                       }
                       fill
                       alt="Room Image"
@@ -75,8 +81,8 @@ export function HotelDialog(props: Hotel) {
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Amenities</div>
             <p className="text-sm grid grid-cols-3 gap-y-5">
-              {props.amenities.length > 0
-                ? props.amenities.map((amenity, index) => (
+              {hotel.amenities.length > 0
+                ? hotel.amenities.map((amenity, index) => (
                     <Amenity
                       key={index}
                       title={amenity}
@@ -88,15 +94,15 @@ export function HotelDialog(props: Hotel) {
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Commentaries</div>
-            <CommentaryForm hotelId={props._id} />
+            <CommentaryForm hotelId={hotel._id} />
             {/* Thread Container */}
             <div className="flex flex-col gap-y-8">
-              {props.commentaries.length > 0
-                ? props.commentaries.map((commentary, index) => (
+              {hotel.commentaries.length > 0
+                ? hotel.commentaries.map((commentary, index) => (
                     <Commentary
                       key={index}
                       _id={commentary._id}
-                      hotelId={props._id}
+                      hotelId={hotel._id}
                       userName={commentary.userName}
                       date={commentary.date}
                       message={commentary.message}
@@ -108,8 +114,8 @@ export function HotelDialog(props: Hotel) {
           </div>
         </div>
         <DialogFooter>
-          <Button>
-            <Link href={`/search/${props._id}`}>View Rates</Link>
+          <Button asChild>
+            <Link href={`/search/${hotel._id}/?${new URLSearchParams(searchParams).toString()}`}>View Rates</Link>
           </Button>
         </DialogFooter>
       </DialogContent>

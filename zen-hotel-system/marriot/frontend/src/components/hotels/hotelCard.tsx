@@ -6,42 +6,55 @@ import { HotelDialog } from "@/components/hotels/hotelDialog";
 import { Button } from "@/components/ui/button";
 import { Star, MapPin } from "lucide-react";
 
-export function HotelCard(props: Hotel) {
+export function HotelCard({
+  hotel,
+  searchParams,
+}: {
+  hotel: Hotel;
+  searchParams: HotelSearchParams;
+}) {
   return (
     <article className="border rounded-md grid-cols-[0.75fr_1fr] grid h-72">
       <div className="relative">
         <Image
-          src={props.picture}
-          alt={`${props.name} Hotel Image`}
+          src={hotel.picture}
+          alt={`${hotel.name} Hotel Image`}
           fill
           className="object-cover rounded-l-md"
         />
       </div>
       <div className="flex flex-col justify-between rounded-r-md bg-background">
         <div className="flex flex-col gap-y-1 p-4 h-full">
-          <div className="font-medium tracking-tight text-xl">{props.name}</div>
+          <div className="font-medium tracking-tight text-xl">{hotel.name}</div>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
-            <div>{props.reviews.average}</div>
+            <div>{hotel.reviews.average}</div>
             <Star className="w-4 h-4 text-black fill-yellow-500" />
-            <div>({props.reviews.count} reviews)</div>
+            <div>({hotel.reviews.count} reviews)</div>
             <div>|</div>
             <MapPin className="w-4 h-4 text-black fill-red-700" />
-            <div>{props.location.address}</div>
+            <div>{hotel.location.address}</div>
           </div>
-          <p className="text-sm line-clamp-3 mt-4">{props.description}</p>
-          <HotelDialog {...props} />
+          <p className="text-sm line-clamp-3 mt-4">{hotel.description}</p>
+          <HotelDialog hotel={hotel} searchParams={searchParams} />
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
           <div className="flex gap-x-1 items-end">
+            <div className="text-sm mb-[2px] text-muted-foreground">from</div>
             <div className="font-bold text-xl">
-              {props.rooms.juniorSuite.price}
+              {hotel.rooms.juniorSuite.price}
             </div>
             <div className="text-sm mb-[2px] text-muted-foreground">
               USD / Night
             </div>
           </div>
           <Button asChild>
-            <Link href={`/search/${props._id}`}>View Rates</Link>
+            <Link
+              href={`/search/${hotel._id}/?${new URLSearchParams(
+                searchParams
+              ).toString()}`}
+            >
+              View Rates
+            </Link>
           </Button>
         </div>
       </div>
