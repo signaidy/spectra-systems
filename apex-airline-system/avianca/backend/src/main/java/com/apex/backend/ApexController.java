@@ -1487,6 +1487,30 @@ public class ApexController {
         }
     }
 
+    // Cities - UPDATE
+    @PostMapping("/update-city/{city}/{id}")
+    public Object updateCities(@PathVariable String city, @PathVariable int id) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "UPDATE Cities SET Name = '%s' WHERE City_ID = %d",
+                            city, id));
+            query.executeQuery();
+            return new WebSuccess("City name updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update city");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
  
 
 }
