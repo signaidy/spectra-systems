@@ -9,8 +9,10 @@ import { HotelRooms } from "@/components/rooms/hotelRooms";
 
 export default async function HotelRoomsHome({
   params,
+  searchParams,
 }: {
   params: { _id: string };
+  searchParams: HotelSearchParams;
 }) {
   const cities = await getCities();
 
@@ -33,7 +35,7 @@ export default async function HotelRoomsHome({
               <HotelCardSkeleton key={index} />
             ))}
         >
-          <HotelRooms id={params._id} />
+          <HotelRooms id={params._id} searchParams={searchParams} />
         </Suspense>
       </div>
     </section>
