@@ -76,12 +76,7 @@ export async function getCities() {
   }
 }
 
-export async function getFilteredHotels(searchParams: {
-  location: string;
-  checkin: string;
-  checkout: string;
-  guests: number;
-}) {
+export async function getFilteredHotels(searchParams: HotelSearchParams) {
   try {
     const database = client.db("marriot-db");
     const hotelsCollection = database.collection<Hotel>("hotels");
