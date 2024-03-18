@@ -1,5 +1,4 @@
 declare global {
-  
   interface Commentary {
     _id: string;
     parentId: string;
@@ -17,6 +16,14 @@ declare global {
     state: string;
     country: string;
     address: string;
+  }
+
+  export interface HotelSearchParams {
+    [key: string]: string;
+    location: string;
+    checkin: string;
+    checkout: string;
+    guests: string;
   }
 
   export interface Hotel {
@@ -95,13 +102,16 @@ declare global {
 
   export interface Reservation {
     _id: string;
-    userId: string;
     hotelId: string;
+    userId: string;
+    checkin: string;
+    checkout: string;
     roomType: string;
-    checkIn: Date;
-    checkOut: Date;
+    roomPrice: number;
     guests: number;
-    price: number;
+    stayDays: number;
+    totalPrice: number;
+    state: "active" | "cancelled" | "completed";
   }
 }
 
