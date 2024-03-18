@@ -4,12 +4,7 @@ import { HotelCard } from "@/components/hotels/hotelCard";
 export async function FilteredHotels({
   searchParams,
 }: {
-  searchParams: {
-    location: string;
-    checkin: string;
-    checkout: string;
-    guests: number;
-  };
+  searchParams: HotelSearchParams;
 }) {
   const hotels = await getFilteredHotels(searchParams);
 
@@ -21,7 +16,7 @@ export async function FilteredHotels({
         </div>
       )}
       {hotels.map((hotel: Hotel) => (
-        <HotelCard key={hotel._id} {...hotel} />
+        <HotelCard key={hotel._id} hotel={hotel} searchParams={searchParams} />
       ))}
     </>
   );
