@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 // Components
-import { HotelDialog } from "@/components/hotels/hotelDialog";
+import { HotelAdministrationDialog } from "@/components/hotels/hotelAdministrationDialog";
 // UI Components
 import { Button } from "@/components/ui/button";
 import { Star, MapPin } from "lucide-react";
@@ -30,7 +30,7 @@ export function HotelAdministrationCard(props: Hotel) {
           </div>
           <p className="text-sm line-clamp-3 mt-4">{props.description}</p>
           <div className="flex gap-x-2 mt-auto">
-            <HotelDialog {...props} />
+            <HotelAdministrationDialog {...props} />
             <Button asChild>
               <Link href={`/administration/hotels/modify-hotel/${props._id}`}>
                 Update Hotel
@@ -41,6 +41,9 @@ export function HotelAdministrationCard(props: Hotel) {
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
           <div className="flex gap-x-1 items-end">
+            <div className="text-sm mb-[2px] text-muted-foreground">
+              from
+            </div>
             <div className="font-bold text-xl">
               {props.rooms.juniorSuite.price}
             </div>
@@ -48,7 +51,7 @@ export function HotelAdministrationCard(props: Hotel) {
               USD / Night
             </div>
           </div>
-          <Button>View Rates</Button>
+          {/* <Button>View Rates</Button> */}
         </div>
       </div>
     </article>
