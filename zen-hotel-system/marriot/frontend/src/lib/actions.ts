@@ -266,3 +266,34 @@ export async function updateHotel(prevState: any, formData: FormData) {
 
   redirect("/administration/hotels");
 }
+
+export async function createReservation(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+    
+    const database = client.db("marriot-db");
+    const reservations = database.collection("reservations");
+
+    const reservation = {
+      hotelId: rawFormData.hotelId,
+      userId: rawFormData.userId,
+      checkin: rawFormData.checkin,
+      checkout: rawFormData.checkout,
+      roomType: rawFormData.roomType,
+      roomPrice: Number(rawFormData.roomPrice),
+      guests: Number(rawFormData.guests),
+      stayDays: Number(rawFormData.stayDays),
+      totalPrice: Number(rawFormData.totalPrice),
+      state: "active",
+    };
+
+    await reservations.insertOne(reservation);
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Make Reservation.",
+    };
+  }
+
+  // redirect("/administration/hotels");
+}
