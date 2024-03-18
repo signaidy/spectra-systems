@@ -17,6 +17,7 @@
   let originCity: string;
   let destinationCity: string;
   let cities: City[] = [];
+  let user = [];
 
   onMount(async () => {
     fetch("http://localhost:8080/get-cities")
@@ -24,6 +25,15 @@
       .then((citiesinformation) => {
         cities = citiesinformation;
         return cities;
+      });
+  });
+
+  onMount(async () => {
+    fetch(`http://localhost:8080/modification-notification/${flight.flightId}`)
+      .then((response) => response.json())
+      .then((usersinformation) => {
+        user = usersinformation;
+        return user;
       });
   });
 
@@ -42,52 +52,84 @@
     }
   }
 
-  async function UpdateFlight(flightId, departureDay, arrivalDay, originCity, destinationCity) {
+  async function UpdateFlight(
+  flightId,
+  departureDay,
+  arrivalDay,
+  originCity,
+  destinationCity
+) {
+  try {
+    const usersInformation = await fetch(`http://localhost:8080/modification-notification/${flightId}`)
+        .then((response) => response.json());
+    user = usersInformation;
+
     const detailFlight = document.getElementById("detail").value;
     const departureTime = document.getElementById("departureTime").value;
     const arrivalTime = document.getElementById("arrivalTime").value;
-
     const departureDateFormated = `${departureDay.year}-${departureDay.month}-${departureDay.day} ${departureTime}`;
     const arrivalDateFormated = `${arrivalDay.year}-${arrivalDay.month}-${arrivalDay.day} ${arrivalTime}`;
 
-    try {
-      const response = fetch(
-        `http://localhost:8080/update-flight/${flightId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            originCity: originCity,
-            destinationCity: destinationCity,
-            departureDate: departureDateFormated,
-            arrivalDate: arrivalDateFormated,
-            detail: detailFlight,
-          }),
+    for (const userObject of user) {
+      if (userObject.flight_id === flightId) {
+        try {
+          const email = userObject.email;
+          const userName = userObject.name;
+          const ticket = userObject.ticket;
+
+          await Email.send({
+            SecureToken: "11c78855-54e1-46a7-bc68-6751ad92e0dc",
+            To: email,
+            From: "systemspectracjm@gmail.com",
+            Subject: "Avianca has updated your flight",
+            Body: `Hi: ${userName} <br> 
+            The flight associated to your ticker number: ${ticket} has been modified. <br> 
+            <br> <span style="font-weight: bold;">This is the new information of the flight:</span> <br> 
+            <br> <span style="font-weight: bold;">Departure day: </span> ${departureDateFormated}
+            <br> <span style="font-weight: bold;">Arrival Day: </span> ${arrivalDateFormated}
+            <br> <span style="font-weight: bold;">Origin city: </span> ${originCity}
+            <br> <span style="font-weight: bold;">Destination city: </span> ${destinationCity}
+            <br> <span style="font-weight: bold;">Detail of flight: </span> ${detailFlight} 
+          `,
+          });
+        } catch (error) {
+          console.error("Error sending email to user:", error);
         }
-      );
-    } catch (error) {
-      console.error("API error:", error);
+      }
     }
 
-    Email.send({
-      SecureToken: "11c78855-54e1-46a7-bc68-6751ad92e0dc",
-      To: email,
-      From: "systemspectracjm@gmail.com",
-      Subject: "Ticket - Cancelation",
-      Body: `Hi: ${userName} <br> 
-    Your ticket with the ID: ${ticketId} was canceled. <br> 
-    <br> Because the following reason: <br> 
-    ${motive}`,
-    })
+    const response = await fetch(
+      `http://localhost:8080/update-flight/${flightId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          originCity: originCity,
+          destinationCity: destinationCity,
+          departureDate: departureDateFormated,
+          arrivalDate: arrivalDateFormated,
+          detail: detailFlight,
+        }),
+      }
+    );
 
-    let shouldRefresh = true;
+    if (response.ok) {
+      // Flight updated successfully, proceed with other actions
+      console.log("Flight updated successfully!");
+      let shouldRefresh = true; // Assuming logic to determine refresh
 
-    if (shouldRefresh) {
-      await new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-        window.location.reload()
-      );
+      if (shouldRefresh) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second
+        window.location.reload(); // Refresh the page
+      }
+    } else {
+      // Handle flight update failure
+      console.error("Flight update failed:", response.status);
     }
+  } catch (error) {
+    console.error("API error:", error);
   }
+}
 </script>
 
 <svelte:head>
@@ -276,10 +318,7 @@
         <div class="flex flex-col gap-y-1">
           <div class="font-medium">Flight details</div>
           <div class="text-sm text-muted-foreground">
-            <textarea 
-            id="detail" 
-            name="detail" 
-            placeholder={flight.detail} />
+            <textarea id="detail" name="detail" placeholder={flight.detail} />
           </div>
         </div>
       </div>

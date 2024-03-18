@@ -1426,13 +1426,13 @@ public class ApexController {
          try {
              PreparedStatement query = conn
                      .prepareStatement(String.format(
-                             "SELECT concat(u.first_name,' ', u.last_name) as username, u.email, t.ticket_id\n" + //
+                             "SELECT concat(u.first_name,' ', u.last_name) as username, u.email, t.ticket_id, t.flight_id\n" + //
                                                                   "FROM tickets t\n" + //
                                                                   "Join Users u ON t.user_id = u.user_id where t.flight_id = %d",
                              flightid));
              ResultSet result = query.executeQuery();
 
-             record userinformation(String name, String email, int ticket) {
+             record userinformation(String name, String email, int flight_id, int ticket) {
              }
 
             List<userinformation> userinformations = new ArrayList<>();
@@ -1440,6 +1440,7 @@ public class ApexController {
                 userinformations.add(new userinformation(
                     result.getString("username"), 
                     result.getString("email"),
+                    result.getInt("flight_id"), 
                          result.getInt("ticket_id")));
             }
             if (userinformations.isEmpty()) {
