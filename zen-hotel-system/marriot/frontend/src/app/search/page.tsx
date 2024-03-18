@@ -7,16 +7,7 @@ import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
 import { SearchBar } from "@/components/searchBar/searchBar";
 import { FilteredHotels } from "@/components/hotels/filteredHotels";
 
-export default async function SearchHome({
-  searchParams,
-}: {
-  searchParams: {
-    location: string;
-    checkin: string;
-    checkout: string;
-    guests: number;
-  };
-}) {
+export default async function SearchHome({ searchParams }: { searchParams: HotelSearchParams}) {
   const cities = await getCities();
 
   return (
