@@ -16,6 +16,11 @@ export default function AdministrationHome() {
       description: "Configure Page Identity Features",
       href: "/administration/site-identity",
     },
+    {
+      name: "Users",
+      description: "Visualize and Manage Users Information",
+      href: "/administration/users",
+    },
   ];
 
   return (
@@ -24,7 +29,7 @@ export default function AdministrationHome() {
         title="Administration"
         description="Access and Modify Page Features"
       />
-      <div className="grid grid-cols-2 gap-x-5">
+      <div className="grid grid-cols-2 gap-x-5 gap-y-5">
         {administrationLinks.map((link) => (
           <AdministrationLink key={link.name} {...link} />
         ))}

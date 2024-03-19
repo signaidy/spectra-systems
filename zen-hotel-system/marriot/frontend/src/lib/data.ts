@@ -4,7 +4,7 @@ const client = new MongoClient(process.env.MONGODB_URI!);
 
 export async function getLocations() {
   try {
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const locationsCollection = database.collection<HotelLocation>("locations");
 
     const result = locationsCollection.find();
@@ -23,7 +23,7 @@ export async function getLocations() {
 
 export async function getHotels() {
   try {
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const hotelsCollection = database.collection<Hotel>("hotels");
 
     const result = hotelsCollection.find();
@@ -44,7 +44,7 @@ export async function getHotels() {
 
 export async function getHotelById(id: string) {
   try {
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const hotelsCollection = database.collection("hotels");
 
     const result = await hotelsCollection.findOne({ _id: new ObjectId(id) });
@@ -64,7 +64,7 @@ export async function getHotelById(id: string) {
 
 export async function getCities() {
   try {
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const citiesCollection = database.collection("locations");
 
     const cities = await citiesCollection.distinct("city");
@@ -78,7 +78,7 @@ export async function getCities() {
 
 export async function getFilteredHotels(searchParams: HotelSearchParams) {
   try {
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const hotelsCollection = database.collection<Hotel>("hotels");
 
     const result = hotelsCollection.find({
@@ -97,6 +97,25 @@ export async function getFilteredHotels(searchParams: HotelSearchParams) {
   } catch (e) {
     console.log(e);
     throw new Error("Failed to Retrieve Hotels");
+  }
+}
+
+export async function getUsers() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const usersCollection = database.collection<User>("users");
+
+    const result = usersCollection.find();
+
+    const users = [];
+    for await (const user of result) {
+      users.push({ ...user, _id: user._id.toString() });
+    }
+
+    return users;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Users");
   }
 }
 

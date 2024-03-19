@@ -1,4 +1,16 @@
 declare global {
+  interface User {
+    _id: string;
+    email: string;
+    password: string;
+    age: number;
+    firstName: string;
+    lastName: string;
+    originCountry: string;
+    passportNumber: string;
+    role: "user" | "admin" | "webService";
+  }
+
   interface Commentary {
     _id: string;
     parentId: string;

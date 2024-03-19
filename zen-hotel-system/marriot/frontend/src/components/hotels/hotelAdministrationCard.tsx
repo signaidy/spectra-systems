@@ -51,7 +51,6 @@ export function HotelAdministrationCard(props: Hotel) {
               USD / Night
             </div>
           </div>
-          {/* <Button>View Rates</Button> */}
         </div>
       </div>
     </article>

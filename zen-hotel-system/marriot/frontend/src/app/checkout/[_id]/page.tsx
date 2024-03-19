@@ -20,7 +20,7 @@ export default async function CheckoutHome({
   };
 }) {
   const hotel = await getHotelById(params._id);
-  
+
   return (
     <div className="grid grid-cols-2 gap-x-10 container py-8 min-h-[calc(100vh-4.813rem)]">
       <div className="flex flex-col">
