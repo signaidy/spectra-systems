@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 // Components
 import { Commentary } from "@/components/hotels/commentary";
 import { CommentaryForm } from "@/components/hotels/commentaryForm";
@@ -8,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 // Icons
@@ -107,11 +105,6 @@ export function HotelAdministrationDialog(props: Hotel) {
             </div>
           </div>
         </div>
-        {/* <DialogFooter>
-          <Button>
-            <Link href={`/search/${props._id}`}>View Rates</Link>
-          </Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );
