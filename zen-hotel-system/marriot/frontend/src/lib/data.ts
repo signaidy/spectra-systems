@@ -100,6 +100,25 @@ export async function getFilteredHotels(searchParams: HotelSearchParams) {
   }
 }
 
+export async function getUsers() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const usersCollection = database.collection<User>("users");
+
+    const result = usersCollection.find();
+
+    const users = [];
+    for await (const user of result) {
+      users.push({ ...user, _id: user._id.toString() });
+    }
+
+    return users;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Users");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""
