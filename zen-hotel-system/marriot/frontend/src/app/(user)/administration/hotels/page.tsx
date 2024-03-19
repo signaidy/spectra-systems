@@ -3,7 +3,6 @@ import Link from "next/link";
 // Components
 import { Hotels } from "@/components/user/administration/hotels";
 import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
-import { CreateHotel } from "@/components/user/administration/actionButtons";
 import { SectionTitle } from "@/components/user/sectionTitle";
 // UI Components
 import { Button } from "@/components/ui/button";
