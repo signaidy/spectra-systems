@@ -75,7 +75,7 @@ export async function signUp(prevState: any, formData: FormData) {
 
     const existingUser = await users.findOne({ email: rawFormData.email });
 
-    if (!existingUser) {
+    if (existingUser) {
       return {
         error: "User already exists.",
       };
