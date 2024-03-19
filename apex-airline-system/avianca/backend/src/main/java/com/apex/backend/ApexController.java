@@ -89,7 +89,7 @@ public class ApexController {
     // USER - SIGN UP
     @PostMapping("/create-user/{token}")
     public Object createUser(@RequestBody User user, @PathVariable String token) {
-        String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR"; 
+        String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR";
 
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -98,48 +98,48 @@ public class ApexController {
         String passwordHash = BCrypt.hashpw(user.password, BCrypt.gensalt());
 
         try {
-    RestTemplate restTemplate = new RestTemplate();
-    MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
-    requestMap.add("secret", secretkey);
-    requestMap.add("response", token);
+            RestTemplate restTemplate = new RestTemplate();
+            MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+            requestMap.add("secret", secretkey);
+            requestMap.add("response", token);
 
-    ResponseEntity<Map> response = restTemplate.postForEntity(
-            "https://www.google.com/recaptcha/api/siteverify", requestMap, Map.class);
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    "https://www.google.com/recaptcha/api/siteverify", requestMap, Map.class);
 
-    Map<String, Object> responseBody = response.getBody();
+            Map<String, Object> responseBody = response.getBody();
 
-    if ((Boolean) responseBody.get("success")) {
-        PreparedStatement query = conn
-                    .prepareStatement(String.format(
-                            "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age, percentage, entry_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s, %s, TO_DATE('%s', 'dd-MM-yyyy'))",
-                            user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
-                            user.passportNumber, user.age, 0, dtf.format(now)));
-            query.executeQuery();
+            if ((Boolean) responseBody.get("success")) {
+                PreparedStatement query = conn
+                        .prepareStatement(String.format(
+                                "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age, percentage, entry_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s, %s, TO_DATE('%s', 'dd-MM-yyyy'))",
+                                user.email, passwordHash, user.firstName, user.lastName, user.originCountry,
+                                user.passportNumber, user.age, 0, dtf.format(now)));
+                query.executeQuery();
 
-            PreparedStatement retrievalQueery = conn
-                    .prepareStatement(String.format("SELECT * FROM users WHERE email = '%s'", user.email));
-            ResultSet result = retrievalQueery.executeQuery();
+                PreparedStatement retrievalQueery = conn
+                        .prepareStatement(String.format("SELECT * FROM users WHERE email = '%s'", user.email));
+                ResultSet result = retrievalQueery.executeQuery();
 
-            if (!result.next()) {
-                return new WebError("Failed to create user");
+                if (!result.next()) {
+                    return new WebError("Failed to create user");
+                }
+
+                return new LoggedUser(
+                        result.getString("user_id"),
+                        result.getString("email"),
+                        result.getString("first_name"),
+                        result.getString("last_name"),
+                        result.getString("origin_country"),
+                        result.getString("passport_number"),
+                        result.getString("role"),
+                        result.getString("age"),
+                        result.getString("percentage"),
+                        result.getString("entry_date"));
+            } else {
+                return new WebError("Failed to verify reCAPTCHA");
             }
 
-            return new LoggedUser(
-                    result.getString("user_id"),
-                    result.getString("email"),
-                    result.getString("first_name"),
-                    result.getString("last_name"),
-                    result.getString("origin_country"),
-                    result.getString("passport_number"),
-                    result.getString("role"),
-                    result.getString("age"),
-                    result.getString("percentage"),
-                    result.getString("entry_date"));
-    } else {
-        return new WebError("Failed to verify reCAPTCHA");
-    }
-
-} catch (Throwable e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             if (e.getMessage().contains(
                     "ORA-00001: unique constraint (SYSTEM.EMAIL_UK) violated on table SYSTEM.USERS columns (EMAIL)")) {
@@ -842,7 +842,8 @@ public class ApexController {
 
     // Purchase - API
     @PostMapping("/purchase/{amount}/{method}/{discount}")
-    public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method, @PathVariable int discount) {
+    public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method,
+            @PathVariable int discount) {
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
@@ -1017,7 +1018,7 @@ public class ApexController {
                         result.getString("paymenth_method"),
                         result.getString("departure_date"),
                         result.getString("arrival_date"),
-                        result.getInt("discount"), 
+                        result.getInt("discount"),
                         result.getString("user_name")));
             }
             if (purchaseslogs.isEmpty()) {
@@ -1419,47 +1420,49 @@ public class ApexController {
         }
     }
 
-    // Modification Flight - GET INFORMATION OF RESPECTIVE USERS THAT THE FLIGHT HAVE BEEN MODIFIED
-     @GetMapping("/modification-notification/{flightid}")
-     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
-         Connection conn = new OracleConnector().getConnection();
-         try {
-             PreparedStatement query = conn
-                     .prepareStatement(String.format(
-                             "SELECT concat(u.first_name,' ', u.last_name) as username, u.email, t.ticket_id, t.flight_id\n" + //
-                                                                  "FROM tickets t\n" + //
-                                                                  "Join Users u ON t.user_id = u.user_id where t.flight_id = %d",
-                             flightid));
-             ResultSet result = query.executeQuery();
+    // Modification Flight - GET INFORMATION OF RESPECTIVE USERS THAT THE FLIGHT
+    // HAVE BEEN MODIFIED
+    @GetMapping("/modification-notification/{flightid}")
+    public Object getEmailParametersFlightModified(@PathVariable int flightid) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT concat(u.first_name,' ', u.last_name) as username, u.email, t.ticket_id, t.flight_id\n"
+                                    + //
+                                    "FROM tickets t\n" + //
+                                    "Join Users u ON t.user_id = u.user_id where t.flight_id = %d",
+                            flightid));
+            ResultSet result = query.executeQuery();
 
-             record userinformation(String name, String email, int flight_id, int ticket) {
-             }
+            record userinformation(String name, String email, int flight_id, int ticket) {
+            }
 
             List<userinformation> userinformations = new ArrayList<>();
             while (result.next()) {
                 userinformations.add(new userinformation(
-                    result.getString("username"), 
-                    result.getString("email"),
-                    result.getInt("flight_id"), 
-                         result.getInt("ticket_id")));
+                        result.getString("username"),
+                        result.getString("email"),
+                        result.getInt("flight_id"),
+                        result.getInt("ticket_id")));
             }
             if (userinformations.isEmpty()) {
                 return new WebError("No information retrieve available");
             }
             return userinformations;
-         } catch (Throwable e) {
-             e.printStackTrace();
-             return new WebError("Failed to retrieve information");
-         } finally {
-             try {
-                 if (conn != null) {
-                     conn.close();
-                 }
-             } catch (SQLException e) {
-                 e.printStackTrace();
-             }
-         }
-     }
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to retrieve information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     // City - REGISTRATION
     @PostMapping("/create-city/{city}")
@@ -1511,6 +1514,48 @@ public class ApexController {
             }
         }
     }
- 
+
+    // Partners - GET INFORMATION
+    @GetMapping("/home")
+    public Object getHome() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM Home"));
+            ResultSet result = query.executeQuery();
+
+            record Home(String Background, String FeatureImage1, String Title1, String Content1, String FeatureImage2,
+                    String Title2, String Content2,
+                    String FeatureImage3, String Title3, String Content3) {
+            }
+
+            if (result.next()) {
+                return new Home(
+                        result.getString("Background_Image"),
+                        result.getString("FeatureImage_1"),
+                        result.getString("Title_1"),
+                        result.getString("Content_1"),
+                        result.getString("FeatureImage_2"),
+                        result.getString("Title_2"),
+                        result.getString("Content_2"),
+                        result.getString("FeatureImage_3"),
+                        result.getString("Title_3"),
+                        result.getString("Description_3"));
+            }
+            return new WebError("Failed to get home information");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("API Incorrect");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
