@@ -1,7 +1,6 @@
 export async function load({ fetch }) {
     const response = await fetch("http://localhost:8080/home");
     const home = await response.json();
-    console.log(home); 
     return {
        home,
     };
