@@ -1,12 +1,119 @@
 "use server";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { revalidatePath } from "next/cache";
+// Date Utilities
 import { format } from "date-fns";
+// Password Utilities
+const bcrypt = require("bcrypt");
+// JSON Web Token Utilities
+import * as jose from "jose";
 
 import { MongoClient, ObjectId } from "mongodb";
 
 const client = new MongoClient(process.env.MONGODB_URI!);
+
+export async function signIn(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const users = database.collection("users");
+
+    const user = await users.findOne({ email: rawFormData.email });
+
+    if (!user) {
+      return {
+        error: "User not found.",
+      };
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      rawFormData.password,
+      user.password
+    );
+
+    if (!passwordMatch) {
+      return {
+        error: "Invalid password.",
+      };
+    }
+
+    const { password, ...userWithoutPassword } = user;
+    const alg = "HS256";
+    const jwt = await new jose.SignJWT(userWithoutPassword)
+      .setProtectedHeader({ alg })
+      .sign(new TextEncoder().encode(process.env.JWT_SECRET));
+
+    cookies().set("token", jwt, {
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      path: "/",
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Sign In.",
+    };
+  }
+
+  redirect("/");
+}
+
+export async function signUp(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    if (rawFormData.password !== rawFormData.passwordConfirmation) {
+      return {
+        error: "Passwords do not match.",
+      };
+    }
+
+    const database = client.db(process.env.DB_NAME);
+    const users = database.collection("users");
+
+    const existingUser = await users.findOne({ email: rawFormData.email });
+
+    if (!existingUser) {
+      return {
+        error: "User already exists.",
+      };
+    }
+
+    const saltRounds = 10;
+    const user = {
+      email: rawFormData.email,
+      password: await bcrypt.hash(rawFormData.password, saltRounds),
+      age: Number(rawFormData.age),
+      firstName: rawFormData.firstName,
+      lastName: rawFormData.lastName,
+      originCountry: rawFormData.originCountry,
+      passportNumber: rawFormData.passportNumber,
+      role: "user",
+    };
+
+    await users.insertOne(user);
+
+    const { password, ...userWithoutPassword } = user;
+    const alg = "HS256";
+    const jwt = await new jose.SignJWT(userWithoutPassword)
+      .setProtectedHeader({ alg })
+      .sign(new TextEncoder().encode(process.env.JWT_SECRET));
+
+    cookies().set("token", jwt, {
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      path: "/",
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create User.",
+    };
+  }
+
+  redirect("/");
+}
 
 export async function createHotel(prevState: any, formData: FormData) {
   try {
@@ -18,7 +125,7 @@ export async function createHotel(prevState: any, formData: FormData) {
       };
     }
 
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const hotels = database.collection("hotels");
 
     const hotel = {
@@ -124,7 +231,7 @@ export async function createCommentary(prevState: any, formData: FormData) {
       message: rawFormData.message,
     };
 
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const hotels = database.collection("hotels");
 
     await hotels.updateOne(
@@ -145,7 +252,7 @@ export async function createLocation(prevState: any, formData: FormData) {
   try {
     const rawFormData = Object.fromEntries(formData.entries());
 
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const locations = database.collection("locations");
 
     const location = {
@@ -177,7 +284,7 @@ export async function updateHotel(prevState: any, formData: FormData) {
       };
     }
 
-    const database = client.db("marriot-db");
+    const database = client.db(process.env.DB_NAME);
     const hotels = database.collection("hotels");
 
     const hotel = {
@@ -270,8 +377,8 @@ export async function updateHotel(prevState: any, formData: FormData) {
 export async function createReservation(prevState: any, formData: FormData) {
   try {
     const rawFormData = Object.fromEntries(formData.entries());
-    
-    const database = client.db("marriot-db");
+
+    const database = client.db(process.env.DB_NAME);
     const reservations = database.collection("reservations");
 
     const reservation = {
@@ -295,5 +402,5 @@ export async function createReservation(prevState: any, formData: FormData) {
     };
   }
 
-  // redirect("/administration/hotels");
+  redirect("/checkout/success");
 }
