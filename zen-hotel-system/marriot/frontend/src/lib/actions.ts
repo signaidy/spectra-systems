@@ -222,11 +222,24 @@ export async function createCommentary(prevState: any, formData: FormData) {
       };
     }
 
+    const token = cookies().get("token");
+
+    if (!token) {
+      return {
+        error: "Please sign in to leave a commentary.",
+      };
+    }
+
+    const { payload }: { payload: User } = await jose.jwtVerify(
+      token!.value,
+      new TextEncoder().encode(process.env.JWT_SECRET)
+    );
+
     const commentary = {
       _id: Date.now().toString(),
       parentId: rawFormData.parentId || "",
-      userId: rawFormData.userId || "",
-      userName: rawFormData.userName || "Anonymous",
+      userId: payload._id,
+      userName: payload.firstName + " " + payload.lastName,
       date: format(new Date(), "MM/dd/yyyy HH:mm"),
       message: rawFormData.message,
     };
@@ -381,9 +394,22 @@ export async function createReservation(prevState: any, formData: FormData) {
     const database = client.db(process.env.DB_NAME);
     const reservations = database.collection("reservations");
 
+    const token = cookies().get("token");
+
+    if (!token) {
+      return {
+        error: "Please sign in to make a reservation.",
+      };
+    }
+
+    const { payload }: { payload: User } = await jose.jwtVerify(
+      token!.value,
+      new TextEncoder().encode(process.env.JWT_SECRET)
+    );
+
     const reservation = {
       hotelId: rawFormData.hotelId,
-      userId: rawFormData.userId,
+      userId: payload._id,
       checkin: rawFormData.checkin,
       checkout: rawFormData.checkout,
       roomType: rawFormData.roomType,
