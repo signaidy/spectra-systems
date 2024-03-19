@@ -7,7 +7,7 @@ export function Header() {
     <header className="border-b">
       <div className="container py-2 flex justify-between items-center">
         <Link href="/" className="flex items-center h-[60px]">
-          <div className="text-4xl text-foreground font-satisfy">Zen</div>
+          <div className="text-4xl text-foreground font-satisfy">Zen Systems</div>
         </Link>
         <HeaderNav />
         <SignInButton />
