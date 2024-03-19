@@ -1515,7 +1515,7 @@ public class ApexController {
         }
     }
 
-    // Partners - GET INFORMATION
+    // Home - GET INFORMATION
     @GetMapping("/home")
     public Object getHome() {
         Connection conn = new OracleConnector().getConnection();
@@ -1547,6 +1547,32 @@ public class ApexController {
         } catch (Throwable e) {
             e.printStackTrace();
             return new WebError("API Incorrect");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Home - UPDATE
+    @PostMapping("/update-home")
+    public Object updateHome(@RequestBody Home Home) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s' WHERE ID = 3",
+                            Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2, Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3));
+            query.executeQuery();
+
+            return new WebSuccess("Home information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
         } finally {
             try {
                 if (conn != null) {
