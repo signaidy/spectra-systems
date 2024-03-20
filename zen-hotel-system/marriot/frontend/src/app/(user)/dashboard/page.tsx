@@ -19,11 +19,12 @@ export default async function DashboardHome() {
         description="View Your Important Information"
       />
       <div className="flex flex-col gap-y-5 p-3 border rounded-lg">
-        <div>
+        <div className="flex gap-x-5">
           <div className="flex flex-col gap-x-2">
             <div className="font-bold">Welcome Back,</div>
             <div>{payload.firstName + " " + payload.lastName}</div>
           </div>
+          <div className="w-12 rounded-full border border-foreground background bg-white bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500"/>
         </div>
         <div className="grid grid-cols-2 gap-y-5">
           <UserSection title="First Name" value={payload.firstName} />
