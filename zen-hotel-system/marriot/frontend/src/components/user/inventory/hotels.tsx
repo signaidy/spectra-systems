@@ -1,8 +1,21 @@
+// Data
+import { getFilteredHotels } from "@/lib/data";
 import { getHotels } from "@/lib/data";
-import { HotelCard } from "@/components/hotels/hotelCard";
+// Components
+import { HotelInventoryCard } from "@/components/hotels/hotelInventoryCard";
 
-export async function Hotels() {
-  const hotels = await getHotels();
+export async function Hotels({
+  searchParams,
+}: {
+  searchParams: HotelSearchParams | any;
+}) {
+  let hotels = [];
+
+  if (Object.entries(searchParams).length > 0) {
+    hotels = await getFilteredHotels(searchParams);
+  } else {
+    hotels = await getHotels();
+  }
 
   return (
     <>
@@ -12,7 +25,7 @@ export async function Hotels() {
         </div>
       )}
       {hotels.map((hotel: Hotel) => (
-        <HotelCard key={hotel._id} {...hotel} />
+        <HotelInventoryCard key={hotel._id} hotel={hotel} searchParams={searchParams} />
       ))}
     </>
   );
