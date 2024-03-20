@@ -4,7 +4,7 @@ export default function PurchaseLogsHome() {
   return (
     <>
       <SectionTitle
-        title="Pruchase Logs"
+        title="Purchase Logs"
         description="View and Search for Purchase Logs"
       />
     </>
