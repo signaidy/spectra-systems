@@ -38,7 +38,7 @@ export default function AdministrationHome() {
   );
 }
 
-export function AdministrationLink({
+function AdministrationLink({
   name,
   description,
   href,
