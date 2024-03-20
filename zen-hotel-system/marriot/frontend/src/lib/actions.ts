@@ -430,3 +430,34 @@ export async function createReservation(prevState: any, formData: FormData) {
 
   redirect("/checkout/success");
 }
+
+export async function updateUser(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const users = database.collection("users");
+
+    const user = {
+      email: rawFormData.email,
+      age: Number(rawFormData.age),
+      firstName: rawFormData.firstName,
+      lastName: rawFormData.lastName,
+      originCountry: rawFormData.originCountry,
+      passportNumber: rawFormData.passportNumber,
+      role: rawFormData.role,
+    };
+    
+    await users.updateOne(
+      { _id: new ObjectId(rawFormData._id as string) },
+      { $set: user }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Update User.",
+    };
+  }
+
+  redirect("/administration/users");
+}
