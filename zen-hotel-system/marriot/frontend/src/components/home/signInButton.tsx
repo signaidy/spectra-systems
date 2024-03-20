@@ -12,7 +12,7 @@ export async function SignInButton() {
 
   if (token) {
     const { payload }: { payload: User } = await jose.jwtVerify(
-      token!.value,
+      token.value,
       new TextEncoder().encode(process.env.JWT_SECRET)
     );
 
