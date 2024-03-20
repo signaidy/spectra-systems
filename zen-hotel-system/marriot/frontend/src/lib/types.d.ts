@@ -124,6 +124,7 @@ declare global {
     stayDays: number;
     totalPrice: number;
     state: "active" | "cancelled" | "completed";
+    madeAt: string;
   }
 }
 
