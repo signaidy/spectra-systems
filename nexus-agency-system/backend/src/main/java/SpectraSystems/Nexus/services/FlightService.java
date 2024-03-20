@@ -90,7 +90,7 @@ public class FlightService {
         // Get flights from the other backend
         externalFlight[] externalFlights = responseEntity.getBody();
         
-        // Embed comments from your database
+        // Embed comments from database
         for (externalFlight flight : externalFlights) {
             List<Comment> comment = commentService.getCommentsByFlightId(flight.getFlightId());
             if (comment.isEmpty()) {

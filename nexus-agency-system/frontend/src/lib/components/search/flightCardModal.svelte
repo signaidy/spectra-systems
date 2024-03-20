@@ -17,12 +17,12 @@
                   <div class="flex gap-x-4">
                     <div class="flex flex-col gap-y-1 border-r pr-4 border-black">
                   <div class="text-muted-foreground text-sm">ID: ${
-                    commentary.commentId
+                    commentary.id
                   }</div>
                   ${
-                    commentary.parentCommentId === 0
+                    commentary.parentComment === 0
                       ? ""
-                      : `<div class="text-muted-foreground text-sm">Replying to ${commentary.parentCommentId}</div>`
+                      : `<div class="text-muted-foreground text-sm">Replying to ${commentary.parentComment}</div>`
                   }
                   </div>
                   <form
@@ -33,7 +33,7 @@
           >
                     <div class="text-xs font-medium">Reply</div>
                     <input type="hidden" name="parentId" value=${
-                      commentary.commentId
+                      commentary.id
                     } />
                     <input type="hidden" name="userId" value=${user.userId} />
                     <input type="hidden" name="flightId" value=${

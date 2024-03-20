@@ -1,5 +1,7 @@
 package SpectraSystems.Nexus.models;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,6 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,12 +40,17 @@ public class Comment {
     @Column(name = "PATH", nullable = false, length = 500)
     private String path;
 
-    @ManyToOne
     @JoinColumn(name = "PARENT_COMMENT_ID")
-    private Comment parentComment;
+    private Long parentComment;
 
     @Column(name = "FLIGHT_ID", nullable = false)
     private Long flightId;
+
+    @Column(name = "USER_NAME")
+    private String userName;
+
+    @OneToMany(mappedBy = "parentComment")
+    private List<Comment> children;
 
     // Constructors, getters, setters, and other methods...
     
@@ -52,12 +60,15 @@ public class Comment {
         this.path = "/";
     }
 
-    public Comment(Long userId, String content, Long flightId) {
+    public Comment(Long userId, String content, Long flightId, String userName, Long parentComment) {
         this.userId = userId;
         this.content = content;
+        this.parentComment = parentComment;
         this.creationDate = new Date();
         this.path = "/";
         this.flightId = flightId;
+        this.userName = userName;
+        this.children =  new ArrayList<>();
     }
 
     public void setId(Long id) {
@@ -80,7 +91,7 @@ public class Comment {
         this.path = path;
     }
     
-    public void setParentComment(Comment parentComment) {
+    public void setParentComment(Long parentComment) {
         this.parentComment = parentComment;
     }
     
@@ -108,11 +119,27 @@ public class Comment {
         return path;
     }
     
-    public Comment getParentComment() {
+    public Long getParentComment() {
         return parentComment;
     }
     
     public Long getFlightId() {
         return flightId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public List<Comment> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Comment> children) {
+        this.children = children;
     }
 }

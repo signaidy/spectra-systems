@@ -10,38 +10,6 @@ export function load({ locals, url }) {
     );
 
     const result = await response.json();
-    console.log(result)
-    function assignChildren(commentaries: Commentary[]): Commentary[] {
-
-      const commentariesById: { [key: number]: Commentary } = {};
-
-      commentaries.forEach((commentary) => {
-        commentariesById[commentary.commentId] = commentary;
-      });
-
-      commentaries.forEach((commentary) => {
-        const { parentCommentId } = commentary;
-        if (parentCommentId !== 0) {
-          const parentCommentary = commentariesById[parentCommentId];
-          if (parentCommentary) {
-            if (!parentCommentary.children) {
-              parentCommentary.children = [];
-            }
-            parentCommentary.children.push(commentary);
-          }
-        }
-      });
-
-      return commentaries.filter(
-        (commentary) => commentary.parentCommentId === 0
-      );
-    }
-
-    result.forEach((flight: Flight) => {
-      const arrangedCommentaries = assignChildren(flight.commentaries);
-      flight.commentaries = arrangedCommentaries;
-    });
-
     return result;
   }
 
@@ -62,9 +30,15 @@ export function load({ locals, url }) {
 }
 
 export const actions = {
-  createCommentary: async ({ request, cookies }) => {
+  createCommentary: async ({ request, cookies, locals }) => {
     const data = await request.formData();
     const token = cookies.get('token');
+    const user = locals.user.firstName;
+    let parentId = data.get("parentId") || 0;
+    if (!parentId || parentId === "null") {
+      parentId = 0;
+    }
+    console.log(parentId)
     try {
       const response = await fetch("http://localhost:42069/nexus/comments", {
         method: "POST",
@@ -74,10 +48,11 @@ export const actions = {
 
         },
         body: JSON.stringify({
-          parentId: data.get("parentId"),
+          parentComment: parentId,
           userId: data.get("userId"),
           content: data.get("content"),
           flightId: data.get("flightId"),
+          userName: user
         }),
       });
       const result = await response.json();

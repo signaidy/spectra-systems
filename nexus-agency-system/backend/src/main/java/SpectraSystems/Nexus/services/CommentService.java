@@ -43,7 +43,6 @@ public class CommentService {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         if (optionalComment.isPresent()) {
             Comment existingComment = optionalComment.get();
-            existingComment.setCreationDate(commentDetails.getCreationDate());
             existingComment.setContent(commentDetails.getContent());
             return commentRepository.save(existingComment);
         } else {
