@@ -5,6 +5,7 @@
   import { Input } from "$lib/components/ui/input";
   import { ArrowRight, Star, Send } from "lucide-svelte";
 
+  
   function renderCommentary(commentary: Commentary): string {
     let padding = 8;
     let html = `<div class="flex flex-col gap-y-1 bg-muted p-1 rounded-lg">
@@ -26,8 +27,8 @@
                   </div>
                   <form
             method="POST"
-            id="customForm"
             action="?/createCommentary"
+            use:enhance={enhanceReplyForm}
             class="flex flex-col gap-y-1"
           >
                     <div class="text-xs font-medium">Reply</div>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
+import SpectraSystems.Nexus.models.Rating;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.models.City;
@@ -32,6 +33,7 @@ public class FlightService {
     public FlightService(FlightRepository flightRepository, RestTemplate restTemplate) {
         this.flightRepository = flightRepository;
         this.restTemplate = restTemplate;
+        this.commentaries = commentaries;
     }
 
     public List<Flight> getAllFlights() {

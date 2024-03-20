@@ -16,6 +16,8 @@ public class externalFlight {
 
     @JsonProperty("commentaries")
     private List<Comment> commentaries;
+
+    private Rating rating;
     
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date departureDate;
@@ -165,6 +167,14 @@ public class externalFlight {
 
     public List<Comment> getComments(){
         return commentaries;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 }
 

@@ -93,31 +93,31 @@ export const actions = {
       }
     }
   },
-  // createRating: async ({ request }) => {
-  //   const data = await request.formData();
-  //   try {
-  //     const response = await fetch("http://localhost:42069/create-rating", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         userId: data.get("userId"),
-  //         flightId: data.get("flightId"),
-  //         value: data.get("rating"),
-  //       }),
-  //     });
-  //     const result = await response.json();
+  createRating: async ({ request }) => {
+    const data = await request.formData();
+    try {
+      const response = await fetch("http://localhost:42069/nexus/flights/create-rating", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: data.get("userId"),
+          flightId: data.get("flightId"),
+          value: data.get("rating"),
+        }),
+      });
+      const result = await response.json();
 
-  //     if (result.error) {
-  //       throw new Error(result.error);
-  //     }
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       return fail(500, {
-  //         error: error.message,
-  //       });
-  //     }
-  //   }
-  // },
+      if (result.error) {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return fail(500, {
+          error: error.message,
+        });
+      }
+    }
+  },
 };
