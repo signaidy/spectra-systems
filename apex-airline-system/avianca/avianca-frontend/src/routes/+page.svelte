@@ -19,7 +19,6 @@
 </script>
 
 <div class="h-[calc(100vh-5rem)] bg-cover" style="background-image: url({background});">
-  <!-- <p class="text-white">{background}</p> -->
   <div class="flex flex-col container justify-center items-center h-full">
     <SearchBar cities={data.cities} />
   </div>
