@@ -119,6 +119,26 @@ export async function getUsers() {
   }
 }
 
+export async function getUserById(id: string) {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const usersCollection = database.collection("users");
+
+    const result = await usersCollection.findOne({ _id: new ObjectId(id) });
+
+    if (!result) {
+      throw new Error("User not found");
+    }
+
+    const user = { ...result, _id: result._id.toString() };
+
+    return user as User;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve User");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""

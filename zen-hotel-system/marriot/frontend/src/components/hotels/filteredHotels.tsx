@@ -1,4 +1,6 @@
+// Data
 import { getFilteredHotels } from "@/lib/data";
+// Components
 import { HotelCard } from "@/components/hotels/hotelCard";
 
 export async function FilteredHotels({
