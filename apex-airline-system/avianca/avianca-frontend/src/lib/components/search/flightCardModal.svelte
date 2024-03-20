@@ -41,7 +41,7 @@
                     } />
                     <div class="flex gap-x-2">
                       <input class="p-2 rounded-lg text-sm" name="content" placeholder="Leave a comment..." required />
-                      <button data-button-root type="submit" class="p-3 flex items-center text-sm font-medium bg-primary text-white rounded-lg" disabled=${createLoading}
+                      <button data-button-root type="submit" class="p-3 flex items-center text-sm font-medium bg-primary text-white rounded-lg"
                     >Reply</button>
                       </div>
                     </form>

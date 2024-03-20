@@ -5,7 +5,7 @@
   import { Input } from "$lib/components/ui/input";
   import { ArrowRight, Star, Send } from "lucide-svelte";
 
-  
+
   function renderCommentary(commentary: Commentary): string {
     let padding = 8;
     let html = `<div class="flex flex-col gap-y-1 bg-muted p-1 rounded-lg">
@@ -41,7 +41,7 @@
                     } />
                     <div class="flex gap-x-2">
                       <input class="p-2 rounded-lg text-sm" name="content" placeholder="Leave a comment..." required />
-                      <button data-button-root type="submit" class="p-3 flex items-center text-sm font-medium bg-primary text-white rounded-lg" disabled=${createLoading}
+                      <button data-button-root type="submit" class="p-3 flex items-center text-sm font-medium bg-primary text-white rounded-lg"
                     >Reply</button>
                       </div>
                     </form>
@@ -58,6 +58,7 @@
     html += `</div>`;
     return html;
   }
+
 
   export let flight: Flight;
   export let user: User;

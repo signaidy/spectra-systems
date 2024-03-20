@@ -1,4 +1,4 @@
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 
 export function load({ locals, url }) {
   async function getOneWayFlights() {
@@ -55,6 +55,12 @@ export const actions = {
           userName: user
         }),
       });
+      if (response.status === 403) {
+        // Redirect user to login page
+        console.log(response.status)
+        return { status: 403, redirect: '/login' };
+      }
+
       const result = await response.json();
 
       if (result.error) {
