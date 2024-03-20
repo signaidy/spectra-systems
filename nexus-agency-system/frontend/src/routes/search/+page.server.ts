@@ -1,15 +1,11 @@
 import { fail } from "@sveltejs/kit";
 
-export function load({ locals, url, cookies }) {
+export function load({ locals, url }) {
   async function getOneWayFlights() {
-    const token = cookies.get('token');
     const response = await fetch(
       `http://localhost:42069/nexus/flights/avianca/one-way-flights?${url.searchParams.toString()}`,
       {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        method: "GET"
       }
     );
 
