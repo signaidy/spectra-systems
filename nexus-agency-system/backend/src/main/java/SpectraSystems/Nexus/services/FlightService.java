@@ -10,9 +10,12 @@ import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.models.City;
+import SpectraSystems.Nexus.models.Comment;
+
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +24,9 @@ import java.util.Optional;
 public class FlightService {
     private final FlightRepository flightRepository;
     private final RestTemplate restTemplate;
+    @Autowired
+    private CommentService commentService; 
+    private List<Comment> commentaries;
 
     @Autowired
     public FlightService(FlightRepository flightRepository, RestTemplate restTemplate) {
@@ -50,7 +56,7 @@ public class FlightService {
 
     public List<externalFlight> getAllFlightsFromOtherBackend() {
         ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
-            "http://localhost:8081/get-all-flights",
+            "http://localhost:8080/get-all-flights",
             HttpMethod.GET,
             null,
             externalFlight[].class
@@ -65,7 +71,8 @@ public class FlightService {
         String departureDay,
         int passengers
     ) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8081/get-one-way-flights")
+        // Call the other backend to get flights
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
                 .queryParam("originCity", originCity)
                 .queryParam("destinationCity", destinationCity)
                 .queryParam("departureDay", departureDay)
@@ -77,15 +84,28 @@ public class FlightService {
             null,
             externalFlight[].class
         );
+        
+        // Get flights from the other backend
         externalFlight[] externalFlights = responseEntity.getBody();
+        
+        // Embed comments from your database
+        for (externalFlight flight : externalFlights) {
+            List<Comment> comment = commentService.getCommentsByFlightId(flight.getFlightId());
+            if (comment.isEmpty()) {
+                // Create an empty comments array if there are no comments
+                flight.setCommentaries(new ArrayList<>());
+            } else {
+                flight.setCommentaries(comment);
+            }
+        }
+
         return Arrays.asList(externalFlights);
     }
 
     public List<City> getAllCitiesFromOtherBackend() {
         // Make a request to the other backend to get cities
-        // Replace "localhost:8081/get-cities" with the actual Port
         ResponseEntity<List<City>> responseEntity = restTemplate.exchange(
-        "http://localhost:8081/get-cities",
+        "http://localhost:8080/get-cities",
         HttpMethod.GET,
         null,
         new ParameterizedTypeReference<List<City>>() {}

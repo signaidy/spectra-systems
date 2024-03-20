@@ -1,6 +1,6 @@
 export function load({ locals }) {
   async function getCities() {
-    const response = await fetch("http://localhost:8080/nexus/flights/avianca/cities", {
+    const response = await fetch("http://localhost:42069/nexus/flights/avianca/cities", {
       method: "GET",
     });
 

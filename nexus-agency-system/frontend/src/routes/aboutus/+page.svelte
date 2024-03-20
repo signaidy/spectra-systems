@@ -2,7 +2,7 @@
   let informationabout = getAboutInformation();
 
   async function getAboutInformation() {
-    const response = await fetch("http://localhost:8080/nexus/aboutus/1", {
+    const response = await fetch("http://localhost:42069/nexus/aboutus/1", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
