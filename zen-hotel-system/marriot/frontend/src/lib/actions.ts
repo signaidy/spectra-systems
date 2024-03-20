@@ -418,6 +418,7 @@ export async function createReservation(prevState: any, formData: FormData) {
       stayDays: Number(rawFormData.stayDays),
       totalPrice: Number(rawFormData.totalPrice),
       state: "active",
+      madeAt: format(new Date(), "MM/dd/yyyy HH:mm"),
     };
 
     await reservations.insertOne(reservation);
@@ -447,7 +448,7 @@ export async function updateUser(prevState: any, formData: FormData) {
       passportNumber: rawFormData.passportNumber,
       role: rawFormData.role,
     };
-    
+
     await users.updateOne(
       { _id: new ObjectId(rawFormData._id as string) },
       { $set: user }
