@@ -44,7 +44,7 @@ public class CommentService {
         if (optionalComment.isPresent()) {
             Comment existingComment = optionalComment.get();
             existingComment.setCreationDate(commentDetails.getCreationDate());
-            existingComment.setMessage(commentDetails.getMessage());
+            existingComment.setContent(commentDetails.getContent());
             return commentRepository.save(existingComment);
         } else {
             // Handle if the comment with the given id is not found

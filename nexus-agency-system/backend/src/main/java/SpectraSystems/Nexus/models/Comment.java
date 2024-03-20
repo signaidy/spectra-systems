@@ -27,7 +27,7 @@ public class Comment {
     private Long userId;
 
     @Column(name = "CONTENT", nullable = false, length = 1000)
-    private String message;
+    private String content;
 
     @Column(name = "CREATION_DATE", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -48,13 +48,15 @@ public class Comment {
     
     public Comment() {
         // Default constructor
+        this.creationDate = new Date();
+        this.path = "/";
     }
 
-    public Comment(Long userId, String message, Date creationDate, String path, Long flightId) {
+    public Comment(Long userId, String content, Long flightId) {
         this.userId = userId;
-        this.message = message;
-        this.creationDate = creationDate;
-        this.path = path;
+        this.content = content;
+        this.creationDate = new Date();
+        this.path = "/";
         this.flightId = flightId;
     }
 
@@ -66,8 +68,8 @@ public class Comment {
         this.userId = userId;
     }
     
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(String content) {
+        this.content = content;
     }
     
     public void setCreationDate(Date creationDate) {
@@ -94,8 +96,8 @@ public class Comment {
         return userId;
     }
     
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
     
     public Date getCreationDate() {
