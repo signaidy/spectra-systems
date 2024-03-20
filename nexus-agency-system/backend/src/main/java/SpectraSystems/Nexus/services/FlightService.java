@@ -15,6 +15,7 @@ import SpectraSystems.Nexus.models.Comment;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -89,10 +90,15 @@ public class FlightService {
         
         // Embed comments from your database
         for (externalFlight flight : externalFlights) {
-            List<Comment> comments = commentService.getCommentsByFlightId(flight.getFlightId());
-            flight.setCommentaries(comments);
+            List<Comment> comment = commentService.getCommentsByFlightId(flight.getFlightId());
+            if (comment.isEmpty()) {
+                // Create an empty comments array if there are no comments
+                flight.setCommentaries(new ArrayList<>());
+            } else {
+                flight.setCommentaries(comment);
+            }
         }
-        
+
         return Arrays.asList(externalFlights);
     }
 

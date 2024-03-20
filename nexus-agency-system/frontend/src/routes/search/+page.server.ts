@@ -14,11 +14,8 @@ export function load({ locals, url, cookies }) {
     );
 
     const result = await response.json();
-
+    console.log(result)
     function assignChildren(commentaries: Commentary[]): Commentary[] {
-      if (!commentaries || commentaries.length === 0) {
-        return [];
-      }
 
       const commentariesById: { [key: number]: Commentary } = {};
 
