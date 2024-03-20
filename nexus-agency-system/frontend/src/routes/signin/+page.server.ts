@@ -12,7 +12,7 @@ export const actions = {
     }
     
     try {
-      const response = await fetch("http://localhost:8080/nexus/auth/signup", {
+      const response = await fetch("http://localhost:42069/nexus/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

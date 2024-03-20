@@ -6,19 +6,19 @@
   let slogan = data.aboutus.slogan;
   let gif = data.aboutus.gif;
   let yt = data.aboutus.yt;
-  let cards = data.aboutus.cards_amoun;
-  let title_one = data.aboutus.title_one;
-  let text_one = data.aboutus.text_one;
-  let image_one = data.aboutus.img_one;
-  let title_two = data.aboutus.title_two;
-  let text_two = data.aboutus.text_two;
-  let image_two = data.aboutus.img_two;
-  let title_three = data.aboutus.title_three;
-  let text_three = data.aboutus.text_three;
-  let image_three = data.aboutus.img_three;
-  let title_four = data.aboutus.title_four;
-  let text_four = data.aboutus.text_four;
-  let image_four = data.aboutus.img_four;
+  let cards = data.aboutus.cardsAmount;
+  let title_one = data.aboutus.titleOne;
+  let text_one = data.aboutus.textOne;
+  let image_one = data.aboutus.imgOne;
+  let title_two = data.aboutus.titleTwo;
+  let text_two = data.aboutus.textTwo;
+  let image_two = data.aboutus.imgTwo;
+  let title_three = data.aboutus.titleThree;
+  let text_three = data.aboutus.textThree;
+  let image_three = data.aboutus.imgThree;
+  let title_four = data.aboutus.titleFour;
+  let text_four = data.aboutus.textFour;
+  let image_four = data.aboutus.imgFour;
 </script>
 
 <h1 class="text-xl font-bold mb-8">About US - Information</h1>
@@ -75,7 +75,7 @@
           type="number"
           name="cardsamount"
           id="cardsamount"
-          placeholder={"Actual amount: " + data.aboutus.cards_amoun}
+          placeholder={"Actual amount: " + data.aboutus.cardsAmount}
           bind:value={cards}
         />
       </div>
@@ -89,7 +89,7 @@
             type="text"
             name="t1"
             id="t1"
-            placeholder={data.aboutus.title_one}
+            placeholder={data.aboutus.titleOne}
             bind:value={title_one}
           />
         </div>
@@ -104,7 +104,7 @@
             type="text"
             name="tx1"
             id="tx1"
-            placeholder={data.aboutus.text_one}
+            placeholder={data.aboutus.textOne}
             bind:value={text_one}
           />
         </div>
@@ -118,7 +118,7 @@
             type="text"
             name="img1"
             id="img1"
-            placeholder={data.aboutus.img_one}
+            placeholder={data.aboutus.imgOne}
             bind:value={image_one}
           />
         </div>
@@ -133,7 +133,7 @@
             type="text"
             name="t2"
             id="t2"
-            placeholder={data.aboutus.title_two}
+            placeholder={data.aboutus.titleTwo}
             bind:value={title_two}
           />
         </div>
@@ -147,7 +147,7 @@
             type="text"
             name="tx2"
             id="tx2"
-            placeholder={data.aboutus.text_two}
+            placeholder={data.aboutus.textTwo}
             bind:value={text_two}
           />
         </div>
@@ -161,7 +161,7 @@
             type="text"
             name="img2"
             id="img2"
-            placeholder={data.aboutus.img_two}
+            placeholder={data.aboutus.imgTwo}
             bind:value={image_two}
           />
         </div>
@@ -176,7 +176,7 @@
             type="text"
             name="t3"
             id="t3"
-            placeholder={data.aboutus.title_three}
+            placeholder={data.aboutus.titleThree}
             bind:value={title_three}
           />
         </div>
@@ -190,7 +190,7 @@
             type="text"
             name="tx3"
             id="tx3"
-            placeholder={data.aboutus.text_three}
+            placeholder={data.aboutus.textThree}
             bind:value={text_three}
           />
         </div>
@@ -204,7 +204,7 @@
             type="text"
             name="img3"
             id="img3"
-            placeholder={data.aboutus.img_three}
+            placeholder={data.aboutus.imgThree}
             bind:value={image_three}
           />
         </div>
@@ -219,7 +219,7 @@
             type="text"
             name="t4"
             id="t4"
-            placeholder={data.aboutus.title_four}
+            placeholder={data.aboutus.titleFour}
             bind:value={title_four}
           />
         </div>
@@ -233,7 +233,7 @@
             type="text"
             name="tx4"
             id="tx4"
-            placeholder={data.aboutus.text_four}
+            placeholder={data.aboutus.textFour}
             bind:value={text_four}
           />
         </div>
@@ -247,7 +247,7 @@
             type="text"
             name="img4"
             id="img4"
-            placeholder={data.aboutus.img_four}
+            placeholder={data.aboutus.imgFour}
             bind:value={image_four}
           />
         </div>

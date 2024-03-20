@@ -11,7 +11,7 @@
     let userReservations = [];
   
     onMount(async () => {
-    fetch(`http://localhost:8080/nexus/reservations/user/${userid}`)
+    fetch(`http://localhost:42069/nexus/reservations/user/${userid}`)
     .then(response => response.json())
     .then(userfdata => {
       userReservations = userfdata
