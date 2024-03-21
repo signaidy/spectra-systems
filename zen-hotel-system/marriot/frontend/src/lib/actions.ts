@@ -408,8 +408,8 @@ export async function createReservation(prevState: any, formData: FormData) {
     );
 
     const reservation = {
-      hotelId: rawFormData.hotelId,
-      userId: payload._id,
+      hotelId: new ObjectId(rawFormData.hotelId as string),
+      userId: new ObjectId(payload._id),
       checkin: rawFormData.checkin,
       checkout: rawFormData.checkout,
       roomType: rawFormData.roomType,
