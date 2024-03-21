@@ -125,6 +125,8 @@ declare global {
     totalPrice: number;
     state: "active" | "cancelled" | "completed";
     madeAt: string;
+    hotel: Hotel;
+    user: User;
   }
 }
 
