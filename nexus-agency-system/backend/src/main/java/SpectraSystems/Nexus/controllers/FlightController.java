@@ -5,8 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
+import SpectraSystems.Nexus.models.FlightPurchaseRequest;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.services.FlightService;
 
@@ -74,6 +78,17 @@ public class FlightController {
     public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
         Flight createdFlight = flightService.createFlight(flight);
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
+    }
+
+    // Endpoint for purchasing a flight
+    @PostMapping("/purchase/{amount}/{method}")
+    public ResponseEntity<String> purchaseFlight(
+            @PathVariable int amount,
+            @PathVariable String method,
+            @RequestBody FlightPurchaseRequest purchaseRequest
+    ) throws JsonMappingException, JsonProcessingException {
+        flightService.purchaseFlight(amount, method, purchaseRequest.getFlightId(), purchaseRequest.getUserId());
+        return ResponseEntity.ok("Flight purchased successfully.");
     }
 
     // Endpoint to update an existing flight
