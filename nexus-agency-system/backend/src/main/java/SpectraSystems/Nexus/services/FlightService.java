@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Rating;
+import SpectraSystems.Nexus.models.TicketPurchase;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
+import SpectraSystems.Nexus.repositories.TicketPurchaseRepository;
 import io.jsonwebtoken.io.IOException;
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Comment;
@@ -26,28 +28,35 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService {
     private final FlightRepository flightRepository;
     private final RestTemplate restTemplate;
+    private final TicketPurchaseRepository ticketPurchaseRepository;
+
     @Autowired
     private CommentService commentService; 
     private List<Comment> commentaries;
 
     @Autowired
-    public FlightService(FlightRepository flightRepository, RestTemplate restTemplate) {
+    public FlightService(FlightRepository flightRepository, RestTemplate restTemplate, TicketPurchaseRepository ticketPurchaseRepository) {
         this.flightRepository = flightRepository;
         this.restTemplate = restTemplate;
         this.commentaries = commentaries;
+        this.ticketPurchaseRepository = ticketPurchaseRepository;
     }
 
     public List<Flight> getAllFlights() {
@@ -129,60 +138,80 @@ public class FlightService {
     return responseEntity.getBody();
     }
 
-    // public void purchaseFlight(int amount, String method, Long flightId, Long userId) throws JsonMappingException, JsonProcessingException, HttpServerErrorException  {
-    //     // Set discount and user_id
-    //     int discount = 20;
-    //     long userIdPurchase = 145;
+    public void purchaseFlight(int amount, String method, Long flightId, Long userId) throws JsonMappingException, JsonProcessingException, HttpServerErrorException  {
+        // Set discount and user_id
+        int discount = 20;
+        long userIdPurchase = 145;
 
-    //     // Create request body
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.setContentType(MediaType.APPLICATION_JSON);
+        // Create request body
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-    //     // Create the body as JSON
-    //     String requestBody = "{"
-    //             + "\"user_id\": \"" + userIdPurchase + "\","
-    //             + "\"flight_id\": \"" + flightId + "\","
-    //             + "\"state\": \"\","
-    //             + "\"type\": \"\""
-    //             + "}";
+        // Create the body as JSON
+        String requestBody = "{"
+                + "\"user_id\": \"" + userIdPurchase + "\","
+                + "\"flight_id\": \"" + flightId + "\","
+                + "\"state\": \"\","
+                + "\"type\": \"\""
+                + "}";
 
-    //     HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
-    //     // Make the POST request
-    //     String url = String.format("http://localhost:8080/purchase/%d/%s/%d", amount, method, discount);
-    //      ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+        // Make the POST request
+        String url = String.format("http://localhost:8080/purchase/%d/%s/%d", amount, method, discount);
+         ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
-    //     // Check if the purchase was successful
-    //     if (response.getStatusCode() == HttpStatus.OK) {
-    //         // Parse the response body to extract purchased tickets
-    //         ObjectMapper objectMapper = new ObjectMapper();
-    //         try {
-    //             List<Map<String, Object>> tickets = objectMapper.readValue(response.getBody(), new TypeReference<List<Map<String, Object>>>() {});
+        // Check if the purchase was successful
+        if (response.getStatusCode() == HttpStatus.OK) {
+           // Parse the response to extract ticket_ids for purchased tickets
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode root = objectMapper.readTree(response.getBody());
 
-    //             // Get the last 'amount' purchased tickets
-    //             List<Map<String, Object>> lastTickets = tickets.subList(Math.max(tickets.size() - (int) amount, 0), tickets.size());
+            // Iterate over the last 'amount' elements of the response
+            int startIndex = root.size() - amount;
+            for (int i = startIndex; i < root.size(); i++) {
+                int ticketId = root.get(i).get("ticket_id").asInt();
 
-    //             // Save flight details for each ticket
-    //             for (Map<String, Object> ticket : lastTickets) {
-    //                 Long ticketId = (Long) ticket.get("ticket_id");
+                // Make a GET request to retrieve flight information
+                String flightUrl = String.format("http://localhost:8080/historical_purchases/%d", userIdPurchase);
+                ResponseEntity<String> flightResponse = restTemplate.getForEntity(flightUrl, String.class);
+                if (flightResponse.getStatusCode() == HttpStatus.OK) {
+                    // Parse the flight response to find the relevant flight information
+                    JsonNode flights = objectMapper.readTree(flightResponse.getBody());
+                    for (JsonNode flight : flights) {
+                        if (flight.get("ticket").asInt() == ticketId) {
+                            // Found the relevant flight, create Flight and TicketPurchase objects
+                            Flight newFlight = new Flight(
+                                    flight.get("user_id").asLong(),
+                                    flight.get("flightNumber").asText(),
+                                    Date.valueOf(flight.get("departure_date").asText().substring(0, 10)), // Assuming format is "YYYY-MM-DD HH:mm:ss"
+                                    flight.get("origin").asText(),
+                                    flight.get("destination").asText(),
+                                    Date.valueOf(flight.get("arrival_date").asText().substring(0, 10))
+                            );
 
-    //                 externalFlight purchasedFlight = getAllFlightsFromOtherBackend().stream()
-    //                                                     .filter(flight -> flight.getFlightId().equals(ticketId))
-    //                                                     .findFirst()
-    //                                                     .orElse(null);
+                            TicketPurchase newTicket = new TicketPurchase(
+                                    flight.get("ticket").asInt(),
+                                    flight.get("user_id").asInt(),
+                                    flightId.intValue(),
+                                    flight.get("type").asText(),
+                                    ""
+                            );
 
-    //                 if (purchasedFlight != null) {
-    //                     Flight localFlight = new Flight(userId, String.valueOf(ticketId), purchasedFlight.getDepartureDate(), purchasedFlight.getOriginCityName(), purchasedFlight.getDestinationCityName(), purchasedFlight.getArrivalDate());
-    //                     flightRepository.save(localFlight);
-    //                 }
-    //             }
-    //         } catch (IOException e) {
-    //             e.printStackTrace();
-    //         }
-    //     } else {
-    //         throw new RuntimeException("Purchase was unsuccessful");
-    //     }
-    // }
+                            // Save the newFlight and newTicket into your backend
+                            flightRepository.save(newFlight);
+                            ticketPurchaseRepository.save(newTicket);
+                            break; // No need to continue searching
+                        }
+                    }
+                } else {
+                    throw new RuntimeException("Failed to retrieve flight information");
+                }
+            }
+        } else {
+            throw new RuntimeException("Purchase was unsuccessful");
+        }
+    }
 
     public Flight updateFlight(Long id, Flight flightDetails) {
         Flight flight = flightRepository.findById(id)

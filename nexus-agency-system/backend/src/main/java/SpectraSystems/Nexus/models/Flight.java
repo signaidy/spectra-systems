@@ -1,11 +1,14 @@
 package SpectraSystems.Nexus.models;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +39,9 @@ public class Flight {
     private String arrivalLocation;
 
     private Date returnDate;
+
+    @OneToMany(mappedBy = "ticketId")
+    private List<TicketPurchase> tickets = new ArrayList<>();
 
     private Long rating;
     
@@ -112,5 +118,9 @@ public class Flight {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Long getRating(){
+        return rating;
     }
 }
