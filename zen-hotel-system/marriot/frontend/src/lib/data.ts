@@ -139,6 +139,127 @@ export async function getUserById(id: string) {
   }
 }
 
+export async function getReservations() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const reservationsCollection = database.collection("reservations");
+
+    const result = reservationsCollection.aggregate([
+      {
+        $lookup: {
+          from: "hotels",
+          localField: "hotelId",
+          foreignField: "_id",
+          as: "hotel",
+        },
+      },
+      {
+        $unwind: "$hotel",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $addFields: {
+          _id: { $toString: "$_id" },
+          userId: { $toString: "$userId" },
+          hotelId: { $toString: "$hotelId" },
+          "hotel._id": { $toString: "$hotel._id" },
+          "user._id": { $toString: "$user._id" },
+        },
+      },
+    ]);
+
+    const reservations = [];
+    for await (const reservation of result) {
+      const commentaries = generateCommentaryTree(
+        reservation.hotel.commentaries
+      );
+
+      reservations.push({
+        ...reservation,
+        hotel: { ...reservation.hotel, commentaries: commentaries },
+      });
+    }
+
+    return reservations as Reservation[];
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Reservations");
+  }
+}
+
+export async function getUserReservations(userId: string) {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const reservationsCollection = database.collection("reservations");
+
+    const result = reservationsCollection.aggregate([
+      {
+        $match: {
+          userId: new ObjectId(userId),
+        },
+      },
+      {
+        $lookup: {
+          from: "hotels",
+          localField: "hotelId",
+          foreignField: "_id",
+          as: "hotel",
+        },
+      },
+      {
+        $unwind: "$hotel",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $addFields: {
+          _id: { $toString: "$_id" },
+          userId: { $toString: "$userId" },
+          hotelId: { $toString: "$hotelId" },
+          "hotel._id": { $toString: "$hotel._id" },
+          "user._id": { $toString: "$user._id" },
+        },
+      },
+    ]);
+
+    const reservations = [];
+    for await (const reservation of result) {
+      const commentaries = generateCommentaryTree(
+        reservation.hotel.commentaries
+      );
+
+      reservations.push({
+        ...reservation,
+        hotel: { ...reservation.hotel, commentaries: commentaries },
+      });
+    }
+
+    return reservations as Reservation[];
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Reservations");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""
