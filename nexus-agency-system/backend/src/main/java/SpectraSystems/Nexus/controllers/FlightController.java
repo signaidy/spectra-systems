@@ -83,23 +83,15 @@ public class FlightController {
     }
 
     // Endpoint for purchasing a flight
-@PostMapping("/purchase/{amount}/{method}")
-public ResponseEntity<String> purchaseFlight(
-        @PathVariable int amount,
-        @PathVariable String method,
-        @RequestBody FlightPurchaseRequest purchaseRequest,
-        @RequestParam Long userId,
-        @RequestParam Long flightId,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
-        @RequestParam String departureLocation,
-        @RequestParam String arrivalLocation,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date returnDate,
-        @RequestParam(required = false) Long rating
-) throws JsonProcessingException {
-    flightService.purchaseFlight( amount,  method, flightId, userId,
-    departureDate, departureLocation, arrivalLocation);
-    return ResponseEntity.ok("Flight purchased successfully.");
-}
+    @PostMapping("/purchase/{amount}/{method}")
+    public ResponseEntity<String> purchaseFlight(
+            @PathVariable int amount,
+            @PathVariable String method,
+            @RequestBody FlightPurchaseRequest purchaseRequest
+    ) throws JsonProcessingException {
+        flightService.purchaseFlight( amount,  method, purchaseRequest);
+        return ResponseEntity.ok("Flight purchased successfully.");
+    }
 
 
     // Endpoint to update an existing flight

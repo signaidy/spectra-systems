@@ -76,17 +76,21 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getHotels() throws IOException {
+    public ResponseEntity<String> getHotels(@RequestParam(value = "city", required = false) String city,
+                                            @RequestParam(value = "check-in", required = false) String checkIn,
+                                            @RequestParam(value = "check-out", required = false) String checkOut,
+                                            @RequestParam(value = "guests", required = false) Integer guests) {
         try {
             // Read hotel data from hotel.json file
             String hotelData = new String(Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath()));
+            
+            // Aqui iria el filtrado, si tuviera alguno
             return ResponseEntity.ok().body(hotelData);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    // Endpoint to get cities from hotel data
     @GetMapping("/cities")
     public ResponseEntity<List<Map<String, String>>> getCities() throws IOException {
         try {
@@ -102,11 +106,12 @@ public class ReservationController {
                 Map<String, String> cityMap = Map.of("cityId", cityId, "name", cityName);
                 cities.add(cityMap);
             }
-
+            System.out.println(cities);
             return ResponseEntity.ok().body(cities);
         } catch (IOException e) {
+            System.err.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+        }}
+    
 }
 

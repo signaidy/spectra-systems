@@ -1,10 +1,13 @@
 package SpectraSystems.Nexus.services;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
+import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
 
 import java.util.List;
@@ -31,7 +34,13 @@ public class ReservationService {
         return reservationRepository.findByUserid(userId);
     }
 
+    // Inside your service method
     public Reservation createReservation(Reservation reservation) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = ((User) authentication.getPrincipal()).getId();
+        // Set the userid in the reservation object
+        reservation.setUser(userId);
+        // Save the reservation
         return reservationRepository.save(reservation);
     }
 
@@ -44,7 +53,7 @@ public class ReservationService {
         reservation.setHotel(reservationDetails.getHotel());
         reservation.setDateStart(reservationDetails.getDateStart());
         reservation.setDateEnd(reservationDetails.getDateEnd());
-        reservation.setRoomNumber(reservationDetails.getRoomNumber());
+        reservation.setroomType(reservationDetails.getroomType());
         reservation.setReservationNumber(reservationDetails.getReservationNumber());
         reservation.setLocation(reservationDetails.getLocation());
 

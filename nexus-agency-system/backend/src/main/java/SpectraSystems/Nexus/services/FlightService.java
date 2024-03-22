@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
+import SpectraSystems.Nexus.models.FlightPurchaseRequest;
 import SpectraSystems.Nexus.models.Rating;
 import SpectraSystems.Nexus.models.TicketPurchase;
 import SpectraSystems.Nexus.models.externalFlight;
@@ -138,8 +139,7 @@ public class FlightService {
     return responseEntity.getBody();
     }
 
-    public void purchaseFlight(int amount, String method, Long flightId, Long userId,
-    Date departureDate, String departureLocation, String arrivalLocatione) throws HttpServerErrorException, JsonProcessingException  {
+    public void purchaseFlight(int amount, String method, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
         int discount = 20;
         long userIdPurchase = 145;
@@ -151,7 +151,7 @@ public class FlightService {
         // Create the body as JSON
         String requestBody = "{"
                 + "\"user_id\": \"" + userIdPurchase + "\","
-                + "\"flight_id\": \"" + flightId + "\","
+                + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
                 + "\"state\": \"\","
                 + "\"type\": \"\""
                 + "}";
@@ -167,7 +167,7 @@ public class FlightService {
         if (response.getStatusCode() == HttpStatus.OK) {
             // Create and save Flight object
             for (int i = 0; i < amount; i++) {
-                Flight flight = new Flight(userId, flightId.toString(), departureDate, departureLocation, arrivalLocatione, null);
+                Flight flight = new Flight(purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate());
                 flightRepository.save(flight);
             }
 
@@ -179,19 +179,24 @@ public class FlightService {
             int startIndex = size - amount; // Index to start extracting tickets
             
             // Extract the last 'amount' tickets
-            for (int i = startIndex; i < size; i++) {
+            for (int i = startIndex; i < size - 1; i++) {
                 JsonNode ticketNode = responseBody.get(i);
-                Long ticketId = ticketNode.get("ticket_id").asLong();
-                Long ticketUserId = ticketNode.get("user_id").asLong();
-                // Create TicketPurchase object
-                TicketPurchase ticketPurchase = new TicketPurchase();
-                ticketPurchase.setTicketId(ticketId.intValue());
-                ticketPurchase.setUserId(ticketUserId.intValue());
-                ticketPurchase.setFlightId(flightId.intValue()); // Assuming flightId is available here
-                // Set type and state if needed
-                
-                // Save TicketPurchase object to database
-                ticketPurchaseRepository.save(ticketPurchase);
+                // Check if ticketNode is null before accessing its properties
+                if (ticketNode != null) {
+                    Long ticketId = ticketNode.get("ticket_id").asLong();
+                    Long ticketUserId = ticketNode.get("user_id").asLong();
+                    // Create TicketPurchase object
+                    TicketPurchase ticketPurchase = new TicketPurchase();
+                    ticketPurchase.setTicketId(ticketId.intValue());
+                    ticketPurchase.setUserId(ticketUserId.intValue());
+                    ticketPurchase.setFlightId(purchaseRequest.getFlightId().intValue()); // Assuming flightId is available here
+                    // Set type and state if needed
+                    
+                    // Save TicketPurchase object to database
+                    ticketPurchaseRepository.save(ticketPurchase);
+                } else {
+                    break;
+                }
             }
 
             
