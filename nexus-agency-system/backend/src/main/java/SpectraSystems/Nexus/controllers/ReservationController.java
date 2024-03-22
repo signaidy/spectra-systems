@@ -79,7 +79,7 @@ public class ReservationController {
     public ResponseEntity<String> getHotels() throws IOException {
         try {
             // Read hotel data from hotel.json file
-            String hotelData = new String(Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath()));
+            String hotelData = new String(Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath()));
             return ResponseEntity.ok().body(hotelData);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -91,7 +91,7 @@ public class ReservationController {
     public ResponseEntity<List<Map<String, String>>> getCities() throws IOException {
         try {
             // Read hotel data from hotel.json file
-            byte[] jsonData = Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath());
+            byte[] jsonData = Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath());
             ObjectMapper objectMapper = new ObjectMapper();
             List<Map<String, Object>> hotels = objectMapper.readValue(jsonData, List.class);
             List<Map<String, String>> cities = new ArrayList<>();
