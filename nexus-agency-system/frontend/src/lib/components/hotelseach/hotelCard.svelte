@@ -1,22 +1,68 @@
 <script lang="ts">
-  import { Pyramid } from "lucide-svelte";
-  import HotelCardModal from "$lib/components/hotelseach/hotelCardModal.svelte"
-  export let flight: Flight;
-  export let passengers: string | null;
+  import { Star, MapPin } from "lucide-svelte";
+  import Button from "../ui/button/button.svelte";
+  import HotelCardModal from "$lib/components/hotelseach/hotelCardModal.svelte";
+  export let hotel;
+  console.log(hotel);
+  export let guests: string | null;
   export let user: User;
-  export let form;
+  // export let form;
 </script>
 
-<!-- <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
-   Left Container -->
-  <!-- <div class="flex flex-col gap-y-5 p-5"> -->
-    <!-- Upper -->
-    <!-- <div class="flex gap-x-3">
+<article class="border rounded-md grid-cols-[0.75fr_1fr] grid h-72">
+  <div class="relative">
+    <img
+      src={hotel.picture}
+      alt={`${hotel.name} Hotel Image`}
+      class="object-cover rounded-l-md"
+    />
+  </div>
+  <div class="flex flex-col justify-between rounded-r-md bg-background">
+    <div class="flex flex-col gap-y-1 p-4 h-full">
+      <div class="font-medium tracking-tight text-xl">{hotel.name}</div>
+      <div class="flex gap-x-1 text-sm items-center text-muted-foreground">
+        <div>{Math.round(hotel.reviews.average)}</div>
+        <Star class="w-4 h-4 text-black fill-yellow-500" />
+        <div>({hotel.reviews.count} reviews)</div>
+        <div>|</div>
+        <MapPin class="w-4 h-4 text-black fill-red-700" />
+        <div>{hotel.location.address}</div>
+      </div>
+      <p class="text-sm line-clamp-3 mt-4">{hotel.description}</p>
+    </div>
+    <div class="ml-3">
+      <!-- Lower -->
+      <HotelCardModal {hotel} {user} />
+    </div>
+    <div class="border-t p-3 flex justify-end gap-x-3">
+      <div class="flex gap-x-1 items-end">
+        <div class="text-sm mb-[2px] text-muted-foreground">from</div>
+        <div class="font-bold text-xl">
+          {hotel.rooms.juniorSuite.price}
+        </div>
+        <div class="text-sm mb-[2px] text-muted-foreground">USD / Night</div>
+      </div>
+      <!-- <Button>
+        <a
+          href={`/search/${hotel._id}/?${page.url.searchParams.get("city")}`}
+        >
+          View Rates
+          </a>
+      </Button> -->
+    </div>
+  </div>
+</article>
+
+<!-- <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full"> -->
+<!--Left Container -->
+<!-- <div class="flex flex-col gap-y-5 p-5">
+    Upper
+    <div class="flex gap-x-3">
       <div class="flex flex-col">
         <div class="text-3xl font-bold">
-          {flight.departureDate.split(" ")[1]}
+          {hotel.name}
         </div>
-        <div class="text-muted-foreground">{flight.originCityName}</div>
+        <div class="text-muted-foreground">{hotel.name}</div>
       </div>
       <div class="flex flex-col justify-between w-96">
         <div class="flex items-center h-full">
@@ -27,66 +73,67 @@
         <div class="text-muted-foreground self-center">No stops</div>
       </div>
       <div class="flex flex-col">
-        <div class="text-3xl font-bold">{flight.arrivalDate.split(" ")[1]}</div>
-        <div class="text-muted-foreground">{flight.destinationCityName}</div>
+        <div class="text-3xl font-bold">{hotel.name}</div>
+        <div class="text-muted-foreground">{hotel.name}</div>
       </div>
     </div> -->
-    <!-- Lower -->
-    <!-- <HotelCardModal {flight} {form} {user}/>
+<!-- Lower -->
+<!-- <HotelCardModal {flight} {form} {user}/> -->
+<!-- <HotelCardModal {hotel} {user}/>
   </div> -->
-  <!-- Right Container -->
-  <!-- <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">
-    {#if Number(flight.touristQuantity) < Number(passengers)}
-      <div
+<!-- Right Container -->
+<!-- <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">  -->
+<!-- {#if Number(flight.touristQuantity) < Number(passengers)} -->
+<!-- <div
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
           <div>Tourist</div>
-          <div>{flight.touristQuantity} available</div>
+          <div>{hotel.name} available</div>
         </div>
         <div class="text-3xl font-medium tracking-tighter">
           Not enough tickets available
         </div>
-      </div>
-    {:else}
-      <a
+      </div> -->
+<!-- {:else} -->
+<!-- <a
         href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
-      >
-        <div class="text-sm text-muted-foreground">
+      > -->
+<!-- <div class="text-sm text-muted-foreground">
           <div>Tourist</div>
-          <div>{flight.touristQuantity} available</div>
+          <div>{hotel.name} available</div>
         </div>
         <div class="text-3xl font-medium tracking-tighter">
-          {flight.touristPrice} $
-        </div>
-      </a>
-    {/if}
-    {#if Number(flight.businessQuantity) < Number(passengers)}
-      <div
+          {hotel.name} $
+        </div> -->
+<!-- </a> -->
+<!-- {/if} -->
+<!-- {#if Number(flight.businessQuantity) < Number(passengers)} -->
+<!-- <div
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
           <div>Business</div>
-          <div>{flight.businessQuantity} available</div>
+          <div>{hotel.name} available</div>
         </div>
         <div class="text-3xl font-medium tracking-tighter">
           Not enough tickets available
         </div>
-      </div>
-    {:else}
-      <a
+      </div> -->
+<!-- {:else} -->
+<!-- <a
         href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
-      >
-        <div class="text-sm text-muted-foreground">
+      > -->
+<!-- <div class="text-sm text-muted-foreground">
           <div>Business</div>
-          <div>{flight.businessQuantity} available</div>
+          <div>{hotel.name} available</div>
         </div>
         <div class="text-3xl font-medium tracking-tighter">
-          {flight.businessPrice} $
-        </div>
-      </a>
-    {/if}
-  </div>
-</div> --> 
+          {hotel.name} $
+        </div> -->
+<!-- </a> -->
+<!-- {/if} -->
+<!-- </div>
+</div>  -->
