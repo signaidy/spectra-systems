@@ -142,6 +142,7 @@ export async function createHotel(prevState: any, formData: FormData) {
       },
       reviews: {
         count: 0,
+        rating: 0,
         average: 0,
       },
       rooms: {
@@ -231,7 +232,7 @@ export async function createCommentary(prevState: any, formData: FormData) {
     }
 
     const { payload }: { payload: User } = await jose.jwtVerify(
-      token!.value,
+      token.value,
       new TextEncoder().encode(process.env.JWT_SECRET)
     );
 
@@ -461,4 +462,56 @@ export async function updateUser(prevState: any, formData: FormData) {
   }
 
   redirect("/administration/users");
+}
+
+export async function createReview(prevState: any, formData: FormData) {
+  try {
+    const token = cookies().get("token");
+
+    if (!token) {
+      return {
+        error: "Please sign in to leave a review.",
+      };
+    }
+
+    const { payload }: { payload: User } = await jose.jwtVerify(
+      token.value,
+      new TextEncoder().encode(process.env.JWT_SECRET)
+    );
+
+    const rawFormData = Object.fromEntries(formData.entries());
+    
+    const database = client.db(process.env.DB_NAME);
+    const hotels = database.collection("hotels");
+
+    const hotel = await hotels.findOne({
+      _id: new ObjectId(rawFormData.hotelId as string),
+    });
+
+    if (!hotel) {
+      return {
+        error: "Hotel not found.",
+      };
+    }
+
+    const reviews = {
+      count: hotel.reviews.count + 1,
+      rating: hotel.reviews.rating + Number(rawFormData.rating),
+      average:
+        (hotel.reviews.rating + Number(rawFormData.rating)) /
+        (hotel.reviews.count + 1),
+    };
+
+    await hotels.updateOne(
+      { _id: new ObjectId(rawFormData.hotelId as string) },
+      { $set: {reviews: reviews} }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Review.",
+    };
+  }
+
+  revalidatePath("/");
 }
