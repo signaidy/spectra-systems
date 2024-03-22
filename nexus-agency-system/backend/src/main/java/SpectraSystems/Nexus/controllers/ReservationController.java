@@ -77,7 +77,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/hotelsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Map<String, Object>>> getHotels(@RequestParam(value = "city", required = false) String city,
                                                                 @RequestParam(value = "check-in", required = false) String checkIn,
                                                                 @RequestParam(value = "check-out", required = false) String checkOut,
