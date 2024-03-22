@@ -53,6 +53,7 @@ declare global {
     };
     reviews: {
       count: number;
+      rating: number;
       average: number;
     };
     rooms: {
