@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import SpectraSystems.Nexus.models.Flight;
@@ -18,6 +19,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/nexus/reservations")
@@ -76,20 +78,41 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getHotels(@RequestParam(value = "city", required = false) String city,
-                                            @RequestParam(value = "check-in", required = false) String checkIn,
-                                            @RequestParam(value = "check-out", required = false) String checkOut,
-                                            @RequestParam(value = "guests", required = false) Integer guests) {
+    public ResponseEntity<List<Map<String, Object>>> getHotels(@RequestParam(value = "city", required = false) String city,
+                                                                @RequestParam(value = "check-in", required = false) String checkIn,
+                                                                @RequestParam(value = "check-out", required = false) String checkOut,
+                                                                @RequestParam(value = "guests", required = false) Integer guests) {
         try {
             // Read hotel data from hotel.json file
             String hotelData = new String(Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath()));
 
-            // Aqui iria el filtrado, si tuviera alguno!
-            return ResponseEntity.ok().body(hotelData);
+            // Convert JSON string to a List<Map<String, Object>>
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> hotels = objectMapper.readValue(hotelData, new TypeReference<List<Map<String, Object>>>() {});
+
+            // Filter hotels based on city and maxOccupancy
+            List<Map<String, Object>> filteredHotels = hotels.stream()
+                    .filter(hotel -> {
+                        String hotelCity = (String) ((Map<String, Object>) hotel.get("location")).get("city");
+                        if (city != null && !city.equalsIgnoreCase(hotelCity)) {
+                            return false; // Filter out hotels not in the specified city
+                        }
+                        Map<String, Map<String, Object>> rooms = (Map<String, Map<String, Object>>) hotel.get("rooms");
+                        rooms.values().removeIf(room -> {
+                            int maxOccupancy = (int) room.get("maxOccupancy");
+                            return guests != null && guests > maxOccupancy;
+                        });
+                        // Filter out hotels with no rooms meeting the minimum number of guests
+                        return !rooms.isEmpty();
+                    })
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(filteredHotels);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @GetMapping("/cities")
     public ResponseEntity<List<Map<String, String>>> getCities() throws IOException {
