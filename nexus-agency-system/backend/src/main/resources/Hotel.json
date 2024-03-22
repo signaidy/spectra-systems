@@ -4,7 +4,7 @@
     "name": "Cecil Hotel",
     "description": "Escape the ordinary and step into a world of comfort and convenience! Whether you're a solo adventurer, a romantic couple, or a family seeking unforgettable memories, we offer the perfect haven for your stay.",
     "amenities": ["Pets", "Pool"],
-    "picture": "/hotel-background.jpg",
+    "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
     "location": {
         "street": "3 East 40th Street",
         "city": "New York",
@@ -18,7 +18,7 @@
     },
     "rooms": {
         "juniorSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 50,
             "description": "A cozy suite, featuring a sleeping area and a separate living space, ideal for shorter stays or solo travelers.",
             "maxOccupancy": 1,
@@ -31,7 +31,7 @@
             "reservedRooms": 0
         },
         "standardSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 100,
             "description": "Offering a comfortable amount of space, this suite typically includes a separate bedroom and living area, suitable for couples or small families.",
             "maxOccupancy": 2,
@@ -44,7 +44,7 @@
             "reservedRooms": 0
         },
         "doubleSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 150,
             "description": "This suite provides ample living space, featuring two bedrooms and a living area, perfect for families or groups traveling together.",
             "maxOccupancy": 6,
@@ -57,7 +57,7 @@
             "reservedRooms": 0
         },
         "bigSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 200,
             "description": "The most spacious option, a big suite offers a luxurious amount of room, often including multiple bedrooms, a living area, and potentially additional features like a dining area or wet bar, ideal for large groups or extended stays.",
             "maxOccupancy": 8,
@@ -105,7 +105,7 @@
     "name": "Cecil Hotel 2 - el mero mero",
     "description": "Escape the ordinary and step into a world of comfort and convenience! Whether you're a solo adventurer, a romantic couple, or a family seeking unforgettable memories, we offer the perfect haven for your stay.",
     "amenities": ["Pets", "Pool"],
-    "picture": "/hotel-background.jpg",
+    "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
     "location": {
         "street": "Sheikh Zayed Road",
         "city": "Dubai",
@@ -119,7 +119,7 @@
     },
     "rooms": {
         "juniorSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 50,
             "description": "A cozy suite, featuring a sleeping area and a separate living space, ideal for shorter stays or solo travelers. But in Dubai.",
             "maxOccupancy": 1,
@@ -132,7 +132,7 @@
             "reservedRooms": 0
         },
         "standardSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 100,
             "description": "Offering a comfortable amount of space, this suite typically includes a separate bedroom and living area, suitable for couples or small families.",
             "maxOccupancy": 2,
@@ -145,7 +145,7 @@
             "reservedRooms": 0
         },
         "doubleSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 150,
             "description": "This suite provides ample living space, featuring two bedrooms and a living area, perfect for families or groups traveling together.",
             "maxOccupancy": 6,
@@ -158,7 +158,7 @@
             "reservedRooms": 0
         },
         "bigSuite": {
-            "picture": "/hotel-background.jpg",
+            "picture": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1710511066149",
             "price": 200,
             "description": "The most spacious option, a big suite offers a luxurious amount of room, often including multiple bedrooms, a living area, and potentially additional features like a dining area or wet bar, ideal for large groups or extended stays.",
             "maxOccupancy": 8,
