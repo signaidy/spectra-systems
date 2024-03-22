@@ -42,7 +42,7 @@
       <Command.Group>
         {#each cities as city}
           <Command.Item
-            value={city.cityId}
+            value={city.name}
             onSelect={(currentValue) => {
               value = currentValue;
               closeAndFocusTrigger(ids.trigger);

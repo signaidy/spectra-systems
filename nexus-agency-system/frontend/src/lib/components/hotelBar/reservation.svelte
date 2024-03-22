@@ -11,6 +11,7 @@
   import { goto } from "$app/navigation";
 
   export let cities: Promise<any> = [];
+    console.log(cities);
 
   let isValid = true;
 
