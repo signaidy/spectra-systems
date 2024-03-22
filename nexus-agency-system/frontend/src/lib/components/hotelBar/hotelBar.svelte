@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Reservation from "$lib/components/hotelsearch/reservation.svelte";
+  import Reservation from "$lib/components/hotelBar/reservation.svelte";
   export let cities: Promise<any> = [];
 </script>
 

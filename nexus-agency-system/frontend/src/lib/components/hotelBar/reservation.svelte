@@ -1,8 +1,8 @@
 <script lang="ts">
-  import LocationPicker from "$lib/components/hotelsearch/locationPicker.svelte";
-  import LocationPickerSkeleton from "$lib/components/hotelsearch/locationPicker.svelte";
-  import DateRangePicker from "$lib/components/hotelsearch/dateRangePicker.svelte";
-  import NumberPicker from "$lib/components/hotelsearch/numberPicker.svelte";
+  import LocationPicker from "$lib/components/hotelBar/locationPicker.svelte";
+  import LocationPickerSkeleton from "$lib/components/hotelBar/locationPicker.svelte";
+  import DateRangePicker from "$lib/components/hotelBar/dateRangePicker.svelte";
+  import NumberPicker from "$lib/components/hotelBar/numberPicker.svelte";
   import { Button } from "$lib/components/ui/button";
   // Icons
   import { LandPlot, PlaneLanding, UsersRound } from "lucide-svelte";

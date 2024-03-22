@@ -3,7 +3,7 @@
   import FeaturedFlights from "$lib/components/home/featuredFlights.svelte";
   import Footer from "$lib/components/footer/footer.svelte";
   import { Plane, Hotel, Package } from "lucide-svelte";
-  import HotelBar from "$lib/components/hotelsearch/hotelBar.svelte";
+  import HotelBar from "$lib/components/hotelBar/hotelBar.svelte";
 
   export let data;
 
