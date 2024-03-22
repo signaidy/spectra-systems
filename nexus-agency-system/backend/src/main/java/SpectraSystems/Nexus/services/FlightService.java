@@ -138,7 +138,8 @@ public class FlightService {
     return responseEntity.getBody();
     }
 
-    public void purchaseFlight(int amount, String method, Long flightId, Long userId) throws JsonMappingException, JsonProcessingException, HttpServerErrorException  {
+    public void purchaseFlight(int amount, String method, Long flightId, Long userId,
+    Date departureDate, String departureLocation, String arrivalLocatione) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
         int discount = 20;
         long userIdPurchase = 145;
@@ -159,55 +160,41 @@ public class FlightService {
 
         // Make the POST request
         String url = String.format("http://localhost:8080/purchase/%d/%s/%d", amount, method, discount);
-         ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
+        
         // Check if the purchase was successful
         if (response.getStatusCode() == HttpStatus.OK) {
-           // Parse the response to extract ticket_ids for purchased tickets
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode root = objectMapper.readTree(response.getBody());
-
-            // Iterate over the last 'amount' elements of the response
-            int startIndex = root.size() - amount;
-            for (int i = startIndex; i < root.size(); i++) {
-                int ticketId = root.get(i).get("ticket_id").asInt();
-
-                // Make a GET request to retrieve flight information
-                String flightUrl = String.format("http://localhost:8080/historical_purchases/%d", userIdPurchase);
-                ResponseEntity<String> flightResponse = restTemplate.getForEntity(flightUrl, String.class);
-                if (flightResponse.getStatusCode() == HttpStatus.OK) {
-                    // Parse the flight response to find the relevant flight information
-                    JsonNode flights = objectMapper.readTree(flightResponse.getBody());
-                    for (JsonNode flight : flights) {
-                        if (flight.get("ticket").asInt() == ticketId) {
-                            // Found the relevant flight, create Flight and TicketPurchase objects
-                            Flight newFlight = new Flight(
-                                    flight.get("user_id").asLong(),
-                                    flight.get("flightNumber").asText(),
-                                    Date.valueOf(flight.get("departure_date").asText().substring(0, 10)), // Assuming format is "YYYY-MM-DD HH:mm:ss"
-                                    flight.get("origin").asText(),
-                                    flight.get("destination").asText(),
-                                    Date.valueOf(flight.get("arrival_date").asText().substring(0, 10))
-                            );
-
-                            TicketPurchase newTicket = new TicketPurchase(
-                                    flight.get("ticket").asInt(),
-                                    flight.get("user_id").asInt(),
-                                    flightId.intValue(),
-                                    flight.get("type").asText(),
-                                    ""
-                            );
-
-                            // Save the newFlight and newTicket into your backend
-                            flightRepository.save(newFlight);
-                            ticketPurchaseRepository.save(newTicket);
-                            break; // No need to continue searching
-                        }
-                    }
-                } else {
-                    throw new RuntimeException("Failed to retrieve flight information");
-                }
+            // Create and save Flight object
+            for (int i = 0; i < amount; i++) {
+                Flight flight = new Flight(userId, flightId.toString(), departureDate, departureLocation, arrivalLocatione, null);
+                flightRepository.save(flight);
             }
+
+            // Convert the response body to a JSON array
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseBody = objectMapper.readTree(response.getBody());
+            
+            int size = responseBody.size();
+            int startIndex = size - amount; // Index to start extracting tickets
+            
+            // Extract the last 'amount' tickets
+            for (int i = startIndex; i < size; i++) {
+                JsonNode ticketNode = responseBody.get(i);
+                Long ticketId = ticketNode.get("ticket_id").asLong();
+                Long ticketUserId = ticketNode.get("user_id").asLong();
+                // Create TicketPurchase object
+                TicketPurchase ticketPurchase = new TicketPurchase();
+                ticketPurchase.setTicketId(ticketId.intValue());
+                ticketPurchase.setUserId(ticketUserId.intValue());
+                ticketPurchase.setFlightId(flightId.intValue()); // Assuming flightId is available here
+                // Set type and state if needed
+                
+                // Save TicketPurchase object to database
+                ticketPurchaseRepository.save(ticketPurchase);
+            }
+
+            
         } else {
             throw new RuntimeException("Purchase was unsuccessful");
         }
