@@ -1,5 +1,6 @@
 package SpectraSystems.Nexus.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,7 @@ import SpectraSystems.Nexus.models.FlightPurchaseRequest;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.services.FlightService;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -81,15 +83,24 @@ public class FlightController {
     }
 
     // Endpoint for purchasing a flight
-    @PostMapping("/purchase/{amount}/{method}")
-    public ResponseEntity<String> purchaseFlight(
-            @PathVariable int amount,
-            @PathVariable String method,
-            @RequestBody FlightPurchaseRequest purchaseRequest
-    ) throws JsonMappingException, JsonProcessingException {
-        flightService.purchaseFlight(amount, method, purchaseRequest.getFlightId(), purchaseRequest.getUserId());
-        return ResponseEntity.ok("Flight purchased successfully.");
-    }
+@PostMapping("/purchase/{amount}/{method}")
+public ResponseEntity<String> purchaseFlight(
+        @PathVariable int amount,
+        @PathVariable String method,
+        @RequestBody FlightPurchaseRequest purchaseRequest,
+        @RequestParam Long userId,
+        @RequestParam Long flightId,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
+        @RequestParam String departureLocation,
+        @RequestParam String arrivalLocation,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date returnDate,
+        @RequestParam(required = false) Long rating
+) throws JsonProcessingException {
+    flightService.purchaseFlight( amount,  method, flightId, userId,
+    departureDate, departureLocation, arrivalLocation);
+    return ResponseEntity.ok("Flight purchased successfully.");
+}
+
 
     // Endpoint to update an existing flight
     @PutMapping("/{id}")
