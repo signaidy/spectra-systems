@@ -3,6 +3,7 @@ import Link from "next/link";
 // Components
 import { Commentary } from "@/components/hotels/commentary";
 import { CommentaryForm } from "@/components/hotels/commentaryForm";
+import {ReviewForm} from "@/components/hotels/reviewForm";
 // UI Components
 import { Button } from "@/components/ui/button";
 import {
@@ -33,12 +34,16 @@ export function HotelDialog({
         <div className="flex flex-col gap-y-1 ">
           <h1 className="text-xl font-bold">{hotel.name}</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
-            <div>{hotel.reviews.average}</div>
+            <div>{Math.round(hotel.reviews.average)}</div>
             <Star className="w-4 h-4 text-black fill-yellow-500" />
             <div>({hotel.reviews.count} reviews)</div>
             <div>|</div>
             <MapPin className="w-4 h-4 text-black fill-red-700" />
             <div>{hotel.location.address}</div>
+          </div>
+          <div className="flex flex-col gap-y-2 mt-5">
+            <div className="font-medium text-lg">Review</div>
+            <ReviewForm hotelId={hotel._id} />
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
@@ -115,7 +120,13 @@ export function HotelDialog({
         </div>
         <DialogFooter>
           <Button asChild>
-            <Link href={`/search/${hotel._id}/?${new URLSearchParams(searchParams).toString()}`}>View Rates</Link>
+            <Link
+              href={`/search/${hotel._id}/?${new URLSearchParams(
+                searchParams
+              ).toString()}`}
+            >
+              View Rates
+            </Link>
           </Button>
         </DialogFooter>
       </DialogContent>

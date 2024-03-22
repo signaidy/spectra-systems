@@ -27,7 +27,7 @@ export function HotelInventoryCard({
         <div className="flex flex-col gap-y-1 p-4 h-full">
           <div className="font-medium tracking-tight text-xl">{hotel.name}</div>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
-            <div>{hotel.reviews.average}</div>
+            <div>{Math.round(hotel.reviews.average)}</div>
             <Star className="w-4 h-4 text-black fill-yellow-500" />
             <div>({hotel.reviews.count} reviews)</div>
             <div>|</div>

@@ -2,13 +2,10 @@ import Image from "next/image";
 // Components
 import { Commentary } from "@/components/hotels/commentary";
 import { CommentaryForm } from "@/components/hotels/commentaryForm";
+import { ReviewForm } from "@/components/hotels/reviewForm";
 // UI Components
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 // Icons
 import { ArrowRight, Star, MapPin, Check } from "lucide-react";
 
@@ -25,12 +22,16 @@ export function HotelAdministrationDialog(props: Hotel) {
         <div className="flex flex-col gap-y-1 ">
           <h1 className="text-xl font-bold">{props.name}</h1>
           <div className="flex gap-x-1 text-sm items-center text-muted-foreground">
-            <div>{props.reviews.average}</div>
+            <div>{Math.round(props.reviews.average)}</div>
             <Star className="w-4 h-4 text-black fill-yellow-500" />
             <div>({props.reviews.count} reviews)</div>
             <div>|</div>
             <MapPin className="w-4 h-4 text-black fill-red-700" />
             <div>{props.location.address}</div>
+          </div>
+          <div className="flex flex-col gap-y-2 mt-5">
+            <div className="font-medium text-lg">Review</div>
+            <ReviewForm hotelId={props._id} />
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
