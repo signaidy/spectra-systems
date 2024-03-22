@@ -2,10 +2,10 @@
   import { Button } from "$lib/components/ui/button";
   import { Minus, Plus } from "lucide-svelte";
 
-  export let passengers = 1;
+  export let guests = 1;
 
   function handleClick(adjustment: number) {
-    passengers = passengers + adjustment;
+    guests = guests + adjustment;
   }
 </script>
 
@@ -15,14 +15,14 @@
     size="icon"
     class="h-8 w-8 shrink-0 rounded-full"
     on:click={() => handleClick(-1)}
-    disabled={passengers <= 1}
+    disabled={guests <= 1}
   >
     <Minus class="h-4 w-4" />
     <span class="sr-only">Decrease</span>
   </Button>
   <div class="flex flex-col text-center">
     <div class="font-bold tracking-tighter">
-      {passengers}
+      {guests}
     </div>
     <div class="text-[0.70rem] uppercase text-muted-foreground">Guests</div>
   </div>

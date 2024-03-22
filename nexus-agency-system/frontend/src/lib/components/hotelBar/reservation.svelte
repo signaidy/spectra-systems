@@ -1,8 +1,8 @@
 <script lang="ts">
-  import LocationPicker from "$lib/components/hotelsearch/locationPicker.svelte";
-  import LocationPickerSkeleton from "$lib/components/hotelsearch/locationPicker.svelte";
-  import DateRangePicker from "$lib/components/hotelsearch/dateRangePicker.svelte";
-  import NumberPicker from "$lib/components/hotelsearch/numberPicker.svelte";
+  import LocationPicker from "$lib/components/hotelBar/locationPicker.svelte";
+  import LocationPickerSkeleton from "$lib/components/hotelBar/locationPicker.svelte";
+  import DateRangePicker from "$lib/components/hotelBar/dateRangePicker.svelte";
+  import NumberPicker from "$lib/components/hotelBar/numberPicker.svelte";
   import { Button } from "$lib/components/ui/button";
   // Icons
   import { LandPlot, PlaneLanding, UsersRound } from "lucide-svelte";
@@ -16,15 +16,15 @@
 
   let city: string;
   let days: DateRange | undefined;
-  let passengers: number;
+  let guests: number;
 
   function searchFlights() {
-    if (city && days && days.start && days.end && passengers) {
+    if (city && days && days.start && days.end && guests) {
       const searchParams = new URLSearchParams();
       searchParams.append("city", city);
       searchParams.append("check-in", days.start.toString());
       searchParams.append("check-out", days.end.toString());
-      searchParams.append("passengers", passengers.toString());
+      searchParams.append("guests", guests.toString());
       goto(`/search?${searchParams.toString()}`);
     } else {
       isValid = false;
@@ -53,10 +53,10 @@
     <DateRangePicker bind:value={days} />
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
-    <div class="font-bold flex gap-x-2 items-center ml-10">
+    <div class="font-bold flex gap-x-2 items-center ml-7">
       Guests<UsersRound class="shrink-0 w-5 h-5" />
     </div>
-    <NumberPicker bind:passengers />
+    <NumberPicker bind:guests />
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
     <div class="text-background">Find</div>
