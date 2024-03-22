@@ -1,15 +1,23 @@
 package SpectraSystems.Nexus.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.services.ReservationService;
+import org.springframework.http.MediaType;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/nexus/reservations")
@@ -65,6 +73,40 @@ public class ReservationController {
     public ResponseEntity<Void> deleteReservation(@PathVariable("id") Long id) {
         reservationService.deleteReservation(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getHotels() throws IOException {
+        try {
+            // Read hotel data from hotel.json file
+            String hotelData = new String(Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath()));
+            return ResponseEntity.ok().body(hotelData);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // Endpoint to get cities from hotel data
+    @GetMapping("/cities")
+    public ResponseEntity<List<Map<String, String>>> getCities() throws IOException {
+        try {
+            // Read hotel data from hotel.json file
+            byte[] jsonData = Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath());
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> hotels = objectMapper.readValue(jsonData, List.class);
+            List<Map<String, String>> cities = new ArrayList<>();
+
+            for (Map<String, Object> hotel : hotels) {
+                String cityId = String.valueOf(cities.size() + 1);
+                String cityName =(String) ((Map<String, Object>) hotel.get("location")).get("city");
+                Map<String, String> cityMap = Map.of("cityId", cityId, "name", cityName);
+                cities.add(cityMap);
+            }
+
+            return ResponseEntity.ok().body(cities);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
 
