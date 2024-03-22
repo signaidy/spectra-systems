@@ -11,22 +11,20 @@
   import { goto } from "$app/navigation";
 
   export let cities: Promise<any> = [];
-    console.log(cities);
-
   let isValid = true;
 
   let city: string;
   let days: DateRange | undefined;
   let guests: number;
 
-  function searchFlights() {
+  function searchHotels() {
     if (city && days && days.start && days.end && guests) {
       const searchParams = new URLSearchParams();
       searchParams.append("city", city);
       searchParams.append("check-in", days.start.toString());
       searchParams.append("check-out", days.end.toString());
       searchParams.append("guests", guests.toString());
-      goto(`/search?${searchParams.toString()}`);
+      goto(`/hotelsearch?${searchParams.toString()}`);
     } else {
       isValid = false;
     }
@@ -61,6 +59,6 @@
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
     <div class="text-background">Find</div>
-    <Button on:click={searchFlights}>Find Flights</Button>
+    <Button on:click={searchHotels}>Find Flights</Button>
   </div>
 </div>

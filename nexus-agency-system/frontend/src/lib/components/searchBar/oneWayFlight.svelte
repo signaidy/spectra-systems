@@ -69,7 +69,7 @@
     <DatePicker bind:value={departureDay} />
   </div>
   <div class="flex flex-col gap-y-2">
-    <div class="font-bold flex gap-x-2 items-center">
+    <div class="font-bold flex gap-x-2 items-center ml-6">
       Passengers<UsersRound class="shrink-0 w-5 h-5" />
     </div>
     <NumberPicker bind:passengers />

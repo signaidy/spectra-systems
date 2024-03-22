@@ -24,7 +24,7 @@
     <div class="font-bold tracking-tighter">
       {passengers}
     </div>
-    <div class="text-[0.70rem] uppercase text-muted-foreground">Guests</div>
+    <div class="text-[0.70rem] uppercase text-muted-foreground">Passengers</div>
   </div>
   <Button
     variant="outline"
