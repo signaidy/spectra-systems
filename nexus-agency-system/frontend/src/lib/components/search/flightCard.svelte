@@ -50,7 +50,7 @@
       </div>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy`}
+        href={`/checkout?flight=${flight.flightId}&passengers=${passengers}&category=economy`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">

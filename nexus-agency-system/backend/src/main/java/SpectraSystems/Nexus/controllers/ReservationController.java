@@ -113,6 +113,45 @@ public class ReservationController {
         }
     }
 
+    @GetMapping(value = "/hotelsearch/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getHotelRoomById(@PathVariable("id") String id,
+                                                                @RequestParam(value = "city", required = false) String city) {
+        try {
+            // Read hotel data from hotel.json file
+            String hotelData = new String(Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath()));
+
+            // Convert JSON string to a List<Map<String, Object>>
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> hotels = objectMapper.readValue(hotelData, new TypeReference<List<Map<String, Object>>>() {});
+
+            // Filter hotels based on id and city
+            List<Map<String, Object>> filteredHotels = hotels.stream()
+                    .filter(hotel -> id.equals(hotel.get("_id")) && (city == null || city.equalsIgnoreCase((String) ((Map<String, Object>) hotel.get("location")).get("city"))))
+                    .collect(Collectors.toList());
+
+            // Check if the hotel with the given id and city exists
+            if (filteredHotels.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Construct the JSON response with hotel id and rooms
+            Map<String, Object> hotel = filteredHotels.get(0); // Assuming there's only one hotel with the given id
+            Map<String, Object> response = constructResponse(hotel);
+
+            return ResponseEntity.ok().body(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private Map<String, Object> constructResponse(Map<String, Object> hotel) {
+        // Construct the JSON response with hotel id and rooms
+        Map<String, Object> response = Map.of(
+                "hotelId", hotel.get("_id"),
+                "rooms", hotel.get("rooms")
+        );
+        return response;
+    }
 
     @GetMapping("/cities")
     public ResponseEntity<List<Map<String, String>>> getCities() throws IOException {

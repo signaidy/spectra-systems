@@ -6,7 +6,8 @@ export const actions = {
        let method = formData.get("paymenth_method");
        let amount = formData.get("passengers");
        const token = cookies.get('token');
-
+       const flight = formData.get( "flight" );
+      console.log(flight);
 
        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
        method: "POST",
@@ -16,7 +17,7 @@ export const actions = {
        },
        body: JSON.stringify({
          user_id: formData.get("user_id"),
-         flight_id: formData.get("flight_id"),
+         flight: flight,
          state: formData.get("state"),
          type: formData.get("category"),
 
@@ -32,7 +33,5 @@ export const actions = {
            message: "Error"
        }
      }
-
-
    }
 }

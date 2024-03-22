@@ -11,7 +11,7 @@
 
   let userid = data.user.userId;
 
-  let flight_id = $page.url.searchParams.get("flightId");
+  const flight_id =  $page.url.searchParams.get('flight_id');
   let passengers = $page.url.searchParams.get("passengers");
   let category = $page.url.searchParams.get("category");
 
@@ -305,7 +305,7 @@
     <input type="hidden" name="user_id" value={userid} />
     <input type="hidden" name="paymenth_method" value={card} />
     <input type="hidden" name="passengers" value={passengers} />
-    <input type="hidden" name="flight_id" value={flight_id} />
+    <input type="hidden" name="flightJson" value={flight_id} />
     <input type="hidden" name="category" value={category} />
     <input type="hidden" name="state" value={state} />
   </div>
