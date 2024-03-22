@@ -1,12 +1,35 @@
 <script lang="ts">
   import { Star, MapPin } from "lucide-svelte";
-  import Button from "../ui/button/button.svelte";
+  import { Button } from "$lib/components/ui/button";
   import HotelCardModal from "$lib/components/hotelseach/hotelCardModal.svelte";
+  import { goto } from "$app/navigation";
+  import type { DateRange } from "bits-ui";
+  import { page } from "$app/stores";
+
   export let hotel;
   console.log(hotel);
   export let guests: string | null;
   export let user: User;
   // export let form;
+  let isValid = true;
+  let checkin = $page.url.searchParams.get("check-in");
+  let checkout = $page.url.searchParams.get("check-out");
+
+  $page.url.searchParams.get("guests")
+
+  function searchRooms(hotel_id, city) {
+    if (hotel_id && city && checkin && checkout && guests) {
+      const searchParams = new URLSearchParams();
+      searchParams.append("id", hotel_id);
+      searchParams.append("city", city);
+      searchParams.append("check-in", checkin);
+      searchParams.append("check-out", checkout);
+      searchParams.append("guests", guests.toString());
+      goto(`/roomsearch?${searchParams.toString()}`);
+    } else {
+      isValid = false;
+    }
+  }
 </script>
 
 <article class="border rounded-md grid-cols-[0.75fr_1fr] grid h-72">
@@ -42,13 +65,7 @@
         </div>
         <div class="text-sm mb-[2px] text-muted-foreground">USD / Night</div>
       </div>
-      <!-- <Button>
-        <a
-          href={`/search/${hotel._id}/?${page.url.searchParams.get("city")}`}
-        >
-          View Rates
-          </a>
-      </Button> -->
+      <Button on:click={searchRooms(hotel._id, hotel.location.city)}>View Rooms</Button>
     </div>
   </div>
 </article>
