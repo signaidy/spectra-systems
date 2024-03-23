@@ -113,12 +113,12 @@ public class ReservationController {
         }
     }
 
-    @GetMapping(value = "/hotelsearch/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getHotelRoomById(@PathVariable("id") String id,
+    @GetMapping(value = "/roomsearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getHotelRoomById(@RequestParam(value = "id", required = false) String id, 
                                                                 @RequestParam(value = "city", required = false) String city) {
         try {
             // Read hotel data from hotel.json file
-            String hotelData = new String(Files.readAllBytes(new ClassPathResource("hotel.json").getFile().toPath()));
+            String hotelData = new String(Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath()));
 
             // Convert JSON string to a List<Map<String, Object>>
             ObjectMapper objectMapper = new ObjectMapper();
