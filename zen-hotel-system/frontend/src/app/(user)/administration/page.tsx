@@ -21,6 +21,16 @@ export default function AdministrationHome() {
       description: "Visualize and Manage Users Information",
       href: "/administration/users",
     },
+    {
+      name: "Partners",
+      description: "Manage and Configure Hotel Partners",
+      href: "/administration/partners",
+    },
+    {
+      name: "Locations",
+      description: "Manage and Configure Hotel Locations",
+      href: "/administration/locations",
+    },
   ];
 
   return (
