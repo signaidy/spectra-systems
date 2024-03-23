@@ -1,4 +1,5 @@
 <script>
+  import { selectedFlight } from '$lib/stores/selectedFlight';
   import { MoveLeft } from "lucide-svelte";
   import avianca from "$lib/assets/Avianca-Ticket-logo.png";
   import visaImage from "$lib/assets/visa.png";
@@ -10,7 +11,11 @@
   export let isOpen = false;
 
   let userid = data.user.userId;
-
+  let flight = null;
+  const unsubscribe = selectedFlight.subscribe(value => {
+    flight = value;
+  });
+  console.log(flight)
   const flight_id =  $page.url.searchParams.get('flight_id');
   let passengers = $page.url.searchParams.get("passengers");
   let category = $page.url.searchParams.get("category");
@@ -46,6 +51,10 @@
           to = availabletickets[0].destination;
         }
       });
+  });
+
+  onMount(() => {
+    return unsubscribe;
   });
 
   onMount(async () => {
@@ -305,8 +314,23 @@
     <input type="hidden" name="user_id" value={userid} />
     <input type="hidden" name="paymenth_method" value={card} />
     <input type="hidden" name="passengers" value={passengers} />
-    <input type="hidden" name="flightJson" value={flight_id} />
+    <input type="hidden" name="flight_id" value={flight_id} />
     <input type="hidden" name="category" value={category} />
     <input type="hidden" name="state" value={state} />
+    <input type="hidden" name="departureDate" value={flight?.departureDate} />
+    <input type="hidden" name="departureLocation" value={flight?.originCityName} />
+    <input type="hidden" name="arrivalLocation" value={flight?.destinationCityName} />
+    <input type="hidden" name="returnDate" value={flight?.returnDate} />
+    <input type="hidden" name="rating" value={flight?.rating.average} />
+    {#if category === 'economy'}
+      <input type="hidden" name="category" value="economy" />
+      <input type="hidden" name="price" value={flight?.touristPrice} />
+    {:else if category === 'premium'}
+      <input type="hidden" name="category" value="premium" />
+      <input type="hidden" name="price" value={flight?.businessPrice} />
+    {:else}
+      <input type="hidden" name="category" value="unknown" />
+      <input type="hidden" name="price" value="0" />
+    {/if}
   </div>
 </form>

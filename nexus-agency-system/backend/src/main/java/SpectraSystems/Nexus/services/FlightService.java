@@ -167,7 +167,7 @@ public class FlightService {
         if (response.getStatusCode() == HttpStatus.OK) {
             // Create and save Flight object
             for (int i = 0; i < amount; i++) {
-                Flight flight = new Flight(purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate());
+                Flight flight = new Flight(purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate(), purchaseRequest.getType(), purchaseRequest.getPrice());
                 flightRepository.save(flight);
             }
 

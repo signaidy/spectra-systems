@@ -12,23 +12,26 @@ public class FlightPurchaseRequest {
     private String departureLocation;
     private String arrivalLocation;
     private Date returnDate;
+    private Date purchaseDate;
+    private Double price;
     private Long rating;
 
     public FlightPurchaseRequest() {
         // Default constructor
     }
 
-    public FlightPurchaseRequest(Long user_id, Long flightId, String state, String type, Long userId, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, Long rating) {
-        this.user_id = user_id;
+    public FlightPurchaseRequest(Long userId, Long flightId, String state, String type, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, Long rating, Date purchaseDate, Double price) {
+        this.userId = userId;
         this.flightId = flightId;
         this.state = state;
         this.type = type;
-        this.userId = userId;
         this.departureDate = departureDate;
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.returnDate = returnDate;
         this.rating = rating;
+        this.purchaseDate = purchaseDate;
+        this.price = price;
     }
 
     public Long getUser_id() {
@@ -108,5 +111,21 @@ public class FlightPurchaseRequest {
 
     public void setRating(Long rating) {
         this.rating = rating;
+    }
+    
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
