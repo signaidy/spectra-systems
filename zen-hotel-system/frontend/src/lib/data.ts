@@ -280,6 +280,56 @@ export async function getUserReservations(userId: string) {
   }
 }
 
+export async function getReservationById(id: string) {
+  try {
+    const database = client.db(process.env.DB_NAME);
+
+    const hotelCollection = database.collection("hotels");
+    const userCollection = database.collection("users");
+    const reservationsCollection = database.collection("reservations");
+
+    const reservationResult = await reservationsCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!reservationResult) {
+      throw new Error("Reservation not found");
+    }
+
+    const hotelResult = await hotelCollection.findOne({
+      _id: reservationResult.hotelId,
+    });
+
+    if (!hotelResult) {
+      throw new Error("Hotel not found");
+    }
+
+    const userResult = await userCollection.findOne({
+      _id: reservationResult.userId,
+    });
+
+    if (!userResult) {
+      throw new Error("User not found");
+    }
+
+    const commentaries = generateCommentaryTree(hotelResult.commentaries);
+
+    const reservation = {
+      ...reservationResult,
+      _id: reservationResult._id.toString(),
+      hotelId: reservationResult.hotelId.toString(),
+      userId: reservationResult.userId.toString(),
+      hotel: { ...hotelResult, commentaries, _id: hotelResult._id.toString() },
+      user: { ...userResult, _id: userResult._id.toString() },
+    };
+
+    return reservation as Reservation;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Reservation");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""
