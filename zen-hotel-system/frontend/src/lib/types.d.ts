@@ -28,6 +28,7 @@ declare global {
     state: string;
     country: string;
     address: string;
+    picture: string;
   }
 
   export interface HotelSearchParams {
@@ -128,6 +129,23 @@ declare global {
     madeAt: string;
     hotel: Hotel;
     user: User;
+  }
+
+  export interface Partner {
+    _id: string;
+    name: string;
+    logo: string;
+  }
+
+  export interface SiteIdentity {
+    name: string;
+    logo: string;
+    description: string;
+    vision: string;
+    mission: string;
+    contactNumber: string;
+    address: string;
+    copyright: string;
   }
 }
 
