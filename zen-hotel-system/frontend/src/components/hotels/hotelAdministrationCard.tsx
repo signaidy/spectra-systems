@@ -36,7 +36,7 @@ export function HotelAdministrationCard(props: Hotel) {
                 Update Hotel
               </Link>
             </Button>
-            <Button variant="destructive">Delete Hotel</Button>
+            <Button variant="destructive">Disable Hotel</Button>
           </div>
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
