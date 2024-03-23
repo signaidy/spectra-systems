@@ -330,6 +330,27 @@ export async function getReservationById(id: string) {
   }
 }
 
+export async function getFeaturedHotel() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const hotelsCollection = database.collection<Hotel>("hotels");
+
+    const result = hotelsCollection
+      .find()
+      .sort({ "reviews.average": -1 })
+      .limit(1);
+
+    const array = await result.toArray();
+
+    const featuredHotel = { ...array[0], _id: array[0]._id.toString() };
+
+    return featuredHotel;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Featured Hotel");
+  }
+}
+
 export async function getPartners() {
   try {
     const database = client.db(process.env.DB_NAME);
