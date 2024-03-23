@@ -1,7 +1,10 @@
 package SpectraSystems.Nexus.models;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.cglib.core.Local;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +45,15 @@ public class Flight {
     @OneToMany(mappedBy = "ticketId")
     private List<TicketPurchase> tickets = new ArrayList<>();
 
+    @Column(nullable = false)
+    private String type;
+
+    @Column(name = "purchase_date", nullable = false)
+    private LocalDate purchaseDate;
+
+    @Column(nullable = false)
+    private Double price;
+
     private Long rating;
     
     // Getters, setters, constructors, and other methods...
@@ -50,13 +62,16 @@ public class Flight {
 
     }
 
-    public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate) {
+    public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, String type, Double price) {
         this.userid = user;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.returnDate = returnDate;
+        this.type = type;
+        this.price = price;
+        this.purchaseDate = LocalDate.now();
     }
 
     public Long getId() {
@@ -117,6 +132,30 @@ public class Flight {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Long getRating(){

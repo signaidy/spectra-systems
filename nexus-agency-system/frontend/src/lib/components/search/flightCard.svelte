@@ -1,10 +1,17 @@
 <script lang="ts">
+  import { selectedFlight } from '$lib/stores/selectedFlight';
+  import { goto } from '$app/navigation';
   import { Pyramid } from "lucide-svelte";
   import FlightCardModal from "$lib/components/search/flightCardModal.svelte";
   export let flight: Flight;
   export let passengers: string | null;
   export let user: User;
   export let form;
+
+  const handleCheckout = (flightId, passengers, category) => {
+    selectedFlight.set(flight);
+    goto(`/checkout?flight_id=${flightId}&passengers=${passengers}&category=${category}`);
+  };
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
@@ -48,9 +55,9 @@
           Not enough tickets available
         </div>
       </div>
-    {:else}
+      {:else}
       <a
-        href={`/checkout?flight=${flight.flightId}&passengers=${passengers}&category=economy`}
+        on:click={() => handleCheckout(flight.flightId, passengers, 'economy')}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -76,7 +83,7 @@
       </div>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium`}
+        on:click={() => handleCheckout(flight.flightId, passengers, 'premium')}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">

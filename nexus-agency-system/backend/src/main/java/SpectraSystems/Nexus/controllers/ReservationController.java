@@ -147,7 +147,8 @@ public class ReservationController {
     private Map<String, Object> constructResponse(Map<String, Object> hotel) {
         // Construct the JSON response with hotel id and rooms
         Map<String, Object> response = Map.of(
-                "hotelId", hotel.get("_id"),
+                "hotelId", hotel.get("_id"),                
+                "name", hotel.get("name"),
                 "rooms", hotel.get("rooms")
         );
         return response;

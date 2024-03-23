@@ -16,7 +16,9 @@ import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.services.FlightService;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/nexus/flights")
@@ -84,13 +86,15 @@ public class FlightController {
 
     // Endpoint for purchasing a flight
     @PostMapping("/purchase/{amount}/{method}")
-    public ResponseEntity<String> purchaseFlight(
+    public ResponseEntity<Map<String, String>> purchaseFlight(
             @PathVariable int amount,
             @PathVariable String method,
             @RequestBody FlightPurchaseRequest purchaseRequest
     ) throws JsonProcessingException {
         flightService.purchaseFlight( amount,  method, purchaseRequest);
-        return ResponseEntity.ok("Flight purchased successfully.");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Flight purchased successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
