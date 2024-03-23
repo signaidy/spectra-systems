@@ -1,12 +1,17 @@
 import Image from "next/image";
 // Data
-import { getCities } from "@/lib/data";
+import { getCities, getFeaturedHotel } from "@/lib/data";
 // Components
 import { SearchBar } from "@/components/searchBar/searchBar";
 import { Footer } from "@/components/home/footer";
+import { Locations } from "@/components/home/locations";
+import { HotelInventoryCard } from "@/components/hotels/hotelInventoryCard";
+import { AboutUs } from "@/components/home/aboutUs";
+import {Partners} from "@/components/home/partners";
 
 export default async function Home() {
   const cities = await getCities();
+  const featuredHotel = await getFeaturedHotel();
 
   return (
     <>
@@ -19,9 +24,36 @@ export default async function Home() {
           className="object-cover -z-10"
           priority
         />
-        <SearchBar locations={cities}/>
+        <SearchBar locations={cities} />
       </section>
+      <Section title="Featured Hotel">
+        <HotelInventoryCard hotel={featuredHotel} searchParams={{}} />
+      </Section>
+      <Section title="Our Locations">
+        <Locations />
+      </Section>
+      <Section title="Partners">
+        <Partners />
+      </Section>
+      <Section title="About Us">
+        <AboutUs />
+      </Section>
       <Footer />
     </>
+  );
+}
+
+export function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="container flex flex-col py-8 gap-y-5">
+      <div className="text-xl font-bold">{title}</div>
+      {children}
+    </div>
   );
 }
