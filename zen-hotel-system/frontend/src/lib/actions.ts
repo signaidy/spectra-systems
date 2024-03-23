@@ -515,6 +515,39 @@ export async function createReview(prevState: any, formData: FormData) {
 
   revalidatePath("/");
 }
+export async function updateSiteIdentity(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const siteIdentity = database.collection("siteIdentity");
+
+    const identity = {
+      name: rawFormData.name,
+      logo: rawFormData.logo,
+      description: rawFormData.description,
+      vision: rawFormData.vision,
+      mission: rawFormData.mission,
+      contactNumber: rawFormData.contactNumber,
+      address: rawFormData.address,
+      copyright: rawFormData.copyright,
+    };
+
+    await siteIdentity.updateOne(
+      { _id: "siteIdentity" },
+      { $set: identity },
+      { upsert: true }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Update Site Identity.",
+    };
+  }
+
+  redirect("/administration");
+}
+
 export async function deletePartner(prevState: any, formData: FormData) {
   try {
     const rawFormData = Object.fromEntries(formData.entries());
