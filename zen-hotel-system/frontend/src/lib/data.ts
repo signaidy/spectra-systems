@@ -330,6 +330,53 @@ export async function getReservationById(id: string) {
   }
 }
 
+export async function getPartners() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const partnersCollection = database.collection<Partner>("partners");
+
+    const result = partnersCollection.find();
+
+    const partners = [];
+    for await (const partner of result) {
+      partners.push({ ...partner, _id: partner._id.toString() });
+    }
+
+    return partners;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Partners");
+  }
+}
+
+export async function getSiteIdentity() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const siteIdentityCollection =
+      database.collection<SiteIdentity>("siteIdentity");
+
+    const result = await siteIdentityCollection.findOne();
+
+    if (!result) {
+      return {
+        name: "Zen Systems",
+        logo: "/logo.png",
+        description: "",
+        vision: "",
+        mission: "",
+        contactNumber: "",
+        address: "",
+        copyright: "",
+      };
+    }
+
+    return result;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Site Identity");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""
