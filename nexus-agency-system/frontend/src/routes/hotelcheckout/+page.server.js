@@ -2,7 +2,6 @@ export const actions = {
   default: async({request, cookies}) => {
     const token = cookies.get('token');
       const formData = await request.formData(); 
-      console.log(formData); 
       let hotelid = formData.get("hotelid");
       let hotelname = formData.get("hotelname");
       let user_id = formData.get("user_id");
@@ -40,6 +39,7 @@ export const actions = {
       },
       body: JSON.stringify(body),
     });
+    console.log(response);
     const result = await response.json();
     if(!result.ok){
       return {

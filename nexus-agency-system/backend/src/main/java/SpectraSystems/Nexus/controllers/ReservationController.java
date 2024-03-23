@@ -55,7 +55,6 @@ public class ReservationController {
 
     // Endpoint to create a new reservation
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         Reservation createdReservation = reservationService.createReservation(reservation);
         return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
