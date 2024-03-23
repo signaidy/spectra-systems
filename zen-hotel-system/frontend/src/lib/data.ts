@@ -21,6 +21,26 @@ export async function getLocations() {
   }
 }
 
+export async function getLocationById(id: string) {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const locationsCollection = database.collection("locations");
+
+    const result = await locationsCollection.findOne({ _id: new ObjectId(id) });
+
+    if (!result) {
+      throw new Error("Location not found");
+    }
+
+    const location = { ...result, _id: result._id.toString() };
+
+    return location as HotelLocation;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Location");
+  }
+}
+
 export async function getHotels() {
   try {
     const database = client.db(process.env.DB_NAME);
