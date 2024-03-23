@@ -19,6 +19,9 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "hotel_id")
+    private String hotel_id;
+
     @Column(name = "userid", nullable = false)
     private Long userid;
 
@@ -53,15 +56,25 @@ public class Reservation {
 
     @Column(name = "price")
     private int price;
+    
+    @Column(name = "total_days")
+    private int totalDays;
+
+    @Column(name = "total_price")
+    private double totalPrice;
+
+    @Column(name = "guests")
+    private int guests;
     // Getters, setters, constructors, and other methods...
 
     public Reservation() {
 
     }
 
-    public Reservation(Long user, String hotel, Date dateStart, Date dateEnd, String roomType,
-            String reservationNumber, String location, String bedSize, int bedAmount, int price) {
+    public Reservation(Long user, String hotel_id, String hotel, Date dateStart, Date dateEnd, String roomType,
+            String reservationNumber, String location, String bedSize, int bedAmount, int price, int totalDays, double totalPrice, int guests) {
         this.userid = user;
+        this.hotel_id = hotel_id;
         this.hotel = hotel;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -71,6 +84,9 @@ public class Reservation {
         this.bedSize = bedSize;
         this.bedAmount = bedAmount;
         this.price = price;
+        this.totalDays = totalDays;
+        this.totalPrice = totalPrice;
+        this.guests = guests;
     }
 
     public Long getId() {
@@ -79,6 +95,14 @@ public class Reservation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getHotelId(){
+        return hotel_id;
+    }
+
+    public void setHotelId(String HotelId){
+        this.hotel_id = hotel_id;
     }
 
     public void setRating(Long rating) {
@@ -165,5 +189,28 @@ public class Reservation {
         this.price = price;
     }
 
+    public int getTotalDays() {
+        return totalDays;
+    }
+
+    public void setTotalDays(int totalDays) {
+        this.totalDays = totalDays;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getGuests() {
+        return guests;
+    }
+
+    public void setGuests(int guests) {
+        this.guests = guests;
+    }
 }
 
