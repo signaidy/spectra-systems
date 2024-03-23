@@ -7,7 +7,11 @@ import { HotelCardSkeleton } from "@/components/skeletons/hotelCardSkeleton";
 import { SearchBar } from "@/components/searchBar/searchBar";
 import { FilteredHotels } from "@/components/hotels/filteredHotels";
 
-export default async function SearchHome({ searchParams }: { searchParams: HotelSearchParams}) {
+export default async function SearchHome({
+  searchParams,
+}: {
+  searchParams: HotelSearchParams;
+}) {
   const cities = await getCities();
 
   return (
@@ -21,7 +25,6 @@ export default async function SearchHome({ searchParams }: { searchParams: Hotel
         priority
       />
       <div className="container flex flex-col py-8 gap-y-10">
-        <SearchBar locations={cities} />
         <Suspense
           fallback={Array(2)
             .fill(0)
@@ -29,6 +32,7 @@ export default async function SearchHome({ searchParams }: { searchParams: Hotel
               <HotelCardSkeleton key={index} />
             ))}
         >
+          <SearchBar locations={cities} />
           <FilteredHotels searchParams={searchParams} />
         </Suspense>
       </div>
