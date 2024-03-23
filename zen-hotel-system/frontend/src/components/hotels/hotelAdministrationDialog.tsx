@@ -30,10 +30,6 @@ export function HotelAdministrationDialog(props: Hotel) {
             <div>{props.location.address}</div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
-            <div className="font-medium text-lg">Review</div>
-            <ReviewForm hotelId={props._id} />
-          </div>
-          <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
             <p className="text-sm">{props.description}</p>
           </div>
@@ -84,6 +80,10 @@ export function HotelAdministrationDialog(props: Hotel) {
                   ))
                 : "This hotel has no amenities."}
             </p>
+          </div>
+          <div className="flex flex-col gap-y-2 mt-5">
+            <div className="font-medium text-lg">Review</div>
+            <ReviewForm hotelId={props._id} />
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Commentaries</div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 // Components
 import { Commentary } from "@/components/hotels/commentary";
 import { CommentaryForm } from "@/components/hotels/commentaryForm";
-import {ReviewForm} from "@/components/hotels/reviewForm";
+import { ReviewForm } from "@/components/hotels/reviewForm";
 // UI Components
 import { Button } from "@/components/ui/button";
 import {
@@ -40,10 +40,6 @@ export function HotelDialog({
             <div>|</div>
             <MapPin className="w-4 h-4 text-black fill-red-700" />
             <div>{hotel.location.address}</div>
-          </div>
-          <div className="flex flex-col gap-y-2 mt-5">
-            <div className="font-medium text-lg">Review</div>
-            <ReviewForm hotelId={hotel._id} />
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
@@ -96,6 +92,10 @@ export function HotelDialog({
                   ))
                 : "This hotel has no amenities."}
             </p>
+          </div>
+          <div className="flex flex-col gap-y-2 mt-5">
+            <div className="font-medium text-lg">Review</div>
+            <ReviewForm hotelId={hotel._id} />
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Commentaries</div>

@@ -42,10 +42,6 @@ export function HotelInventoryDialog({
             <div>{hotel.location.address}</div>
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
-            <div className="font-medium text-lg">Review</div>
-            <ReviewForm hotelId={hotel._id} />
-          </div>
-          <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Overview</div>
             <p className="text-sm">{hotel.description}</p>
           </div>
@@ -96,6 +92,10 @@ export function HotelInventoryDialog({
                   ))
                 : "This hotel has no amenities."}
             </p>
+          </div>
+          <div className="flex flex-col gap-y-2 mt-5">
+            <div className="font-medium text-lg">Review</div>
+            <ReviewForm hotelId={hotel._id} />
           </div>
           <div className="flex flex-col gap-y-2 mt-5">
             <div className="font-medium text-lg">Commentaries</div>
