@@ -16,7 +16,7 @@ export function HeaderNav() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <NavigationMenuTrigger>Hotels & Resorts</NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink
@@ -41,7 +41,7 @@ export function HeaderNav() {
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link href="/">About Zen Hotels</Link>
           </NavigationMenuLink>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );
