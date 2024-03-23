@@ -515,3 +515,8 @@ export async function createReview(prevState: any, formData: FormData) {
 
   revalidatePath("/");
 }
+
+export async function logOut() {
+  cookies().delete("token");
+  redirect("/");
+}
