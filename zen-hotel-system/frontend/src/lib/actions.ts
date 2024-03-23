@@ -515,6 +515,30 @@ export async function createReview(prevState: any, formData: FormData) {
 
   revalidatePath("/");
 }
+
+export async function createPartner(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const partners = database.collection("partners");
+
+    const partner = {
+      name: rawFormData.name,
+      logo: rawFormData.logo,
+    };
+
+    await partners.insertOne(partner);
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Partner.",
+    };
+  }
+
+  redirect("/administration/partners");
+}
+
 export async function updateSiteIdentity(prevState: any, formData: FormData) {
   try {
     const rawFormData = Object.fromEntries(formData.entries());
