@@ -9,7 +9,7 @@ export default function CheckoutSuccessHome() {
       <h1 className="text-3xl font-bold">Thank You For Your Purchase!</h1>
       <ShoppingBag size={70} className="fill-green-600"/>
       <Button asChild className="text-base">
-        <Link href="/">Continue Shopping</Link>
+        <Link href="/reservations">Go To My Reservations</Link>
       </Button>
     </div>
   );
