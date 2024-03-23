@@ -57,6 +57,15 @@ export function LocationCreationForm() {
           defaultValue="United States"
         />
       </div>
+      <div className="flex flex-col gap-y-2">
+        <Label htmlFor="picture">Picture</Label>
+        <Input
+          id="picture"
+          name="picture"
+          required
+          defaultValue="/city.webp"
+        />
+      </div>
       <SubmitButton>Create</SubmitButton>
     </form>
   );
