@@ -1,4 +1,3 @@
-
 export const actions = {
   default: async({request, cookies}) => {
     const token = cookies.get('token');

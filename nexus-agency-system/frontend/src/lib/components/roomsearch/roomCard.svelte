@@ -8,9 +8,20 @@
   import { BedDouble, UserRound } from "lucide-svelte";
 
   export let room;
+  export let hotel;
+  export let hotelname; 
+  export let city; 
   export let guests: string | null;
   export let user: User;
   // export let form;
+  let checkin = $page.url.searchParams.get("check-in");
+  let checkout = $page.url.searchParams.get("check-out");
+
+  const handleCheckout = (hotel, guests, roomType, price, hotelname, beds, city) => {
+    goto(
+      `/hotelcheckout?hotelid=${hotel}&checkin=${checkin}&checkout=${checkout}&roomtype=${roomType}&price=${price}&guests=${guests}&hotelname=${hotelname}&beds=${beds}&city=${city}`
+    );
+  };
 </script>
 
 {#each Object.keys(room) as roomType}
@@ -29,13 +40,13 @@
         <div class="flex flex-col gap-y-1 p-4 h-full">
           <div class="font-medium tracking-tight text-xl">
             {#if roomType == "juniorSuite"}
-            Juior Suite
+              Juior Suite
             {:else if roomType == "standardSuite"}
-            Standard Suite
+              Standard Suite
             {:else if roomType == "doubleSuite"}
-            Double Suite
+              Double Suite
             {:else}
-            Big Suite
+              Big Suite
             {/if}
           </div>
           <div class="flex gap-x-1 text-sm items-center text-muted-foreground">
@@ -61,7 +72,18 @@
               USD / Night
             </div>
           </div>
-          <Button>Continue</Button>
+          <Button
+            on:click={() =>
+              handleCheckout(
+                hotel,
+                guests,
+                roomType,
+                room[roomType].price, 
+                hotelname, 
+                room[roomType].beds.size, 
+                city,
+              )}>Continue</Button
+          >
         </div>
       </div>
     </article>

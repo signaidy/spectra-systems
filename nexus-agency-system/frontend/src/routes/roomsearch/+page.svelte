@@ -6,6 +6,7 @@
 
   export let data;
   console.log(data); 
+  let city = $page.url.searchParams.get("city");
   // export let form;
 </script>
 
@@ -31,6 +32,9 @@
       {#each Object.values(rooms) as room}
         <RoomCard
           {room}
+          hotel = {rooms.hotelId}
+          hotelname = {rooms.name}
+          city = {city}
           user={data.user}
           guests={$page.url.searchParams.get("guests")}
         />
