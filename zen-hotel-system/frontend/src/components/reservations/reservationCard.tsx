@@ -1,3 +1,4 @@
+import Link from "next/link";
 // Components
 import { HotelInventoryCard } from "@/components/hotels/hotelInventoryCard";
 // UI Components
@@ -11,7 +12,11 @@ export function ReservationCard({ reservation }: { reservation: Reservation }) {
           <div className="font-bold">{reservation.hotel.name}</div>
           <div className="text-muted-foreground">{reservation._id}</div>
         </div>
-        <Button>Generate PDF</Button>
+        <Button asChild>
+          <Link href={`/reservation/${reservation._id}`}>
+            Generate PDF
+          </Link>
+        </Button>
       </div>
       <div className="grid grid-cols-3 p-3 gap-y-5">
         <ReservationSection
