@@ -342,7 +342,9 @@ export async function getFeaturedHotel() {
 
     const array = await result.toArray();
 
-    const featuredHotel = { ...array[0], _id: array[0]._id.toString() };
+    const commentaries = generateCommentaryTree(array[0].commentaries);
+
+    const featuredHotel = { ...array[0], commentaries: commentaries, _id: array[0]._id.toString() };
 
     return featuredHotel;
   } catch (e) {
