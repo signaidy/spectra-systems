@@ -1,5 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
+// Data
+import { logOut } from "@/lib/actions";
 // Components
 import { Button } from "@/components/ui/button";
 import { NavButton } from "@/components/user/navButton";
@@ -70,17 +72,25 @@ export function NavBar({ isAdmin }: { isAdmin: boolean }) {
           {route.label}
         </NavButton>
       ))}
-      {isAdmin && adminRoutes.map((route) => (
-        <NavButton
-          variant={currentPath.includes(route.value) ? "default" : "secondary"}
-          key={route.value}
-          href={route.href}
-          icon={route.icon}
-        >
-          {route.label}
-        </NavButton>
-      ))}
-      <Button className="justify-normal">
+      {isAdmin &&
+        adminRoutes.map((route) => (
+          <NavButton
+            variant={
+              currentPath.includes(route.value) ? "default" : "secondary"
+            }
+            key={route.value}
+            href={route.href}
+            icon={route.icon}
+          >
+            {route.label}
+          </NavButton>
+        ))}
+      <Button
+        onClick={async () => {
+          await logOut();
+        }}
+        className="justify-normal"
+      >
         <LogOut className="w-4 h-4 mr-3 shrink-0" />
         Log Out
       </Button>
