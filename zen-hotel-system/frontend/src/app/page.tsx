@@ -43,7 +43,7 @@ export default async function Home() {
   );
 }
 
-export function Section({
+function Section({
   title,
   children,
 }: {

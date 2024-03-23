@@ -609,6 +609,7 @@ export async function updateSiteIdentity(prevState: any, formData: FormData) {
     };
 
     await siteIdentity.updateOne(
+      // @ts-ignore comment
       { _id: "siteIdentity" },
       { $set: identity },
       { upsert: true }
