@@ -515,6 +515,25 @@ export async function createReview(prevState: any, formData: FormData) {
 
   revalidatePath("/");
 }
+export async function deletePartner(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const partners = database.collection("partners");
+
+    await partners.deleteOne({
+      _id: new ObjectId(rawFormData.partnerId as string),
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Delete Partner.",
+    };
+  }
+
+  revalidatePath("/");
+}
 
 export async function logOut() {
   cookies().delete("token");
