@@ -275,6 +275,7 @@ export async function createLocation(prevState: any, formData: FormData) {
       state: rawFormData.state,
       country: rawFormData.country,
       address: `${rawFormData.street} ${rawFormData.city}, ${rawFormData.state}, ${rawFormData.country}`,
+      picture: rawFormData.picture,
     };
 
     await locations.insertOne(location);
@@ -285,7 +286,57 @@ export async function createLocation(prevState: any, formData: FormData) {
     };
   }
 
-  redirect("/administration/hotels");
+  redirect("/administration/locations");
+}
+
+export async function updateLocation(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const locations = database.collection("locations");
+
+    const location = {
+      street: rawFormData.street,
+      city: rawFormData.city,
+      state: rawFormData.state,
+      country: rawFormData.country,
+      address: `${rawFormData.street} ${rawFormData.city}, ${rawFormData.state}, ${rawFormData.country}`,
+      picture: rawFormData.picture,
+    };
+
+    await locations.updateOne(
+      { _id: new ObjectId(rawFormData._id as string) },
+      { $set: location }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Update Location.",
+    };
+  }
+
+  redirect("/administration/locations");
+}
+
+export async function deleteLocation(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const locations = database.collection("locations");
+
+    await locations.deleteOne({
+      _id: new ObjectId(rawFormData._id as string),
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Delete Location.",
+    };
+  }
+
+  revalidatePath("/administration/locations");
 }
 
 export async function updateHotel(prevState: any, formData: FormData) {
@@ -480,7 +531,7 @@ export async function createReview(prevState: any, formData: FormData) {
     );
 
     const rawFormData = Object.fromEntries(formData.entries());
-    
+
     const database = client.db(process.env.DB_NAME);
     const hotels = database.collection("hotels");
 
@@ -504,7 +555,7 @@ export async function createReview(prevState: any, formData: FormData) {
 
     await hotels.updateOne(
       { _id: new ObjectId(rawFormData.hotelId as string) },
-      { $set: {reviews: reviews} }
+      { $set: { reviews: reviews } }
     );
   } catch (e) {
     console.log(e);
