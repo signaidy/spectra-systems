@@ -66,7 +66,9 @@ export class HotelService {
         throw new Error("Hotel not found");
       }
 
-      const hotel = { ...result, _id: result._id.toString() };
+      const commentaries = this.generateCommentaryTree(result.commentaries);
+
+      const hotel = { ...result, commentaries: commentaries, _id: result._id.toString() };
 
       return hotel;
     } catch (e) {
