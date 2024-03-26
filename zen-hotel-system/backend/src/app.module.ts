@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
-import { MarriotModule } from "./marriot/marriot.module";
+import { HotelModule } from "./hotel.module";
+import { ConfigModule } from "@nestjs/config";
+
 @Module({
-  imports: [MarriotModule],
+  imports: [HotelModule, ConfigModule.forRoot({ isGlobal: true })],
 })
 export class AppModule {}
