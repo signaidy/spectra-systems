@@ -15,12 +15,17 @@
   let card = "";
   let availabletickets = [];
   let ticketsamount_available;
-  let discount; 
+  let discount;
+  let first_flightid = $page.url.searchParams.get("first_flightid");
+  let category1 = $page.url.searchParams.get("category1");
   let price;
   let from;
   let to;
+  let price_flight_one;
+  let from_one;
+  let to_one;
+  let type = $page.url.searchParams.get("type");
   let state = "active";
-
   async function handlePayNow() {
     if (ticketsamount_available < passengers) {
       alert(
@@ -28,8 +33,23 @@
       );
       return;
     }
-    isOpen = true; 
+    isOpen = true;
   }
+
+  onMount(async () => {
+    fetch(
+      `http://localhost:8080/availabletickets/${first_flightid}/${category1}`
+    )
+      .then((response) => response.json())
+      .then((available) => {
+        availabletickets = available;
+        if (availabletickets.length > 0) {
+          price_flight_one = availabletickets[0].price;
+          from_one = availabletickets[0].origin;
+          to_one = availabletickets[0].destination;
+        }
+      });
+  });
 
   onMount(async () => {
     fetch(`http://localhost:8080/availabletickets/${flight_id}/${category}`)
@@ -53,36 +73,49 @@
   });
 
   onMount(async () => {
-    const response = await fetch(
-      `http://localhost:8080/discount/${userid}`
-    );
+    const response = await fetch(`http://localhost:8080/discount/${userid}`);
     const data = await response.json();
     discount = data.discount;
     const formData = new FormData();
     formData.append("Discount", discount);
   });
-
 </script>
 
 {#if isOpen}
-<div class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10">
-  <div class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white">
-    <div class="w-full">
-      <div class="m-8 my-20 max-w-[400px] mx-auto">
-        <div class="mb-8">
-          <h1 class="mb-4 text-3xl font-extrabold">Thank you for your purchase</h1>
-          <p class="text-gray-600">Now you can decide to continue searching for other travels or go to see your receipt</p>
-        </div>
-        <div class="space-y-4">
-          <a href="/" class="p-3 bg-black rounded-full text-white w-full font-semibold">Continue buying</a>
-          <a href="user/shopping_history" class="p-3 bg-white border rounded-full w-full font-semibold">Go check your receipt</a>
+  <div
+    class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10"
+  >
+    <div
+      class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white"
+    >
+      <div class="w-full">
+        <div class="m-8 my-20 max-w-[400px] mx-auto">
+          <div class="mb-8">
+            <h1 class="mb-4 text-3xl font-extrabold">
+              Thank you for your purchase
+            </h1>
+            <p class="text-gray-600">
+              Now you can decide to continue searching for other travels or go
+              to see your receipt
+            </p>
+          </div>
+          <div class="space-y-4">
+            <a
+              href="/"
+              class="p-3 bg-black rounded-full text-white w-full font-semibold"
+              >Continue buying</a
+            >
+            <a
+              href="user/shopping_history"
+              class="p-3 bg-white border rounded-full w-full font-semibold"
+              >Go check your receipt</a
+            >
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 {/if}
-
 
 <form method="POST">
   <div class="min-w-screen min-h-screen bg-gray-50 py-3">
@@ -123,6 +156,7 @@
                 >
                   <img src={avianca} alt="" />
                 </div>
+                <div class="flex-col"></div>
                 <div class="flex-grow pl-3">
                   <h6 class="font-semibold uppercase text-gray-600">
                     {category} Flight
@@ -136,24 +170,76 @@
                 </div>
               </div>
             </div>
+            {#if type == "round-trip"}
+              <div
+                class="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6"
+              >
+                <div class="w-full flex items-center">
+                  <div class=" w-16 h-16">
+                    <p></p>
+                  </div>
+                  <div class="flex-grow pl-3">
+                    <h6 class="font-semibold uppercase text-gray-600">
+                      {category1} Flight
+                    </h6>
+                    <p class="text-gray-400">x {passengers}</p>
+                  </div>
+                  <div>
+                    <span class="font-semibold text-gray-600 text-xl"
+                      >${price_flight_one * passengers}</span
+                    ><span class="font-semibold text-gray-600 text-sm">.00</span
+                    >
+                  </div>
+                </div>
+              </div>
+            {/if}
+
             <div class="mb-6 pb-6 border-b border-gray-200 text-gray-800">
               <div class="w-full flex mb-3 items-center">
                 <div class="flex-grow">
-                  <span class="text-gray-600">Unitary price</span>
+                  {#if type == "round-trip"}
+                    <span class="text-gray-600">First flight - Ticket</span>
+                  {:else}
+                    <span class="text-gray-600">Unitary price</span>
+                  {/if}
                 </div>
                 <div class="pl-3">
-                  <span class="font-semibold">${price}.00</span>
+                  {#if type == "round-trip"}
+                    <span class="font-semibold">${price_flight_one}.00</span>
+                  {:else}
+                    <span class="font-semibold">${price}.00</span>
+                  {/if}
                 </div>
               </div>
+              {#if type == "round-trip"}
+                <div class="w-full flex mb-3 items-center">
+                  <div class="flex-grow">
+                    <span class="text-gray-600">Second flight - Ticket</span>
+                  </div>
+                  <div class="pl-3">
+                    <span class="font-semibold">${price}.00</span>
+                  </div>
+                </div>
+              {/if}
               <div class="w-full flex items-center">
                 <div class="flex-grow">
                   <span class="text-gray-600">Discount</span>
                 </div>
                 <div class="pl-3">
                   {#if discount > 0}
-                  <span class="font-semibold">${price * passengers * (discount/100)}.00</span>
-                  {:else }
-                  <span class="font-semibold">${discount}.00</span>
+                    {#if type == "round-trip"}
+                      <span class="font-semibold"
+                        >${(price + price_flight_one) *
+                          passengers *
+                          (discount / 100)}.00</span
+                      >
+                    {:else}
+                      <span class="font-semibold"
+                        >${price * passengers * (discount / 100)}.00</span
+                      >
+                    {/if}
+                  {:else}
+                    <span class="font-semibold">${discount}.00</span>
                   {/if}
                 </div>
               </div>
@@ -167,9 +253,23 @@
                 </div>
                 <div class="pl-3">
                   {#if discount > 0}
-                  <span class="font-semibold">${(price * passengers)- (price * passengers * (discount/100))}.00</span>
-                  {:else }
-                  <span class="font-semibold">${price * passengers}.00</span>
+                    {#if type == "round-trip"}
+                      <span class="font-semibold"
+                        >${(price + price_flight_one) * passengers -
+                          (price + price_flight_one) *
+                            passengers *
+                            (discount / 100)}.00</span
+                      >
+                    {:else}
+                      <span class="font-semibold"
+                        >${price * passengers -
+                          price * passengers * (discount / 100)}.00</span
+                      >
+                    {/if}
+                  {:else if type == "round-trip"}
+                    <span class="font-semibold">${price * passengers}.00</span>
+                  {:else}
+                    <span class="font-semibold">${price * passengers}.00</span>
                   {/if}
                 </div>
               </div>
@@ -324,5 +424,8 @@
     <input type="hidden" name="category" value={category} />
     <input type="hidden" name="state" value={state} />
     <input type="hidden" name="discount" value={discount} />
+    <input type="hidden" name="first_flightid" value={first_flightid} />
+    <input type="hidden" name="category1" value={category1} />
+    <input type="hidden" name="price_flight_one" value={price_flight_one} />
   </div>
 </form>
