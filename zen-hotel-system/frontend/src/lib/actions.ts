@@ -200,6 +200,7 @@ export async function createHotel(prevState: any, formData: FormData) {
         },
       },
       commentaries: [],
+      state: "active",
     };
 
     await hotels.insertOne(hotel);
