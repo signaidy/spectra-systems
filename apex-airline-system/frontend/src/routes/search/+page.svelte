@@ -3,6 +3,7 @@
   import FlightCard from "$lib/components/search/flightCard.svelte";
   import FlightCardSkeleton from "$lib/components/search/flightCardSkeleton.svelte";
   import { page } from "$app/stores";
+  import Roundflight from "$lib/components/search/roundflight.svelte";
 
   export let data;
   export let form;
@@ -25,7 +26,11 @@
         <div class="self-start font-bold font-lg mt-5 my-3 bg-background p-3 rounded-lg">Results for flights from {flights[0].originCityName} to {flights[0].destinationCityName} on {$page.url.searchParams.get("departureDay")} for {$page.url.searchParams.get("passengers")} passengers</div>
       {/if}
       {#each flights as flight}
+        {#if $page.url.searchParams.get("type") == "round-trip"}
+        <Roundflight {flight} {form} user={data.user} passengers={$page.url.searchParams.get("passengers")}/>
+        {:else}  
         <FlightCard {flight} {form} user={data.user} passengers={$page.url.searchParams.get("passengers")}/>
+        {/if}
       {/each}
     {:catch error}
       <p>{error.message}</p>
