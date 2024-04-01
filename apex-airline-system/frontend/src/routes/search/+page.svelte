@@ -27,7 +27,9 @@
       {/if}
       {#each flights as flight}
         {#if $page.url.searchParams.get("type") == "round-trip"}
-        <Roundflight {flight} {form} user={data.user} passengers={$page.url.searchParams.get("passengers")}/>
+        <Roundflight {flight} {form} user={data.user} passengers={$page.url.searchParams.get("passengers")} phase={$page.url.searchParams.get("phase")}
+        originCity={$page.url.searchParams.get("originCity")} destinationCity={$page.url.searchParams.get("destinationCity")} 
+        departureDate={$page.url.searchParams.get("returnDay")} type={$page.url.searchParams.get("type")}/>
         {:else}  
         <FlightCard {flight} {form} user={data.user} passengers={$page.url.searchParams.get("passengers")}/>
         {/if}

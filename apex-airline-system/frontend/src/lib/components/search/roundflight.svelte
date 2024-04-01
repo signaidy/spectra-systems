@@ -1,10 +1,21 @@
 <script lang="ts">
   import { Pyramid } from "lucide-svelte";
   import FlightCardModal from "$lib/components/search/flightCardModal.svelte";
+  import { page } from "$app/stores";
   export let flight: Flight;
   export let passengers: string | null;
   export let user: User;
+  export let phase: string | null; 
+  export let originCity: string | null; 
+  export let destinationCity: string | null; 
+  export let departureDate: string | null; 
+  export let type : string | null; 
   export let form;
+
+  let f1 = $page.url.searchParams.get("f1");
+  let c1 = $page.url.searchParams.get("c1");
+
+
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
@@ -32,7 +43,7 @@
       </div>
     </div>
     <!-- Lower -->
-    <FlightCardModal {flight} {form} {user}/>
+    <FlightCardModal {flight} {form} {user} />
   </div>
   <!-- Right Container -->
   <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">
@@ -48,9 +59,23 @@
           Not enough tickets available
         </div>
       </div>
+    {:else if phase == "1"}
+    <a
+    href={`/search?originCity=${destinationCity}&destinationCity=${originCity}&departureDay=${departureDate}&passengers=${passengers}&type=${type}&phase=2
+    &f1=${flight.flightId}&c1=economy`}
+    class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
+  >
+    <div class="text-sm text-muted-foreground">
+      <div>Tourist</div>
+      <div>{flight.touristQuantity} available</div>
+    </div>
+    <div class="text-3xl font-medium tracking-tighter">
+      {flight.touristPrice} $
+    </div>
+  </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy`}
+        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&f1=${f1}&c1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -74,9 +99,23 @@
           Not enough tickets available
         </div>
       </div>
+    {:else if phase == "1"}
+      <a
+        href={`/search?originCity=${destinationCity}&destinationCity=${originCity}&departureDay=${departureDate}&passengers=${passengers}&type=${type}&phase=2
+        &f1=${flight.flightId}&c1=premium`}
+        class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
+      >
+        <div class="text-sm text-muted-foreground">
+          <div>Business</div>
+          <div>{flight.businessQuantity} available</div>
+        </div>
+        <div class="text-3xl font-medium tracking-tighter">
+          {flight.businessPrice} $
+        </div>
+      </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium`}
+        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&f1=${f1}&c1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
