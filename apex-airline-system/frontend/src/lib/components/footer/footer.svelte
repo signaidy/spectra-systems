@@ -3,14 +3,15 @@
   import { Button } from "$lib/components/ui/button";
   import { Copyright } from "lucide-svelte";
   import { onMount } from "svelte";
-  import { PUBLIC_BASE_URL } from '$env/static/public';
+  // import { PUBLIC_BASE_URL } from '$env/static/public';
 
   let Logo; 
   let Text_Logo; 
   let footer = getFooterInformation();
 
   async function getFooterInformation() {
-  const response = await fetch(`${PUBLIC_BASE_URL}/footer`);
+  const response = await fetch("http://localhost:8080/footer");
+  // const response = await fetch(`${PUBLIC_BASE_URL}/footer`);
   const footerdata = await response.json();
   aboutUsLinks.push(
     { name: footerdata.Section_1, href: footerdata.L1 },
