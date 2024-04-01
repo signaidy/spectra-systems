@@ -29,6 +29,7 @@
       searchParams.append("returnDay", days.end.toString());
       searchParams.append("passengers", passengers.toString());
       searchParams.append("type", type);
+      searchParams.append("phase", "1"); 
       goto(`/search?${searchParams.toString()}`);
     } else {
       isValid = false;
