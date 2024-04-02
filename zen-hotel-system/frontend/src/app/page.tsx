@@ -7,7 +7,7 @@ import { Footer } from "@/components/home/footer";
 import { Locations } from "@/components/home/locations";
 import { HotelInventoryCard } from "@/components/hotels/hotelInventoryCard";
 import { AboutUs } from "@/components/home/aboutUs";
-import {Partners} from "@/components/home/partners";
+import { Partners } from "@/components/home/partners";
 
 export default async function Home() {
   const cities = await getCities();
@@ -27,7 +27,9 @@ export default async function Home() {
         <SearchBar locations={cities} />
       </section>
       <Section title="Featured Hotel">
-        <HotelInventoryCard hotel={featuredHotel} searchParams={{}} />
+        {featuredHotel && (
+          <HotelInventoryCard hotel={featuredHotel} searchParams={{}} />
+        )}
       </Section>
       <Section title="Our Locations">
         <Locations />
