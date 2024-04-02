@@ -52,19 +52,19 @@ public class Reservation {
     private String bedSize;
 
     @Column(name = "bed_amount")
-    private int bedAmount;
+    private Integer bedAmount;
 
     @Column(name = "price")
-    private int price;
+    private Integer price;
     
     @Column(name = "total_days")
-    private int totalDays;
+    private Integer totalDays;
 
     @Column(name = "total_price")
-    private double totalPrice;
+    private Double totalPrice;
 
     @Column(name = "guests")
-    private int guests;
+    private Integer guests;
     // Getters, setters, constructors, and other methods...
 
     public Reservation() {
@@ -72,7 +72,7 @@ public class Reservation {
     }
 
     public Reservation(Long user, String hotel_id, String hotel, Date dateStart, Date dateEnd, String roomType,
-            String reservationNumber, String location, String bedSize, int bedAmount, int price, int totalDays, double totalPrice, int guests) {
+            String reservationNumber, String location, String bedSize, Integer bedAmount, Integer price, Integer totalDays, Double totalPrice, Integer guests) {
         this.userid = user;
         this.hotel_id = hotel_id;
         this.hotel = hotel;
@@ -141,11 +141,11 @@ public class Reservation {
         this.dateEnd = dateEnd;
     }
 
-    public String getroomType() {
+    public String getRoomType() {
         return roomType;
     }
 
-    public void setroomType(String roomType) {
+    public void setRoomType(String roomType) {
         this.roomType = roomType;
     }
 
@@ -173,43 +173,43 @@ public class Reservation {
         this.bedSize = bedSize;
     }
     
-    public int getBedAmount() {
+    public Integer getBedAmount() {
         return bedAmount;
     }
     
-    public void setBedAmount(int bedAmount) {
+    public void setBedAmount(Integer bedAmount) {
         this.bedAmount = bedAmount;
     }
     
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
     
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getTotalDays() {
+    public Integer getTotalDays() {
         return totalDays;
     }
 
-    public void setTotalDays(int totalDays) {
+    public void setTotalDays(Integer totalDays) {
         this.totalDays = totalDays;
     }
 
-    public double getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public int getGuests() {
+    public Integer getGuests() {
         return guests;
     }
 
-    public void setGuests(int guests) {
+    public void setGuests(Integer guests) {
         this.guests = guests;
     }
 }
