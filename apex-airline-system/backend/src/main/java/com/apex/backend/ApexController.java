@@ -372,7 +372,7 @@ public class ApexController {
                         result.getString("origin_name"), result.getInt("destination_city_id"),
                         result.getString("destination_name"), result.getString("departure_date").toString(),
                         result.getString("arrival_date"), result.getInt("price_normal"), result.getInt("price_premium"),
-                        result.getString("detail"), 
+                        result.getString("detail"),
                         countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"), commentaries,
                         new RatingRecord(
                                 ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
@@ -1566,7 +1566,8 @@ public class ApexController {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s' WHERE ID = 3",
-                            Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2, Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3));
+                            Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2,
+                            Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3));
             query.executeQuery();
 
             return new WebSuccess("Home information updated");
@@ -1606,11 +1607,41 @@ public class ApexController {
 
             record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId, String destinationCityName,
                     String departureDate, String arrivalDate, int touristQuantity, int businessQuantity, int touristPrice, int businessPrice,
-                    String detail, int type, int state) {
+                    String detail, int type, int state, List<CommentaryRecord> commentaries, RatingRecord rating) {
             }
 
             List<FlightScale> flightscale = new ArrayList<>();
             while (result.next()) {
+                List<CommentaryRecord> commentaries = new ArrayList<CommentaryRecord>();
+
+                PreparedStatement countQuery = conn.prepareStatement(String
+                        .format("SELECT (select count(ticket_id) from tickets where flight_id = %s and type = 'economy' and state = 'active' and user_id is null) as economy_quantity, (select count(ticket_id) from tickets where flight_id = %s and type = 'premium' and state = 'active' and user_id is null) as premium_quantity",
+                                result.getInt("flight_id"), result.getInt("flight_id")));
+                ResultSet countResult = countQuery.executeQuery();
+
+                PreparedStatement commentariesQuery = conn.prepareStatement(String.format(
+                        "SELECT comments.comment_id, comments.parent_comment_id, comments.user_id, comments.content, comments.creation_date, comments.path, comments.flight_id, users.first_name from comments inner join users on comments.user_id = users.user_id where comments.flight_id = %s",
+                        result.getInt("flight_id")));
+                ResultSet commentariesResult = commentariesQuery.executeQuery();
+
+                PreparedStatement ratingsQuery = conn.prepareStatement(String.format(
+                        "SELECT ratingAverage(%s) as rating, COUNT(ratings.rating_id) as count from ratings where flight_id = %s",
+                        result.getInt("flight_id"), result.getInt("flight_id")));
+                ResultSet ratingsResult = ratingsQuery.executeQuery();
+
+                if (!countResult.next() || !ratingsResult.next()) {
+                    return new WebError("Failed to retrieve flights");
+                }
+
+                while (commentariesResult.next()) {
+                    commentaries.add(new CommentaryRecord(commentariesResult.getInt("comment_id"),
+                            commentariesResult.getInt("parent_comment_id"),
+                            commentariesResult.getInt("user_id"), commentariesResult.getString("content"),
+                            commentariesResult.getString("creation_date"),
+                            commentariesResult.getString("path"), commentariesResult.getInt("flight_id"),
+                            commentariesResult.getString("first_name"), new ArrayList<CommentaryRecord>()));
+                }
+
                 flightscale.add(new FlightScale(
                         result.getInt("flight_id"),
                         result.getInt("origin"),
@@ -1625,7 +1656,10 @@ public class ApexController {
                         result.getInt("price_premium"),
                         result.getString("arrival_date"),
                         result.getInt("type"),
-                        result.getInt("state")));
+                        result.getInt("state"), 
+                        commentaries, 
+                        new RatingRecord(
+                                ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
             }
             if (flightscale.isEmpty()) {
                 return new WebError("This user doesn't have any tickets");
