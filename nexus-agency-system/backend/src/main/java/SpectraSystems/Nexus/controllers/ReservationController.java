@@ -1,12 +1,16 @@
 package SpectraSystems.Nexus.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import SpectraSystems.Nexus.models.Flight;
@@ -16,7 +20,11 @@ import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,10 +34,14 @@ import java.util.stream.Collectors;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final RestTemplate restTemplate;
+    private static final String HOTEL_USER_ID = "65f9310acfb50244b4e886b0";
+    private static final SimpleDateFormat API_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     @Autowired
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(ReservationService reservationService, RestTemplate restTemplate) {
         this.reservationService = reservationService;
+        this.restTemplate = restTemplate;
     }
 
     // Endpoint to retrieve all reservations
@@ -56,8 +68,43 @@ public class ReservationController {
     // Endpoint to create a new reservation
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        Reservation createdReservation = reservationService.createReservation(reservation);
-        return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
+        
+        String formattedCheckin = API_DATE_FORMAT.format(reservation.getDateStart());
+        String formattedCheckout = API_DATE_FORMAT.format(reservation.getDateEnd());
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("hotelId", reservation.getHotelId());
+        requestBody.put("userId", HOTEL_USER_ID);
+        requestBody.put("checkin", formattedCheckin);
+        requestBody.put("checkout", formattedCheckout);
+        requestBody.put("roomType", reservation.getRoomType());
+        requestBody.put("roomPrice", reservation.getPrice());
+        requestBody.put("guests", reservation.getGuests());
+        requestBody.put("stayDays", reservation.getTotalDays());
+        requestBody.put("totalPrice", reservation.getTotalPrice());
+
+        // Make a POST request to the external API to create the reservation
+        String apiUrl = "http://localhost:3001/create-reservation";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(responseEntity.getBody());
+            String reservationId = rootNode.get("_id").asText();
+
+            reservation.setReservationNumber(reservationId);
+
+            Reservation createdReservation = reservationService.createReservation(reservation);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Endpoint to update an existing reservation
@@ -77,68 +124,64 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/hotelsearch", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Map<String, Object>>> getHotels(@RequestParam(value = "city", required = false) String city,
-                                                                @RequestParam(value = "check-in", required = false) String checkIn,
-                                                                @RequestParam(value = "check-out", required = false) String checkOut,
-                                                                @RequestParam(value = "guests", required = false) Integer guests) {
+    public ResponseEntity<List<Map<String, Object>>> getHotels(
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "check-in", required = false) String checkIn,
+            @RequestParam(value = "check-out", required = false) String checkOut,
+            @RequestParam(value = "guests", required = false) Integer guests) {
+
+        // Define the URL for the external API
+        String apiUrl = "http://localhost:3001/get-filtered-hotels?city=" + city;
+
+        // Create a RestTemplate instance to make HTTP requests
+        RestTemplate restTemplate = new RestTemplate();
+
         try {
-            // Read hotel data from hotel.json file
-            String hotelData = new String(Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath()));
+            // Make a GET request to the external API
+            ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+            );
 
-            // Convert JSON string to a List<Map<String, Object>>
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, Object>> hotels = objectMapper.readValue(hotelData, new TypeReference<List<Map<String, Object>>>() {});
+            // Get the response body
+            List<Map<String, Object>> hotels = response.getBody();
 
-            // Filter hotels based on city and maxOccupancy
-            List<Map<String, Object>> filteredHotels = hotels.stream()
-                    .filter(hotel -> {
-                        String hotelCity = (String) ((Map<String, Object>) hotel.get("location")).get("city");
-                        if (city != null && !city.equalsIgnoreCase(hotelCity)) {
-                            return false; // Filter out hotels not in the specified city
-                        }
-                        Map<String, Map<String, Object>> rooms = (Map<String, Map<String, Object>>) hotel.get("rooms");
-                        rooms.values().removeIf(room -> {
-                            int maxOccupancy = (int) room.get("maxOccupancy");
-                            return guests != null && guests > maxOccupancy;
-                        });
-                        // Filter out hotels with no rooms meeting the minimum number of guests
-                        return !rooms.isEmpty();
-                    })
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.ok().body(filteredHotels);
-        } catch (IOException e) {
+            return ResponseEntity.ok().body(hotels);
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @GetMapping(value = "/roomsearch", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getHotelRoomById(@RequestParam(value = "id", required = false) String id, 
-                                                                @RequestParam(value = "city", required = false) String city) {
+    public ResponseEntity<Map<String, Object>> getHotelRoomById(
+            @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "city", required = false) String city) {
+
+        // Define the URL for the external API
+        String apiUrl = "http://localhost:3001/get-hotel-by-id/" + id;
+
+        RestTemplate restTemplate = new RestTemplate();
+
         try {
-            // Read hotel data from hotel.json file
-            String hotelData = new String(Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath()));
+            ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
 
-            // Convert JSON string to a List<Map<String, Object>>
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, Object>> hotels = objectMapper.readValue(hotelData, new TypeReference<List<Map<String, Object>>>() {});
+            Map<String, Object> hotel = response.getBody();
 
-            // Filter hotels based on id and city
-            List<Map<String, Object>> filteredHotels = hotels.stream()
-                    .filter(hotel -> id.equals(hotel.get("_id")) && (city == null || city.equalsIgnoreCase((String) ((Map<String, Object>) hotel.get("location")).get("city"))))
-                    .collect(Collectors.toList());
-
-            // Check if the hotel with the given id and city exists
-            if (filteredHotels.isEmpty()) {
+            // Check if the response contains hotel data
+            if (hotel == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Construct the JSON response with hotel id and rooms
-            Map<String, Object> hotel = filteredHotels.get(0); // Assuming there's only one hotel with the given id
-            Map<String, Object> response = constructResponse(hotel);
+            Map<String, Object> responseBody = constructResponse(hotel);
 
-            return ResponseEntity.ok().body(response);
-        } catch (IOException e) {
+            return ResponseEntity.ok().body(responseBody);
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -154,26 +197,41 @@ public class ReservationController {
     }
 
     @GetMapping("/cities")
-    public ResponseEntity<List<Map<String, String>>> getCities() throws IOException {
+    public ResponseEntity<List<Map<String, String>>> getCities() {
+        // Define the URL for the external API
+        String apiUrl = "http://localhost:3001/get-hotels";
+
+        // Create a RestTemplate instance to make HTTP requests
+        RestTemplate restTemplate = new RestTemplate();
+
         try {
-            // Read hotel data from hotel.json file
-            byte[] jsonData = Files.readAllBytes(new ClassPathResource("Hotel.json").getFile().toPath());
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, Object>> hotels = objectMapper.readValue(jsonData, List.class);
+            // Make a GET request to the external API
+            ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+            );
+
+            // Get the response body
+            List<Map<String, Object>> hotels = response.getBody();
             List<Map<String, String>> cities = new ArrayList<>();
 
+            // Extract cities from the hotel data
             for (Map<String, Object> hotel : hotels) {
                 String cityId = String.valueOf(cities.size() + 1);
-                String cityName =(String) ((Map<String, Object>) hotel.get("location")).get("city");
+                String cityName = (String) ((Map<String, Object>) hotel.get("location")).get("city");
                 Map<String, String> cityMap = Map.of("cityId", cityId, "name", cityName);
                 cities.add(cityMap);
             }
-            System.out.println(cities);
+
             return ResponseEntity.ok().body(cities);
-        } catch (IOException e) {
-            System.err.println(e);
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }}
+        }
+    }
     
 }
 
