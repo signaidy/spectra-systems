@@ -372,8 +372,9 @@ public class ApexController {
                         result.getString("origin_name"), result.getInt("destination_city_id"),
                         result.getString("destination_name"), result.getString("departure_date").toString(),
                         result.getString("arrival_date"), result.getInt("price_normal"), result.getInt("price_premium"),
-                        result.getString("detail"),
-                        countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"), commentaries,
+                        result.getString("detail"), 
+                        countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"), result.getString("type"), 
+                        commentaries,
                         new RatingRecord(
                                 ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
             }
