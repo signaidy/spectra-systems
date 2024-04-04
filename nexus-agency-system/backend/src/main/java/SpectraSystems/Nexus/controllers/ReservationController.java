@@ -39,7 +39,7 @@ public class ReservationController {
     private final RestTemplate restTemplate;
     private static final String HOTEL_USER_ID = "65f9310acfb50244b4e886b0";
     private static final SimpleDateFormat API_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
-    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class); // use for logging stuff if needed
 
     @Autowired
     public ReservationController(ReservationService reservationService, RestTemplate restTemplate) {
@@ -88,7 +88,6 @@ public class ReservationController {
 
         // Make a POST request to the external API to create the reservation
         String apiUrl = "http://localhost:3001/create-reservation";
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.CREATED) {
