@@ -29,6 +29,11 @@ export function HotelAdministrationCard(props: Hotel) {
             <MapPin className="w-4 h-4 text-black fill-red-700" />
             <div>{props.location.address}</div>
           </div>
+          {props.state === "disabled" && (
+            <div className="text-sm text-red-500">
+              Hotel is currently disabled.
+            </div>
+          )}
           <p className="text-sm line-clamp-3 mt-4">{props.description}</p>
           <div className="flex gap-x-2 mt-auto">
             <HotelAdministrationDialog {...props} />
