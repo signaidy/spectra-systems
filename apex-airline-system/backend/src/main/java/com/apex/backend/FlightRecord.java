@@ -15,7 +15,6 @@ public record FlightRecord(
                 String detail,
                 int touristQuantity,
                 int businessQuantity,
-                String type, 
                 List<CommentaryRecord> commentaries,
                 RatingRecord rating) {
 

@@ -5,8 +5,6 @@
   export let passengers: string | null;
   export let user: User;
   export let form;
-
-  console.log(flight); 
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
