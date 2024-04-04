@@ -45,7 +45,7 @@ public class Flight {
     @OneToMany(mappedBy = "ticketId")
     private List<TicketPurchase> tickets = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column(name = "TYPE")
     private String type;
 
     @Column(name = "purchase_date", nullable = false)
