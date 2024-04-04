@@ -124,6 +124,7 @@ export async function getFilteredHotels(searchParams: HotelSearchParams) {
 
     const result = hotelsCollection.find({
       "location.city": searchParams.location,
+      state: "active",
       // guests: { $gte: searchParams.guests },
     });
 
@@ -365,7 +366,11 @@ export async function getFeaturedHotel() {
 
     const commentaries = generateCommentaryTree(array[0].commentaries);
 
-    const featuredHotel = { ...array[0], commentaries: commentaries, _id: array[0]._id.toString() };
+    const featuredHotel = {
+      ...array[0],
+      commentaries: commentaries,
+      _id: array[0]._id.toString(),
+    };
 
     return featuredHotel;
   } catch (e) {
