@@ -62,6 +62,27 @@ export async function getHotels() {
   }
 }
 
+export async function getAvailableHotels() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const hotelsCollection = database.collection("hotels");
+
+    const result = hotelsCollection.find({ state: "active" });
+
+    const hotels = [];
+    for await (const hotel of result) {
+      const commentaries = generateCommentaryTree(hotel.commentaries);
+
+      hotels.push({ ...hotel, _id: hotel._id.toString(), commentaries });
+    }
+
+    return hotels as Hotel[];
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Hotels");
+  }
+}
+
 export async function getHotelById(id: string) {
   try {
     const database = client.db(process.env.DB_NAME);
