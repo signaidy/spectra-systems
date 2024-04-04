@@ -1584,4 +1584,65 @@ public class ApexController {
         }
     }
 
+    // Scale Flights Simple - API
+    @GetMapping("/scale-flights/{origin}/{destination}")
+    public Object getScaleFLights(@PathVariable int origin, @PathVariable int destination) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT f.flight_id, origin, c1.name AS origin_city, destination, c2.name AS destination_city, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium,\n"
+                            +//
+                            "f.price_normal, f.price_premium, f.detail, f.type, f.state FROM Flights f INNER JOIN Cities c1 ON f.origin = c1.city_id INNER JOIN Cities c2 ON f.destination = c2.city_id\n"
+                            +//
+                            "WHERE flight_id IN (SELECT f1.FLIGHT_ID AS first_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
+                            +//
+                            "UNION ALL SELECT f2.FLIGHT_ID AS second_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
+                            +//
+                            ") AND f.state = 1 ORDER BY flight_id",
+                            origin, destination, origin, destination));
+            ResultSet result = query.executeQuery();
+
+            record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId, String destinationCityName,
+                    String departureDate, String arrivalDate, int touristQuantity, int businessQuantity, int touristPrice, int businessPrice,
+                    String detail, int type, int state) {
+            }
+
+            List<FlightScale> flightscale = new ArrayList<>();
+            while (result.next()) {
+                flightscale.add(new FlightScale(
+                        result.getInt("flight_id"),
+                        result.getInt("origin"),
+                        result.getString("origin_city"),
+                        result.getInt("destination"),
+                        result.getString("destination_city"),
+                        result.getString("departure_date"),
+                        result.getString("arrival_date"),
+                        result.getInt("amount_normal"),
+                        result.getInt("amount_premium"),
+                        result.getInt("price_normal"),
+                        result.getInt("price_premium"),
+                        result.getString("arrival_date"),
+                        result.getInt("type"),
+                        result.getInt("state")));
+            }
+            if (flightscale.isEmpty()) {
+                return new WebError("This user doesn't have any tickets");
+            }
+            return flightscale;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get user tickets");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
