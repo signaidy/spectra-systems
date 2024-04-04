@@ -20,7 +20,7 @@ public class Reservation {
     private Long id;
 
     @Column(name = "hotel_id")
-    private String hotel_id;
+    private String hotelId;
 
     @Column(name = "userid", nullable = false)
     private Long userid;
@@ -71,10 +71,10 @@ public class Reservation {
 
     }
 
-    public Reservation(Long user, String hotel_id, String hotel, Date dateStart, Date dateEnd, String roomType,
+    public Reservation(Long user, String hotelId, String hotel, Date dateStart, Date dateEnd, String roomType,
             String reservationNumber, String location, String bedSize, Integer bedAmount, Integer price, Integer totalDays, Double totalPrice, Integer guests) {
         this.userid = user;
-        this.hotel_id = hotel_id;
+        this.hotelId = hotelId;
         this.hotel = hotel;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -98,11 +98,11 @@ public class Reservation {
     }
 
     public String getHotelId(){
-        return hotel_id;
+        return hotelId;
     }
 
-    public void setHotelId(String HotelId){
-        this.hotel_id = hotel_id;
+    public void setHotelId(String hotelId){
+        this.hotelId = hotelId;
     }
 
     public void setRating(Long rating) {

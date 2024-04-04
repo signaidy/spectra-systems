@@ -1,4 +1,6 @@
 package SpectraSystems.Nexus.controllers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ClassPathResource;
@@ -37,6 +39,7 @@ public class ReservationController {
     private final RestTemplate restTemplate;
     private static final String HOTEL_USER_ID = "65f9310acfb50244b4e886b0";
     private static final SimpleDateFormat API_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
     @Autowired
     public ReservationController(ReservationService reservationService, RestTemplate restTemplate) {
@@ -68,7 +71,6 @@ public class ReservationController {
     // Endpoint to create a new reservation
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        
         String formattedCheckin = API_DATE_FORMAT.format(reservation.getDateStart());
         String formattedCheckout = API_DATE_FORMAT.format(reservation.getDateEnd());
         Map<String, Object> requestBody = new HashMap<>();
@@ -82,12 +84,14 @@ public class ReservationController {
         requestBody.put("stayDays", reservation.getTotalDays());
         requestBody.put("totalPrice", reservation.getTotalPrice());
 
+        
+
         // Make a POST request to the external API to create the reservation
         String apiUrl = "http://localhost:3001/create-reservation";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
 
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+        if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.CREATED) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
