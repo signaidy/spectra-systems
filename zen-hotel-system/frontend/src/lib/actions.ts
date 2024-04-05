@@ -659,7 +659,10 @@ export async function disableHotel(prevState: any, formData: FormData) {
     );
 
     await reservations.updateMany(
-      { hotelId: new ObjectId(rawFormData.hotelId as string) },
+      {
+        hotelId: new ObjectId(rawFormData.hotelId as string),
+        state: { $nin: ["manuallyDisabled"] },
+      },
       { $set: { state: "disabled" } }
     );
   } catch (e) {
@@ -686,7 +689,10 @@ export async function enableHotel(prevState: any, formData: FormData) {
     );
 
     await reservations.updateMany(
-      { hotelId: new ObjectId(rawFormData.hotelId as string) },
+      {
+        hotelId: new ObjectId(rawFormData.hotelId as string),
+        state: { $nin: ["manuallyDisabled"] },
+      },
       { $set: { state: "active" } }
     );
   } catch (e) {
