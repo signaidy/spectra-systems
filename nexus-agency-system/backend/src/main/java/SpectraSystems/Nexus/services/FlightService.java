@@ -80,6 +80,10 @@ public class FlightService {
         }
     }
 
+    public List<Flight> getFlightsByFlightNumber(String flightNumber) {
+        return flightRepository.findAllByFlightNumber(flightNumber);
+    }
+
     public List<externalFlight> getAllFlightsFromOtherBackend() {
         ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
             "http://localhost:8080/get-all-flights",

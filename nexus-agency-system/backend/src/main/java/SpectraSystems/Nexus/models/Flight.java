@@ -54,6 +54,9 @@ public class Flight {
     @Column(nullable = false)
     private Double price;
 
+    @Column(name = "state")
+    private String state;
+
     private Long rating;
     
     // Getters, setters, constructors, and other methods...
@@ -71,11 +74,20 @@ public class Flight {
         this.returnDate = returnDate;
         this.type = type;
         this.price = price;
+        this.state = "active";
         this.purchaseDate = LocalDate.now();
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getState(){
+        return state;
+    }
+
+    public void setState(String state){
+        this.state = state;
     }
 
     public void setRating(Long rating){

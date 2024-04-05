@@ -5,17 +5,20 @@
   
     export let data;
     let userid = data.user.userId
-  
+    let token = data.token
     const userId = window.localStorage.getItem("user_id");
   
     let userflights = [];
   
     onMount(async () => {
-    fetch(`http://localhost:42069/nexus/flights/user/${userid}`)
-    .then(response => response.json())
-    .then(userfdata => {
-      userflights = userfdata
-    })
+      fetch(`http://localhost:42069/nexus/flights/user/${userid}`)
+      .then(response => {
+        response.json()
+        console.log(response)
+      })
+      .then(userfdata => {
+        userflights = userfdata
+      })
     });
   
   </script>

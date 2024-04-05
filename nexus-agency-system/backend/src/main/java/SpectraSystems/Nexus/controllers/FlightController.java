@@ -106,6 +106,21 @@ public class FlightController {
         return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
     }
 
+    @PutMapping("/deactivate/{flightNumber}")
+    @PreAuthorize("hasRole('ADMIN')") // Assuming only admins can deactivate flights
+    public ResponseEntity<List<Flight>> deactivateFlightsByFlightNumber(@PathVariable String flightNumber) {
+        List<Flight> flights = flightService.getFlightsByFlightNumber(flightNumber);
+        if (!flights.isEmpty()) {
+            for (Flight flight : flights) {
+                flight.setState("cancelled");
+                flightService.updateFlight(flight.getId(), flight);
+            }
+            return new ResponseEntity<>(flights, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // Endpoint to delete a flight by ID
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")

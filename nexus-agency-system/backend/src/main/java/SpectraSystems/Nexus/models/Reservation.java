@@ -67,6 +67,9 @@ public class Reservation {
     private Integer guests;
     // Getters, setters, constructors, and other methods...
 
+    @Column(name="state")
+    private String state;
+
     public Reservation() {
 
     }
@@ -87,6 +90,7 @@ public class Reservation {
         this.totalDays = totalDays;
         this.totalPrice = totalPrice;
         this.guests = guests;
+        this.state = "active";
     }
 
     public Long getId() {
@@ -95,6 +99,14 @@ public class Reservation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getHotelId(){
