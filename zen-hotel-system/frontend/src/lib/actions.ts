@@ -698,6 +698,28 @@ export async function enableHotel(prevState: any, formData: FormData) {
 
   revalidatePath("/");
 }
+
+export async function enableReservation(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const reservations = database.collection("reservations");
+
+    await reservations.updateOne(
+      { _id: new ObjectId(rawFormData.reservationId as string) },
+      { $set: { state: "active" } }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Enable Reservation.",
+    };
+  }
+
+  revalidatePath("/");
+}
+
 export async function disableReservation(prevState: any, formData: FormData) {
   try {
     const rawFormData = Object.fromEntries(formData.entries());
