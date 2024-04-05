@@ -39,6 +39,7 @@ public class ReservationService {
         Long userId = ((User) authentication.getPrincipal()).getId();
         // Set the userid in the reservation object
         reservation.setUser(userId);
+        reservation.setState("active");
         // Save the reservation
         return reservationRepository.save(reservation);
     }
