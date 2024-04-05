@@ -17,9 +17,9 @@
   let checkin = $page.url.searchParams.get("check-in");
   let checkout = $page.url.searchParams.get("check-out");
 
-  const handleCheckout = (hotel, guests, roomType, price, hotelname, beds, city) => {
+  const handleCheckout = (hotel, guests, roomType, price, hotelname, beds, city, bedAmount) => {
     goto(
-      `/hotelcheckout?hotelid=${hotel}&checkin=${checkin}&checkout=${checkout}&roomtype=${roomType}&price=${price}&guests=${guests}&hotelname=${hotelname}&beds=${beds}&city=${city}`
+      `/hotelcheckout?hotelid=${hotel}&checkin=${checkin}&checkout=${checkout}&roomtype=${roomType}&price=${price}&guests=${guests}&hotelname=${hotelname}&beds=${beds}&city=${city}&bedAmount=${bedAmount}`
     );
   };
 </script>
@@ -82,6 +82,7 @@
                 hotelname, 
                 room[roomType].beds.size, 
                 city,
+                room[roomType].beds.amount,
               )}>Continue</Button
           >
         </div>

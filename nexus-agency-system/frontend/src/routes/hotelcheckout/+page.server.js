@@ -11,13 +11,14 @@ export const actions = {
       const random = formData.get("randomValue")
       const roomtype = formData.get("roomtype");
       const guests = formData.get("guests");
+      const bedAmount = formData.get("bedAmount");
       let days = formData.get("days");
       let city = formData.get("city");
       let beds = formData.get("beds");
       const totalprice = formData.get("totalprice");
       const body = {
         userid: user_id,
-        hotel_id: hotelid,
+        hotelId: hotelid,
         hotel:hotelname,
         dateStart: checkin,
         dateEnd: checkout,
@@ -26,11 +27,11 @@ export const actions = {
         location: city,
         bedSize: beds, 
         price: price, 
+        bedAmount: bedAmount,
         totalDays: days, 
         totalPrice: totalprice, 
         guests: guests
       };
-      console.log(body);
       const response = await fetch(`http://localhost:42069/nexus/reservations`, {
       method: "POST",
       headers: {
@@ -39,7 +40,6 @@ export const actions = {
       },
       body: JSON.stringify(body),
     });
-    console.log(response);
     const result = await response.json();
     if(!result.ok){
       return {

@@ -26,6 +26,7 @@
   let guests = $page.url.searchParams.get("guests");
   let city = $page.url.searchParams.get("city");
   let beds = $page.url.searchParams.get("beds");
+  let bedAmount = $page.url.searchParams.get("bedAmount");
 
   let card = "";
   let state = "active";
@@ -171,6 +172,14 @@
                   <span>{guests}</span>
                 </div>
                 <div class="w-38">
+                  <span class="text-gray-600 font-semibold"
+                    >Amount of beds:</span
+                  >
+                </div>
+                <div class="flex-grow pl-3">
+                  <span>{bedAmount}</span>
+                </div>
+                <div class="w-38">
                   <span class="text-gray-600 font-semibold">City:</span>
                 </div>
                 <div class="flex-grow pl-3">
@@ -311,6 +320,7 @@
     <input type="hidden" name="price" value={price} />
     <input type="hidden" name="city" value={city} />
     <input type="hidden" name="beds" value={beds} />
+    <input type="hidden" name="bedAmount" value={bedAmount} />
     <input type="hidden" name="totalprice" value={price * days} />
   </div>
 </form>
