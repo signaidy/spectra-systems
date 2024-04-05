@@ -63,6 +63,12 @@ export function load({ locals, url }) {
 
     const result = await response.json();
 
+    console.log(result); 
+
+    if (!response.ok) { // Check for a non-200 response
+      return []; // Return an empty array if response is not successful
+    }
+
     function assignChildren(commentaries: Commentary[]): Commentary[] {
       const commentariesById: { [key: number]: Commentary } = {};
 
@@ -88,12 +94,18 @@ export function load({ locals, url }) {
       );
     }
 
+    if (Array.isArray(result)) {
     result.forEach((flight: Flight) => {
       const arrangedCommentaries = assignChildren(flight.commentaries);
       flight.commentaries = arrangedCommentaries;
-    });
+    });}
 
-    return result; 
+    if(!response.ok){
+      return [];
+    } else{
+      return result ;
+    }
+     
   }
   
 

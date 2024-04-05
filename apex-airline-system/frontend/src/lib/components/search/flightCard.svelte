@@ -28,7 +28,7 @@
           <hr class="grow" />
         </div>
         {#if isScaleFlight == true}
-        <div class="text-muted-foreground self-center text-">Scale</div>
+        <div class="text-muted-foreground self-center">Scale</div>
         {:else}
         <div class="text-muted-foreground self-center">No stops</div>
         {/if}

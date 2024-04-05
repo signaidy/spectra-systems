@@ -1663,7 +1663,7 @@ public class ApexController {
                                 ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
             }
             if (flightscale.isEmpty()) {
-                return new WebError("This user doesn't have any tickets");
+                return new Object[0];
             }
             return flightscale;
         } catch (Throwable e) {
