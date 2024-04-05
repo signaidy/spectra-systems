@@ -69,11 +69,14 @@
           }
         }
       }
-      const response = await fetch(`http://localhost:8080/cancelation/${flightID}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
-      });
+      const response = await fetch(
+        `http://localhost:8080/cancelation/${flightID}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }
+      );
 
       if (response.ok) {
         console.log("Flight updated successfully!");
@@ -86,7 +89,6 @@
       } else {
         console.error("Flight update failed:", response.status);
       }
-
     } catch (error) {
       console.error("API error:", error);
     }
@@ -103,7 +105,12 @@
       const usersInformation = await fetch(
         `http://localhost:8080/modification-notification/${flightId}`
       ).then((response) => response.json());
-      user = usersInformation;
+      if (usersInformation && usersInformation.length > 0) {
+        user = usersInformation;
+      } else {
+        user = [];
+      }
+      // user = usersInformation;
 
       const detailFlight = document.getElementById("detail").value;
       const departureTime = document.getElementById("departureTime").value;
