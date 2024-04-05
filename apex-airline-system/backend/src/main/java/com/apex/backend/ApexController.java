@@ -1586,10 +1586,14 @@ public class ApexController {
     }
 
     // Scale Flights Simple - API
-    @GetMapping("/scale-flights/{origin}/{destination}")
-    public Object getScaleFLights(@PathVariable int origin, @PathVariable int destination) {
+    @GetMapping("/scale-flights")
+    public Object getScaleFLights(
+        @RequestParam(value = "originCity", defaultValue = "") int origin,
+        @RequestParam(value = "destinationCity", defaultValue = "") int destination) {
         Connection conn = new OracleConnector().getConnection();
+
         try {
+
 
             PreparedStatement query = conn
                     .prepareStatement(String.format(
