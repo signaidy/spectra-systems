@@ -126,6 +126,13 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/cancel/{hotelId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> cancelReservationsByHotelId(@PathVariable String hotelId) {
+        reservationService.cancelReservationsByHotelId(hotelId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping(value = "/hotelsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Map<String, Object>>> getHotels(
             @RequestParam(value = "city", required = false) String city,

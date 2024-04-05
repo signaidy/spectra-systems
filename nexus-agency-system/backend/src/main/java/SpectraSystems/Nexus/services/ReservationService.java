@@ -34,7 +34,6 @@ public class ReservationService {
         return reservationRepository.findByUserid(userId);
     }
 
-    // Inside your service method
     public Reservation createReservation(Reservation reservation) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -42,6 +41,19 @@ public class ReservationService {
         reservation.setUser(userId);
         // Save the reservation
         return reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> getReservationsByHotelId(String hotelId) {
+        return reservationRepository.findAllByHotelId(hotelId);
+    }
+
+    // Method to cancel reservations by hotelId
+    public void cancelReservationsByHotelId(String hotelId) {
+        List<Reservation> reservations = getReservationsByHotelId(hotelId);
+        for (Reservation reservation : reservations) {
+            reservation.setState("cancelled");
+            reservationRepository.save(reservation);
+        }
     }
 
     public Reservation updateReservation(Long id, Reservation reservationDetails) {
