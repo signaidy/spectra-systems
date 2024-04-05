@@ -45,7 +45,12 @@
       const usersInformation = await fetch(
         `http://localhost:8080/modification-notification/${flightID}`
       ).then((response) => response.json());
-      user = usersInformation;
+      if (usersInformation && usersInformation.length > 0) {
+        user = usersInformation;
+      } else {
+        user = [];
+      }
+      // user = usersInformation;
 
       for (const userObject of user) {
         if (userObject.flight_id === flightID) {
