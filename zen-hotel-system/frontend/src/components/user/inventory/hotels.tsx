@@ -1,6 +1,6 @@
 // Data
 import { getFilteredHotels } from "@/lib/data";
-import { getHotels } from "@/lib/data";
+import { getAvailableHotels } from "@/lib/data";
 // Components
 import { HotelInventoryCard } from "@/components/hotels/hotelInventoryCard";
 
@@ -14,7 +14,7 @@ export async function Hotels({
   if (Object.entries(searchParams).length > 0) {
     hotels = await getFilteredHotels(searchParams);
   } else {
-    hotels = await getHotels();
+    hotels = await getAvailableHotels();
   }
 
   return (

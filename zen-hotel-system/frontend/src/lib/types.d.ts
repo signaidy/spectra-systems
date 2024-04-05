@@ -112,7 +112,7 @@ declare global {
       };
     };
     commentaries: Commentary[];
-    state: "active" | "cancelled";
+    state: "active" | "disabled";
   }
 
   export interface Reservation {
@@ -126,7 +126,7 @@ declare global {
     guests: number;
     stayDays: number;
     totalPrice: number;
-    state: "active" | "cancelled" | "completed";
+    state: "active" | "disabled" | "completed";
     madeAt: string;
     hotel: Hotel;
     user: User;

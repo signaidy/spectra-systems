@@ -645,6 +645,60 @@ export async function deletePartner(prevState: any, formData: FormData) {
   revalidatePath("/");
 }
 
+export async function disableHotel(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const hotels = database.collection("hotels");
+    const reservations = database.collection("reservations");
+
+    await hotels.updateOne(
+      { _id: new ObjectId(rawFormData.hotelId as string) },
+      { $set: { state: "disabled" } }
+    );
+
+    await reservations.updateMany(
+      { hotelId: new ObjectId(rawFormData.hotelId as string) },
+      { $set: { state: "disabled" } }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Disable Hotel.",
+    };
+  }
+
+  revalidatePath("/");
+}
+
+export async function enableHotel(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const hotels = database.collection("hotels");
+    const reservations = database.collection("reservations");
+
+    await hotels.updateOne(
+      { _id: new ObjectId(rawFormData.hotelId as string) },
+      { $set: { state: "active" } }
+    );
+
+    await reservations.updateMany(
+      { hotelId: new ObjectId(rawFormData.hotelId as string) },
+      { $set: { state: "active" } }
+    );
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Enable Hotel.",
+    };
+  }
+
+  revalidatePath("/");
+}
+
 export async function logOut() {
   cookies().delete("token");
   redirect("/");

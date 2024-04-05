@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 // Components
 import { HotelAdministrationDialog } from "@/components/hotels/hotelAdministrationDialog";
+import { ModifyHotelStatus } from "@/components/hotels/modifyHotelStatus";
 // UI Components
 import { Button } from "@/components/ui/button";
 import { Star, MapPin } from "lucide-react";
@@ -28,6 +29,11 @@ export function HotelAdministrationCard(props: Hotel) {
             <MapPin className="w-4 h-4 text-black fill-red-700" />
             <div>{props.location.address}</div>
           </div>
+          {props.state === "disabled" && (
+            <div className="text-sm text-red-500">
+              Hotel is currently disabled.
+            </div>
+          )}
           <p className="text-sm line-clamp-3 mt-4">{props.description}</p>
           <div className="flex gap-x-2 mt-auto">
             <HotelAdministrationDialog {...props} />
@@ -36,14 +42,12 @@ export function HotelAdministrationCard(props: Hotel) {
                 Update Hotel
               </Link>
             </Button>
-            <Button variant="destructive">Disable Hotel</Button>
+            <ModifyHotelStatus hotelId={props._id} status={props.state} />
           </div>
         </div>
         <div className="border-t p-3 flex justify-end gap-x-3">
           <div className="flex gap-x-1 items-end">
-            <div className="text-sm mb-[2px] text-muted-foreground">
-              from
-            </div>
+            <div className="text-sm mb-[2px] text-muted-foreground">from</div>
             <div className="font-bold text-xl">
               {props.rooms.juniorSuite.price}
             </div>

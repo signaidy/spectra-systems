@@ -13,11 +13,14 @@ export function ReservationCard({ reservation }: { reservation: Reservation }) {
           <div className="text-muted-foreground">{reservation._id}</div>
         </div>
         <Button asChild>
-          <Link href={`/reservation/${reservation._id}`}>
-            Generate PDF
-          </Link>
+          <Link href={`/reservation/${reservation._id}`}>Generate PDF</Link>
         </Button>
       </div>
+      {reservation.state === "disabled" && (
+        <div className="text-red-500 p-3">
+          Reservation is currently disabled due to hotel deactivation.
+        </div>
+      )}
       <div className="grid grid-cols-3 p-3 gap-y-5">
         <ReservationSection
           title="Room Purchased"

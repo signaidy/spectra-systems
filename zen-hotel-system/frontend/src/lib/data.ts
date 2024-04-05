@@ -62,6 +62,27 @@ export async function getHotels() {
   }
 }
 
+export async function getAvailableHotels() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const hotelsCollection = database.collection("hotels");
+
+    const result = hotelsCollection.find({ state: "active" });
+
+    const hotels = [];
+    for await (const hotel of result) {
+      const commentaries = generateCommentaryTree(hotel.commentaries);
+
+      hotels.push({ ...hotel, _id: hotel._id.toString(), commentaries });
+    }
+
+    return hotels as Hotel[];
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Hotels");
+  }
+}
+
 export async function getHotelById(id: string) {
   try {
     const database = client.db(process.env.DB_NAME);
@@ -103,6 +124,7 @@ export async function getFilteredHotels(searchParams: HotelSearchParams) {
 
     const result = hotelsCollection.find({
       "location.city": searchParams.location,
+      state: "active",
       // guests: { $gte: searchParams.guests },
     });
 
@@ -344,7 +366,11 @@ export async function getFeaturedHotel() {
 
     const commentaries = generateCommentaryTree(array[0].commentaries);
 
-    const featuredHotel = { ...array[0], commentaries: commentaries, _id: array[0]._id.toString() };
+    const featuredHotel = {
+      ...array[0],
+      commentaries: commentaries,
+      _id: array[0]._id.toString(),
+    };
 
     return featuredHotel;
   } catch (e) {
