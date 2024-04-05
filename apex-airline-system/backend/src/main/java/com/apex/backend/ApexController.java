@@ -1602,8 +1602,6 @@ public class ApexController {
                             +//
                             "WHERE flight_id IN (SELECT f1.FLIGHT_ID AS first_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
                             +//
-                            "UNION ALL SELECT f2.FLIGHT_ID AS second_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
-                            +//
                             ") AND f.state = 1 ORDER BY flight_id",
                             origin, destination, origin, destination));
             ResultSet result = query.executeQuery();
