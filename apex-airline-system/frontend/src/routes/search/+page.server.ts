@@ -53,10 +53,55 @@ export function load({ locals, url }) {
     return result;
   }
 
+  async function scaleFlights() {
+    const response = await fetch(
+      `http://localhost:8080/scale-flights?${url.searchParams.toString()}`,
+      {
+        method: "GET",
+      }
+    );
+
+    const result = await response.json();
+
+    function assignChildren(commentaries: Commentary[]): Commentary[] {
+      const commentariesById: { [key: number]: Commentary } = {};
+
+      commentaries.forEach((commentary) => {
+        commentariesById[commentary.commentId] = commentary;
+      });
+
+      commentaries.forEach((commentary) => {
+        const { parentCommentId } = commentary;
+        if (parentCommentId !== 0) {
+          const parentCommentary = commentariesById[parentCommentId];
+          if (parentCommentary) {
+            if (!parentCommentary.children) {
+              parentCommentary.children = [];
+            }
+            parentCommentary.children.push(commentary);
+          }
+        }
+      });
+
+      return commentaries.filter(
+        (commentary) => commentary.parentCommentId === 0
+      );
+    }
+
+    result.forEach((flight: Flight) => {
+      const arrangedCommentaries = assignChildren(flight.commentaries);
+      flight.commentaries = arrangedCommentaries;
+    });
+
+    return result; 
+  }
+  
+
   return {
     user: locals.user,
     cities: getCities(),
     flights: getOneWayFlights(),
+    scaleflights: scaleFlights(), 
   };
 }
 

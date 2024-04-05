@@ -5,7 +5,9 @@
   export let passengers: string | null;
   export let user: User;
   export let form;
+  export let isScaleFlight; 
   console.log(flight)
+  console.log(isScaleFlight); 
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
@@ -25,7 +27,11 @@
           <Pyramid class="mx-3 h-5 w-5" />
           <hr class="grow" />
         </div>
+        {#if isScaleFlight == true}
+        <div class="text-muted-foreground self-center text-">Scale</div>
+        {:else}
         <div class="text-muted-foreground self-center">No stops</div>
+        {/if}
       </div>
       <div class="flex flex-col">
         <div class="text-3xl font-bold">{flight.arrivalDate.split(" ")[1]}</div>

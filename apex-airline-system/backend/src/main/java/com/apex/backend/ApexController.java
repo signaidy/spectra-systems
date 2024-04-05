@@ -1589,12 +1589,11 @@ public class ApexController {
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
         @RequestParam(value = "originCity", defaultValue = "") int origin,
-        @RequestParam(value = "destinationCity", defaultValue = "") int destination) {
+        @RequestParam(value = "destinationCity", defaultValue = "") int destination
+        ) {
         Connection conn = new OracleConnector().getConnection();
 
         try {
-
-
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "SELECT f.flight_id, origin, c1.name AS origin_city, destination, c2.name AS destination_city, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium,\n"
@@ -1658,7 +1657,7 @@ public class ApexController {
                         result.getInt("amount_premium"),
                         result.getInt("price_normal"),
                         result.getInt("price_premium"),
-                        result.getString("arrival_date"),
+                        result.getString("detail"),
                         result.getInt("type"),
                         result.getInt("state"), 
                         commentaries, 
