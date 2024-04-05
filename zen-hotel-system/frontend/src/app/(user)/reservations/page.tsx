@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 // Components
-import { Reservations } from "@/components/reservations/reservations";
+import { UserReservations } from "@/components/reservations/userReservations";
 import { ReservationCardSkeleton } from "@/components/skeletons/reservationCardSkeleton";
 import { SectionTitle } from "@/components/user/sectionTitle";
 
@@ -23,7 +23,7 @@ export default function ReservationsHome() {
         }
       >
         <div className="flex flex-col gap-y-3 mb-8 mr-8">
-          <Reservations />
+          <UserReservations />
         </div>
       </Suspense>
     </>
