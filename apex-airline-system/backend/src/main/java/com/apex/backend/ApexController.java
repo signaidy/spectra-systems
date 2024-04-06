@@ -1713,35 +1713,4 @@ public class ApexController {
         }
     }
 
-
-    // @GetMapping("/get-user/{id}")
-    // public Object getUser(@PathVariable Long id) {
-    //     Connection conn = new OracleConnector().getConnection();
-
-    //     try {
-    //         PreparedStatement query = conn
-    //                 .prepareStatement(String.format("SELECT * FROM users WHERE user_id = %d", id));
-    //         ResultSet result = query.executeQuery();
-
-    //         record User(String name, String email) {
-    //         }
-
-    //         if (result.next()) {
-    //             return new User(result.getString("first_name"), result.getString("email"));
-    //         }
-    //         return new WebError("User not found");
-    //     } catch (Throwable e) {
-    //         e.printStackTrace();
-    //         return new WebError("Failed to retrieve user");
-    //     } finally {
-    //         try {
-    //             if (conn != null) {
-    //                 conn.close();
-    //             }
-    //         } catch (SQLException e) {
-    //             e.printStackTrace();
-    //         }
-    //     }
-    // }
-
 }

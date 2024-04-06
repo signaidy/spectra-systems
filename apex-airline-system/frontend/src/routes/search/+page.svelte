@@ -73,6 +73,7 @@
               destinationCity={$page.url.searchParams.get("destinationCity")}
               departureDate={$page.url.searchParams.get("returnDay")}
               type={$page.url.searchParams.get("type")}
+              isScaleFlight={flights.indexOf(flight) === -1}
             />
           {:else}
             <FlightCard
