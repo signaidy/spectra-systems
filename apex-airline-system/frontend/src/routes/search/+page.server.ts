@@ -12,6 +12,10 @@ export function load({ locals, url }) {
 
     const result = await response.json();
 
+    if (!response.ok) { 
+      return []; 
+    }
+
     function assignChildren(commentaries: Commentary[]): Commentary[] {
       const commentariesById: { [key: number]: Commentary } = {};
 
@@ -42,7 +46,11 @@ export function load({ locals, url }) {
       flight.commentaries = arrangedCommentaries;
     });
 
-    return result;
+    if(!response.ok){
+      return [];
+    } else{
+      return result ;
+    }
   }
 
   async function getCities() {
@@ -63,7 +71,6 @@ export function load({ locals, url }) {
     );
 
     const result = await response.json();
-
     console.log(result); 
 
     if (!response.ok) { 

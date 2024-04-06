@@ -9,6 +9,8 @@
   export let form;
   export let isScaleFlight;
 
+  console.log(flight); 
+
   let f1 = $page.url.searchParams.get("f1");
   let c1 = $page.url.searchParams.get("c1");
   let type =  $page.url.searchParams.get("type");
