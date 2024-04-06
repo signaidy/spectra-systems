@@ -664,6 +664,17 @@ export async function disableHotel(prevState: any, formData: FormData) {
     const database = client.db(process.env.DB_NAME);
     const hotels = database.collection("hotels");
     const reservations = database.collection("reservations");
+    const users = database.collection("users");
+
+    const hotel = await hotels.findOne({
+      _id: new ObjectId(rawFormData.hotelId as string),
+    });
+
+    if (!hotel) {
+      return {
+        error: "Hotel not found.",
+      };
+    }
 
     await hotels.updateOne(
       { _id: new ObjectId(rawFormData.hotelId as string) },
@@ -677,6 +688,34 @@ export async function disableHotel(prevState: any, formData: FormData) {
       },
       { $set: { state: "disabled" } }
     );
+
+    const hotelReservations = reservations.find({
+      hotelId: new ObjectId(rawFormData.hotelId as string),
+      state: { $nin: ["manuallyDisabled"] },
+    });
+
+    for await (const reservation of hotelReservations) {
+      const user = await users.findOne({
+        _id: reservation.userId,
+      });
+
+      if (!user) {
+        continue;
+      }
+
+      transporter.sendMail({
+        from: "MS_zoX6hx@trial-ynrw7gyqe7n42k8e.mlsender.net",
+        to: user.email,
+        subject: `Your reservation on ${hotel.name} has been disabled`,
+        text: `Hello ${
+          user.firstName + " " + user.lastName
+        }, we are sending this message to inform you that your reservation on hotel ${
+          hotel.name
+        } from ${reservation.checkin} to ${
+          reservation.checkout
+        } has been disabled.`,
+      });
+    }
   } catch (e) {
     console.log(e);
     return {
