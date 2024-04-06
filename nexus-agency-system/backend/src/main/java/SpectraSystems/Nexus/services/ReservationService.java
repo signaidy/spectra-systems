@@ -57,6 +57,17 @@ public class ReservationService {
         }
     }
 
+    public void cancelReservationsById(Long id) {
+        Optional<Reservation> optionalReservation  = getReservationById(id);
+        if (optionalReservation.isPresent()) {
+            Reservation reservation = optionalReservation.get();
+            reservation.setState("cancelled");
+            reservationRepository.save(reservation);
+        } else {
+            throw new RuntimeException("Reservation was not found");
+        }
+    }
+
     public Reservation updateReservation(Long id, Reservation reservationDetails) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found with id: " + id));

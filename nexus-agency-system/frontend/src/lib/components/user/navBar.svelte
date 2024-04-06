@@ -9,6 +9,7 @@
     WalletCards,
     AreaChart,
     LogOut,
+    Plane
   } from "lucide-svelte";
 
   export let user: User;
@@ -22,8 +23,14 @@
     },
     {
       value: "flights",
-      label: "Flights + Hotels",
+      label: "Flights",
       href: "/user/flights",
+      icon: Plane,
+    },
+    {
+      value: "hotels",
+      label: "Hotels",
+      href: "/user/hotels",
       icon: BedDouble,
     },
   ];
@@ -42,16 +49,16 @@
       icon: Bolt,
     },
     {
-      value: "purchase-logs",
-      label: "Purchase Logs",
-      href: "/user/purchase-logs",
-      icon: WalletCards,
+      value: "flightAdmin",
+      label: "Administrate Flights",
+      href: "/user/flightAdmin",
+      icon: Plane,
     },
     {
-      value: "analytics",
-      label: "Analytics",
-      href: "/user/analytics",
-      icon: AreaChart,
+      value: "hotelAdmin",
+      label: "Administrate Reservations",
+      href: "/user/hotelAdmin",
+      icon: BedDouble,
     },
   ];
 </script>

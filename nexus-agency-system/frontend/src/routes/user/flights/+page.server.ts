@@ -1,6 +1,20 @@
-export function load({ locals, cookies }) {
+export function load({ locals, url }) {
+  const userId = locals.user.userId;
+  const user = locals.user;
+  async function getUserFlights() {
+    const response = await fetch(
+      `http://localhost:42069/nexus/flights`,
+      {
+        method: "GET"
+      }
+    );
+    const result = await response.json();
+    console.log(result);
+    return result;
+  }
+
   return {
-    user: locals.user,
-    token: cookies.get("token")
+    user: user,
+    flights: getUserFlights(),
   };
 }

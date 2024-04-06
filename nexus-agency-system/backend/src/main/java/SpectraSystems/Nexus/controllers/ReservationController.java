@@ -126,10 +126,15 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/cancel/{hotelId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/cancelHotel/{hotelId}")
     public ResponseEntity<Void> cancelReservationsByHotelId(@PathVariable String hotelId) {
         reservationService.cancelReservationsByHotelId(hotelId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Void> cancelReservationById(@PathVariable Long id) {
+        reservationService.cancelReservationsById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

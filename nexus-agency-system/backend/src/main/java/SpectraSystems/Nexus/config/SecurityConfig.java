@@ -50,8 +50,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.PUT,  "/nexus/flights/deactivateTicket/{id}", "/nexus/flights/deactivate/{flightNumber}", "/nexus/reservations/cancel/{id}", "/nexus/reservations/cancelHotel/{hotelId}" ).permitAll()
                 .requestMatchers(HttpMethod.POST, "/nexus/auth/signup", "/nexus/auth/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/nexus/flights", "/nexus/flights/{id}", "/nexus/reservations", "/nexus/reservations/{id}", "/nexus/aboutus", "/nexus/aboutus/{id}", "/nexus/flights/avianca/one-way-flights", "/nexus/flights/avianca/round-trip-flights" , "/nexus/flights/avianca/cities", "/nexus/reservations/hotelsearch", "/nexus/reservations/cities", "/nexus/reservations/hotelsearch/{id}", "/nexus/flights/user/{userId}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/nexus/flights", "/nexus/flights/{id}", "/nexus/reservations", "/nexus/reservations/{id}", "/nexus/reservations/user/{userId}", "/nexus/aboutus", "/nexus/aboutus/{id}", "/nexus/flights/avianca/one-way-flights", "/nexus/flights/avianca/round-trip-flights" , "/nexus/flights/avianca/cities", "/nexus/reservations/hotelsearch", "/nexus/reservations/cities", "/nexus/reservations/hotelsearch/{id}", "/nexus/flights/user/{userId}").permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
