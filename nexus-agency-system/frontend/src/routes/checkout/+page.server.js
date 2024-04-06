@@ -45,6 +45,40 @@ export const actions = {
     });
     const result = await response.json();
     if(!result.ok){
+      if (scale != null) {
+        const flightId = formData.get("Sflight_id");
+        let departureDate = formData.get("SdepartureDate");
+        const departureLocation = formData.get("SdepartureLocation");
+        const arrivalLocation = formData.get("SarrivalLocation");
+        const price = formData.get("Sprice");
+        const rating = formData.get("Srating");
+        // Format departureDate to 'yyyy-MM-dd'
+        departureDate = departureDate.split(" ")[0];
+        const body = {
+          user_id: userId,
+          flight_id: flightId,
+          type: type,
+          state: state,
+          userId: userId,
+          flightId: flightId,
+          departureDate: departureDate,
+          departureLocation: departureLocation,
+          arrivalLocation: arrivalLocation,
+          price: price,
+          returnDate: null, // Assuming returnDate is always null for this case
+          rating: rating
+        };
+        console.log(body);
+        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(body),
+        });
+        const result = await response.json();
+      }
       if (roundTrip != null) {
         const flightId = formData.get("Rflight_id");
         let departureDate = formData.get("RdepartureDate");
@@ -112,40 +146,6 @@ export const actions = {
           });
           const result = await response.json();
         }
-      }
-      if (scale != null) {
-        const flightId = formData.get("Sflight_id");
-        let departureDate = formData.get("SdepartureDate");
-        const departureLocation = formData.get("SdepartureLocation");
-        const arrivalLocation = formData.get("SarrivalLocation");
-        const price = formData.get("Sprice");
-        const rating = formData.get("Srating");
-        // Format departureDate to 'yyyy-MM-dd'
-        departureDate = departureDate.split(" ")[0];
-        const body = {
-          user_id: userId,
-          flight_id: flightId,
-          type: type,
-          state: state,
-          userId: userId,
-          flightId: flightId,
-          departureDate: departureDate,
-          departureLocation: departureLocation,
-          arrivalLocation: arrivalLocation,
-          price: price,
-          returnDate: null, // Assuming returnDate is always null for this case
-          rating: rating
-        };
-        console.log(body);
-        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify(body),
-        });
-        const result = await response.json();
       }
       return {
           message: "Thanks for your purchase!"

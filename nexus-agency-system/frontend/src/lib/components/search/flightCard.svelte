@@ -173,6 +173,7 @@
             <hr class="grow" />
           </div>
           <div class="text-muted-foreground self-center">{flight.scale.originCityName}</div>
+          <div class="text-muted-foreground self-center">Round Trip</div>
         </div>
         <div class="flex flex-col">
           <div class="text-3xl font-bold">{flight.arrivalDate.split(" ")[1]}</div>

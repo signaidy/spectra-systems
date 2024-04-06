@@ -1,4 +1,6 @@
 package SpectraSystems.Nexus.controllers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
@@ -28,6 +31,7 @@ public class FlightController {
 
     private final FlightService flightService;
     private final FlightRepository flightRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
     @Autowired
     public FlightController(FlightRepository flightRepository, FlightService flightService) {
@@ -93,8 +97,7 @@ public class FlightController {
         // Add return flights to each outbound flight
         for (externalFlight outboundFlight : outboundFlights) {
             for (externalFlight returnFlight : returnFlights) {
-                if (outboundFlight.getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
-                        outboundFlight.getOriginCityId().equals(returnFlight.getDestinationCityId())) {
+                if (matchFlights(outboundFlight, returnFlight)) {
                     outboundFlight.setReturnFlight(returnFlight);
                     break;
                 }
@@ -102,6 +105,20 @@ public class FlightController {
         }
 
         return new ResponseEntity<>(outboundFlights, HttpStatus.OK);
+    }
+
+    // Method to check if flights match based on origin, destination cities, and scales
+    private boolean matchFlights(externalFlight outboundFlight, externalFlight returnFlight) {
+        if (outboundFlight.getScale() != null && returnFlight.getScale() != null) {
+            return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
+                    outboundFlight.getScale().getOriginCityId().equals(returnFlight.getDestinationCityId());
+        } else if (outboundFlight.getScale() != null) {
+            return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getDestinationCityId()) &&
+                    outboundFlight.getScale().getOriginCityId().equals(returnFlight.getOriginCityId());
+        } else {
+            return outboundFlight.getDestinationCityId().equals(returnFlight.getDestinationCityId()) &&
+                    outboundFlight.getOriginCityId().equals(returnFlight.getOriginCityId());
+        }
     }
 
     @GetMapping("/avianca/cities")

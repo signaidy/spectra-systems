@@ -325,9 +325,15 @@
                 <div class="w-32">
                   <span class="text-gray-600 font-semibold">Going to: </span>
                 </div>
+                {#if flight?.scale != null}
+                  <div class="flex-grow pl-3">
+                    <span>{flight?.scale.destinationCityName}</span>
+                  </div>
+                {:else}
                 <div class="flex-grow pl-3">
-                  <span>{flight?.scale.destinationCityName}</span>
+                  <span>{flight?.destinationCityName}</span>
                 </div>
+                {/if}
                 {#if flight?.returnFlight != null}
                   <div class="flex-grow pl-3">
                     <span>Round Trip</span>
