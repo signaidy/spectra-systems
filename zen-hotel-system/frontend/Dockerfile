@@ -10,6 +10,15 @@ FROM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 
+ARG MONGODB_URI
+ENV MONGODB_URI=${MONGODB_URI}
+
+ARG JWT_SECRET
+ENV JWT_SECRET=${JWT_SECRET}
+
+ARG DB_NAME
+ENV DB_NAME=${DB_NAME}
+
 # Copy the rest of the source files into the image.
 COPY . .
 

@@ -10,6 +10,15 @@ FROM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 
+# ARG MONGODB_URI
+# ENV MONGODB_URI=${MONGODB_URI}
+
+# ARG JWT_SECRET
+# ENV JWT_SECRET=${JWT_SECRET}
+
+# ARG DB_NAME
+# ENV DB_NAME=${DB_NAME}
+
 # Download dependencies as a separate step to take adv antage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
