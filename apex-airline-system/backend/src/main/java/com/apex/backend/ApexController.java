@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Server;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -38,6 +39,7 @@ public class ApexController {
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
+    private final String NEXUS_API = "http://localhost:42069/nexus/flights/";
 
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -1131,6 +1133,10 @@ public class ApexController {
                             "UPDATE TICKETS SET State = 'canceled' WHERE FLIGHT_ID = %d",
                             flight_id));
             ticketquery.executeQuery();
+            // API call to nexus cancelation ticket
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
+            //End of API call
 
             return new WebSuccess("Flight and tickets canceled");
         } catch (Throwable e) {
@@ -1157,7 +1163,10 @@ public class ApexController {
                             "UPDATE TICKETS SET User_ID = NULL WHERE TICKET_ID = %d",
                             ticket_id));
             query.executeQuery();
-
+            // API call to nexus cancelation ticket
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
+            //End of API call
             return new WebSuccess("User Ticket canceled");
         } catch (Throwable e) {
             e.printStackTrace();

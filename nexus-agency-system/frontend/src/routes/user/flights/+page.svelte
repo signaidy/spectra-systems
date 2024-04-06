@@ -5,7 +5,6 @@
   
     export let data;
     let userid = data.user.userId
-    const userId = window.localStorage.getItem("user_id");
     let flights = data.flights;
   </script>
   

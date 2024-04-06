@@ -141,7 +141,6 @@ public class FlightController {
     }
 
     @PutMapping("/deactivate/{flightNumber}")
-    @PreAuthorize("hasRole('ADMIN')") // Assuming only admins can deactivate flights
     public ResponseEntity<List<Flight>> deactivateFlightsByFlightNumber(@PathVariable String flightNumber) {
         List<Flight> flights = flightService.getFlightsByFlightNumber(flightNumber);
         if (!flights.isEmpty()) {
@@ -156,7 +155,6 @@ public class FlightController {
     }
 
     @PutMapping("/deactivateTicket/{id}")
-    @PreAuthorize("hasRole('ADMIN')") // Assuming only admins can deactivate flights
     public ResponseEntity<List<Flight>> deactivateFlightsById(@PathVariable Long id) {
         Optional<Flight> optionalFlights = flightService.getFlightById(id);
         if(optionalFlights.isPresent()){
