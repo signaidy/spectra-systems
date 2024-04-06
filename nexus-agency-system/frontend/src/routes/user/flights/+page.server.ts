@@ -3,7 +3,7 @@ export function load({ locals, url }) {
   const user = locals.user;
   async function getUserFlights() {
     const response = await fetch(
-      `http://localhost:42069/nexus/flights/user/${userId}`,
+      `http://localhost:42069/nexus/flights`,
       {
         method: "GET"
       }

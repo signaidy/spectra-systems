@@ -13,21 +13,25 @@ import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.FlightPurchaseRequest;
 import SpectraSystems.Nexus.models.externalFlight;
+import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.services.FlightService;
 
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/nexus/flights")
 public class FlightController {
 
     private final FlightService flightService;
+    private final FlightRepository flightRepository;
 
     @Autowired
-    public FlightController(FlightService flightService) {
+    public FlightController(FlightRepository flightRepository, FlightService flightService) {
+        this.flightRepository = flightRepository;
         this.flightService = flightService;
     }
 
@@ -147,6 +151,20 @@ public class FlightController {
             }
             return new ResponseEntity<>(flights, HttpStatus.OK);
         } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/deactivateTicket/{id}")
+    @PreAuthorize("hasRole('ADMIN')") // Assuming only admins can deactivate flights
+    public ResponseEntity<List<Flight>> deactivateFlightsById(@PathVariable Long id) {
+        Optional<Flight> optionalFlights = flightService.getFlightById(id);
+        if(optionalFlights.isPresent()){
+            Flight flight = optionalFlights.get();
+            flight.setState("cancelled");
+            flightRepository.save(flight);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

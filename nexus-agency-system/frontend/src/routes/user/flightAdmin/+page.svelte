@@ -1,7 +1,8 @@
 <script>
     import { onMount } from "svelte";
-    import { Banknote } from 'lucide-svelte';
+    import { Banknote, X } from 'lucide-svelte';
     import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png"; 
+    import Button from "$lib/components/ui/button/button.svelte";
   
     export let data;
     let userid = data.user.userId
@@ -15,7 +16,7 @@
       
     {:then flights} 
       {#if flights.length>0}
-        {#each flights as {id, type, state, flightNumber, departureLocation, arrivalLocation, departureDate, purchaseDate }}
+        {#each flights as {id, type, state, flightNumber, departureLocation, arrivalLocation, departureDate, purchaseDate, user }}
           <div class="p-10">
             <div
               class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
@@ -25,12 +26,34 @@
                 <p class="ml-1 font-normal text-gray-500">{flightNumber}</p>
                 <h1 class="ml-1 uppercase font-bold text-black-500">Ticket</h1>
                 <p class="ml-1 font-normal text-gray-500">{id}</p>
+                <h1 class="ml-1 uppercase font-bold text-black-500">User</h1>
+                <p class="ml-1 font-normal text-gray-500">{user}</p>
                 {#if state == "active"}
                 <h1 class="text-green-700 ml-auto">Active</h1> 
+                <div class="flex flex-col gap-y-2">
+                  <form
+                    method="POST"
+                    action="?/cancelReservation"
+                    class="flex gap-x-2"
+                  >
+                    <input type="hidden" name="id" value={id} />
+                    <Button type="submit"><X class="h-4 w-4" /></Button>
+                  </form>
+                </div>
                 {:else if  state == "cancelled"}
                 <p class="text-red-700 ml-auto">Canceled</p>
                 {:else}
                 <p class="text-red-700 ml-auto">a chikita</p>
+                <div class="flex flex-col gap-y-2">
+                  <form
+                    method="POST"
+                    action="?/cancelReservation"
+                    class="flex gap-x-2"
+                  >
+                    <input type="hidden" name="id" value={id} />
+                    <Button type="submit"><X class="h-4 w-4" /></Button>
+                  </form>
+                </div>
                 {/if} 
               </div>
               <div class="mt-2 flex justify-start bg-white p-2">
