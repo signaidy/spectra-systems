@@ -15,6 +15,7 @@ services:
         MONGODB_URI:
         JWT_SECRET:
         DB_NAME:
+        EMAIL_CREDENTIALS:
     ports:
       - 3000:3000
   marriot-services:

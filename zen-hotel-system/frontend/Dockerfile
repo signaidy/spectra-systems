@@ -19,6 +19,9 @@ ENV JWT_SECRET=${JWT_SECRET}
 ARG DB_NAME
 ENV DB_NAME=${DB_NAME}
 
+ARG EMAIL_CREDENTIALS
+ENV EMAIL_CREDENTIALS=${EMAIL_CREDENTIALS}
+
 # Copy the rest of the source files into the image.
 COPY . .
 
