@@ -1,42 +1,36 @@
 <script>
-    import { onMount } from "svelte";
-    import { Banknote } from 'lucide-svelte';
-    import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png"; 
-  
-    export let data;
-    let userid = data.user.userId
-  
-    const userId = window.localStorage.getItem("user_id");
-  
-    let userReservations = [];
-  
-    onMount(async () => {
-    fetch(`http://localhost:42069/nexus/reservations/user/${userid}`)
-    .then(response => response.json())
-    .then(userfdata => {
-      userReservations = userfdata
-    })
-    });
-  
-  </script>
-  
-  <h1 class="text-xl font-bold mb-8">Booked Hotel Rooms</h1>
-  <div>
-    {#if userReservations.length>0}
-      {#each userReservations as {ticket_id, type, state, flight_id, origin, destination, departure_date, arrival_date }}
+  import { onMount } from "svelte";
+  import { Banknote } from 'lucide-svelte';
+  import zenlogo from "$lib/assets/zen-logo.png"; 
+
+  export let data;
+  let userid = data.user.userId
+  const userId = window.localStorage.getItem("user_id");
+  let flights = data.reservations;
+</script>
+
+<h1 class="text-xl font-bold mb-8">Booked Reservations</h1>
+<div class="max-w-screen-lg mx-auto">
+  {#await data.reservations}
+    
+  {:then flights} 
+    {#if flights.length>0}
+      {#each flights as {reservationNumber, roomType, state, hotelId, location, bedSize, dateStart, dateEnd, hotel }}
         <div class="p-10">
           <div
             class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
           >
             <div class="flex flex-row items-baseline flex-nowrap bg-gray-100 p-2">
-              <h1 class="ml-1 uppercase font-bold text-black-500">Flight</h1>
-              <p class="ml-1 font-normal text-gray-500">{flight_id}</p>
+              <h1 class="ml-1 uppercase font-bold text-black-500">Hotel</h1>
+              <p class="ml-1 font-normal text-gray-500">{hotel}</p>
               <h1 class="ml-1 uppercase font-bold text-black-500">Ticket</h1>
-              <p class="ml-1 font-normal text-gray-500">{ticket_id}</p>
+              <p class="ml-1 font-normal text-gray-500">{reservationNumber}</p>
               {#if state == "active"}
-              <h1 class="text-green-700 statef">Active</h1> 
+              <h1 class="text-green-700 ml-auto">Active</h1> 
+              {:else if  state == "cancelled"}
+              <p class="text-red-700 ml-auto">Canceled</p>
               {:else}
-              <p class="text-red-700 statef">Canceled</p>   
+              <p class="text-red-700 ml-auto">a chikita</p>
               {/if} 
             </div>
             <div class="mt-2 flex justify-start bg-white p-2">
@@ -44,39 +38,35 @@
                 class="flex mx-2 ml-6 h8 px-2 flex-row items-baseline rounded-full bg-gray-100 p-1"
               >
                 <div class="reduct"><Banknote/></div>
-                {#if type == 1}
-                <p class="font-normal text-sm ml-1 text-gray-500">First class</p>
-                {:else}
-                <p class="font-normal text-sm ml-1 text-gray-500">Economy</p>
-                {/if}
+                <p class="font-normal text-sm ml-1 text-gray-500">{roomType}</p>
               </div>
             </div>
             <div class="mt-2 flex sm:flex-row mx-6 sm:justify-between flex-wrap">
               <div class="flex flex-row place-items-center p-2">
                 <img
-                  alt="Qatar Airways"
-                  class="w-20 h-20"
-                  src={aviancalogo}
+                  alt={hotel}
+                  class="w-20 h-10"
+                  src={zenlogo}
                   style="opacity: 1; transform-origin: 0% 50% 0px; transform: none;"
                 />
                 <div class="flex flex-col ml-2 mx-2">
                   <!-- <p class="text-s text-black-500 font-bold">Avianca</p> -->
-                  <p class="text-xs text-gray-500">Departure date</p><p>{departure_date}</p>
-                  <p class="text-xs text-gray-500">Arrival date</p><p>{arrival_date}</p>
+                  <p class="text-xs text-gray-500">Reservation Start Date</p><p>{dateStart}</p>
+                  <p class="text-xs text-gray-500">Reservation End Date</p><p>{dateEnd}</p>
                 </div>
               </div>
   
               <div class="flex flex-col p-2">
                 <p class="text-black-500">
-                  <span class="font-bold">Origin:</span>
+                  <span class="font-bold">Location:</span>
                 </p>
-                <p class="text-gray-500">{origin}</p>
+                <p class="text-gray-500">{location}</p>
               </div>
               <div class="flex flex-col flex-wrap p-2">
                 <p class="text-black-500">
-                  <span class="font-bold">Destination</span>
+                  <span class="font-bold">Room Size:</span>
                 </p>
-                <p class="text-gray-500">{destination}</p>
+                <p class="text-gray-500">{bedSize}</p>
               </div>
   
             </div>
@@ -86,21 +76,22 @@
       {/each}
       {:else}
       <div>
-        <p class="text-gray-500">No flights book yet</p>
+        <p class="text-gray-500">No Hotel reservations booked yet</p>
       </div>
-      {/if}
-  </div>
-  
-  
-  <style>
-    .reduct{
-      height: 17px;
-      width: 25px;
-      color: grey;
-    }
-  
-    .statef {
-      margin-left: 920px;
-    }
-  
-  </style>
+    {/if}
+  {/await}
+</div>
+
+
+<style>
+  .reduct{
+    height: 17px;
+    width: 25px;
+    color: grey;
+  }
+
+  .statef {
+    margin-left: 920px;
+  }
+
+</style>

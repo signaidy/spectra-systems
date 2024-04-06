@@ -9,6 +9,7 @@
     WalletCards,
     AreaChart,
     LogOut,
+    Plane
   } from "lucide-svelte";
 
   export let user: User;
@@ -22,8 +23,14 @@
     },
     {
       value: "flights",
-      label: "Flights + Hotels",
+      label: "Flights",
       href: "/user/flights",
+      icon: Plane,
+    },
+    {
+      value: "hotels",
+      label: "Hotels",
+      href: "/user/hotels",
       icon: BedDouble,
     },
   ];
