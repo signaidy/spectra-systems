@@ -8,13 +8,6 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  avianca-frontend:
-    build:
-      context: ../frontend
-    ports:
-      - 3002:3000
-    env_file:
-      - .env
   avianca-backend:
     build:
       context: ../backend
@@ -22,6 +15,15 @@ services:
       - 3003:8080
     env_file:
       - .env
+  avianca-frontend:
+    build:
+      context: ../frontend
+    ports:
+      - 3002:3000
+    env_file:
+      - .env
+    depends_on:
+      - avianca-backend
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

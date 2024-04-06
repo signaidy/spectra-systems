@@ -1,10 +1,11 @@
 import { fail } from "@sveltejs/kit";
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 export function load({ locals, url }) {
   async function getOneWayFlights() {
     console.log(url.searchParams.toString()); 
     const response = await fetch(
-      `http://localhost:8080/get-one-way-flights?${url.searchParams.toString()}`,
+      `${PUBLIC_BASE_URL}/get-one-way-flights?${url.searchParams.toString()}`,
       {
         method: "GET",
       }
@@ -54,7 +55,7 @@ export function load({ locals, url }) {
   }
 
   async function getCities() {
-    const response = await fetch("http://localhost:8080/get-cities", {
+    const response = await fetch(`${PUBLIC_BASE_URL}/get-cities`, {
       method: "GET",
     });
 
@@ -64,7 +65,7 @@ export function load({ locals, url }) {
 
   async function scaleFlights() {
     const response = await fetch(
-      `http://localhost:8080/scale-flights?${url.searchParams.toString()}`,
+      `${PUBLIC_BASE_URL}/scale-flights?${url.searchParams.toString()}`,
       {
         method: "GET",
       }
@@ -129,7 +130,7 @@ export const actions = {
   createCommentary: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8080/create-commentary", {
+      const response = await fetch(`${PUBLIC_BASE_URL}/create-commentary`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -157,7 +158,7 @@ export const actions = {
   createRating: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8080/create-rating", {
+      const response = await fetch(`${PUBLIC_BASE_URL}/create-rating`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

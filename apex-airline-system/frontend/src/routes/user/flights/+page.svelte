@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { Banknote } from 'lucide-svelte';
   import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png"; 
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data;
   let userid = data.user.userId
@@ -12,7 +13,7 @@
   console.log(userid); 
 
   onMount(async () => {
-  fetch(`http://localhost:8080/user_tickets/${userid}`)
+  fetch(`${PUBLIC_BASE_URL}/user_tickets/${userid}`)
   .then(response => response.json())
   .then(userfdata => {
     userflights = userfdata

@@ -1,6 +1,7 @@
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 export async function load({ fetch }) {
-    const response = await fetch("http://localhost:8080/header");
+    const response = await fetch(`${PUBLIC_BASE_URL}/header`);
     const head = await response.json();
     return {
        head,
@@ -11,7 +12,7 @@ export async function load({ fetch }) {
     default: async({request}) => {
         const formData = await request.formData(); 
 
-        const response = await fetch("http://localhost:8080/update-header", {
+        const response = await fetch(`${PUBLIC_BASE_URL}/update-header`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

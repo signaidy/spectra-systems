@@ -6,6 +6,7 @@
   import Roundflight from "$lib/components/search/roundflight.svelte";
   import { onMount } from "svelte";
   import { scale } from "svelte/transition";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data;
   export let form;
@@ -19,7 +20,7 @@
   
   onMount(async () => {
     const response = await fetch(
-      `http://localhost:8080/get-city/${destinationprintId}`
+      `${PUBLIC_BASE_URL}/get-city/${destinationprintId}`
     );
     const data = await response.json();
     destiantionprint = data.name;
@@ -27,7 +28,7 @@
 
   onMount(async () => {
     const response = await fetch(
-      `http://localhost:8080/get-city/${originprintId}`
+      `${PUBLIC_BASE_URL}/get-city/${originprintId}`
     );
     const data = await response.json();
     originprint = data.name;
@@ -73,6 +74,7 @@
               destinationCity={$page.url.searchParams.get("destinationCity")}
               departureDate={$page.url.searchParams.get("returnDay")}
               type={$page.url.searchParams.get("type")}
+              isScaleFlight={flights.indexOf(flight) === -1}
             />
           {:else}
             <FlightCard

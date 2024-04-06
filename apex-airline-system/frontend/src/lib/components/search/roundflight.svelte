@@ -5,23 +5,52 @@
   export let flight: Flight;
   export let passengers: string | null;
   export let user: User;
-  export let phase: string | null; 
-  export let originCity: string | null; 
-  export let destinationCity: string | null; 
-  export let departureDate: string | null; 
-  export let type : string | null; 
+  export let phase: string | null;
+  export let originCity: string | null;
+  export let destinationCity: string | null;
+  export let departureDate: string | null;
+  export let type: string | null;
   export let form;
-
+  export let isScaleFlight;
   let f1 = $page.url.searchParams.get("f1");
   let c1 = $page.url.searchParams.get("c1");
 
+  let touristhref;
+  let businesshref;
 
+  $: {
+    touristhref = isScaleFlight
+      ? phase === "1"
+        ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2&f1=${flight.flightId}&c1=economy` 
+        : phase === "2" || phase === "3"
+          ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("originCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3&f1=${flight.flightId}&c1=economy` 
+          : phase === "4"
+            ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`
+            : ""
+      : phase === "1"
+        ? `/search?originCity=${String(destinationCity)}&destinationCity=${String(originCity)}&departureDay=${departureDate}&passengers=${passengers}&type=${type}&phase=4&f1=${flight.flightId}&c1=economy`
+        : phase === "4"
+          ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`
+          : "";
+
+    businesshref = isScaleFlight
+      ? phase === "1"
+        ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2&f1=${flight.flightId}&c1=premium` 
+        : phase === "2" || phase === "3"
+          ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3&f1=${flight.flightId}&c1=premium` 
+          : phase === "4"
+            ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`
+            : ""
+      : phase === "1"
+        ? `/search?originCity=${String(destinationCity)}&destinationCity=${String(originCity)}&departureDay=${departureDate}&passengers=${passengers}&type=${type}&phase=4&f1=${flight.flightId}&c1=premium`
+        : phase === "4"
+          ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`
+          : "";
+  }
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
-  <!-- Left Container -->
   <div class="flex flex-col gap-y-5 p-5">
-    <!-- Upper -->
     <div class="flex gap-x-3">
       <div class="flex flex-col">
         <div class="text-3xl font-bold">
@@ -42,10 +71,8 @@
         <div class="text-muted-foreground">{flight.destinationCityName}</div>
       </div>
     </div>
-    <!-- Lower -->
     <FlightCardModal {flight} {form} {user} />
   </div>
-  <!-- Right Container -->
   <div class="flex p-5 gap-x-5 rounded-r-lg bg-muted">
     {#if Number(flight.touristQuantity) < Number(passengers)}
       <div
@@ -59,23 +86,9 @@
           Not enough tickets available
         </div>
       </div>
-    {:else if phase == "1"}
-    <a
-    href={`/search?originCity=${destinationCity}&destinationCity=${originCity}&departureDay=${departureDate}&passengers=${passengers}&type=${type}&phase=2
-    &f1=${flight.flightId}&c1=economy`}
-    class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
-  >
-    <div class="text-sm text-muted-foreground">
-      <div>Tourist</div>
-      <div>{flight.touristQuantity} available</div>
-    </div>
-    <div class="text-3xl font-medium tracking-tighter">
-      {flight.touristPrice} $
-    </div>
-  </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`}
+        href={touristhref}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -87,6 +100,7 @@
         </div>
       </a>
     {/if}
+
     {#if Number(flight.businessQuantity) < Number(passengers)}
       <div
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
@@ -99,32 +113,18 @@
           Not enough tickets available
         </div>
       </div>
-    {:else if phase == "1"}
-      <a
-        href={`/search?originCity=${destinationCity}&destinationCity=${originCity}&departureDay=${departureDate}&passengers=${passengers}&type=${type}&phase=2
-        &f1=${flight.flightId}&c1=premium`}
-        class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
-      >
-        <div class="text-sm text-muted-foreground">
-          <div>Business</div>
-          <div>{flight.businessQuantity} available</div>
-        </div>
-        <div class="text-3xl font-medium tracking-tighter">
-          {flight.businessPrice} $
-        </div>
-      </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`}
+        href={businesshref}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
-        <div class="text-sm text-muted-foreground">
-          <div>Business</div>
-          <div>{flight.businessQuantity} available</div>
-        </div>
-        <div class="text-3xl font-medium tracking-tighter">
-          {flight.businessPrice} $
-        </div>
+      <div class="text-sm text-muted-foreground">
+        <div>Business</div>
+        <div>{flight.businessQuantity} available</div>
+      </div>
+      <div class="text-3xl font-medium tracking-tighter">
+        {flight.businessPrice} $
+      </div>
       </a>
     {/if}
   </div>

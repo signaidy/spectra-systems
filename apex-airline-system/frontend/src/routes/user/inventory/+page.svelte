@@ -4,11 +4,12 @@
   import { MoveRight } from "lucide-svelte";
   import { Gem } from "lucide-svelte";
   import { TicketPercent } from "lucide-svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   let inventory = [];
 
   onMount(async () => {
-    fetch("http://localhost:8080/inventory")
+    fetch(`${PUBLIC_BASE_URL}/inventory`)
       .then((response) => response.json())
       .then((data) => {
         inventory = data;

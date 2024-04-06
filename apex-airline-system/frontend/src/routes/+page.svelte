@@ -3,12 +3,14 @@
   import FeaturedFlights from "$lib/components/home/featuredFlights.svelte";
   import Footer from "$lib/components/footer/footer.svelte";
   import { onMount } from "svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
+
   export let data;
 
   let background; 
 
   onMount(async () => {
-    fetch("http://localhost:8080/home")
+    fetch(`${PUBLIC_BASE_URL}/home`)
       .then((response) => response.json())
       .then((homeinformation) => {
         background = homeinformation.Background;
