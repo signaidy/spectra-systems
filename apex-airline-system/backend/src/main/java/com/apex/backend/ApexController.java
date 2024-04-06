@@ -1134,8 +1134,8 @@ public class ApexController {
                             flight_id));
             ticketquery.executeQuery();
             // API call to nexus cancelation ticket
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
+            // RestTemplate restTemplate = new RestTemplate();
+            // ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
             //End of API call
 
             return new WebSuccess("Flight and tickets canceled");
@@ -1164,8 +1164,8 @@ public class ApexController {
                             ticket_id));
             query.executeQuery();
             // API call to nexus cancelation ticket
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
+            // RestTemplate restTemplate = new RestTemplate();
+            // ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
             //End of API call
             return new WebSuccess("User Ticket canceled");
         } catch (Throwable e) {
