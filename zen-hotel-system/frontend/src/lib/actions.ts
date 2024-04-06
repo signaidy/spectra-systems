@@ -718,12 +718,12 @@ export async function disableHotel(prevState: any, formData: FormData) {
     }
 
     // Travel Agency API
-    await fetch(
-      `localhost:42069/nexus/reservations/cancelHotel/${rawFormData.hotelId})`,
-      {
-        method: "PUT",
-      }
-    );
+    // await fetch(
+    //   `localhost:42069/nexus/reservations/cancelHotel/${rawFormData.hotelId})`,
+    //   {
+    //     method: "PUT",
+    //   }
+    // );
   } catch (e) {
     console.log(e);
     return {
@@ -848,12 +848,12 @@ export async function disableReservation(prevState: any, formData: FormData) {
     );
 
     // Travel Agency API
-    await fetch(
-      `localhost:42069/nexus/reservations/cancel/${rawFormData.reservationId})`,
-      {
-        method: "PUT",
-      }
-    );
+    // await fetch(
+    //   `localhost:42069/nexus/reservations/cancel/${rawFormData.reservationId})`,
+    //   {
+    //     method: "PUT",
+    //   }
+    // );
   } catch (e) {
     console.log(e);
     return {
