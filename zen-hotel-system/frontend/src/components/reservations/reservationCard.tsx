@@ -1,10 +1,17 @@
 import Link from "next/link";
 // Components
 import { HotelInventoryCard } from "@/components/hotels/hotelInventoryCard";
+import { ModifyReservationStatus } from "@/components/reservations/modifyReservationStatus";
 // UI Components
 import { Button } from "@/components/ui/button";
 
-export function ReservationCard({ reservation }: { reservation: Reservation }) {
+export function ReservationCard({
+  reservation,
+  admin = false,
+}: {
+  reservation: Reservation;
+  admin?: boolean;
+}) {
   return (
     <div className="rounded-lg border">
       <div className="flex p-3 gap-x-5">
@@ -15,10 +22,21 @@ export function ReservationCard({ reservation }: { reservation: Reservation }) {
         <Button asChild>
           <Link href={`/reservation/${reservation._id}`}>Generate PDF</Link>
         </Button>
+        {admin && (
+          <ModifyReservationStatus
+            reservationId={reservation._id}
+            status={reservation.state}
+          />
+        )}
       </div>
       {reservation.state === "disabled" && (
         <div className="text-red-500 p-3">
           Reservation is currently disabled due to hotel deactivation.
+        </div>
+      )}
+      {reservation.state === "manuallyDisabled" && (
+        <div className="text-red-500 p-3">
+          Reservation has been manually disabled.
         </div>
       )}
       <div className="grid grid-cols-3 p-3 gap-y-5">

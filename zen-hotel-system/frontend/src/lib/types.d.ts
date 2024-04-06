@@ -126,7 +126,7 @@ declare global {
     guests: number;
     stayDays: number;
     totalPrice: number;
-    state: "active" | "disabled" | "completed";
+    state: "active" | "disabled" | "completed" | "manuallyDisabled";
     madeAt: string;
     hotel: Hotel;
     user: User;

@@ -1,15 +1,15 @@
 import { Suspense } from "react";
 // Components
-import { UserReservations } from "@/components/reservations/userReservations";
 import { ReservationCardSkeleton } from "@/components/skeletons/reservationCardSkeleton";
+import { AdminReservations } from "@/components/reservations/adminReservations";
 import { SectionTitle } from "@/components/user/sectionTitle";
 
-export default function ReservationsHome() {
+export default async function ReservationsAdministrationHome() {
   return (
     <>
       <SectionTitle
-        title="My Reservations"
-        description="View Your History of Past and Current Reservations"
+        title="Reservations Administration"
+        description="Visualize and Manage Reservations Information"
       />
       <Suspense
         fallback={
@@ -23,7 +23,7 @@ export default function ReservationsHome() {
         }
       >
         <div className="flex flex-col gap-y-3 mb-8 mr-8">
-          <UserReservations />
+          <AdminReservations />
         </div>
       </Suspense>
     </>

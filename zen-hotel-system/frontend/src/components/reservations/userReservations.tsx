@@ -6,7 +6,7 @@ import { ReservationCard } from "@/components/reservations/reservationCard";
 // JSON Web Token Utilities
 import * as jose from "jose";
 
-export async function Reservations() {
+export async function UserReservations() {
   const token = cookies().get("token");
 
   const { payload }: { payload: User } = await jose.jwtVerify(

@@ -31,6 +31,11 @@ export default function AdministrationHome() {
       description: "Manage and Configure Hotel Locations",
       href: "/administration/locations",
     },
+    {
+      name: "Reservations",
+      description: "Visualize and Manage Reservations Information",
+      href: "/administration/reservations",
+    }
   ];
 
   return (
