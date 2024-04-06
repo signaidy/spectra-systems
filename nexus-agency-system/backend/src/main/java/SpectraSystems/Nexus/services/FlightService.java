@@ -118,29 +118,74 @@ public class FlightService {
         // Get flights from the other backend
         externalFlight[] externalFlights = responseEntity.getBody();
         
+        
+
+        builder = UriComponentsBuilder.fromUriString("http://localhost:8080/scale-flights")
+                .queryParam("originCity", originCity)
+                .queryParam("destinationCity", destinationCity);
+
+        responseEntity = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                null,
+                externalFlight[].class
+        );
+
+        // Get scale flights from the other backend
+        externalFlight[] scaleFlights = responseEntity.getBody();
+
+        // For each scale flight, fetch corresponding flights to final destination
+        for (externalFlight scaleFlight : scaleFlights) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDepartureDay = dateFormat.format(scaleFlight.getArrivalDate());
+            builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
+                    .queryParam("originCity", scaleFlight.getDestinationCityId())
+                    .queryParam("destinationCity", destinationCity)
+                    .queryParam("departureDay", formattedDepartureDay)
+                    .queryParam("passengers", passengers);
+
+            ResponseEntity<externalFlight[]> secondaryResponseEntity = restTemplate.exchange(
+                    builder.toUriString(),
+                    HttpMethod.GET,
+                    null,
+                    externalFlight[].class
+            );
+
+            externalFlight[] secondaryFlights = secondaryResponseEntity.getBody();
+
+            if (secondaryFlights != null && secondaryFlights.length > 0) {
+                // Add the first flight from the secondaryFlights array to the scaleFlight
+                scaleFlight.setScale(secondaryFlights[0]);
+            }
+        }
+
+        // Merge regular and scale flights
+        List<externalFlight> allFlights = new ArrayList<>();
+        allFlights.addAll(Arrays.asList(externalFlights));
+        allFlights.addAll(Arrays.asList(scaleFlights));
+
         // Embed comments from database
-        for (externalFlight flight : externalFlights) {
+        for (externalFlight flight : allFlights) {
             List<Comment> comment = commentService.getCommentsByFlightId(flight.getFlightId());
             if (comment.isEmpty()) {
-                // Create an empty comments array if there are no comments
                 flight.setCommentaries(new ArrayList<>());
             } else {
                 flight.setCommentaries(comment);
             }
         }
 
-        return Arrays.asList(externalFlights);
+        return allFlights;
     }
 
     public List<City> getAllCitiesFromOtherBackend() {
         // Make a request to the other backend to get cities
         ResponseEntity<List<City>> responseEntity = restTemplate.exchange(
-        "http://localhost:8080/get-cities",
-        HttpMethod.GET,
-        null,
-        new ParameterizedTypeReference<List<City>>() {}
-    );
-    return responseEntity.getBody();
+            "http://localhost:8080/get-cities",
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<City>>() {}
+        );
+        return responseEntity.getBody();
     }
 
     public void purchaseFlight(int amount, String method, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {

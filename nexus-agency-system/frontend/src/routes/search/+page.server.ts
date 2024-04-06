@@ -13,6 +13,18 @@ export function load({ locals, url }) {
     return result;
   }
 
+  async function getRoundTripFlights() {
+    const response = await fetch(
+      `http://localhost:42069/nexus/flights/avianca/round-trip-flights?${url.searchParams.toString()}`,
+      {
+        method: "GET"
+      }
+    );
+
+    const result = await response.json();
+    return result;
+  }
+
   async function getCities() {
     const response = await fetch("http://localhost:42069/nexus/flights/avianca/cities", {
       method: "GET",
@@ -22,12 +34,22 @@ export function load({ locals, url }) {
     return result;
   }
 
+  let flightsFunction;
+  const type = url.searchParams.get('type');
+  
+  if (type === 'round-trip') {
+    flightsFunction = getRoundTripFlights();
+  } else {
+    flightsFunction = getOneWayFlights();
+  }
+
   return {
     user: locals.user,
     cities: getCities(),
-    flights: getOneWayFlights(),
+    flights: flightsFunction,
   };
 }
+
 
 export const actions = {
   createCommentary: async ({ request, cookies, locals }) => {

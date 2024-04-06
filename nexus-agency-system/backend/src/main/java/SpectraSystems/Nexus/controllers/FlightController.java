@@ -70,6 +70,36 @@ public class FlightController {
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
+    @GetMapping("/avianca/round-trip-flights")
+    public ResponseEntity<List<externalFlight>> getRoundTripFlights(
+            @RequestParam(value = "originCity") Long originCityId,
+            @RequestParam(value = "destinationCity") Long destinationCityId,
+            @RequestParam(value = "departureDay") String departureDay,
+            @RequestParam(value = "returnDay") String returnDay,
+            @RequestParam(value = "passengers") int passengers
+    ) {
+        // Get outbound flights
+        List<externalFlight> outboundFlights = flightService.getOneWayFlightsFromOtherBackend(
+                originCityId, destinationCityId, departureDay, passengers);
+
+        // Get return flights (reverse origin and destination)
+        List<externalFlight> returnFlights = flightService.getOneWayFlightsFromOtherBackend(
+                destinationCityId, originCityId, returnDay, passengers);
+
+        // Add return flights to each outbound flight
+        for (externalFlight outboundFlight : outboundFlights) {
+            for (externalFlight returnFlight : returnFlights) {
+                if (outboundFlight.getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
+                        outboundFlight.getOriginCityId().equals(returnFlight.getDestinationCityId())) {
+                    outboundFlight.setReturnFlight(returnFlight);
+                    break;
+                }
+            }
+        }
+
+        return new ResponseEntity<>(outboundFlights, HttpStatus.OK);
+    }
+
     @GetMapping("/avianca/cities")
     public ResponseEntity<List<City>> getAllCitiesFromOtherBackend() {
         List<City> cities = flightService.getAllCitiesFromOtherBackend();
