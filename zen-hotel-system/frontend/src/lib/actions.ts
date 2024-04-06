@@ -744,10 +744,60 @@ export async function disableReservation(prevState: any, formData: FormData) {
 
     const database = client.db(process.env.DB_NAME);
     const reservations = database.collection("reservations");
+    const users = database.collection("users");
+    const hotels = database.collection("hotels");
+
+    const reservation = await reservations.findOne({
+      _id: new ObjectId(rawFormData.reservationId as string),
+    });
+
+    if (!reservation) {
+      return {
+        error: "Reservation not found.",
+      };
+    }
+
+    const user = await users.findOne({
+      _id: reservation.userId,
+    });
+
+    if (!user) {
+      return {
+        error: "User not found.",
+      };
+    }
+
+    const hotel = await hotels.findOne({
+      _id: reservation.hotelId,
+    });
+
+    if (!hotel) {
+      return {
+        error: "Hotel not found.",
+      };
+    }
 
     await reservations.updateOne(
       { _id: new ObjectId(rawFormData.reservationId as string) },
       { $set: { state: "manuallyDisabled" } }
+    );
+
+    await transporter.sendMail(
+      {
+        from: "MS_zoX6hx@trial-ynrw7gyqe7n42k8e.mlsender.net",
+        to: user.email,
+        subject: `Your reservation on ${hotel.name} has been disabled`,
+        text: `Hello ${
+          user.firstName + " " + user.lastName
+        }, we are sending this message to inform you that your reservation on hotel ${
+          hotel.name
+        } from ${reservation.checkin} to ${
+          reservation.checkout
+        } has been disabled.`,
+      },
+      function (err: any, info: any) {
+        console.log(info);
+      }
     );
   } catch (e) {
     console.log(e);
