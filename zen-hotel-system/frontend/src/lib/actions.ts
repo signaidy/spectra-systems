@@ -716,6 +716,14 @@ export async function disableHotel(prevState: any, formData: FormData) {
         } has been disabled.`,
       });
     }
+
+    // Travel Agency API
+    await fetch(
+      `localhost:42069/nexus/reservations/cancelHotel/${rawFormData.hotelId})`,
+      {
+        method: "PUT",
+      }
+    );
   } catch (e) {
     console.log(e);
     return {
@@ -836,6 +844,14 @@ export async function disableReservation(prevState: any, formData: FormData) {
       },
       function (err: any, info: any) {
         console.log(info);
+      }
+    );
+
+    // Travel Agency API
+    await fetch(
+      `localhost:42069/nexus/reservations/cancel/${rawFormData.reservationId})`,
+      {
+        method: "PUT",
       }
     );
   } catch (e) {
