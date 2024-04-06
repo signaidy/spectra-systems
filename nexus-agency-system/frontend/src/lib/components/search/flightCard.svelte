@@ -115,11 +115,11 @@
       {:else}
         {#if flight.scale == null}
           <a
-          on:click={() => handleCheckout(flight.flightId, passengers, 'economy')}
+          on:click={() => handleCheckout(flight.flightId, passengers, 'premium')}
           class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
         >
           <div class="text-sm text-muted-foreground">
-            <div>Tourist</div>
+            <div>Business</div>
             <div>{flight.businessQuantity} available</div>
           </div>
           <div class="text-3xl font-medium tracking-tighter">
@@ -128,11 +128,11 @@
         </a>
         {:else}
           <a
-          on:click={() => handleCheckout(flight.flightId, passengers, 'economy')}
+          on:click={() => handleCheckout(flight.flightId, passengers, 'premium')}
           class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
         >
           <div class="text-sm text-muted-foreground">
-            <div>Tourist</div>
+            <div>Business</div>
             <div>{flight.businessQuantity} available</div>
           </div>
           <div class="text-3xl font-medium tracking-tighter">
@@ -241,11 +241,11 @@
       {:else}
         {#if flight.scale == null}
           <a
-          on:click={() => handleCheckout(flight.flightId, passengers, 'economy')}
+          on:click={() => handleCheckout(flight.flightId, passengers, 'premium')}
           class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
         >
           <div class="text-sm text-muted-foreground">
-            <div>Tourist</div>
+            <div>Business</div>
             <div>{flight.businessQuantity} available and Return {flight.returnFlight.businessQuantity} available</div>
           </div>
           <div class="text-3xl font-medium tracking-tighter">
@@ -254,11 +254,11 @@
         </a>
         {:else}
           <a
-          on:click={() => handleCheckout(flight.flightId, passengers, 'economy')}
+          on:click={() => handleCheckout(flight.flightId, passengers, 'premium')}
           class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
         >
           <div class="text-sm text-muted-foreground">
-            <div>Tourist</div>
+            <div>Business</div>
             <div>{flight.businessQuantity} available and Return {flight.returnFlight.businessQuantity} available</div>
           </div>
           <div class="text-3xl font-medium tracking-tighter">

@@ -131,11 +131,31 @@
                   </h6>
                   <p class="text-gray-400">x {passengers}</p>
                 </div>
-                <div>
-                  <span class="font-semibold text-gray-600 text-xl"
-                    >${price * passengers}</span
-                  ><span class="font-semibold text-gray-600 text-sm">.00</span>
-                </div>
+                {#if flight?.returnFlight == null}
+                  {#if category == 'economy'}
+                    <div>
+                      <span class="font-semibold text-gray-600 text-xl">${flight?.touristPrice * passengers}</span>
+                      <span class="font-semibold text-gray-600 text-sm">.00</span>
+                    </div>
+                  {:else}
+                    <div>
+                      <span class="font-semibold text-gray-600 text-xl">${flight?.businessPrice * passengers}</span>
+                      <span class="font-semibold text-gray-600 text-sm">.00</span>
+                    </div>
+                  {/if}
+                {:else}
+                  {#if category == 'economy'}
+                    <div>
+                      <span class="font-semibold text-gray-600 text-xl">${(flight?.touristPrice + flight?.returnFlight.touristPrice) * passengers}</span>
+                      <span class="font-semibold text-gray-600 text-sm">.00</span>
+                    </div>
+                  {:else}
+                    <div>
+                      <span class="font-semibold text-gray-600 text-xl">${(flight?.businessPrice + flight?.returnFlight.businessPrice) * passengers}</span>
+                      <span class="font-semibold text-gray-600 text-sm">.00</span>
+                    </div>
+                  {/if}
+                {/if}
               </div>
             </div>
             <div class="mb-6 pb-6 border-b border-gray-200 text-gray-800">
@@ -143,9 +163,27 @@
                 <div class="flex-grow">
                   <span class="text-gray-600">Unitary price</span>
                 </div>
-                <div class="pl-3">
-                  <span class="font-semibold">${price}.00</span>
-                </div>
+                {#if flight?.returnFlight == null}
+                  {#if category == 'economy'}
+                    <div class="pl-3">
+                      <span class="font-semibold">${flight?.touristPrice}.00</span>
+                    </div>
+                    {:else}
+                    <div class="pl-3">
+                      <span class="font-semibold">${flight?.businessPrice}.00</span>
+                    </div>
+                  {/if}
+                {:else}
+                  {#if category == 'economy'}
+                    <div class="pl-3">
+                      <span class="font-semibold">${(flight?.touristPrice + flight?.returnFlight.touristPrice)}.00</span>
+                    </div>
+                    {:else}
+                    <div class="pl-3">
+                      <span class="font-semibold">${(flight?.businessPrice + flight?.returnFlight.businessPrice)}.00</span>
+                    </div>
+                  {/if}
+                {/if}
               </div>
               <div class="w-full flex items-center">
                 <div class="flex-grow">
@@ -163,9 +201,27 @@
                 <div class="flex-grow">
                   <span class="text-gray-600">Total</span>
                 </div>
-                <div class="pl-3">
-                  <span class="font-semibold">${price * passengers}.00</span>
-                </div>
+                {#if flight?.returnFlight == null}
+                  {#if category == 'economy'}
+                    <div class="pl-3">
+                      <span class="font-semibold">${flight?.touristPrice * passengers}.00</span>
+                    </div>
+                  {:else}
+                    <div class="pl-3">
+                      <span class="font-semibold">${flight?.businessPrice * passengers}.00</span>
+                    </div>
+                  {/if}
+                {:else}
+                  {#if category == 'economy'}
+                    <div class="pl-3">
+                      <span class="font-semibold">${(flight?.touristPrice + flight?.returnFlight.touristPrice)}.00</span>
+                    </div>
+                    {:else}
+                    <div class="pl-3">
+                      <span class="font-semibold">${(flight?.businessPrice + flight?.returnFlight.businessPrice)}.00</span>
+                    </div>
+                  {/if}
+                {/if}
               </div>
             </div>
           </div>
@@ -178,7 +234,7 @@
                   <span class="text-gray-600 font-semibold">Leaving from:</span>
                 </div>
                 <div class="flex-grow pl-3">
-                  <span>{from}</span>
+                  <span>{flight?.originCityName}</span>
                 </div>
               </div>
               <div class="w-full flex items-center">
@@ -186,8 +242,13 @@
                   <span class="text-gray-600 font-semibold">Going to: </span>
                 </div>
                 <div class="flex-grow pl-3">
-                  <span>{to}</span>
+                  <span>{flight?.destinationCityName}</span>
                 </div>
+                {#if flight?.returnFlight != null}
+                  <div class="flex-grow pl-3">
+                    <span>Round Trip</span>
+                  </div>
+                {/if}
               </div>
             </div>
             <div
@@ -331,6 +392,12 @@
     {:else}
       <input type="hidden" name="category" value="unknown" />
       <input type="hidden" name="price" value="0" />
+    {/if}
+    {#if flight?.returnFlight != null}
+      <input type="hidden" name="roundTrip" value="1" />
+    {/if}
+    {#if flight?.scale != null}
+      <input type="hidden" name="scale" value="1" />
     {/if}
   </div>
 </form>
