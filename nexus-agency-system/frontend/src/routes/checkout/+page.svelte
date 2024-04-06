@@ -395,9 +395,23 @@
     {/if}
     {#if flight?.returnFlight != null}
       <input type="hidden" name="roundTrip" value="1" />
+      <input type="hidden" name="Rflight_id" value={flight?.returnFlight.flightId} />
+      <input type="hidden" name="RdepartureDate" value={flight?.returnFlight.departureDate} />
+      <input type="hidden" name="RdepartureLocation" value={flight?.returnFlight.originCityName} />
+      <input type="hidden" name="RarrivalLocation" value={flight?.returnFlight.destinationCityName} />
+      <input type="hidden" name="RreturnDate" value={flight?.returnFlight.returnDate} />
+      <input type="hidden" name="Rrating" value={flight?.returnFlight.rating.average} />
+      <input type="hidden" name="Rprice" value={flight?.returnFlight.touristPrice} />
     {/if}
     {#if flight?.scale != null}
       <input type="hidden" name="scale" value="1" />
+      <input type="hidden" name="Sflight_id" value={flight?.scale.flightId} />
+      <input type="hidden" name="SdepartureDate" value={flight?.scale.departureDate} />
+      <input type="hidden" name="SdepartureLocation" value={flight?.scale.originCityName} />
+      <input type="hidden" name="SarrivalLocation" value={flight?.scale.destinationCityName} />
+      <input type="hidden" name="SreturnDate" value={flight?.scale.returnDate} />
+      <input type="hidden" name="Srating" value={flight?.scale.rating.average} />
+      <input type="hidden" name="Sprice" value={flight?.scale.touristPrice} />
     {/if}
   </div>
 </form>
