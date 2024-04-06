@@ -8,6 +8,7 @@
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { MoveLeft } from "lucide-svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let flight: CompleteFlight;
 
@@ -21,7 +22,7 @@
   let user = [];
 
   onMount(async () => {
-    fetch("http://localhost:8080/get-cities")
+    fetch(`${PUBLIC_BASE_URL}/get-cities`)
       .then((response) => response.json())
       .then((citiesinformation) => {
         cities = citiesinformation;
@@ -30,7 +31,7 @@
   });
 
   onMount(async () => {
-    fetch(`http://localhost:8080/modification-notification/${flight.flightId}`)
+    fetch(`${PUBLIC_BASE_URL}/modification-notification/${flight.flightId}`)
       .then((response) => response.json())
       .then((usersinformation) => {
         user = usersinformation;
@@ -43,7 +44,7 @@
 
     try {
       const usersInformation = await fetch(
-        `http://localhost:8080/modification-notification/${flightID}`
+        `${PUBLIC_BASE_URL}/modification-notification/${flightID}`
       ).then((response) => response.json());
       if (usersInformation && usersInformation.length > 0) {
         user = usersInformation;
@@ -75,7 +76,7 @@
         }
       }
       const response = await fetch(
-        `http://localhost:8080/cancelation/${flightID}`,
+        `${PUBLIC_BASE_URL}/cancelation/${flightID}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -108,7 +109,7 @@
   ) {
     try {
       const usersInformation = await fetch(
-        `http://localhost:8080/modification-notification/${flightId}`
+        `${PUBLIC_BASE_URL}/modification-notification/${flightId}`
       ).then((response) => response.json());
       if (usersInformation && usersInformation.length > 0) {
         user = usersInformation;
@@ -152,7 +153,7 @@
       }
 
       const response = await fetch(
-        `http://localhost:8080/update-flight/${flightId}`,
+        `${PUBLIC_BASE_URL}/update-flight/${flightId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

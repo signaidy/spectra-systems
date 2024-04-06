@@ -1,6 +1,8 @@
+import { PUBLIC_BASE_URL } from '$env/static/public';
+
 export async function load({ locals }) {
   async function getAllTickets() {
-    const response = await fetch("http://localhost:8080/get-all-tickets", {
+    const response = await fetch(`${PUBLIC_BASE_URL}/get-all-tickets`, {
       method: "GET",
     });
 

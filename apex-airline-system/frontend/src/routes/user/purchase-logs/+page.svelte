@@ -3,6 +3,7 @@
   import { Banknote } from "lucide-svelte";
   import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png";
   import { jsPDF } from "jspdf";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data;
   let userid = data.user.userId;
@@ -14,7 +15,7 @@
 
   onMount(async () => {
     const response = await fetch(
-      `http://localhost:8080/header`
+      `${PUBLIC_BASE_URL}/header`
     );
     const data = await response.json();
     billData.company.name = data.Text_Logo;
@@ -22,14 +23,14 @@
 
   onMount(async () => {
     const response = await fetch(
-      `http://localhost:8080/footer`
+      `${PUBLIC_BASE_URL}/footer`
     );
     const data = await response.json();
     billData.company.address = data.C_1;
   });
 
   onMount(async () => {
-    fetch("http://localhost:8080/purchaselogs")
+    fetch(`${PUBLIC_BASE_URL}/purchaselogs`)
       .then((response) => response.json())
       .then((userpurchases) => {
         purchaseslogs = userpurchases;

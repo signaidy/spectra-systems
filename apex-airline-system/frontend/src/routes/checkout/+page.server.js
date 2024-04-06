@@ -1,3 +1,5 @@
+import { PUBLIC_BASE_URL } from '$env/static/public';
+
 export const actions = {
 
   default: async ({ request }) => {
@@ -15,7 +17,7 @@ export const actions = {
           flight_id: flightId,
         };
         try {
-          const response = await fetch(`http://localhost:8080/purchase/${amount}/${method}/${discount}`, {
+          const response = await fetch(`${PUBLIC_BASE_URL}/purchase/${amount}/${method}/${discount}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

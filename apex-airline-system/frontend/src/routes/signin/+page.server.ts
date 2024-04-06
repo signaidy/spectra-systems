@@ -2,6 +2,8 @@ import { error, redirect } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
 import { JWT_SECRET } from "$env/static/private";
 import jsonwebtoken from "jsonwebtoken";
+import { PUBLIC_BASE_URL } from '$env/static/public';
+
 const { sign } = jsonwebtoken;
 
 export const actions = {
@@ -23,7 +25,7 @@ export const actions = {
     }
     
     try {
-      const response = await fetch(`http://localhost:8080/create-user/${captcha}`, {
+      const response = await fetch(`${PUBLIC_BASE_URL}/create-user/${captcha}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

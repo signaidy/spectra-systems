@@ -1,5 +1,6 @@
 import { redirect } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 import { JWT_SECRET } from "$env/static/private";
 import jsonwebtoken from "jsonwebtoken";
@@ -9,7 +10,7 @@ export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch(`${PUBLIC_BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -3,13 +3,14 @@
   import { CircleUserRound } from "lucide-svelte";
   import logo from "$lib/assets/logo.png";
   import imageTab from "$lib/assets/Image-Tab.png";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data: { user: User | null };
 
   let headerdata = getHeaderInformation();
 
 async function getHeaderInformation() {
-  const response = await fetch("http://localhost:8080/header");
+  const response = await fetch(`${PUBLIC_BASE_URL}/header`);
   const headerdata = await response.json();
   return headerdata;
 }

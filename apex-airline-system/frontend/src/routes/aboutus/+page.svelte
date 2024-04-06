@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Footer from "$lib/components/footer/footer.svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   let Title;
   let Description;
@@ -17,13 +18,13 @@
   let informationabout = getAboutInformation();
 
   async function getAboutInformation() {
-    const response = await fetch("http://localhost:8080/aboutus");
+    const response = await fetch(`${PUBLIC_BASE_URL}/aboutus`);
     const aboutdata = await response.json();
     return aboutdata;
   }
 
   onMount(async () => {
-    const response = await fetch("http://localhost:8080/partners");
+    const response = await fetch(`${PUBLIC_BASE_URL}/partners`);
     const data = await response.json();
     Title = data.Title;
     Description = data.Description;

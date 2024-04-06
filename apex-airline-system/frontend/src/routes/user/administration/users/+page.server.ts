@@ -1,8 +1,9 @@
 import { fail } from "@sveltejs/kit";
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 export async function load({ locals }) {
   async function getUsers() {
-    const response = await fetch("http://localhost:8080/get-users", {
+    const response = await fetch(`${PUBLIC_BASE_URL}/get-users`, {
       method: "GET",
     });
     const result = await response.json();
@@ -25,7 +26,7 @@ export const actions = {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/update-user", {
+      const response = await fetch(`${PUBLIC_BASE_URL}/update-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

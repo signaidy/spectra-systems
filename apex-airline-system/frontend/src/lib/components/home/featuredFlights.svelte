@@ -1,6 +1,7 @@
 <script lang="ts">
   import background from "$lib/assets/background.jpg";
   import { onMount } from "svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   let FeatureFlight1; 
   let FlightCountry1;
@@ -13,7 +14,7 @@
   let Content3;
 
   onMount(async () => {
-    fetch("http://localhost:8080/home")
+    fetch(`${PUBLIC_BASE_URL}/home`)
       .then((response) => response.json())
       .then((homeinformation) => {
         FeatureFlight1 = homeinformation.FeatureImage1;

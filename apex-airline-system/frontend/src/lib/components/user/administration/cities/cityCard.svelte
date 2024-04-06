@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
+    import { PUBLIC_BASE_URL } from '$env/static/public';
   
     export  let cities: City[] = [];
   
@@ -10,7 +11,7 @@
       console.log(id); 
       try {
         const response = fetch(
-          `http://localhost:8080/update-city/${name}/${id}`,
+          `${PUBLIC_BASE_URL}/update-city/${name}/${id}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

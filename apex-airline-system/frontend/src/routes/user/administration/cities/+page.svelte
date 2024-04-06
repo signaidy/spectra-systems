@@ -2,6 +2,8 @@
   import { Button } from "$lib/components/ui/button";
   import CityCard from "$lib/components/user/administration/cities/cityCard.svelte";
   import CitySkeleton from "$lib/components/user/administration/cities/citieSkeleton.svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
+
   export let data;
 
   let alert_message;
@@ -15,7 +17,7 @@
     } else {
       try {
         const response = await fetch(
-          `http://localhost:8080/create-city/${city}`,
+          `${PUBLIC_BASE_URL}/create-city/${city}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

@@ -2,6 +2,7 @@
   import { Receipt } from "lucide-svelte";
   import { Settings } from "lucide-svelte";
   import { MoveLeft } from "lucide-svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let ticket: Ticket;
 
@@ -11,7 +12,7 @@
     const motive = document.getElementById("motive").value;
 
     try {
-    const response = fetch(`http://localhost:8080/ticketcanceled/${ticketId}`, {
+    const response = fetch(`${PUBLIC_BASE_URL}/ticketcanceled/${ticketId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 

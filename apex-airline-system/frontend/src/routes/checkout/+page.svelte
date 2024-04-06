@@ -5,6 +5,8 @@
   import mastercardImage from "$lib/assets/mastercard.png";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
+  import { PUBLIC_BASE_URL } from '$env/static/public';
+
   export let data;
   export let isOpen = false;
 
@@ -38,7 +40,7 @@
 
   onMount(async () => {
     fetch(
-      `http://localhost:8080/availabletickets/${first_flightid}/${category1}`
+      `${PUBLIC_BASE_URL}/availabletickets/${first_flightid}/${category1}`
     )
       .then((response) => response.json())
       .then((available) => {
@@ -52,7 +54,7 @@
   });
 
   onMount(async () => {
-    fetch(`http://localhost:8080/availabletickets/${flight_id}/${category}`)
+    fetch(`${PUBLIC_BASE_URL}/availabletickets/${flight_id}/${category}`)
       .then((response) => response.json())
       .then((available) => {
         availabletickets = available;
@@ -66,14 +68,14 @@
 
   onMount(async () => {
     const response = await fetch(
-      `http://localhost:8080/ticketsamount/${flight_id}/${category}`
+      `${PUBLIC_BASE_URL}/ticketsamount/${flight_id}/${category}`
     );
     const data = await response.json();
     ticketsamount_available = data.tickets_amount;
   });
 
   onMount(async () => {
-    const response = await fetch(`http://localhost:8080/discount/${userid}`);
+    const response = await fetch(`${PUBLIC_BASE_URL}/discount/${userid}`);
     const data = await response.json();
     discount = data.discount;
     const formData = new FormData();
