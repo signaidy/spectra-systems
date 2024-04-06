@@ -33,10 +33,13 @@ public class externalFlight {
     private int businessCapacity;
     private int state;
     private externalFlight scale;
+    
+    private externalFlight returnFlight;
 
     // Constructors, getters, and setters
     public externalFlight() {
         this.scale = null;
+        this.returnFlight = null;
         
     }
     public Long getFlightId() {
@@ -185,6 +188,14 @@ public class externalFlight {
 
     public void setScale(externalFlight scale) {
         this.scale = scale;
+    }
+
+    public externalFlight getReturnFlight() {
+        return returnFlight;
+    }
+
+    public void setReturnFlight(externalFlight returnFlight) {
+        this.returnFlight = returnFlight;
     }
 }
 

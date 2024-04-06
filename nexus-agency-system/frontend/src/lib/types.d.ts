@@ -33,6 +33,7 @@ interface Flight {
   commentaries: Commentary[];
   rating: Rating;
   scale: Flight;
+  returnFlight: Flight;
 }
 
 interface CompleteFlight {
