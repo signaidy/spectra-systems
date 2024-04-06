@@ -68,7 +68,11 @@ export class HotelService {
 
       const commentaries = this.generateCommentaryTree(result.commentaries);
 
-      const hotel = { ...result, commentaries: commentaries, _id: result._id.toString() };
+      const hotel = {
+        ...result,
+        commentaries: commentaries,
+        _id: result._id.toString(),
+      };
 
       return hotel;
     } catch (e) {
@@ -82,6 +86,7 @@ export class HotelService {
 
       const result = hotelsCollection.find({
         "location.city": city,
+        state: "active",
       });
 
       const hotels = [];
