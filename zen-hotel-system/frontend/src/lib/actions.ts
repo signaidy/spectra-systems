@@ -759,6 +759,15 @@ export async function disableReservation(prevState: any, formData: FormData) {
   revalidatePath("/");
 }
 
+export async function initiateSignUp(prevState: any, formData: FormData) {
+  await transporter.sendMail({
+    from: "MS_zoX6hx@trial-ynrw7gyqe7n42k8e.mlsender.net", // sender address
+    to: "voxjmjm@gmail.com", // list of receivers
+    subject: "Your reservation has been cancelled", // Subject line
+    text: "Hello, we are sending this to inform you that your reservation has been disabled.", // plain text body
+  });
+}
+
 export async function logOut() {
   cookies().delete("token");
   redirect("/");
