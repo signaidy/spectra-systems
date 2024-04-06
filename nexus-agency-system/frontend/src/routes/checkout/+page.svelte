@@ -486,6 +486,16 @@
       <input type="hidden" name="RreturnDate" value={flight?.returnFlight.returnDate} />
       <input type="hidden" name="Rrating" value={flight?.returnFlight.rating.average} />
       <input type="hidden" name="Rprice" value={flight?.returnFlight.touristPrice} />
+      {#if flight?.returnFlight.scale != null}
+        <input type="hidden" name="Rscale" value="1" />
+        <input type="hidden" name="RSflight_id" value={flight?.returnFlight.scale.flightId} />
+        <input type="hidden" name="RSdepartureDate" value={flight?.returnFlight.scale.departureDate} />
+        <input type="hidden" name="RSdepartureLocation" value={flight?.returnFlight.scale.originCityName} />
+        <input type="hidden" name="RSarrivalLocation" value={flight?.returnFlight.scale.destinationCityName} />
+        <input type="hidden" name="RSreturnDate" value={flight?.returnFlight.scale.returnDate} />
+        <input type="hidden" name="RSrating" value={flight?.returnFlight.scale.rating.average} />
+        <input type="hidden" name="RSprice" value={flight?.returnFlight.scale.touristPrice} />
+      {/if}
     {/if}
     {#if flight?.scale != null}
       <input type="hidden" name="scale" value="1" />
