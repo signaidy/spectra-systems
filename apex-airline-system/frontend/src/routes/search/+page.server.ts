@@ -2,6 +2,7 @@ import { fail } from "@sveltejs/kit";
 
 export function load({ locals, url }) {
   async function getOneWayFlights() {
+    console.log(url.searchParams.toString()); 
     const response = await fetch(
       `http://localhost:8080/get-one-way-flights?${url.searchParams.toString()}`,
       {
@@ -10,6 +11,7 @@ export function load({ locals, url }) {
     );
 
     const result = await response.json();
+    // console.log(response); 
 
     function assignChildren(commentaries: Commentary[]): Commentary[] {
       const commentariesById: { [key: number]: Commentary } = {};
@@ -65,8 +67,8 @@ export function load({ locals, url }) {
 
     console.log(result); 
 
-    if (!response.ok) { // Check for a non-200 response
-      return []; // Return an empty array if response is not successful
+    if (!response.ok) { 
+      return []; 
     }
 
     function assignChildren(commentaries: Commentary[]): Commentary[] {
@@ -107,7 +109,7 @@ export function load({ locals, url }) {
     }
      
   }
-  
+
 
   return {
     user: locals.user,

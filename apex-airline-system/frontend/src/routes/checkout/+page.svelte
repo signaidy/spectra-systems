@@ -170,7 +170,7 @@
                 </div>
               </div>
             </div>
-            {#if type == "round-trip"}
+            {#if type == "round-trip" || type == "scale"}
               <div
                 class="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6"
               >
@@ -197,21 +197,21 @@
             <div class="mb-6 pb-6 border-b border-gray-200 text-gray-800">
               <div class="w-full flex mb-3 items-center">
                 <div class="flex-grow">
-                  {#if type == "round-trip"}
+                  {#if type == "round-trip" || type == "scale"}
                     <span class="text-gray-600">First flight - Ticket</span>
                   {:else}
                     <span class="text-gray-600">Unitary price</span>
                   {/if}
                 </div>
                 <div class="pl-3">
-                  {#if type == "round-trip"}
+                  {#if type == "round-trip" || type == "scale"}
                     <span class="font-semibold">${price_flight_one}.00</span>
                   {:else}
                     <span class="font-semibold">${price}.00</span>
                   {/if}
                 </div>
               </div>
-              {#if type == "round-trip"}
+              {#if type == "round-trip" || type == "scale"}
                 <div class="w-full flex mb-3 items-center">
                   <div class="flex-grow">
                     <span class="text-gray-600">Second flight - Ticket</span>
@@ -227,7 +227,7 @@
                 </div>
                 <div class="pl-3">
                   {#if discount > 0}
-                    {#if type == "round-trip"}
+                    {#if type == "round-trip" || type == "scale"}
                       <span class="font-semibold"
                         >${(price + price_flight_one) *
                           passengers *
@@ -253,7 +253,7 @@
                 </div>
                 <div class="pl-3">
                   {#if discount > 0}
-                    {#if type == "round-trip"}
+                    {#if type == "round-trip" || type == "scale"}
                       <span class="font-semibold"
                         >${(price + price_flight_one) * passengers -
                           (price + price_flight_one) *
@@ -266,7 +266,7 @@
                           price * passengers * (discount / 100)}.00</span
                       >
                     {/if}
-                  {:else if type == "round-trip"}
+                  {:else if type == "round-trip" || type == "scale"}
                     <span class="font-semibold">${price * passengers}.00</span>
                   {:else}
                     <span class="font-semibold">${price * passengers}.00</span>
