@@ -102,8 +102,6 @@
         </div>
       </a>
     {:else}
-    <!-- <p>http://localhost:3000/checkout?flightId=124&passengers=1&category=premium&first_flightid=123&category1=premium</p> -->
-    <!-- <p>http://localhost:3000/checkout?flightId=81&passengers=1&category=premium&first_flightid=79&category1=premium&type=round-trip</p> -->
       <a
         href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=scale`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"

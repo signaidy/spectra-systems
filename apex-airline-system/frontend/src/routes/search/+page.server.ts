@@ -11,7 +11,6 @@ export function load({ locals, url }) {
     );
 
     const result = await response.json();
-    // console.log(response); 
 
     function assignChildren(commentaries: Commentary[]): Commentary[] {
       const commentariesById: { [key: number]: Commentary } = {};
