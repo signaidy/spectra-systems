@@ -127,14 +127,12 @@ public class ReservationController {
     }
 
     @PutMapping("/cancelHotel/{hotelId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> cancelReservationsByHotelId(@PathVariable String hotelId) {
         reservationService.cancelReservationsByHotelId(hotelId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/cancel/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> cancelReservationById(@PathVariable Long id) {
         reservationService.cancelReservationsById(id);
         return new ResponseEntity<>(HttpStatus.OK);
