@@ -16,6 +16,7 @@
   .then(response => response.json())
   .then(userfdata => {
     userflights = userfdata
+    console.log(userflights); 
   })
   });
 
@@ -45,7 +46,7 @@
               class="flex mx-2 ml-6 h8 px-2 flex-row items-baseline rounded-full bg-gray-100 p-1"
             >
               <div class="reduct"><Banknote/></div>
-              {#if type == 1}
+              {#if type == "economy"}
               <p class="font-normal text-sm ml-1 text-gray-500">First class</p>
               {:else}
               <p class="font-normal text-sm ml-1 text-gray-500">Economy</p>

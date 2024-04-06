@@ -376,6 +376,8 @@ public class ApexController {
                         countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"), commentaries,
                         new RatingRecord(
                                 ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
+            }if (flights.isEmpty()) {
+                return new Object[0];
             }
 
             return flights;
@@ -1679,5 +1681,67 @@ public class ApexController {
             }
         }
     }
+
+    // Get a Cities - API
+    @GetMapping("/get-city/{cityid}")
+    public Object getOneCity(@PathVariable int cityid) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format("SELECT name FROM cities WHERE city_id = %d", cityid));
+            ResultSet result = query.executeQuery();
+
+            record UniqueCity(String name) {
+            }
+
+            if (result.next()) {
+                return new UniqueCity(result.getString("name"));
+            }
+            return new WebError("City not found");
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("User not found");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    // @GetMapping("/get-user/{id}")
+    // public Object getUser(@PathVariable Long id) {
+    //     Connection conn = new OracleConnector().getConnection();
+
+    //     try {
+    //         PreparedStatement query = conn
+    //                 .prepareStatement(String.format("SELECT * FROM users WHERE user_id = %d", id));
+    //         ResultSet result = query.executeQuery();
+
+    //         record User(String name, String email) {
+    //         }
+
+    //         if (result.next()) {
+    //             return new User(result.getString("first_name"), result.getString("email"));
+    //         }
+    //         return new WebError("User not found");
+    //     } catch (Throwable e) {
+    //         e.printStackTrace();
+    //         return new WebError("Failed to retrieve user");
+    //     } finally {
+    //         try {
+    //             if (conn != null) {
+    //                 conn.close();
+    //             }
+    //         } catch (SQLException e) {
+    //             e.printStackTrace();
+    //         }
+    //     }
+    // }
 
 }

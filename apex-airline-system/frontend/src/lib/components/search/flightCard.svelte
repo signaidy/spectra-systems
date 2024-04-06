@@ -9,11 +9,12 @@
   export let form;
   export let isScaleFlight;
 
+  console.log(flight);
+
   let f1 = $page.url.searchParams.get("f1");
   let c1 = $page.url.searchParams.get("c1");
-  let type =  $page.url.searchParams.get("type");
+  let type = $page.url.searchParams.get("type");
   let destinationtrip = $page.url.searchParams.get("destinationCity");
-
 </script>
 
 <div class="rounded-lg my-3 grid grid-cols-2 bg-background shadow w-full">
@@ -61,9 +62,23 @@
           Not enough tickets available
         </div>
       </div>
+    {:else if isScaleFlight == true}
+      <a
+        href={`/search?originCity=${String(flight.destinationCityId)}&destinationCity=${destinationtrip}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}
+        &f1=${flight.flightId}&c1=economy`}
+        class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
+      >
+        <div class="text-sm text-muted-foreground">
+          <div>Business</div>
+          <div>{flight.businessQuantity} available</div>
+        </div>
+        <div class="text-3xl font-medium tracking-tighter">
+          {flight.businessPrice} $
+        </div>
+      </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy`}
+      href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=scale`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -88,8 +103,8 @@
         </div>
       </div>
     {:else if isScaleFlight == true}
-    <a
-      href={`/search?originCity=${String(flight.destinationCityId)}&destinationCity=${destinationtrip}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}
+      <a
+        href={`/search?originCity=${String(flight.destinationCityId)}&destinationCity=${destinationtrip}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}
       &f1=${flight.flightId}&c1=premium`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
@@ -102,8 +117,6 @@
         </div>
       </a>
     {:else}
-    <!-- <p>http://localhost:3000/checkout?flightId=124&passengers=1&category=premium&first_flightid=123&category1=premium</p> -->
-    <!-- <p>http://localhost:3000/checkout?flightId=81&passengers=1&category=premium&first_flightid=79&category1=premium&type=round-trip</p> -->
       <a
         href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=scale`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"

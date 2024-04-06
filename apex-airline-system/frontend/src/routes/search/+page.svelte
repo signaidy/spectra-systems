@@ -4,11 +4,35 @@
   import FlightCardSkeleton from "$lib/components/search/flightCardSkeleton.svelte";
   import { page } from "$app/stores";
   import Roundflight from "$lib/components/search/roundflight.svelte";
+  import { onMount } from "svelte";
+  import { scale } from "svelte/transition";
 
   export let data;
   export let form;
-  console.log(data);
-  console.log(data.scaleflights); 
+
+  let destinationprintId = $page.url.searchParams.get("destinationCity"); 
+  let destiantionprint; 
+
+  let originprintId = $page.url.searchParams.get("originCity"); 
+  let originprint; 
+
+  
+  onMount(async () => {
+    const response = await fetch(
+      `http://localhost:8080/get-city/${destinationprintId}`
+    );
+    const data = await response.json();
+    destiantionprint = data.name;
+  });
+
+  onMount(async () => {
+    const response = await fetch(
+      `http://localhost:8080/get-city/${originprintId}`
+    );
+    const data = await response.json();
+    originprint = data.name;
+  });
+
 </script>
 
 <div
@@ -33,8 +57,7 @@
         <div
           class="self-start font-bold font-lg mt-5 my-3 bg-background p-3 rounded-lg"
         >
-          Results for flights from {flights[0].originCityName} to {flights[0]
-            .destinationCityName} on {$page.url.searchParams.get(
+          Results for flights from {originprint} to {destiantionprint} on {$page.url.searchParams.get(
             "departureDay"
           )} for {$page.url.searchParams.get("passengers")} passengers
         </div>
