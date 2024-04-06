@@ -9,10 +9,22 @@ import { format } from "date-fns";
 const bcrypt = require("bcrypt");
 // JSON Web Token Utilities
 import * as jose from "jose";
+// Email Utilities
+const nodemailer = require("nodemailer");
 
 import { MongoClient, ObjectId } from "mongodb";
 
 const client = new MongoClient(process.env.MONGODB_URI!);
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.mailersend.net",
+  port: 587,
+  secure: false, // Use `true` for port 465, `false` for all other ports
+  auth: {
+    user: "MS_zoX6hx@trial-ynrw7gyqe7n42k8e.mlsender.net",
+    pass: process.env.EMAIL_CREDENTIALS,
+  },
+});
 
 export async function signIn(prevState: any, formData: FormData) {
   try {
