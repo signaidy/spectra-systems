@@ -10,7 +10,7 @@ public class OracleConnector {
         try {
             OracleDataSource ods = new OracleDataSource();
             ods = new OracleDataSource();
-            ods.setURL("jdbc:oracle:thin:@64.23.141.91:1521/FREE");
+            ods.setURL("jdbc:oracle:thin:@64.23.203.22:1521/FREE");
             ods.setUser("system");
             ods.setPassword("admin");
             conn = ods.getConnection();

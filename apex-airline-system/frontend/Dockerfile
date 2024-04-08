@@ -6,7 +6,7 @@
 ARG NODE_VERSION=lts
 
 # Base Image
-FROM node:${NODE_VERSION}
+FROM node:21.7.2
 
 WORKDIR /usr/src/app
 
