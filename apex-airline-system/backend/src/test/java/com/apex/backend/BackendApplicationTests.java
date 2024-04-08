@@ -621,4 +621,16 @@ class BackendApplicationTests {
 	}
 
 
+	@Test
+	public void updatePartners() {
+		Partners partners = new Partners("Partners", "This company have prove us a lot of value into the service given to users so we are related with them",
+		"IMG1", "LINK1", "IMG2", "LINK2", "IMG3", "LINK3", "IMG4", "LINK4", "IMG5", "LINK5");
+
+		when(controller.updatePartners(partners)).thenReturn(partners);
+
+		Object response = controller.updatePartners(partners);
+
+		assertEquals(partners, response);
+	}
+
 }
