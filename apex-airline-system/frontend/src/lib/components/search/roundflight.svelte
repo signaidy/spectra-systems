@@ -21,9 +21,9 @@
   $: {
     touristhref = isScaleFlight
       ? phase === "1"
-        ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2&f1=${flight.flightId}&c1=economy` 
+        ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2&f1=${flight.flightId}&c1=economy`
         : phase === "2" || phase === "3"
-          ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("originCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3&f1=${flight.flightId}&c1=economy` 
+          ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("originCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3&f1=${flight.flightId}&c1=economy`
           : phase === "4"
             ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`
             : ""
@@ -35,9 +35,9 @@
 
     businesshref = isScaleFlight
       ? phase === "1"
-        ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2&f1=${flight.flightId}&c1=premium` 
+        ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2&f1=${flight.flightId}&c1=premium`
         : phase === "2" || phase === "3"
-          ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3&f1=${flight.flightId}&c1=premium` 
+          ? `/search?originCity=${String(flight.destinationCityId)}&destinationCity=${$page.url.searchParams.get("destinationCity")}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3&f1=${flight.flightId}&c1=premium`
           : phase === "4"
             ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`
             : ""
@@ -64,7 +64,11 @@
           <Pyramid class="mx-3 h-5 w-5" />
           <hr class="grow" />
         </div>
-        <div class="text-muted-foreground self-center">No stops</div>
+        {#if isScaleFlight == true}
+          <div class="text-muted-foreground self-center">Scale</div>
+        {:else}
+          <div class="text-muted-foreground self-center">No stops</div>
+        {/if}
       </div>
       <div class="flex flex-col">
         <div class="text-3xl font-bold">{flight.arrivalDate.split(" ")[1]}</div>
@@ -118,13 +122,13 @@
         href={businesshref}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
-      <div class="text-sm text-muted-foreground">
-        <div>Business</div>
-        <div>{flight.businessQuantity} available</div>
-      </div>
-      <div class="text-3xl font-medium tracking-tighter">
-        {flight.businessPrice} $
-      </div>
+        <div class="text-sm text-muted-foreground">
+          <div>Business</div>
+          <div>{flight.businessQuantity} available</div>
+        </div>
+        <div class="text-3xl font-medium tracking-tighter">
+          {flight.businessPrice} $
+        </div>
       </a>
     {/if}
   </div>
