@@ -446,6 +446,26 @@ class BackendApplicationTests {
 
 		assertEquals(tickets, response);
 	}
+
+
+	@Test
+	public void getpurchaselogs() {
+
+		record purchases(String purchase_number, String ticket, String type, String origin, String destination,
+                    String purchase_date, String price, String paymenth_method,
+                    String departure_date, String arrival_date, int discount, String user_name) {
+            }
+
+	
+		List<purchases> purchaseslogs = new ArrayList<>();
+		purchaseslogs.add(new purchases("277", "450", "Premium", "Alemania", "Peru", "2024-03-01",  "700", "MasterCard", "2024-04-05", "2024-04-06", 10, "Ricardo Montaner")); 
+	
+		when(controller.getpurchaselogs()).thenReturn(purchaseslogs);
+	
+		Object response = controller.getpurchaselogs();
+	
+		assertEquals(purchaseslogs, response);
+	}
 	
 
 }
