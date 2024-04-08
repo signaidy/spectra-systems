@@ -602,5 +602,23 @@ class BackendApplicationTests {
 		assertEquals(footer, response);
 	}
 
+	@Test
+	public void getPartners() {
+
+		record Partner(String Title, String Description, String Partner1, String L1, String Partner2, String L2,
+		String Partner3, String L3,
+		String Partner4, String L4, String Partner5, String L5) {
+		}
+
+		Partner partners = new Partner("Meet our partners", "This partners have reached our agreements and have our confidence to provide you the most valuable things",
+		 "IMG1", "LINK1", "IMG2", "LINK2", "IMG3", "LINK3", "IMG4", "LINK4", "IMG5", "LINK5");
+
+		when(controller.getPartners()).thenReturn(partners);
+
+		Object response = controller.getPartners();
+
+		assertEquals(partners, response);
+	}
+
 
 }
