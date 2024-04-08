@@ -589,5 +589,18 @@ class BackendApplicationTests {
 	}
 	
 
+	@Test
+	public void updateFooter() {
+		Footer footer = new Footer("About", "American Airlines", "/aboutus", "Budegts", "/budgets", "Carriage", "/carriage",
+		"Rules", "/rules", "Seats", "/seats", "Partners", "/aboutus", "Quick L", "Check fast", "/fastcheck", "Fast reservation", "/fastreserve", 
+		"Contacts form", "CES, Guatemala", "@americanair.com", "American Airlines"); 
+
+		when(controller.updateFooter(footer)).thenReturn(footer);
+
+		Object response = controller.updateFooter(footer);
+
+		assertEquals(footer, response);
+	}
+
 
 }
