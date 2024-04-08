@@ -498,4 +498,53 @@ class BackendApplicationTests {
 		assertEquals(head, response);
 	}
 
+	//Flight and Tickets - Cancelation
+	// @Test
+	// public void updateFlightandTickets() {
+	// 	int flight_id = 32; 
+
+	// 	Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
+
+	// 	when(controller.updateHeader(head)).thenReturn(head);
+
+	// 	Object response = controller.updateHeader(head);
+
+	// 	assertEquals(head, response);
+	// }
+
+
+	//Tickets Individual - Cancelation
+	// @Test
+	// public void updateFlightandTickets() {
+	// 	int flight_id = 32; 
+
+	// 	Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
+
+	// 	when(controller.updateHeader(head)).thenReturn(head);
+
+	// 	Object response = controller.updateHeader(head);
+
+	// 	assertEquals(head, response);
+	// }
+
+
+	@Test
+	public void getDiscount() {
+		int id = 27; 
+
+		record Discount(int discount) {
+		}
+
+	
+		Discount discount = new Discount(45); 
+	
+		when(controller.getDiscount(id)).thenReturn(discount);
+	
+		Object response = controller.getDiscount(id);
+	
+		assertEquals(discount, response);
+	}
+	
+
+
 }
