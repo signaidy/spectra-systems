@@ -544,6 +544,49 @@ class BackendApplicationTests {
 	
 		assertEquals(discount, response);
 	}
+
+	// @Test
+	// public void updateFlight() {
+	// 	int flight_id = 79; 
+
+	// 	Flight flight = new Ticket_purchase(flightId, originCityId, destinationCityId, destinationCityName, 
+	// 	departureDate, arrivalDate, touristPrice, businessPrice, detail, touristQuantity, businessQuantity, ); 
+
+
+	// 	when(controller.updateHeader(head)).thenReturn(head);
+
+	// 	Object response = controller.updateHeader(head);
+
+	// 	assertEquals(head, response);
+	// }
+
+	@Test
+	public void getFooter() {
+
+		record Footer(String Title_1, String Section_1, String L1,
+			String Section_2, String L2,
+			String Section_3, String L3,
+			String Section_4, String L4,
+			String Section_5, String L5,
+			String Section_6, String L6,
+			String Title_2, String Q_1, String Link_quick_1,
+			String Q_2, String Linkl_quick_2,
+			String Title_3,
+			String C_1,
+			String C_2,
+			String Copyright) {
+	}
+
+		Footer footerinformation = new Footer("About Us", "Avianca", "/aboutus", "Budegts", "/budgets", "Carriage", "/carriage",
+		"Rules", "/rules", "Seats", "/seats", "Partners", "/aboutus", "Quick L", "Check fast", "/fastcheck", "Fast reservation", "/fastreserve", 
+		"Contacts form", "CES, Guatemala", "@spectrasystem.com", "Avianca reserved");
+
+		when(controller.getFooter()).thenReturn(footerinformation);
+
+		Object response = controller.getFooter();
+
+		assertEquals(footerinformation, response);
+	}
 	
 
 
