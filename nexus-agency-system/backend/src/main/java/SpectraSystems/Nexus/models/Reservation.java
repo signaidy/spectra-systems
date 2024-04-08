@@ -10,8 +10,10 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.TemporalType;
+import lombok.Builder;
 
 @Entity
+@Builder
 @Table(name = "NEXUSRESERVATION")
 public class Reservation {
 
@@ -74,8 +76,8 @@ public class Reservation {
 
     }
 
-    public Reservation(Long user, String hotelId, String hotel, Date dateStart, Date dateEnd, String roomType,
-            String reservationNumber, String location, String bedSize, Integer bedAmount, Integer price, Integer totalDays, Double totalPrice, Integer guests) {
+    public Reservation(Long id, String hotelId, Long user,  String hotel, Date dateStart, Date dateEnd, String roomType,
+            String reservationNumber, String location, Long rating, String bedSize, Integer bedAmount, Integer price, Integer totalDays, Double totalPrice, Integer guests, String state) {
         this.userid = user;
         this.hotelId = hotelId;
         this.hotel = hotel;
@@ -119,6 +121,10 @@ public class Reservation {
 
     public void setRating(Long rating) {
         this.rating = rating;
+    }
+
+    public Long getRating( ) {
+        return rating;
     }
 
     public Long getUser() {

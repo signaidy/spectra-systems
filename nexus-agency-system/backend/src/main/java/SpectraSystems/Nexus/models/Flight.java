@@ -15,8 +15,10 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.TemporalType;
+import lombok.Builder;
 
 @Entity
+@Builder
 @Table(name = "NEXUSFLIGHT")
 public class Flight {
 
@@ -63,6 +65,19 @@ public class Flight {
 
     public Flight(){
 
+    }
+
+    public Flight(Long id, Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, List<TicketPurchase> ticketPurchases, String type, LocalDate purchaseDate, Double price, String state, Long rating) {
+        this.userid = user;
+        this.flightNumber = flightNumber;
+        this.departureDate = departureDate;
+        this.departureLocation = departureLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.returnDate = returnDate;
+        this.type = type;
+        this.price = price;
+        this.state = "active";
+        this.purchaseDate = LocalDate.now();
     }
 
     public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, String type, Double price) {
