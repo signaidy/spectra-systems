@@ -823,7 +823,7 @@ public class ApexController {
                                     "TITLE_TWO = '%s', text_two = '%s', img_two = '%s', \n" + //
                                     "title_three = '%s', text_three = '%s', img_three = '%s', \n" + //
                                     "title_four = '%s', text_four = '%s', img_four = '%s' \n" + //
-                                    "WHERE ID = 5",
+                                    "WHERE ID = 2",
                             au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one,
                             au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
                             au.img_three, au.title_four, au.text_four, au.img_four));
@@ -1096,7 +1096,7 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = '%s', LINK_LOGIN = '%s', LOGO = '%s' WHERE ID = 21",
+                            "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = '%s', LINK_LOGIN = '%s', LOGO = '%s' WHERE ID = 1",
                             head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login,
                             head.Logo));
             query.executeQuery();
@@ -1576,7 +1576,7 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s' WHERE ID = 3",
+                            "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s' WHERE ID = 1",
                             Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2,
                             Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3));
             query.executeQuery();
