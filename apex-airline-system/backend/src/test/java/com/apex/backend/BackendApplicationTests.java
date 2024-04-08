@@ -651,4 +651,51 @@ class BackendApplicationTests {
 		assertEquals(userinformations, response);
 	}
 
+	@Test
+	public void createCity() {
+		String citysend = "Mexico"; 
+		
+		City city = new City("12", citysend); 
+
+		when(controller.createCity(citysend)).thenReturn(city);
+
+		Object response = controller.createCity(citysend);
+
+		assertEquals(city, response);
+	}
+
+	@Test
+	public void updateCities() {
+		String citysend = "Japan";
+		int id = 6;  
+
+		String idcity = String.valueOf(id);
+		
+		City city = new City(idcity, citysend); 
+
+		when(controller.updateCities(citysend, id)).thenReturn(city);
+
+		Object response = controller.updateCities(citysend, id);
+
+		assertEquals(city, response);
+	}
+	
+	@Test
+	public void getHome() {
+
+		record Home(String Background, String FeatureImage1, String Title1, String Content1, String FeatureImage2,
+                    String Title2, String Content2,
+                    String FeatureImage3, String Title3, String Content3) {
+            }
+
+		Home home = new Home("IMG-BCKG", "IMG1", "ALEMANIA", "C1", "IMG2", "Japon", "C2", 
+		"IMG3", "T3", "C3");
+
+		when(controller.getHome()).thenReturn(home);
+
+		Object response = controller.getHome();
+
+		assertEquals(home, response);
+	}
+
 }
