@@ -384,4 +384,32 @@ class BackendApplicationTests {
 		assertEquals("Aboutus information updated", response);
 	}
 
+	@Test
+	public void purchase() {
+		int amount = 2;
+		String method = "visa";
+		int discount = 0;
+		int ticket_id = 79;
+		int user_id = 1; 
+		int flight_id = 21;
+		String type = "premium"; 
+		int state = 1; 
+
+		record userTickets(int ticket_id, int user_id) {
+		}
+
+		String amountString = String.valueOf(amount);
+		Ticket_purchase ticketPurchase = new Ticket_purchase(user_id, flight_id, state, type, amountString); 
+	
+		List<userTickets> usert = new ArrayList<>();
+		usert.add(new userTickets(ticket_id,1)); 
+	
+		when(controller.purchase(ticketPurchase, amount, method, discount)).thenReturn(usert);
+	
+		Object response = controller.purchase(ticketPurchase, amount, method, discount);
+	
+		assertEquals(usert, response);
+	}
+	
+
 }
