@@ -498,34 +498,32 @@ class BackendApplicationTests {
 		assertEquals(head, response);
 	}
 
-	// //Flight and Tickets - Cancelation
-	// @Test
-	// public void updateFlightandTickets() {
-	// 	int flight_id = 32; 
+	//Flight and Tickets - Cancelation
+	@Test
+	public void updateFlightandTickets() {
+		int flight_id = 32; 
+		String expectedResponse = "Flight and tickets canceled"; 
+	
+		when(controller.updateFlightandTickets(flight_id)).thenReturn(expectedResponse);
+	
+		Object actualResponse = controller.updateFlightandTickets(flight_id);
+	
+		assertEquals(expectedResponse, actualResponse);
+	}
+	
 
-	// 	Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
-
-	// 	when(controller.updateHeader(head)).thenReturn(head);
-
-	// 	Object response = controller.updateHeader(head);
-
-	// 	assertEquals(head, response);
-	// }
-
-
-	// //Tickets Individual - Cancelation
-	// @Test
-	// public void updateIndividualTicket() {
-	// 	int ticket_id = 42; 
-
-	// 	Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
-
-	// 	when(controller.updateHeader(head)).thenReturn(head);
-
-	// 	Object response = controller.updateHeader(head);
-
-	// 	assertEquals(head, response);
-	// }
+	//Tickets Individual - Cancelation
+	@Test
+	public void updateIndividualTicket() {
+		int ticket_id = 42; 
+		String expectedResponse = "User ticket canceled";
+	
+		when(controller.updateIndividualTicket(ticket_id)).thenReturn(expectedResponse);
+	
+		Object response = controller.updateIndividualTicket(ticket_id);
+	
+		assertEquals(expectedResponse, response);
+	}
 
 
 	@Test
