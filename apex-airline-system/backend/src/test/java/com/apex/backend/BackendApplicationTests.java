@@ -749,4 +749,20 @@ class BackendApplicationTests {
 			assertEquals(flightscale, response);
 	}
 
+	@Test
+	public void getOneCity() {
+		int cityid = 34; 
+
+		record UniqueCity(String name) {
+		}
+
+		UniqueCity city = new UniqueCity("Alemania");
+
+		when(controller.getOneCity(cityid)).thenReturn(city);
+
+		Object response = controller.getOneCity(cityid);
+
+		assertEquals(city, response);
+	}
+
 }
