@@ -429,6 +429,23 @@ class BackendApplicationTests {
 
 		assertEquals(availabletickets, response);
 	}
+
+	@Test
+	public void getAmounttickets() {
+		int flight_id = 20;
+		String category = "economy"; 
+
+		record ticketsamount(int tickets_amount) {
+		}
+
+		ticketsamount tickets = new ticketsamount(12); 
+
+		when(controller.getAmounttickets(flight_id, category)).thenReturn(tickets);
+
+		Object response = controller.getAmounttickets(flight_id, category);
+
+		assertEquals(tickets, response);
+	}
 	
 
 }
