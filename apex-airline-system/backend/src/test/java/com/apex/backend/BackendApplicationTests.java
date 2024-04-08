@@ -466,6 +466,26 @@ class BackendApplicationTests {
 	
 		assertEquals(purchaseslogs, response);
 	}
+
+	@Test
+	public void getHeader() {
+
+		record Header(String Text_Logo,
+                    String Section,
+                    String Link_Section,
+                    String Link_Profile,
+                    String Link_Login,
+                    String Logo) {
+            }
+
+		Header headerinformation = new Header("Avianca", "About Us", "/aboutus", "/user/dashboard", "/signin", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png");
+
+		when(controller.getHeader()).thenReturn(headerinformation);
+
+		Object response = controller.getHeader();
+
+		assertEquals(headerinformation, response);
+	}
 	
 
 }
