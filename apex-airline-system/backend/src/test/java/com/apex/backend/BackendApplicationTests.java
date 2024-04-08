@@ -633,4 +633,22 @@ class BackendApplicationTests {
 		assertEquals(partners, response);
 	}
 
+
+	@Test
+	public void getEmailParametersFlightModified() {
+		int flightid = 18; 
+
+		record userinformation(String name, String email, int flight_id, int ticket) {
+		}
+
+		List<userinformation> userinformations = new ArrayList<>();
+		userinformations.add(new userinformation("Mauricio Gaucho", "m@gmail.com", 73, 12)); 
+
+		when(controller.getEmailParametersFlightModified(flightid)).thenReturn(userinformations);
+
+		Object response = controller.getEmailParametersFlightModified(flightid);
+
+		assertEquals(userinformations, response);
+	}
+
 }
