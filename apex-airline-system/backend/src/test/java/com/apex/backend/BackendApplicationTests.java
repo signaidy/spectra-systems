@@ -410,6 +410,25 @@ class BackendApplicationTests {
 	
 		assertEquals(usert, response);
 	}
+
+	@Test
+	public void getTicketstobuy() {
+		int flight_id = 20;
+		String category = "economy"; 
+
+		 record Availabletickets(String origin, String destination, int price, int ticket_id) {
+        }
+
+		List<Availabletickets> availabletickets = new ArrayList<>();
+
+		availabletickets.add(new Availabletickets("Guatemala", "Alemania", 400, 12)); 
+
+		when(controller.getTicketstobuy(flight_id, category)).thenReturn(availabletickets);
+
+		Object response = controller.getTicketstobuy(flight_id, category);
+
+		assertEquals(availabletickets, response);
+	}
 	
 
 }
