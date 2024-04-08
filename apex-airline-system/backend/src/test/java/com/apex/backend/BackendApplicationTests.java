@@ -708,5 +708,45 @@ class BackendApplicationTests {
 
 		assertEquals(home, response);
 	}
+	
+	@Test
+	public void getScaleFLights() {
+		int origin = 23; 
+		int destination = 11; 
+
+		record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId, String destinationCityName,
+		String departureDate, String arrivalDate, int touristQuantity, int businessQuantity, int touristPrice, int businessPrice,
+		String detail, int type, int state, List<CommentaryRecord> commentaries, RatingRecord rating) {
+		}
+
+		List<CommentaryRecord> commentaries = new ArrayList<>();
+
+		RatingRecord rating = new RatingRecord(3, 10);
+
+		List<FlightScale> flightscale = new ArrayList<>();
+		flightscale.add(new FlightScale(
+			origin,
+			23,
+			"Mexico",
+			destination,
+			"Guatemala",
+			"2024-03-01",
+			"2024-03-02",
+			23,
+			10,
+			200,
+			400,
+			"FLy to the eterna primavera",
+			0,
+			1, 
+			commentaries, 
+			rating)); 
+
+			when(controller.getScaleFLights(origin, destination)).thenReturn(flightscale);
+
+			Object response = controller.getScaleFLights(origin, destination);
+	
+			assertEquals(flightscale, response);
+	}
 
 }
