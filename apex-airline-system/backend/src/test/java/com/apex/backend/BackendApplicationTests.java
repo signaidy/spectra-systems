@@ -486,6 +486,16 @@ class BackendApplicationTests {
 
 		assertEquals(headerinformation, response);
 	}
-	
+
+	@Test
+	public void updateHeader() {
+		Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
+
+		when(controller.updateHeader(head)).thenReturn(head);
+
+		Object response = controller.updateHeader(head);
+
+		assertEquals(head, response);
+	}
 
 }
