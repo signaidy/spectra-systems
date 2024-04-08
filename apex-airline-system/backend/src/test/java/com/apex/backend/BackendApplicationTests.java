@@ -498,7 +498,7 @@ class BackendApplicationTests {
 		assertEquals(head, response);
 	}
 
-	//Flight and Tickets - Cancelation
+	// //Flight and Tickets - Cancelation
 	// @Test
 	// public void updateFlightandTickets() {
 	// 	int flight_id = 32; 
@@ -513,10 +513,10 @@ class BackendApplicationTests {
 	// }
 
 
-	//Tickets Individual - Cancelation
+	// //Tickets Individual - Cancelation
 	// @Test
-	// public void updateFlightandTickets() {
-	// 	int flight_id = 32; 
+	// public void updateIndividualTicket() {
+	// 	int ticket_id = 42; 
 
 	// 	Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
 
@@ -546,19 +546,19 @@ class BackendApplicationTests {
 	}
 
 	// @Test
-	// public void updateFlight() {
-	// 	int flight_id = 79; 
+	public void updateFlight() {
+		int flight_id = 79; 
 
-	// 	Flight flight = new Ticket_purchase(flightId, originCityId, destinationCityId, destinationCityName, 
-	// 	departureDate, arrivalDate, touristPrice, businessPrice, detail, touristQuantity, businessQuantity, ); 
+		Flight flight = new Flight(3, 4, "2024-05-02", 
+		"2024-05-03", 10, 30, 300, 600, 10, 30, "Fly", 0); 
 
 
-	// 	when(controller.updateHeader(head)).thenReturn(head);
+		when(controller.updateFlight(flight, flight_id)).thenReturn(flight, flight_id);
 
-	// 	Object response = controller.updateHeader(head);
+		Object response = controller.updateFlight(flight, flight_id);
 
-	// 	assertEquals(head, response);
-	// }
+		assertEquals(flight, response);
+	}
 
 	@Test
 	public void getFooter() {
@@ -694,6 +694,19 @@ class BackendApplicationTests {
 		when(controller.getHome()).thenReturn(home);
 
 		Object response = controller.getHome();
+
+		assertEquals(home, response);
+	}
+
+	@Test
+	public void updateHome() {
+
+		Home home = new Home("IMG-BCKG", "IMG1", "ALEMANIA", "C1", "IMG2", "Japon", "C2", 
+		"IMG3", "T3", "C3");
+
+		when(controller.updateHome(home)).thenReturn(home);
+
+		Object response = controller.updateHome(home);
 
 		assertEquals(home, response);
 	}
