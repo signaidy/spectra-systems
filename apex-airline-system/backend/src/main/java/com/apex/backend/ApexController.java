@@ -816,6 +816,22 @@ public class ApexController {
         Connection conn = new OracleConnector().getConnection();
 
         try {
+            Statement checkStatement = conn.createStatement();
+            ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM About_Us");
+            result.next();
+            int rowCount = result.getInt(1);
+
+            if (rowCount == 0) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                "INSERT INTO About_us (slogan, gif, yt, cards_amount, title_one, text_one, img_one, TITLE_TWO, text_two, img_two, title_three, text_three, img_three,\n" + //
+                "title_four, text_four, img_four) VALUES ('%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s',\n" + //
+                "'%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+                au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one,
+                            au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
+                            au.img_three, au.title_four, au.text_four, au.img_four)); 
+            insertStatement.executeUpdate();
+            return new WebSuccess("About Us information inserted");
+            }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE About_us SET slogan = '%s', gif = '%s', yt = '%s', cards_amount = %d, title_one = '%s', text_one = '%s', img_one = '%s', \n"
