@@ -34,6 +34,9 @@
       .then((response) => response.json())
       .then((userpurchases) => {
         purchaseslogs = userpurchases;
+        console.log("hola"); 
+
+        console.log(purchaseslogs); 
       });
   });
 
