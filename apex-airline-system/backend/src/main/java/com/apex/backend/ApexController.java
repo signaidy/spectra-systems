@@ -1109,6 +1109,19 @@ public class ApexController {
         Connection conn = new OracleConnector().getConnection();
 
         try {
+            Statement checkStatement = conn.createStatement();
+            ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM Header");
+            result.next();
+            int rowCount = result.getInt(1);
+
+            if (rowCount == 0) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                "INSERT INTO Header (TEXT_LOGO, SECTION, LINK_SECTION, LINK_PROFILE, LINK_LOGIN, LOGO) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", 
+                head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login,
+                            head.Logo)); 
+            insertStatement.executeUpdate();
+            return new WebSuccess("Header information inserted");
+            }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = '%s', LINK_LOGIN = '%s', LOGO = '%s'",
