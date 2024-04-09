@@ -1635,6 +1635,20 @@ public class ApexController {
     public Object updateHome(@RequestBody Home Home) {
         Connection conn = new OracleConnector().getConnection();
         try {
+            Statement checkStatement = conn.createStatement();
+            ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM Home");
+            result.next();
+            int rowCount = result.getInt(1);
+
+            if (rowCount == 0) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                "INSERT INTO Home (BACKGROUND_IMAGE, FEATUREIMAGE_1, TITLE_1, CONTENT_1, FEATUREIMAGE_2, TITLE_2, CONTENT_2, FEATUREIMAGE_3, TITLE_3, DESCRIPTION_3)\n" + //
+                "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+                Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2,
+                Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3)); 
+            insertStatement.executeUpdate();
+            return new WebSuccess("Home information inserted");
+            }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s'",
