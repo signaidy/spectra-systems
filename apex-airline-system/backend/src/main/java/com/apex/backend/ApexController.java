@@ -822,8 +822,7 @@ public class ApexController {
                                     + //
                                     "TITLE_TWO = '%s', text_two = '%s', img_two = '%s', \n" + //
                                     "title_three = '%s', text_three = '%s', img_three = '%s', \n" + //
-                                    "title_four = '%s', text_four = '%s', img_four = '%s' \n" + //
-                                    "WHERE ID = 2",
+                                    "title_four = '%s', text_four = '%s', img_four = '%s'",
                             au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one,
                             au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
                             au.img_three, au.title_four, au.text_four, au.img_four));
@@ -1096,7 +1095,7 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = '%s', LINK_LOGIN = '%s', LOGO = '%s' WHERE ID = 1",
+                            "UPDATE Header SET TEXT_LOGO = '%s', SECTION = '%s', LINK_SECTION = '%s', LINK_PROFILE = '%s', LINK_LOGIN = '%s', LOGO = '%s'",
                             head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login,
                             head.Logo));
             query.executeQuery();
@@ -1332,7 +1331,7 @@ public class ApexController {
                                     + //
                                     "SECTION_4 = '%s', L4 = '%s', SECTION_5 = '%s', L5 = '%s', SECTION_6 = '%s', L6 = '%s', Title_2 = '%s', \n"
                                     + //
-                                    "Q_1 = '%s', Link_quick_1 = '%s', Q_2 = '%s', Link_quick_2 = '%s', Title_3 = '%s', C_1 = '%s', C_2 = '%s', copyright = '%s' WHERE ID = 1",
+                                    "Q_1 = '%s', Link_quick_1 = '%s', Q_2 = '%s', Link_quick_2 = '%s', Title_3 = '%s', C_1 = '%s', C_2 = '%s', copyright = '%s'",
                             footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3,
                             footer.L3, footer.Section_4, footer.L4,
                             footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2,
@@ -1410,7 +1409,7 @@ public class ApexController {
                     .prepareStatement(String.format(
                             "UPDATE Partners SET Title = '%s', Description = '%s', Partner_1 = '%s', L1 = '%s', Partner_2 = '%s', L2 = '%s', Partner_3 = '%s', \n"
                                     + //
-                                    "L3 = '%s', Partner_4 = '%s', L4 = '%s', Partner_5 = '%s', L5= '%s' WHERE ID = 2",
+                                    "L3 = '%s', Partner_4 = '%s', L4 = '%s', Partner_5 = '%s', L5= '%s'",
                             partner.Title, partner.Description, partner.Partner1, partner.L1, partner.Partner2,
                             partner.L2,
                             partner.Partner3, partner.L3, partner.Partner4, partner.L4, partner.Partner5, partner.L5));
@@ -1576,7 +1575,7 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s' WHERE ID = 1",
+                            "UPDATE Home SET BACKGROUND_IMAGE = '%s', FEATUREIMAGE_1 = '%s', TITLE_1 = '%s', CONTENT_1 = '%s', FEATUREIMAGE_2 = '%s', TITLE_2 = '%s', CONTENT_2 = '%s', FEATUREIMAGE_3 = '%s', TITLE_3 = '%s', DESCRIPTION_3 = '%s'",
                             Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2,
                             Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3));
             query.executeQuery();
