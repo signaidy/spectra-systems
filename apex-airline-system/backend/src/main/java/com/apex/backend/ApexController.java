@@ -1325,6 +1325,25 @@ public class ApexController {
         Connection conn = new OracleConnector().getConnection();
 
         try {
+            Statement checkStatement = conn.createStatement();
+            ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM Footer");
+            result.next();
+            int rowCount = result.getInt(1);
+
+            if (rowCount == 0) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                "INSERT INTO Footer (Title_1, SECTION_1, L1, SECTION_2, L2, SECTION_3, L3, SECTION_4, L4, SECTION_5, L5, SECTION_6, L6,\n" + //
+                "Title_2, Q_1, Link_quick_1, Q_2, Link_quick_2, Title_3, C_1, C_2, copyright) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',\n" + //
+                "'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+                footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3,
+                footer.L3, footer.Section_4, footer.L4,
+                footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2,
+                footer.Quick_Section_1, footer.Link_quick_1,
+                footer.Quick_Section_2, footer.Link_quick_2, footer.Title_3, footer.Contact_1,
+                footer.Contact_2, footer.copyright)); 
+            insertStatement.executeUpdate();
+            return new WebSuccess("Footer information inserted");
+            }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE Footer SET Title_1 = '%s', SECTION_1 = '%s', L1 = '%s', SECTION_2 = '%s', L2 = '%s', SECTION_3 = '%s', L3 = '%s', \n"
