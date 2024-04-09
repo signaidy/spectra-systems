@@ -1453,6 +1453,20 @@ public class ApexController {
     public Object updatePartners(@RequestBody Partners partner) {
         Connection conn = new OracleConnector().getConnection();
         try {
+            Statement checkStatement = conn.createStatement();
+            ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM Partners");
+            result.next();
+            int rowCount = result.getInt(1);
+
+            if (rowCount == 0) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                "INSERT INTO Partners (Title, Description, Partner_1, L1, Partner_2, L2, Partner_3, L3, Partner_4, L4, Partner_5, L5)\n" + //
+                "VALUES ('%s', '%s', '%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+                partner.Title, partner.Description, partner.Partner1, partner.L1, partner.Partner2,
+                partner.L2, partner.Partner3, partner.L3, partner.Partner4, partner.L4, partner.Partner5, partner.L5)); 
+            insertStatement.executeUpdate();
+            return new WebSuccess("Partner information inserted");
+            }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "UPDATE Partners SET Title = '%s', Description = '%s', Partner_1 = '%s', L1 = '%s', Partner_2 = '%s', L2 = '%s', Partner_3 = '%s', \n"
