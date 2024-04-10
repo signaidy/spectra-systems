@@ -5,7 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
-import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.repositories.ReservationRepository;

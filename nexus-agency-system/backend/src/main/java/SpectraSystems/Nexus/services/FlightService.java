@@ -1,6 +1,8 @@
 package SpectraSystems.Nexus.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,51 +14,42 @@ import org.springframework.stereotype.Service;
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.FlightPurchaseRequest;
-import SpectraSystems.Nexus.models.Rating;
 import SpectraSystems.Nexus.models.TicketPurchase;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.repositories.TicketPurchaseRepository;
-import io.jsonwebtoken.io.IOException;
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Comment;
 
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.TimeZone;
 
 @Service
 public class FlightService {
     private final FlightRepository flightRepository;
     private final RestTemplate restTemplate;
     private final TicketPurchaseRepository ticketPurchaseRepository;
+    private static final Logger logger = LoggerFactory.getLogger(FlightService.class);
 
     @Autowired
     private CommentService commentService; 
-    private List<Comment> commentaries;
 
     @Autowired
     public FlightService(FlightRepository flightRepository, RestTemplate restTemplate, TicketPurchaseRepository ticketPurchaseRepository) {
         this.flightRepository = flightRepository;
         this.restTemplate = restTemplate;
-        this.commentaries = commentaries;
         this.ticketPurchaseRepository = ticketPurchaseRepository;
     }
 
@@ -133,10 +126,10 @@ public class FlightService {
 
         // Get scale flights from the other backend
         externalFlight[] scaleFlights = responseEntity.getBody();
-
         // For each scale flight, fetch corresponding flights to final destination
         for (externalFlight scaleFlight : scaleFlights) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String formattedDepartureDay = dateFormat.format(scaleFlight.getArrivalDate());
             builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
                     .queryParam("originCity", scaleFlight.getDestinationCityId())
@@ -152,7 +145,6 @@ public class FlightService {
             );
 
             externalFlight[] secondaryFlights = secondaryResponseEntity.getBody();
-
             if (secondaryFlights != null && secondaryFlights.length > 0) {
                 // Add the first flight from the secondaryFlights array to the scaleFlight
                 scaleFlight.setScale(secondaryFlights[0]);
