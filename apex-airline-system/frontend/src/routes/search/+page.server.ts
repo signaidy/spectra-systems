@@ -3,7 +3,6 @@ import { PUBLIC_BASE_URL } from '$env/static/public';
 
 export function load({ locals, url }) {
   async function getOneWayFlights() {
-    console.log(url.searchParams.toString()); 
     const response = await fetch(
       `${PUBLIC_BASE_URL}/get-one-way-flights?${url.searchParams.toString()}`,
       {
@@ -72,7 +71,6 @@ export function load({ locals, url }) {
     );
 
     const result = await response.json();
-    console.log(result); 
 
     if (!response.ok) { 
       return []; 

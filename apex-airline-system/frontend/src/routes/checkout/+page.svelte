@@ -132,7 +132,7 @@
     <div class="px-5">
       <div class="mb-0">
         <a
-          href="#"
+          href="/"
           class="focus:outline-none hover:underline text-gray-500 text-sm"
           ><MoveLeft /></a
         >

@@ -329,7 +329,6 @@ public class ApexController {
             @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
             @RequestParam(value = "passengers", defaultValue = "") String passengers) {
         Connection conn = new OracleConnector().getConnection();
-
         List<FlightRecord> flights = new ArrayList<FlightRecord>();
 
         try {
@@ -1675,7 +1674,8 @@ public class ApexController {
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
         @RequestParam(value = "originCity", defaultValue = "") int origin,
-        @RequestParam(value = "destinationCity", defaultValue = "") int destination
+        @RequestParam(value = "destinationCity", defaultValue = "") int destination, 
+        @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
         ) {
         Connection conn = new OracleConnector().getConnection();
 
@@ -1688,8 +1688,8 @@ public class ApexController {
                             +//
                             "WHERE flight_id IN (SELECT f1.FLIGHT_ID AS first_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
                             +//
-                            ") AND f.state = 1 ORDER BY flight_id",
-                            origin, destination, origin, destination));
+                            ") AND f.state = 1 AND TRUNC(f.departure_date) = TO_DATE('%s', 'YYYY-MM-DD') ORDER BY flight_id",
+                            origin, destination, departureDay));
             ResultSet result = query.executeQuery();
 
             record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId, String destinationCityName,
@@ -1754,7 +1754,7 @@ public class ApexController {
             return flightscale;
         } catch (Throwable e) {
             e.printStackTrace();
-            return new WebError("Failed to get user tickets");
+            return new WebError("Failed to get scale flights");
         } finally {
             try {
                 if (conn != null) {
