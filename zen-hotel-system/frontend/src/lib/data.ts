@@ -426,6 +426,25 @@ export async function getSiteIdentity() {
   }
 }
 
+export async function getAnalytics() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const analyticsCollection = database.collection<Analytic>("analytics");
+
+    const result = analyticsCollection.find();
+
+    const analytics = [];
+    for await (const analytic of result) {
+      analytics.push({ ...analytic, _id: analytic._id.toString() });
+    }
+
+    return analytics;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Analytics");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""
