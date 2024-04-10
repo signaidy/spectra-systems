@@ -3,8 +3,19 @@ import { Suspense } from "react";
 import { SectionTitle } from "@/components/user/sectionTitle";
 import { Analytics } from "@/components/user/analytics/analytics";
 import { AnalyticCardSkeleton } from "@/components/skeletons/analyticCardSkeleton";
+import { FilterBar } from "@/components/user/analytics/filterBar";
 
-export default function AnalyticsHome() {
+export default function AnalyticsHome({
+  searchParams,
+}: {
+  searchParams: {
+    source?: "web" | "rest";
+    location?: string;
+    checkin?: string;
+    checkout?: string;
+    madeAt?: string;
+  };
+}) {
   return (
     <>
       <SectionTitle
@@ -22,8 +33,9 @@ export default function AnalyticsHome() {
           </div>
         }
       >
-        <div className="flex gap-y-3 gap-x-3 mb-8 flex-wrap mr-8">
-          <Analytics />
+        <div className="flex flex-col gap-y-3 mb-8 flex-wrap mr-8">
+          <FilterBar />
+          <Analytics searchParams={searchParams} />
         </div>
       </Suspense>
     </>
