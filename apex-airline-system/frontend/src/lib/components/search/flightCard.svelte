@@ -76,7 +76,7 @@
       </a>
     {:else}
       <a
-      href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`}
+      href={user ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}` : '/signin'}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -116,7 +116,7 @@
       </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`}
+        href={user ? `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}` : '/signin'}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">

@@ -329,6 +329,7 @@ public class ApexController {
             @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
             @RequestParam(value = "passengers", defaultValue = "") String passengers) {
         Connection conn = new OracleConnector().getConnection();
+        
         List<FlightRecord> flights = new ArrayList<FlightRecord>();
 
         try {
