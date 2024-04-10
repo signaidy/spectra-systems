@@ -883,6 +883,7 @@ export async function registerAnalytic(
   const analytics = database.collection("analytics");
 
   await analytics.insertOne({
+    source: "web",
     location,
     checkin,
     checkout,
