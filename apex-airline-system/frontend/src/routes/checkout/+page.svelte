@@ -26,7 +26,15 @@
   let price_flight_one;
   let from_one;
   let to_one;
-  let type = $page.url.searchParams.get("type");
+  let search_type = $page.url.searchParams.get("type"); 
+  let type; 
+  if(first_flightid == "null" && search_type == "one-way"){
+    type = "direct"
+  } else  if (first_flightid != "null" && search_type == "one-way")
+    { type = "scale"}
+    else if (first_flightid != "null" && search_type == "round-trip"){
+      type = "round-trip"
+    }
   let state = "active";
   async function handlePayNow() {
     if (ticketsamount_available < passengers) {
@@ -134,7 +142,7 @@
       </div>
       <div class="mb-5 text-gray-400">
         <a href="/" class="focus:outline-none hover:underline text-gray-500"
-          >Home</a
+          >Home {type}</a
         >
         /
         <a href="#" class="focus:outline-none hover:underline text-gray-500"
@@ -269,7 +277,7 @@
                       >
                     {/if}
                   {:else if type == "round-trip" || type == "scale"}
-                    <span class="font-semibold">${price * passengers}.00</span>
+                    <span class="font-semibold">${(price + price_flight_one) * passengers}.00</span>
                   {:else}
                     <span class="font-semibold">${price * passengers}.00</span>
                   {/if}
