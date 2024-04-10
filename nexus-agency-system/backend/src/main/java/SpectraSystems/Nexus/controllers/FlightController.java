@@ -2,14 +2,12 @@ package SpectraSystems.Nexus.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import SpectraSystems.Nexus.models.City;
@@ -19,7 +17,6 @@ import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.services.FlightService;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +28,7 @@ public class FlightController {
 
     private final FlightService flightService;
     private final FlightRepository flightRepository;
-    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
 
     @Autowired
     public FlightController(FlightRepository flightRepository, FlightService flightService) {
@@ -113,11 +110,11 @@ public class FlightController {
             return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
                     outboundFlight.getScale().getOriginCityId().equals(returnFlight.getDestinationCityId());
         } else if (outboundFlight.getScale() != null) {
-            return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getDestinationCityId()) &&
-                    outboundFlight.getScale().getOriginCityId().equals(returnFlight.getOriginCityId());
+            return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
+                    outboundFlight.getOriginCityId().equals(returnFlight.getDestinationCityId());
         } else {
-            return outboundFlight.getDestinationCityId().equals(returnFlight.getDestinationCityId()) &&
-                    outboundFlight.getOriginCityId().equals(returnFlight.getOriginCityId());
+            return outboundFlight.getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
+                    outboundFlight.getOriginCityId().equals(returnFlight.getDestinationCityId());
         }
     }
 

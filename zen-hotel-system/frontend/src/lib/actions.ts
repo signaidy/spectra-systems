@@ -873,6 +873,25 @@ export async function initiateSignUp(prevState: any, formData: FormData) {
   });
 }
 
+export async function registerAnalytic(
+  location: string,
+  checkin: string,
+  checkout: string,
+  guests: number
+) {
+  const database = client.db(process.env.DB_NAME);
+  const analytics = database.collection("analytics");
+
+  await analytics.insertOne({
+    source: "web",
+    location,
+    checkin,
+    checkout,
+    guests,
+    madeAt: format(new Date(), "MM/dd/yyyy HH:mm"),
+  });
+}
+
 export async function logOut() {
   cookies().delete("token");
   redirect("/");

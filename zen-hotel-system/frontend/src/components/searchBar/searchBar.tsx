@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+// Data
+import { registerAnalytic } from "@/lib/actions";
 // Components
 import { DatePicker } from "@/components/searchBar/datePicker";
 import { NumberPicker } from "@/components/searchBar/numberPicker";
@@ -73,6 +75,13 @@ export function SearchBar({ locations }: { locations: string[] }) {
     params.set("checkin", format(searchInfo.date.from, "MM/dd/yyyy"));
     params.set("checkout", format(searchInfo.date.to, "MM/dd/yyyy"));
     params.set("guests", searchInfo.guests.toString());
+
+    registerAnalytic(
+      searchInfo.location,
+      format(searchInfo.date.from, "MM/dd/yyyy"),
+      format(searchInfo.date.to, "MM/dd/yyyy"),
+      searchInfo.guests
+    );
 
     router.push(`/search?${params.toString()}`);
   }
