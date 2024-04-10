@@ -150,11 +150,13 @@ declare global {
   }
 
   export interface Analytic {
+    _id: string;
     source: "web" | "rest" ,
-    city: string,
+    location: string,
     checkin: string,
     checkout: string,
     guests: number,
+    madeAt: string,
   }
 }
 
