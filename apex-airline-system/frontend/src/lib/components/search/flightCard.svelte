@@ -9,8 +9,6 @@
   export let form;
   export let isScaleFlight;
 
-  console.log(flight);
-
   let f1 = $page.url.searchParams.get("f1");
   let c1 = $page.url.searchParams.get("c1");
   let type = $page.url.searchParams.get("type");
@@ -78,7 +76,7 @@
       </a>
     {:else}
       <a
-      href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=scale`}
+      href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -118,7 +116,7 @@
       </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=scale`}
+        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
