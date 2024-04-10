@@ -426,12 +426,18 @@ export async function getSiteIdentity() {
   }
 }
 
-export async function getAnalytics() {
+export async function getAnalytics(filters: {
+  source?: "web" | "rest";
+  location?: string;
+  checkin?: string;
+  checkout?: string;
+  madeAt?: string;
+}) {
   try {
     const database = client.db(process.env.DB_NAME);
     const analyticsCollection = database.collection<Analytic>("analytics");
-
-    const result = analyticsCollection.find();
+    
+    const result = analyticsCollection.find({ ...filters });
 
     const analytics = [];
     for await (const analytic of result) {
