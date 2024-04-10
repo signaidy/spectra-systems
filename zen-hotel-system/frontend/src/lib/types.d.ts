@@ -148,6 +148,14 @@ declare global {
     address: string;
     copyright: string;
   }
+
+  export interface Analytic {
+    source: "web" | "rest" ,
+    city: string,
+    checkin: string,
+    checkout: string,
+    guests: number,
+  }
 }
 
 export {};
