@@ -1,7 +1,7 @@
 <script lang="ts">
-  import SearchBar from "$lib/components/bundleSearch/searchBar.svelte";
-  import FlightCard from "$lib/components/search/flightCard.svelte";
-  import FlightCardSkeleton from "$lib/components/search/flightCardSkeleton.svelte";
+  import SearchBar from "$lib/components/bundleSearch/bundlesearchBar.svelte";
+  import FlightCard from "$lib/components/bundleSearch/flightCard.svelte";
+  import FlightCardSkeleton from "$lib/components/bundleSearch/flightCardSkeleton.svelte";
   import { page } from "$app/stores";
 
   export let data;

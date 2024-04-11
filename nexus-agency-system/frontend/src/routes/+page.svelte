@@ -4,6 +4,7 @@
   import Footer from "$lib/components/footer/footer.svelte";
   import { Plane, Hotel, Package } from "lucide-svelte";
   import HotelBar from "$lib/components/hotelBar/hotelBar.svelte";
+    import BundlesearchBar from "$lib/components/bundleSearch/bundlesearchBar.svelte";
 
   export let data;
 
@@ -68,7 +69,7 @@
       {:else if selectvalue == "HotelSearch"}
         <HotelBar cities={data.citieshotels}/>
       {:else if selectvalue == "Packages"}
-        <SearchBar cities={data.cities} />
+        <BundlesearchBar cities={data.cities} />
       {:else}
         <div></div>
       {/if}
