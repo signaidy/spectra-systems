@@ -68,6 +68,7 @@
       {:else if selectvalue == "HotelSearch"}
         <HotelBar cities={data.citieshotels}/>
       {:else if selectvalue == "Packages"}
+        <SearchBar cities={data.cities} />
       {:else}
         <div></div>
       {/if}
