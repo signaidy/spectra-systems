@@ -115,7 +115,8 @@ public class FlightService {
 
         builder = UriComponentsBuilder.fromUriString("http://localhost:8080/scale-flights")
                 .queryParam("originCity", originCity)
-                .queryParam("destinationCity", destinationCity);
+                .queryParam("destinationCity", destinationCity)
+                .queryParam("departureDay", departureDay);
 
         responseEntity = restTemplate.exchange(
                 builder.toUriString(),

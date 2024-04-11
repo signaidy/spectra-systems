@@ -1676,7 +1676,7 @@ public class ApexController {
     public Object getScaleFLights(
         @RequestParam(value = "originCity", defaultValue = "") int origin,
         @RequestParam(value = "destinationCity", defaultValue = "") int destination, 
-        @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
+        @RequestParam(value = "departureDay", defaultValue = "") String departureDay
         ) {
         Connection conn = new OracleConnector().getConnection();
 
