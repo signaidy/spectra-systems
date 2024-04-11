@@ -69,7 +69,6 @@
               {form}
               user={data.user}
               passengers={$page.url.searchParams.get("passengers")}
-              phase={$page.url.searchParams.get("phase")}
               originCity={$page.url.searchParams.get("originCity")}
               destinationCity={$page.url.searchParams.get("destinationCity")}
               departureDate={$page.url.searchParams.get("returnDay")}
