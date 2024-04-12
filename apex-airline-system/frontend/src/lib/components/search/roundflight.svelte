@@ -164,7 +164,7 @@
     {:else if phase.slice(0, 1) == "2"}
       <a
         href={mainorigin != String(flight.destinationCityId)
-          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${flight.originCityId}&departureDay=${returnDay}&passengers=${passengers}&type=${type}&phase=3
+          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight == true ? flight.originCityId : mainorigin}&departureDay=${returnDay}&passengers=${passengers}&type=${type}&phase=3
         &f1=${f1}&c1=${c1}&f2=${flight.flightId}&c2=premium&mainorigin=${mainorigin}&maindestination=${maindestination}`
           : `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
