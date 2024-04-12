@@ -21,6 +21,8 @@
   let c2 = $page.url.searchParams.get("c2");
   let f3 = $page.url.searchParams.get("f3");
   let c3 = $page.url.searchParams.get("c3");
+  let returnDay = $page.url.searchParams.get("returnDay");
+  console.log(returnDay); 
   console.log(typeof $page.url.searchParams.get("destinationCity"));
   console.log(typeof mainorigin);
   if (mainorigin === $page.url.searchParams.get("destinationCity")) {
@@ -76,7 +78,7 @@
     {:else if phase == "1"}
       <a
         href={`/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight ? maindestination : mainorigin}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2
-        &f1=${flight.flightId}&c1=economy&mainorigin=${mainorigin}&maindestination=${maindestination}`}
+        &f1=${flight.flightId}&c1=economy&mainorigin=${mainorigin}&maindestination=${maindestination}&returnDay=${returnDay}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -90,8 +92,8 @@
     {:else if phase.slice(0, 1) == "2"}
       <a
         href={mainorigin != String(flight.destinationCityId)
-          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${flight.originCityId}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3
-        &f1=${f1}&c1=${c1}&f2=${flight.flightId}&c2=economy&mainorigin=${mainorigin}&maindestination=${maindestination}`
+          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${flight.originCityId}&departureDay=${returnDay}&passengers=${passengers}&type=${type}&phase=3
+        &f1=${f1}&c1=${c1}&f2=${flight.flightId}&c2=economy&mainorigin=${mainorigin}&maindestination=${maindestination}&returnDay=${returnDay}`
           : `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
@@ -147,7 +149,7 @@
     {:else if phase == "1"}
       <a
         href={`/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight ? maindestination : mainorigin}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2
-        &f1=${flight.flightId}&c1=premium&mainorigin=${mainorigin}&maindestination=${maindestination}`}
+        &f1=${flight.flightId}&c1=premium&mainorigin=${mainorigin}&maindestination=${maindestination}&returnDay=${returnDay}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -161,7 +163,7 @@
     {:else if phase.slice(0, 1) == "2"}
       <a
         href={mainorigin != String(flight.destinationCityId)
-          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${flight.originCityId}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=3
+          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${flight.originCityId}&departureDay=${returnDay}&passengers=${passengers}&type=${type}&phase=3
         &f1=${f1}&c1=${c1}&f2=${flight.flightId}&c2=premium&mainorigin=${mainorigin}&maindestination=${maindestination}`
           : `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
@@ -191,8 +193,7 @@
       </a>
     {:else}
       <a
-      href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&second_flightid=${f2}&category2=${c2}&
-      third_flightid=${f3?.trim()}&category3=${c3}&type=${type}`}
+      href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&second_flightid=${f2}&category2=${c2}&third_flightid=${f3?.trim()}&category3=${c3}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
