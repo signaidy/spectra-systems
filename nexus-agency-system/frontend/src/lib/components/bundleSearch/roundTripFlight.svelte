@@ -29,7 +29,7 @@
       searchParams.append("returnDay", days.end.toString());
       searchParams.append("passengers", passengers.toString());
       searchParams.append("type", type);
-      goto(`/search?${searchParams.toString()}`);
+      goto(`/bundleSearch?${searchParams.toString()}`);
     } else {
       isValid = false;
     }
