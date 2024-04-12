@@ -77,7 +77,7 @@
       </div>
     {:else if phase == "1"}
       <a
-        href={`/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight ? maindestination : mainorigin}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2
+        href={`/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight ? maindestination : mainorigin}&departureDay=${isScaleFlight ? flight.arrivalDate.slice(0, 10) : returnDay}&passengers=${passengers}&type=${type}&phase=2
         &f1=${flight.flightId}&c1=economy&mainorigin=${mainorigin}&maindestination=${maindestination}&returnDay=${returnDay}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
@@ -148,7 +148,7 @@
       </div>
     {:else if phase == "1"}
       <a
-        href={`/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight ? maindestination : mainorigin}&departureDay=${flight.arrivalDate.slice(0, 10)}&passengers=${passengers}&type=${type}&phase=2
+        href={`/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight ? maindestination : mainorigin}&departureDay=${isScaleFlight ? flight.arrivalDate.slice(0, 10) : returnDay}&passengers=${passengers}&type=${type}&phase=2
         &f1=${flight.flightId}&c1=premium&mainorigin=${mainorigin}&maindestination=${maindestination}&returnDay=${returnDay}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
