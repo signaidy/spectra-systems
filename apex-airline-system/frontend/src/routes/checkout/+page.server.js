@@ -33,8 +33,10 @@ export const actions = {
 
     const purchasePromises = [
       makePurchase(formData.get("flight_id"), formData.get("category")),
+      formData.get("second_flightid") && makePurchase(formData.get("second_flightid"), formData.get("category2")),
       formData.get("first_flightid") && makePurchase(formData.get("first_flightid"), formData.get("category1")),
     ];
+    console.log(purchasePromises); 
 
     try {
       await Promise.all(purchasePromises);
