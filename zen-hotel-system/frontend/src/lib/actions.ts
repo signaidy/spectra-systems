@@ -660,9 +660,12 @@ export async function deletePartner(prevState: any, formData: FormData) {
 export async function disableHotel(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
-  const agencies = process.env.TRAVEL_AGENCIES!.split(",");
-  for (const agency of agencies) {
-    fetch(`${agency}/nexus/reservations/cancelHotel/${rawFormData.hotelId})`, {
+  const database = client.db(process.env.DB_NAME);
+  const agencies = database.collection("agencies");
+
+  const result = agencies.find();
+  for await (const agency of result) {
+    fetch(`${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`, {
       method: "PUT",
     });
   }
@@ -789,9 +792,12 @@ export async function enableReservation(prevState: any, formData: FormData) {
 export async function disableReservation(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
-  const agencies = process.env.TRAVEL_AGENCIES!.split(",");
-  for (const agency of agencies) {
-    fetch(`${agency}/nexus/reservations/cancel/${rawFormData.reservationId})`, {
+  const database = client.db(process.env.DB_NAME);
+  const agencies = database.collection("agencies");
+
+  const result = agencies.find();
+  for await (const agency of result) {
+    fetch(`${agency.endpoint}/nexus/reservations/cancel/${rawFormData.reservationId})`, {
       method: "PUT",
     });
   }
