@@ -22,11 +22,14 @@
   let category1 = $page.url.searchParams.get("category1");
   let second_flightid = $page.url.searchParams.get("second_flightid") || "null";
   let category2 = $page.url.searchParams.get("category2");
+  let third_flightid = $page.url.searchParams.get("third_flightid") || "null";
+  let category3 = $page.url.searchParams.get("category3");
   let price;
   let from;
   let to;
   let price_flight_one;
   let price_flight_two;
+  let price_flight_three;
   let from_one;
   let to_one;
   let search_type = $page.url.searchParams.get("type");
@@ -64,14 +67,23 @@
   });
 
   onMount(async () => {
+    fetch(`${PUBLIC_BASE_URL}/availabletickets/${third_flightid}/${category3}`)
+      .then((response) => response.json())
+      .then((available) => {
+        availabletickets = available;
+        if (availabletickets.length > 0) {
+          price_flight_three = availabletickets[0].price;
+        }
+      });
+  });
+
+  onMount(async () => {
     fetch(`${PUBLIC_BASE_URL}/availabletickets/${second_flightid}/${category2}`)
       .then((response) => response.json())
       .then((available) => {
         availabletickets = available;
         if (availabletickets.length > 0) {
           price_flight_two = availabletickets[0].price;
-          // from_one = availabletickets[0].origin;
-          // to_one = availabletickets[0].destination;
         }
       });
   });
@@ -104,6 +116,9 @@
     const formData = new FormData();
     formData.append("Discount", discount);
   });
+
+  console.log(second_flightid);
+  console.log($page.url.searchParams.get("third_flightid")?.trim());
 </script>
 
 {#if isOpen}
@@ -218,6 +233,29 @@
                 </div>
               </div>
             {/if}
+            {#if third_flightid != "null"}
+              <div
+                class="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6"
+              >
+                <div class="w-full flex items-center">
+                  <div class=" w-16 h-16">
+                    <p></p>
+                  </div>
+                  <div class="flex-grow pl-3">
+                    <h6 class="font-semibold uppercase text-gray-600">
+                      {category3} Flight
+                    </h6>
+                    <p class="text-gray-400">x {passengers}</p>
+                  </div>
+                  <div>
+                    <span class="font-semibold text-gray-600 text-xl"
+                      >${price_flight_three * passengers}</span
+                    ><span class="font-semibold text-gray-600 text-sm">.00</span
+                    >
+                  </div>
+                </div>
+              </div>
+            {/if}
             {#if type == "round-trip" || type == "scale"}
               <div
                 class="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6"
@@ -269,13 +307,25 @@
                   </div>
                 </div>
               {/if}
+              {#if third_flightid != "null"}
+                <div class="w-full flex mb-3 items-center">
+                  <div class="flex-grow">
+                    <span class="text-gray-600">Third flight - Ticket</span>
+                  </div>
+                  <div class="pl-3">
+                    <span class="font-semibold">${price_flight_three}.00</span>
+                  </div>
+                </div>
+              {/if}
               {#if type == "round-trip" || type == "scale"}
                 <div class="w-full flex mb-3 items-center">
                   <div class="flex-grow">
                     <span class="text-gray-600"
-                      >{second_flightid != "null"
-                        ? "Third flight - Ticket"
-                        : "Second flight - Ticket"}</span
+                      >{third_flightid != "null"
+                        ? "Fourth flight - Ticket"
+                        : second_flightid != "null"
+                          ? "Third flight - Ticket"
+                          : "Second flight - Ticket"}</span
                     >
                   </div>
                   <div class="pl-3">
@@ -290,7 +340,16 @@
                 <div class="pl-3">
                   {#if discount > 0}
                     {#if type == "round-trip" || type == "scale"}
-                      {#if second_flightid != "null"}
+                      {#if second_flightid != "null" && third_flightid != "null"}
+                        <span class="font-semibold"
+                          >${(price +
+                            price_flight_one +
+                            price_flight_two +
+                            price_flight_three) *
+                            passengers *
+                            (discount / 100)}.00</span
+                        >
+                      {:else if second_flightid != "null"}
                         <span class="font-semibold"
                           >${(price + price_flight_one + price_flight_two) *
                             passengers *
@@ -303,6 +362,15 @@
                             (discount / 100)}.00</span
                         >
                       {/if}
+                    {:else if third_flightid != "null" && second_flightid != "null" && type == "round-trip"}
+                      <span class="font-semibold"
+                        >${(price +
+                          price_flight_one +
+                          price_flight_two +
+                          price_flight_three) *
+                          passengers *
+                          (discount / 100)}.00</span
+                      >
                     {:else if second_flightid != "null" && type == "round-trip"}
                       <span class="font-semibold"
                         >${(price + price_flight_one + price_flight_two) *
@@ -330,7 +398,21 @@
                 <div class="pl-3">
                   {#if discount > 0}
                     {#if type == "round-trip" || type == "scale"}
-                      {#if second_flightid != "null"}
+                      {#if third_flightid != "null" && second_flightid != "null"}
+                        <span class="font-semibold"
+                          >${(price +
+                            price_flight_one +
+                            price_flight_two +
+                            price_flight_three) *
+                            passengers -
+                            (price +
+                              price_flight_one +
+                              price_flight_two +
+                              price_flight_three) *
+                              passengers *
+                              (discount / 100)}.00</span
+                        >
+                      {:else if second_flightid != "null"}
                         <span class="font-semibold"
                           >${(price + price_flight_one + price_flight_two) *
                             passengers -
@@ -353,7 +435,12 @@
                       >
                     {/if}
                   {:else if type == "round-trip" || type == "scale"}
-                    {#if second_flightid != "null"}
+                    {#if third_flightid != "null" && second_flightid != "null"}
+                      <span class="font-semibold"
+                        >${(price + price_flight_one + price_flight_two + price_flight_three) *
+                          passengers}.00</span
+                      >
+                    {:else if second_flightid != "null"}
                       <span class="font-semibold"
                         >${(price + price_flight_one + price_flight_two) *
                           passengers}.00</span
@@ -525,5 +612,8 @@
     <input type="hidden" name="second_flightid" value={second_flightid} />
     <input type="hidden" name="category2" value={category2} />
     <input type="hidden" name="price_flight_two" value={price_flight_two} />
+    <input type="hidden" name="third_flightid" value={third_flightid} />
+    <input type="hidden" name="category3" value={category3} />
+    <input type="hidden" name="price_flight_three" value={price_flight_three} />
   </div>
 </form>

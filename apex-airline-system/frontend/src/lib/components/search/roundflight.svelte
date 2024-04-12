@@ -120,8 +120,7 @@
       </a>
     {:else}
       <a
-        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&second_flightid=${f2}&category2=${c2}&
-        third_flightid=${f3}&category3=${c3}=${type}`}
+        href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&second_flightid=${f2}&category2=${c2}&third_flightid=${f3?.trim()}&category3=${c3}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
@@ -193,7 +192,7 @@
     {:else}
       <a
       href={`/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=premium&first_flightid=${f1}&category1=${c1}&second_flightid=${f2}&category2=${c2}&
-      third_flightid=${f3}&category3=${c3}=${type}`}
+      third_flightid=${f3?.trim()}&category3=${c3}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
       >
         <div class="text-sm text-muted-foreground">
