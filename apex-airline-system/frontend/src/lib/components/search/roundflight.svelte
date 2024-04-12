@@ -3,6 +3,7 @@
   import FlightCardModal from "$lib/components/search/flightCardModal.svelte";
   import { page } from "$app/stores";
   export let flight: Flight;
+  console.log(flight); 
   export let passengers: string | null;
   export let user: User;
   export let originCity: string | null;
@@ -92,7 +93,7 @@
     {:else if phase.slice(0, 1) == "2"}
       <a
         href={mainorigin != String(flight.destinationCityId)
-          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${flight.originCityId}&departureDay=${returnDay}&passengers=${passengers}&type=${type}&phase=3
+          ? `/search?originCity=${flight.destinationCityId}&destinationCity=${isScaleFlight == true ? flight.originCityId : mainorigin}&departureDay=${returnDay}&passengers=${passengers}&type=${type}&phase=3
         &f1=${f1}&c1=${c1}&f2=${flight.flightId}&c2=economy&mainorigin=${mainorigin}&maindestination=${maindestination}&returnDay=${returnDay}`
           : `/checkout?flightId=${flight.flightId}&passengers=${passengers}&category=economy&first_flightid=${f1}&category1=${c1}&type=${type}`}
         class="flex flex-col border rounded-md p-3 w-1/2 gap-y-3 shadow bg-background"
