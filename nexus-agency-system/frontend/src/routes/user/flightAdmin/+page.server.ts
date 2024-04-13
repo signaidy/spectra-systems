@@ -1,10 +1,12 @@
 import { fail, redirect } from "@sveltejs/kit";
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+
 export function load({ locals, url }) {
   const userId = locals.user.userId;
   const user = locals.user;
   async function getUserFlights() {
     const response = await fetch(
-      `http://localhost:42069/nexus/flights/user/${userId}`,
+      `${PUBLIC_BACKEND_URL}/flights/user/${userId}`,
       {
         method: "GET"
       }
@@ -25,7 +27,7 @@ export const actions = {
     const token = cookies.get('token');
     const id = data.get("id")
     try {
-      const response = await fetch(`http://localhost:42069/nexus/flights/deactivateTicket/${id}`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/deactivateTicket/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

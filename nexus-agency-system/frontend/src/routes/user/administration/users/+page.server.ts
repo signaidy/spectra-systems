@@ -1,9 +1,10 @@
 import { fail } from "@sveltejs/kit";
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 export async function load({ locals, cookies }) {
   async function getUsers() {
     const token = cookies.get("token")
-    const response = await fetch("http://localhost:42069/nexus/users", {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}/users`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -30,7 +31,7 @@ export const actions = {
     }
 
     try {
-      const response = await fetch(`http://localhost:42069/nexus/users/${data.get("userId")}`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/users/${data.get("userId")}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

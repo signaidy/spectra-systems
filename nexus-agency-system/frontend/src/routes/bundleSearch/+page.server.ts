@@ -1,9 +1,10 @@
 import { fail, redirect } from "@sveltejs/kit";
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 export function load({ locals, url }) {
   async function getOneWayFlights() {
     const response = await fetch(
-      `http://localhost:42069/nexus/flights/avianca/one-way-flights?${url.searchParams.toString()}`,
+      `${PUBLIC_BACKEND_URL}/flights/avianca/one-way-flights?${url.searchParams.toString()}`,
       {
         method: "GET"
       }
@@ -15,7 +16,7 @@ export function load({ locals, url }) {
 
   async function getRoundTripFlights() {
     const response = await fetch(
-      `http://localhost:42069/nexus/flights/avianca/round-trip-flights?${url.searchParams.toString()}`,
+      `${PUBLIC_BACKEND_URL}/flights/avianca/round-trip-flights?${url.searchParams.toString()}`,
       {
         method: "GET"
       }
@@ -26,7 +27,7 @@ export function load({ locals, url }) {
   }
 
   async function getCities() {
-    const response = await fetch("http://localhost:42069/nexus/flights/avianca/cities", {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/avianca/cities`, {
       method: "GET",
     });
 
@@ -62,7 +63,7 @@ export const actions = {
     }
     console.log(parentId)
     try {
-      const response = await fetch("http://localhost:42069/nexus/comments", {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +100,7 @@ export const actions = {
   createRating: async ({ request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:42069/nexus/flights/create-rating", {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/create-rating`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
