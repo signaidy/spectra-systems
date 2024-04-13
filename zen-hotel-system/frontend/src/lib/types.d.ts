@@ -158,6 +158,12 @@ declare global {
     guests: number,
     madeAt: string,
   }
+
+  export interface Agency {
+    _id: string;
+    name: string;
+    endpoint: string;
+  }
 }
 
 export {};
