@@ -83,7 +83,7 @@ export const actions = {
         bundle: bundle
       };
       console.log(body);
-      const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +118,7 @@ export const actions = {
           bundle: bundle
         };
         console.log(body);
-        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -153,7 +153,7 @@ export const actions = {
           bundle: bundle
         };
         console.log(body);
-        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -187,7 +187,7 @@ export const actions = {
             bundle: bundle
           };
           console.log(body);
-          const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+          const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
