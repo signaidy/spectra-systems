@@ -4,20 +4,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.FlightPurchaseRequest;
 import SpectraSystems.Nexus.models.Reservation;
+import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
+import SpectraSystems.Nexus.repositories.UserRepository;
 import SpectraSystems.Nexus.services.FlightService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,15 +36,20 @@ public class FlightController {
     private final FlightService flightService;
     private final FlightRepository flightRepository;
     private final ReservationRepository reservationRepository;
+    private final UserRepository userRepository;
 
 
-    private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
+    // private static final Logger logger = LoggerFactory.getLogger(FlightController.class); Use for loggin errors lmao
 
     @Autowired
-    public FlightController(FlightRepository flightRepository, FlightService flightService, ReservationRepository reservationRepository) {
+    private JavaMailSender emailSender;
+
+    @Autowired
+    public FlightController(FlightRepository flightRepository, FlightService flightService, ReservationRepository reservationRepository, UserRepository userRepository) {
         this.flightRepository = flightRepository;
         this.flightService = flightService;
         this.reservationRepository = reservationRepository;
+        this.userRepository = userRepository;
     }
 
     // Endpoint to retrieve all flights
@@ -174,11 +184,13 @@ public class FlightController {
                 for (Flight flightBundle : flightsWithSameBundle) {
                     flightBundle.setState("cancelled");
                     flightRepository.save(flightBundle);
+                    sendCancellationEmail(flightBundle.getUser());
                 }
                 List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
                 for (Reservation reservation : reservationsWithSameBundle) {
                     reservation.setState("cancelled");
                     reservationRepository.save(reservation);
+                    sendCancellationEmail(reservation.getUser());
                 }
             }
             return new ResponseEntity<>(flights, HttpStatus.OK);
@@ -220,5 +232,27 @@ public class FlightController {
     public ResponseEntity<Void> deleteFlight(@PathVariable("id") Long id) {
         flightService.deleteFlight(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private void sendCancellationEmail(Long userId) {
+        try {
+            // Retrieve user by userId
+            User user = userRepository.getReferenceById(userId);
+            // Get the email of the user
+            String userEmail = user.getEmail();
+    
+            // Create MimeMessage
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(userEmail);
+            helper.setSubject("Flight Reservation Cancellation");
+            helper.setText("Your flight reservation has been cancelled.");
+    
+            // Send email
+            emailSender.send(message);
+        } catch (MessagingException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
+        }
     }
 }

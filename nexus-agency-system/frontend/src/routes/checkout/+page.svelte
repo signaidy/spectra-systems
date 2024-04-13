@@ -24,14 +24,15 @@
 
   let availabletickets = [];
   let ticketsamount_available;
-
-  let price;
-  let from;
-  let to;
   let state = "active";
 
   async function handlePayNow() {
-    if (ticketsamount_available < passengers) {
+    if (flight.businessQuantity < passengers) {
+      alert(
+        "Insufficient tickets available. Please select a lower number of passengers."
+      );
+      return;
+    } else if (flight.touristQuantity < passengers) {
       alert(
         "Insufficient tickets available. Please select a lower number of passengers."
       );
@@ -40,30 +41,10 @@
     isOpen = true; 
   }
 
-  onMount(async () => {
-    fetch(`http://localhost:8080/availabletickets/${flight_id}/${category}`)
-      .then((response) => response.json())
-      .then((available) => {
-        availabletickets = available;
-        if (availabletickets.length > 0) {
-          price = availabletickets[0].price;
-          from = availabletickets[0].origin;
-          to = availabletickets[0].destination;
-        }
-      });
-  });
-
   onMount(() => {
     return unsubscribe;
   });
 
-  onMount(async () => {
-    const response = await fetch(
-      `http://localhost:8080/ticketsamount/${flight_id}/${category}`
-    );
-    const data = await response.json();
-    ticketsamount_available = data.tickets_amount;
-  });
 </script>
 
 {#if isOpen}
