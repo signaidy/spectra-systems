@@ -9,7 +9,7 @@ const { sign } = jsonwebtoken;
 export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
-    // const captcha = data.get("g-recaptcha-response"); 
+    const captcha = data.get("g-recaptcha-response"); 
 
     if (data.get("password") !== data.get("confirmedPassword")) {
       return fail(400, {
@@ -17,15 +17,15 @@ export const actions = {
       });
     }
 
-    // if (data.get("g-recaptcha-response") == '')
-    // {
-    //   return fail(400, {
-    //     error: "Fill up captcha verification",
-    //   });
-    // }
+    if (data.get("g-recaptcha-response") == '')
+    {
+      return fail(400, {
+        error: "Fill up captcha verification",
+      });
+    }
     
     try {
-      const response = await fetch(`${PUBLIC_BASE_URL}/create-user`, {
+      const response = await fetch(`${PUBLIC_BASE_URL}/create-user/${captcha}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
