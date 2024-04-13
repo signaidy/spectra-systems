@@ -1,5 +1,6 @@
 import { redirect } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 export const actions = {
   default: async ({ cookies, request }) => {
@@ -12,7 +13,7 @@ export const actions = {
     }
     
     try {
-      const response = await fetch("http://localhost:42069/nexus/auth/signup", {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

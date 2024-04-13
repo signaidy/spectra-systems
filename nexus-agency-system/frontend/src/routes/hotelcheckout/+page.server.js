@@ -1,3 +1,5 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+
 export const actions = {
   default: async({request, cookies}) => {
     const token = cookies.get('token');
@@ -41,7 +43,7 @@ export const actions = {
         guests: guests,
         bundle: bundle
       };
-      const response = await fetch(`http://localhost:42069/nexus/reservations`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/reservations`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +83,7 @@ export const actions = {
         bundle: bundle
       };
       console.log(body);
-      const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -116,7 +118,7 @@ export const actions = {
           bundle: bundle
         };
         console.log(body);
-        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -151,7 +153,7 @@ export const actions = {
           bundle: bundle
         };
         console.log(body);
-        const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -185,7 +187,7 @@ export const actions = {
             bundle: bundle
           };
           console.log(body);
-          const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
+          const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
