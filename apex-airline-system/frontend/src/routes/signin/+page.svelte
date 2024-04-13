@@ -10,14 +10,14 @@
   
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
   <script
     src="https://www.google.com/recaptcha/api.js"
     async
     defer
   >
   </script>
-</svelte:head>
+</svelte:head> -->
 
 <div
   class="min-h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
@@ -30,10 +30,10 @@
 
         return async ({ update }) => {
           await update();
-          const token = grecaptcha.getResponse();
-          console.log(token);
-          const formData = new FormData();
-          formData.append("captcha", token); // Add token to form data
+          // const token = grecaptcha.getResponse();
+          // console.log(token);
+          // const formData = new FormData();
+          // formData.append("captcha", token); // Add token to form data
           loading = false;
         };
       }}
@@ -110,7 +110,7 @@
           </div>
         </div>
       </div>
-      <div class="verification-container">
+      <!-- <div class="verification-container">
         <div class="flex flex-col gap-y-2 items-center">
           <div
             id ="cap"
@@ -118,7 +118,7 @@
             data-sitekey="6LfqapMpAAAAAHquHP9eo_lto-64CBjze61uwUVA"
           ></div>
         </div>
-      </div>
+      </div> -->
       <Button type="submit" disabled={loading} name="enviar">Sign In</Button>
     </form>
   </div>

@@ -778,7 +778,7 @@ class BackendApplicationTests {
 
 
     @Test
-    public void testGetCities() { // Consider renaming
+    public void testGetCities() {
 
         List<City> expectedCities = new ArrayList<>();
         expectedCities.add(new City("New York", "USA"));

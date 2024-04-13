@@ -92,9 +92,10 @@ public class ApexController {
     }
 
     // USER - SIGN UP
-    @PostMapping("/create-user/{token}")
-    public Object createUser(@RequestBody User user, @PathVariable String token) {
-        String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR";
+    @PostMapping("/create-user")
+    public Object createUser(@RequestBody User user) {
+        // public Object createUser(@RequestBody User user, @PathVariable String token)
+        // String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR";
 
         Connection conn = new OracleConnector().getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -103,17 +104,17 @@ public class ApexController {
         String passwordHash = BCrypt.hashpw(user.password, BCrypt.gensalt());
 
         try {
-            RestTemplate restTemplate = new RestTemplate();
-            MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
-            requestMap.add("secret", secretkey);
-            requestMap.add("response", token);
+            // RestTemplate restTemplate = new RestTemplate();
+            // MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+            // requestMap.add("secret", secretkey);
+            // requestMap.add("response", token);
 
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                    "https://www.google.com/recaptcha/api/siteverify", requestMap, Map.class);
+            // ResponseEntity<Map> response = restTemplate.postForEntity(
+            //         "https://www.google.com/recaptcha/api/siteverify", requestMap, Map.class);
 
-            Map<String, Object> responseBody = response.getBody();
+            // Map<String, Object> responseBody = response.getBody();
 
-            if ((Boolean) responseBody.get("success")) {
+            // if ((Boolean) responseBody.get("success")) {
                 PreparedStatement query = conn
                         .prepareStatement(String.format(
                                 "INSERT INTO users (email, password, first_name, last_name, origin_country, passport_number, role, age, percentage, entry_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', 'user', %s, %s, TO_DATE('%s', 'dd-MM-yyyy'))",
@@ -140,9 +141,9 @@ public class ApexController {
                         result.getString("age"),
                         result.getString("percentage"),
                         result.getString("entry_date"));
-            } else {
-                return new WebError("Failed to verify reCAPTCHA");
-            }
+            // } else {
+            //     return new WebError("Failed to verify reCAPTCHA");
+            // }
 
         } catch (Throwable e) {
             e.printStackTrace();
