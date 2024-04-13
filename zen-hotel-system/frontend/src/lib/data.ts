@@ -437,18 +437,43 @@ export async function getAnalytics(filters: {
     const database = client.db(process.env.DB_NAME);
     const analyticsCollection = database.collection<Analytic>("analytics");
 
-    const result = analyticsCollection.aggregate([{ $match: { ...filters } }]);
+    const result = analyticsCollection.find({ ...filters });
 
     const analytics = [];
     for await (const analytic of result) {
       analytics.push({ ...analytic, _id: analytic._id.toString() });
     }
-    console.log(analytics);
-    
-    return analytics as Analytic[];
+
+    return analytics;
   } catch (e) {
     console.log(e);
     throw new Error("Failed to Retrieve Analytics");
+  }
+}
+
+export async function getStats() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const analyticsCollection = database.collection<Analytic>("analytics");
+
+    const statsResult = analyticsCollection.aggregate([
+      {
+        $group: {
+          _id: { location: "$location", source: "$source" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const stats = [];
+    for await (const analytic of statsResult) {
+      stats.push(analytic);
+    }
+
+    return stats;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Stats");
   }
 }
 
