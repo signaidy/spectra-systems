@@ -1,6 +1,6 @@
 import { redirect } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
-import { PUBLIC_BASE_URL } from '$env/static/public';
+import { PUBLIC_BASE_URL } from "$env/static/public";
 
 import { JWT_SECRET } from "$env/static/private";
 import jsonwebtoken from "jsonwebtoken";
@@ -28,7 +28,7 @@ export const actions = {
 
       const token = sign(result, JWT_SECRET);
 
-      cookies.set("token", token, { path: "/", secure: false});
+      cookies.set("token", token, { path: "/", secure: false });
     } catch (error) {
       if (error instanceof Error) {
         return fail(500, {
