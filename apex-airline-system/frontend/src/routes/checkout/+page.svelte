@@ -117,8 +117,6 @@
     formData.append("Discount", discount);
   });
 
-  console.log(second_flightid);
-  console.log($page.url.searchParams.get("third_flightid")?.trim());
 </script>
 
 {#if isOpen}
