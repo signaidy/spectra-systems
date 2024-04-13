@@ -21,6 +21,7 @@ import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
 import SpectraSystems.Nexus.repositories.UserRepository;
 import SpectraSystems.Nexus.services.FlightService;
+import SpectraSystems.Nexus.services.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -36,7 +37,7 @@ public class FlightController {
     private final FlightService flightService;
     private final FlightRepository flightRepository;
     private final ReservationRepository reservationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
     // private static final Logger logger = LoggerFactory.getLogger(FlightController.class); Use for loggin errors lmao
@@ -45,11 +46,11 @@ public class FlightController {
     private JavaMailSender emailSender;
 
     @Autowired
-    public FlightController(FlightRepository flightRepository, FlightService flightService, ReservationRepository reservationRepository, UserRepository userRepository) {
+    public FlightController(FlightRepository flightRepository, FlightService flightService, ReservationRepository reservationRepository, UserService userService) {
         this.flightRepository = flightRepository;
         this.flightService = flightService;
         this.reservationRepository = reservationRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     // Endpoint to retrieve all flights
@@ -155,9 +156,11 @@ public class FlightController {
             @PathVariable String method,
             @RequestBody FlightPurchaseRequest purchaseRequest
     ) throws JsonProcessingException {
-        flightService.purchaseFlight( amount,  method, purchaseRequest);
+        flightService.purchaseFlight(amount, method, purchaseRequest);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Flight purchased successfully.");
+        // Send email notification to the user
+        sendPurchaseConfirmationEmail(purchaseRequest.getUser_id());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -184,13 +187,13 @@ public class FlightController {
                 for (Flight flightBundle : flightsWithSameBundle) {
                     flightBundle.setState("cancelled");
                     flightRepository.save(flightBundle);
-                    sendCancellationEmail(flightBundle.getUser());
+                    sendCancellationEmail(flightBundle.getUser(), "flight");
                 }
                 List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
                 for (Reservation reservation : reservationsWithSameBundle) {
                     reservation.setState("cancelled");
                     reservationRepository.save(reservation);
-                    sendCancellationEmail(reservation.getUser());
+                    sendCancellationEmail(reservation.getUser(), "reservation");
                 }
             }
             return new ResponseEntity<>(flights, HttpStatus.OK);
@@ -213,11 +216,13 @@ public class FlightController {
             for (Flight flights : flightsWithSameBundle) {
                 flights.setState("cancelled");
                 flightRepository.save(flights);
+                sendCancellationEmail(flights.getUser(), "flight");
             }
             List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
             for (Reservation reservation : reservationsWithSameBundle) {
                 reservation.setState("cancelled");
                 reservationRepository.save(reservation);
+                sendCancellationEmail(reservation.getUser(), "reservation");
             }
             
             return new ResponseEntity<>(HttpStatus.OK);
@@ -234,22 +239,57 @@ public class FlightController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    private void sendCancellationEmail(Long userId) {
+    private void sendCancellationEmail(Long userId, String Type) {
         try {
             // Retrieve user by userId
-            User user = userRepository.getReferenceById(userId);
-            // Get the email of the user
-            String userEmail = user.getEmail();
-    
-            // Create MimeMessage
-            MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(userEmail);
-            helper.setSubject("Flight Reservation Cancellation");
-            helper.setText("Your flight reservation has been cancelled.");
-    
-            // Send email
-            emailSender.send(message);
+            Optional<User> optionalUser = userService.getUserById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String userEmail = user.getEmail();    
+                // Create MimeMessage
+                MimeMessage message = emailSender.createMimeMessage();
+                if (Type == "flight") {
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setTo(userEmail);
+                    helper.setSubject("Flight Reservation Cancellation");
+                    helper.setText("Your flight reservation has been cancelled.");
+                } else {
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setTo(userEmail);
+                    helper.setSubject("Hotel Reservation Cancellation");
+                    helper.setText("Your hotel reservation has been cancelled.");
+                }        
+                // Send email
+                emailSender.send(message);
+            } else {
+                throw new RuntimeException("User with id " + userId + " not found.");
+            }
+            
+        } catch (MessagingException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
+        }
+    }
+
+    private void sendPurchaseConfirmationEmail(Long userId) {
+        try {
+            // Retrieve user by userId
+            Optional<User> optionalUser = userService.getUserById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String userEmail = user.getEmail();
+                // Create MimeMessage
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                helper.setTo(userEmail);
+                helper.setSubject("Flight Purchase Confirmation");
+                helper.setText("Thank you for purchasing a flight with us. Your booking has been confirmed.");
+        
+                // Send email
+                emailSender.send(message);
+            } else {
+                throw new RuntimeException("User with id " + userId + " not found.");
+            }            
         } catch (MessagingException ex) {
             // Handle exceptions
             ex.printStackTrace();

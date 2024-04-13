@@ -42,7 +42,7 @@
       <Command.Group>
         {#each cities as city}
           <Command.Item
-            value={city.name}
+            value={city}
             onSelect={(currentValue) => {
               value = currentValue;
               closeAndFocusTrigger(ids.trigger);
@@ -51,10 +51,10 @@
             <Check
               class={cn(
                 "mr-2 h-4 w-4",
-                value !== city.cityId && "text-transparent"
+                value !== city && "text-transparent"
               )}
             />
-            {city.name}
+            {city}
           </Command.Item>
         {/each}
       </Command.Group>
