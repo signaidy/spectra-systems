@@ -1,8 +1,9 @@
 import { fail, redirect } from "@sveltejs/kit";
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 export function load({ locals, url }) {
     async function getCitiesHotels() {
-        const response = await fetch("http://localhost:42069/nexus/reservations/cities", {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/reservations/cities`, {
           method: "GET",
         });
     
@@ -12,7 +13,7 @@ export function load({ locals, url }) {
 
     async function getRooms() {
         const response = await fetch(
-          `http://localhost:42069/nexus/reservations/roomsearch?${url.searchParams.toString()}`,
+          `${PUBLIC_BACKEND_URL}/reservations/roomsearch?${url.searchParams.toString()}`,
           {
             method: "GET"
           }

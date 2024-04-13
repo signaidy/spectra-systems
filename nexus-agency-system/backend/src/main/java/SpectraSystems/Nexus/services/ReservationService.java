@@ -1,13 +1,19 @@
 package SpectraSystems.Nexus.services;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
+import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.models.User;
+import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +21,17 @@ import java.util.Optional;
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
+    private final FlightRepository flightRepository;
+    private final UserService userService;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository) {
+    private JavaMailSender emailSender;
+
+    @Autowired
+    public ReservationService(ReservationRepository reservationRepository, FlightRepository flightRepository, UserService userService) {
         this.reservationRepository = reservationRepository;
+        this.flightRepository = flightRepository;
+        this.userService = userService;
     }
 
     public List<Reservation> getAllReservations() {
@@ -51,8 +64,14 @@ public class ReservationService {
     public void cancelReservationsByHotelId(String hotelId) {
         List<Reservation> reservations = getReservationsByHotelId(hotelId);
         for (Reservation reservation : reservations) {
+            String bundle = reservation.getBundle();
             reservation.setState("cancelled");
             reservationRepository.save(reservation);
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            for (Flight flight : flightsWithSameBundle) {
+                flight.setState("cancelled");
+                flightRepository.save(flight);
+            }
         }
     }
 
@@ -60,8 +79,16 @@ public class ReservationService {
         Optional<Reservation> optionalReservation  = getReservationById(id);
         if (optionalReservation.isPresent()) {
             Reservation reservation = optionalReservation.get();
+            String bundle = reservation.getBundle();
             reservation.setState("cancelled");
             reservationRepository.save(reservation);
+            sendCancellationEmail(reservation.getUser(), "reservation");
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            for (Flight flight : flightsWithSameBundle) {
+                flight.setState("cancelled");
+                flightRepository.save(flight);
+                sendCancellationEmail(reservation.getUser(), "flight");
+            }
         } else {
             throw new RuntimeException("Reservation was not found");
         }
@@ -85,6 +112,38 @@ public class ReservationService {
 
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
+    }
+
+    private void sendCancellationEmail(Long userId, String Type) {
+        try {
+            // Retrieve user by userId
+            Optional<User> optionalUser = userService.getUserById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String userEmail = user.getEmail();    
+                // Create MimeMessage
+                MimeMessage message = emailSender.createMimeMessage();
+                if (Type == "flight") {
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setTo(userEmail);
+                    helper.setSubject("Flight Reservation Cancellation");
+                    helper.setText("Your flight reservation has been cancelled.");
+                } else {
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setTo(userEmail);
+                    helper.setSubject("Hotel Reservation Cancellation");
+                    helper.setText("Your hotel reservation has been cancelled.");
+                }        
+                // Send email
+                emailSender.send(message);
+            } else {
+                throw new RuntimeException("User with id " + userId + " not found.");
+            }
+            
+        } catch (MessagingException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
+        }
     }
 }
 

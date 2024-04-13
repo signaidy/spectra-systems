@@ -8,12 +8,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.ArrayList;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
 
 @SpringBootTest
 class BackendApplicationTests {
+	public interface CityRepository {
+        List<City> getCities();
+    }
 
 	@Mock
 	private ApexController controller;
+
+	@Mock
+    private CityRepository cityRepository;
 
 	@Test
 	public void signIn() {
@@ -390,38 +398,38 @@ class BackendApplicationTests {
 		String method = "visa";
 		int discount = 0;
 		int ticket_id = 79;
-		int user_id = 1; 
+		int user_id = 1;
 		int flight_id = 21;
-		String type = "premium"; 
-		int state = 1; 
+		String type = "premium";
+		int state = 1;
 
 		record userTickets(int ticket_id, int user_id) {
 		}
 
 		String amountString = String.valueOf(amount);
-		Ticket_purchase ticketPurchase = new Ticket_purchase(user_id, flight_id, state, type, amountString); 
-	
+		Ticket_purchase ticketPurchase = new Ticket_purchase(user_id, flight_id, state, type, amountString);
+
 		List<userTickets> usert = new ArrayList<>();
-		usert.add(new userTickets(ticket_id,1)); 
-	
+		usert.add(new userTickets(ticket_id, 1));
+
 		when(controller.purchase(ticketPurchase, amount, method, discount)).thenReturn(usert);
-	
+
 		Object response = controller.purchase(ticketPurchase, amount, method, discount);
-	
+
 		assertEquals(usert, response);
 	}
 
 	@Test
 	public void getTicketstobuy() {
 		int flight_id = 20;
-		String category = "economy"; 
+		String category = "economy";
 
-		 record Availabletickets(String origin, String destination, int price, int ticket_id) {
-        }
+		record Availabletickets(String origin, String destination, int price, int ticket_id) {
+		}
 
 		List<Availabletickets> availabletickets = new ArrayList<>();
 
-		availabletickets.add(new Availabletickets("Guatemala", "Alemania", 400, 12)); 
+		availabletickets.add(new Availabletickets("Guatemala", "Alemania", 400, 12));
 
 		when(controller.getTicketstobuy(flight_id, category)).thenReturn(availabletickets);
 
@@ -433,12 +441,12 @@ class BackendApplicationTests {
 	@Test
 	public void getAmounttickets() {
 		int flight_id = 20;
-		String category = "economy"; 
+		String category = "economy";
 
 		record ticketsamount(int tickets_amount) {
 		}
 
-		ticketsamount tickets = new ticketsamount(12); 
+		ticketsamount tickets = new ticketsamount(12);
 
 		when(controller.getAmounttickets(flight_id, category)).thenReturn(tickets);
 
@@ -447,23 +455,22 @@ class BackendApplicationTests {
 		assertEquals(tickets, response);
 	}
 
-
 	@Test
 	public void getpurchaselogs() {
 
 		record purchases(String purchase_number, String ticket, String type, String origin, String destination,
-                    String purchase_date, String price, String paymenth_method,
-                    String departure_date, String arrival_date, int discount, String user_name) {
-            }
+				String purchase_date, String price, String paymenth_method,
+				String departure_date, String arrival_date, int discount, String user_name) {
+		}
 
-	
 		List<purchases> purchaseslogs = new ArrayList<>();
-		purchaseslogs.add(new purchases("277", "450", "Premium", "Alemania", "Peru", "2024-03-01",  "700", "MasterCard", "2024-04-05", "2024-04-06", 10, "Ricardo Montaner")); 
-	
+		purchaseslogs.add(new purchases("277", "450", "Premium", "Alemania", "Peru", "2024-03-01", "700", "MasterCard",
+				"2024-04-05", "2024-04-06", 10, "Ricardo Montaner"));
+
 		when(controller.getpurchaselogs()).thenReturn(purchaseslogs);
-	
+
 		Object response = controller.getpurchaselogs();
-	
+
 		assertEquals(purchaseslogs, response);
 	}
 
@@ -471,14 +478,15 @@ class BackendApplicationTests {
 	public void getHeader() {
 
 		record Header(String Text_Logo,
-                    String Section,
-                    String Link_Section,
-                    String Link_Profile,
-                    String Link_Login,
-                    String Logo) {
-            }
+				String Section,
+				String Link_Section,
+				String Link_Profile,
+				String Link_Login,
+				String Logo) {
+		}
 
-		Header headerinformation = new Header("Avianca", "About Us", "/aboutus", "/user/dashboard", "/signin", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png");
+		Header headerinformation = new Header("Avianca", "About Us", "/aboutus", "/user/dashboard", "/signin",
+				"https://i.ibb.co/X4qF7Lt/Image-Tab-1.png");
 
 		when(controller.getHeader()).thenReturn(headerinformation);
 
@@ -489,7 +497,8 @@ class BackendApplicationTests {
 
 	@Test
 	public void updateHeader() {
-		Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login", "https://i.ibb.co/X4qF7Lt/Image-Tab-1.png"); 
+		Header head = new Header("American Airlines", "Bugdests", "/budegts", "/user/profile", "login",
+				"https://i.ibb.co/X4qF7Lt/Image-Tab-1.png");
 
 		when(controller.updateHeader(head)).thenReturn(head);
 
@@ -498,58 +507,54 @@ class BackendApplicationTests {
 		assertEquals(head, response);
 	}
 
-	//Flight and Tickets - Cancelation
+	// Flight and Tickets - Cancelation
 	@Test
 	public void updateFlightandTickets() {
-		int flight_id = 32; 
-		String expectedResponse = "Flight and tickets canceled"; 
-	
+		int flight_id = 32;
+		String expectedResponse = "Flight and tickets canceled";
+
 		when(controller.updateFlightandTickets(flight_id)).thenReturn(expectedResponse);
-	
+
 		Object actualResponse = controller.updateFlightandTickets(flight_id);
-	
+
 		assertEquals(expectedResponse, actualResponse);
 	}
-	
 
-	//Tickets Individual - Cancelation
+	// Tickets Individual - Cancelation
 	@Test
 	public void updateIndividualTicket() {
-		int ticket_id = 42; 
+		int ticket_id = 42;
 		String expectedResponse = "User ticket canceled";
-	
+
 		when(controller.updateIndividualTicket(ticket_id)).thenReturn(expectedResponse);
-	
+
 		Object response = controller.updateIndividualTicket(ticket_id);
-	
+
 		assertEquals(expectedResponse, response);
 	}
 
-
 	@Test
 	public void getDiscount() {
-		int id = 27; 
+		int id = 27;
 
 		record Discount(int discount) {
 		}
 
-	
-		Discount discount = new Discount(45); 
-	
+		Discount discount = new Discount(45);
+
 		when(controller.getDiscount(id)).thenReturn(discount);
-	
+
 		Object response = controller.getDiscount(id);
-	
+
 		assertEquals(discount, response);
 	}
 
 	// @Test
 	public void updateFlight() {
-		int flight_id = 79; 
+		int flight_id = 79;
 
-		Flight flight = new Flight(3, 4, "2024-05-02", 
-		"2024-05-03", 10, 30, 300, 600, 10, 30, "Fly", 0); 
-
+		Flight flight = new Flight(3, 4, "2024-05-02",
+				"2024-05-03", 10, 30, 300, 600, 10, 30, "Fly", 0);
 
 		when(controller.updateFlight(flight, flight_id)).thenReturn(flight, flight_id);
 
@@ -562,22 +567,24 @@ class BackendApplicationTests {
 	public void getFooter() {
 
 		record Footer(String Title_1, String Section_1, String L1,
-			String Section_2, String L2,
-			String Section_3, String L3,
-			String Section_4, String L4,
-			String Section_5, String L5,
-			String Section_6, String L6,
-			String Title_2, String Q_1, String Link_quick_1,
-			String Q_2, String Linkl_quick_2,
-			String Title_3,
-			String C_1,
-			String C_2,
-			String Copyright) {
-	}
+				String Section_2, String L2,
+				String Section_3, String L3,
+				String Section_4, String L4,
+				String Section_5, String L5,
+				String Section_6, String L6,
+				String Title_2, String Q_1, String Link_quick_1,
+				String Q_2, String Linkl_quick_2,
+				String Title_3,
+				String C_1,
+				String C_2,
+				String Copyright) {
+		}
 
-		Footer footerinformation = new Footer("About Us", "Avianca", "/aboutus", "Budegts", "/budgets", "Carriage", "/carriage",
-		"Rules", "/rules", "Seats", "/seats", "Partners", "/aboutus", "Quick L", "Check fast", "/fastcheck", "Fast reservation", "/fastreserve", 
-		"Contacts form", "CES, Guatemala", "@spectrasystem.com", "Avianca reserved");
+		Footer footerinformation = new Footer("About Us", "Avianca", "/aboutus", "Budegts", "/budgets", "Carriage",
+				"/carriage",
+				"Rules", "/rules", "Seats", "/seats", "Partners", "/aboutus", "Quick L", "Check fast", "/fastcheck",
+				"Fast reservation", "/fastreserve",
+				"Contacts form", "CES, Guatemala", "@spectrasystem.com", "Avianca reserved");
 
 		when(controller.getFooter()).thenReturn(footerinformation);
 
@@ -585,13 +592,14 @@ class BackendApplicationTests {
 
 		assertEquals(footerinformation, response);
 	}
-	
 
 	@Test
 	public void updateFooter() {
-		Footer footer = new Footer("About", "American Airlines", "/aboutus", "Budegts", "/budgets", "Carriage", "/carriage",
-		"Rules", "/rules", "Seats", "/seats", "Partners", "/aboutus", "Quick L", "Check fast", "/fastcheck", "Fast reservation", "/fastreserve", 
-		"Contacts form", "CES, Guatemala", "@americanair.com", "American Airlines"); 
+		Footer footer = new Footer("About", "American Airlines", "/aboutus", "Budegts", "/budgets", "Carriage",
+				"/carriage",
+				"Rules", "/rules", "Seats", "/seats", "Partners", "/aboutus", "Quick L", "Check fast", "/fastcheck",
+				"Fast reservation", "/fastreserve",
+				"Contacts form", "CES, Guatemala", "@americanair.com", "American Airlines");
 
 		when(controller.updateFooter(footer)).thenReturn(footer);
 
@@ -604,12 +612,13 @@ class BackendApplicationTests {
 	public void getPartners() {
 
 		record Partner(String Title, String Description, String Partner1, String L1, String Partner2, String L2,
-		String Partner3, String L3,
-		String Partner4, String L4, String Partner5, String L5) {
+				String Partner3, String L3,
+				String Partner4, String L4, String Partner5, String L5) {
 		}
 
-		Partner partners = new Partner("Meet our partners", "This partners have reached our agreements and have our confidence to provide you the most valuable things",
-		 "IMG1", "LINK1", "IMG2", "LINK2", "IMG3", "LINK3", "IMG4", "LINK4", "IMG5", "LINK5");
+		Partner partners = new Partner("Meet our partners",
+				"This partners have reached our agreements and have our confidence to provide you the most valuable things",
+				"IMG1", "LINK1", "IMG2", "LINK2", "IMG3", "LINK3", "IMG4", "LINK4", "IMG5", "LINK5");
 
 		when(controller.getPartners()).thenReturn(partners);
 
@@ -618,11 +627,11 @@ class BackendApplicationTests {
 		assertEquals(partners, response);
 	}
 
-
 	@Test
 	public void updatePartners() {
-		Partners partners = new Partners("Partners", "This company have prove us a lot of value into the service given to users so we are related with them",
-		"IMG1", "LINK1", "IMG2", "LINK2", "IMG3", "LINK3", "IMG4", "LINK4", "IMG5", "LINK5");
+		Partners partners = new Partners("Partners",
+				"This company have prove us a lot of value into the service given to users so we are related with them",
+				"IMG1", "LINK1", "IMG2", "LINK2", "IMG3", "LINK3", "IMG4", "LINK4", "IMG5", "LINK5");
 
 		when(controller.updatePartners(partners)).thenReturn(partners);
 
@@ -631,16 +640,15 @@ class BackendApplicationTests {
 		assertEquals(partners, response);
 	}
 
-
 	@Test
 	public void getEmailParametersFlightModified() {
-		int flightid = 18; 
+		int flightid = 18;
 
 		record userinformation(String name, String email, int flight_id, int ticket) {
 		}
 
 		List<userinformation> userinformations = new ArrayList<>();
-		userinformations.add(new userinformation("Mauricio Gaucho", "m@gmail.com", 73, 12)); 
+		userinformations.add(new userinformation("Mauricio Gaucho", "m@gmail.com", 73, 12));
 
 		when(controller.getEmailParametersFlightModified(flightid)).thenReturn(userinformations);
 
@@ -651,9 +659,9 @@ class BackendApplicationTests {
 
 	@Test
 	public void createCity() {
-		String citysend = "Mexico"; 
-		
-		City city = new City("12", citysend); 
+		String citysend = "Mexico";
+
+		City city = new City("12", citysend);
 
 		when(controller.createCity(citysend)).thenReturn(city);
 
@@ -665,11 +673,11 @@ class BackendApplicationTests {
 	@Test
 	public void updateCities() {
 		String citysend = "Japan";
-		int id = 6;  
+		int id = 6;
 
 		String idcity = String.valueOf(id);
-		
-		City city = new City(idcity, citysend); 
+
+		City city = new City(idcity, citysend);
 
 		when(controller.updateCities(citysend, id)).thenReturn(city);
 
@@ -677,17 +685,17 @@ class BackendApplicationTests {
 
 		assertEquals(city, response);
 	}
-	
+
 	@Test
 	public void getHome() {
 
 		record Home(String Background, String FeatureImage1, String Title1, String Content1, String FeatureImage2,
-                    String Title2, String Content2,
-                    String FeatureImage3, String Title3, String Content3) {
-            }
+				String Title2, String Content2,
+				String FeatureImage3, String Title3, String Content3) {
+		}
 
-		Home home = new Home("IMG-BCKG", "IMG1", "ALEMANIA", "C1", "IMG2", "Japon", "C2", 
-		"IMG3", "T3", "C3");
+		Home home = new Home("IMG-BCKG", "IMG1", "ALEMANIA", "C1", "IMG2", "Japon", "C2",
+				"IMG3", "T3", "C3");
 
 		when(controller.getHome()).thenReturn(home);
 
@@ -699,8 +707,8 @@ class BackendApplicationTests {
 	@Test
 	public void updateHome() {
 
-		Home home = new Home("IMG-BCKG", "IMG1", "ALEMANIA", "C1", "IMG2", "Japon", "C2", 
-		"IMG3", "T3", "C3");
+		Home home = new Home("IMG-BCKG", "IMG1", "ALEMANIA", "C1", "IMG2", "Japon", "C2",
+				"IMG3", "T3", "C3");
 
 		when(controller.updateHome(home)).thenReturn(home);
 
@@ -708,15 +716,18 @@ class BackendApplicationTests {
 
 		assertEquals(home, response);
 	}
-	
+
 	@Test
 	public void getScaleFLights() {
-		int origin = 23; 
-		int destination = 11; 
+		int origin = 23;
+		int destination = 11;
+		String date = "2024-01-11";
 
-		record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId, String destinationCityName,
-		String departureDate, String arrivalDate, int touristQuantity, int businessQuantity, int touristPrice, int businessPrice,
-		String detail, int type, int state, List<CommentaryRecord> commentaries, RatingRecord rating) {
+		record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId,
+				String destinationCityName,
+				String departureDate, String arrivalDate, int touristQuantity, int businessQuantity, int touristPrice,
+				int businessPrice,
+				String detail, int type, int state, List<CommentaryRecord> commentaries, RatingRecord rating) {
 		}
 
 		List<CommentaryRecord> commentaries = new ArrayList<>();
@@ -725,33 +736,33 @@ class BackendApplicationTests {
 
 		List<FlightScale> flightscale = new ArrayList<>();
 		flightscale.add(new FlightScale(
-			origin,
-			23,
-			"Mexico",
-			destination,
-			"Guatemala",
-			"2024-03-01",
-			"2024-03-02",
-			23,
-			10,
-			200,
-			400,
-			"FLy to the eterna primavera",
-			0,
-			1, 
-			commentaries, 
-			rating)); 
+				origin,
+				23,
+				"Mexico",
+				destination,
+				"Guatemala",
+				"2024-03-01",
+				"2024-03-02",
+				23,
+				10,
+				200,
+				400,
+				"FLy to the eterna primavera",
+				0,
+				1,
+				commentaries,
+				rating));
 
-			when(controller.getScaleFLights(origin, destination)).thenReturn(flightscale);
+		when(controller.getScaleFLights(origin, destination, date)).thenReturn(flightscale);
 
-			Object response = controller.getScaleFLights(origin, destination);
-	
-			assertEquals(flightscale, response);
+		Object response = controller.getScaleFLights(origin, destination, date);
+
+		assertEquals(flightscale, response);
 	}
 
 	@Test
 	public void getOneCity() {
-		int cityid = 34; 
+		int cityid = 34;
 
 		record UniqueCity(String name) {
 		}
@@ -765,4 +776,21 @@ class BackendApplicationTests {
 		assertEquals(city, response);
 	}
 
+
+    @Test
+    public void testGetCities() {
+
+        List<City> expectedCities = new ArrayList<>();
+        expectedCities.add(new City("New York", "USA"));
+        expectedCities.add(new City("London", "UK"));
+
+		when(controller.getCities()).thenReturn(expectedCities);
+		Object allCities = controller.getCities();
+
+        assertEquals(expectedCities, allCities);
+
+		verify(controller).getCities();
+    }
 }
+
+

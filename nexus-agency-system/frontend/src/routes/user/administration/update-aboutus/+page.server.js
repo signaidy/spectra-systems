@@ -1,7 +1,8 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 
  export async function load({ fetch }) {
-     const response = await fetch("http://localhost:42069/nexus/aboutus/1");
+     const response = await fetch(`${PUBLIC_BACKEND_URL}/aboutus/1`);
      const aboutus = await response.json();
      return {
         aboutus,
@@ -13,7 +14,7 @@ export const actions = {
     default: async({request, cookies}) => {
         const formData = await request.formData(); 
         const token = cookies.get('token');
-        const response = await fetch(`http://localhost:42069/nexus/aboutus/1`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/aboutus/1`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

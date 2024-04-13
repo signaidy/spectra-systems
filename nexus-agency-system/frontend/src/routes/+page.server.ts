@@ -1,6 +1,8 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+
 export function load({ locals }) {
   async function getCities() {
-    const response = await fetch("http://localhost:42069/nexus/flights/avianca/cities", {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/avianca/cities`, {
       method: "GET",
     });
 
@@ -9,7 +11,7 @@ export function load({ locals }) {
   }
 
   async function getCitiesHotels() {
-    const response = await fetch("http://localhost:42069/nexus/reservations/cities", {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}/reservations/cities`, {
       method: "GET",
     });
 

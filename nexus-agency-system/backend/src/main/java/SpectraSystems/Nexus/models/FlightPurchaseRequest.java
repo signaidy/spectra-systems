@@ -15,12 +15,13 @@ public class FlightPurchaseRequest {
     private Date purchaseDate;
     private Double price;
     private Long rating;
+    private String bundle;
 
     public FlightPurchaseRequest() {
         // Default constructor
     }
 
-    public FlightPurchaseRequest(Long userId, Long flightId, String state, String type, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, Long rating, Date purchaseDate, Double price) {
+    public FlightPurchaseRequest(Long userId, Long flightId, String state, String type, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, Long rating, Date purchaseDate, String bundle, Double price) {
         this.userId = userId;
         this.flightId = flightId;
         this.state = state;
@@ -31,6 +32,7 @@ public class FlightPurchaseRequest {
         this.returnDate = returnDate;
         this.rating = rating;
         this.purchaseDate = purchaseDate;
+        this.bundle = bundle;
         this.price = price;
     }
 
@@ -127,5 +129,13 @@ public class FlightPurchaseRequest {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public void setBundle(String bundle){
+        this.bundle = bundle;
+    }
+
+    public String getBundle(){
+        return bundle;
     }
 }

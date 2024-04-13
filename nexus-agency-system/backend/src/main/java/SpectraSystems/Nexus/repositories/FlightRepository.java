@@ -10,5 +10,6 @@ import SpectraSystems.Nexus.models.Flight;
 public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findByUserid(Long userId);
     List<Flight> findAllByFlightNumber(String flightNumber);
+    List<Flight> findByBundle(String bundle);
 }
 

@@ -57,7 +57,7 @@ public class Reservation {
     private Integer bedAmount;
 
     @Column(name = "price")
-    private Integer price;
+    private Double price;
     
     @Column(name = "total_days")
     private Integer totalDays;
@@ -72,12 +72,15 @@ public class Reservation {
     @Column(name="state")
     private String state;
 
+    @Column(name="bundle")
+    private String bundle;
+
     public Reservation() {
 
     }
 
     public Reservation(Long id, String hotelId, Long user,  String hotel, Date dateStart, Date dateEnd, String roomType,
-            String reservationNumber, String location, Long rating, String bedSize, Integer bedAmount, Integer price, Integer totalDays, Double totalPrice, Integer guests, String state) {
+            String reservationNumber, String location, Long rating, String bedSize, Integer bedAmount, Double price, Integer totalDays, Double totalPrice, Integer guests, String state, String bundle) {
         this.userid = user;
         this.hotelId = hotelId;
         this.hotel = hotel;
@@ -199,11 +202,11 @@ public class Reservation {
         this.bedAmount = bedAmount;
     }
     
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
     
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -229,6 +232,14 @@ public class Reservation {
 
     public void setGuests(Integer guests) {
         this.guests = guests;
+    }
+
+    public void setBundle(String bundle){
+        this.bundle = bundle;
+    }
+
+    public String getBundle(){
+        return bundle;
     }
 }
 

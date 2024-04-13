@@ -436,7 +436,7 @@ export async function getAnalytics(filters: {
   try {
     const database = client.db(process.env.DB_NAME);
     const analyticsCollection = database.collection<Analytic>("analytics");
-    
+
     const result = analyticsCollection.find({ ...filters });
 
     const analytics = [];
@@ -448,6 +448,51 @@ export async function getAnalytics(filters: {
   } catch (e) {
     console.log(e);
     throw new Error("Failed to Retrieve Analytics");
+  }
+}
+
+export async function getStats() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const analyticsCollection = database.collection<Analytic>("analytics");
+
+    const statsResult = analyticsCollection.aggregate([
+      {
+        $group: {
+          _id: { location: "$location", source: "$source" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const stats = [];
+    for await (const analytic of statsResult) {
+      stats.push(analytic);
+    }
+
+    return stats;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Stats");
+  }
+}
+
+export async function getAgencies() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const agenciesCollection = database.collection<Agency>("agencies");
+
+    const result = agenciesCollection.find();
+
+    const agencies = [];
+    for await (const agency of result) {
+      agencies.push({ ...agency, _id: agency._id.toString() });
+    }
+
+    return agencies;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Agencies");
   }
 }
 

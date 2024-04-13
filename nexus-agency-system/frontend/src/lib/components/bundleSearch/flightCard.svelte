@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { selectedFlight } from '$lib/stores/selectedFlight';
+  import { selectedFlight, selectedCategory } from '$lib/stores/selectedFlight';
   import { goto } from '$app/navigation';
   import { Pyramid } from "lucide-svelte";
   import FlightCardModal from "$lib/components/bundleSearch/flightCardModal.svelte";
@@ -10,6 +10,7 @@
 
   const handleCheckout = (flightId, passengers, category) => {
     selectedFlight.set(flight);
+    selectedCategory.set(category);
     if (flight.scale != null) {
       goto(`/bundleHotel?flight_id=${flightId}&guests=${passengers}&category=${category}&check-in=${flight.scale.arrivalDate}&check-out=${flight.returnFlight.departureDate}&city=${flight.scale.destinationCityName}`);
     } else {

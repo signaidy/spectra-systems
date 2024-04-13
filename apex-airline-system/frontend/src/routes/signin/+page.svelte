@@ -31,7 +31,6 @@
         return async ({ update }) => {
           await update();
           const token = grecaptcha.getResponse();
-          console.log(token);
           const formData = new FormData();
           formData.append("captcha", token); // Add token to form data
           loading = false;

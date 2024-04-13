@@ -11,4 +11,5 @@ import SpectraSystems.Nexus.models.Reservation;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByUserid(Long userId);
     List<Reservation> findAllByHotelId(String hotelId);
+    List<Reservation> findByBundle(String bundle);
 }

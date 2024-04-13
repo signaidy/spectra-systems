@@ -29,10 +29,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.time.format.DateTimeFormatter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Value;
 
 @CrossOrigin
 @RestController
 public class ApexController {
+    @Value("${agency.urls}")
+    private String agencyUrls;
 
     public record Greeting(long id, String content) {
     }
@@ -43,7 +46,7 @@ public class ApexController {
 
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+        return new Greeting(counter.incrementAndGet(), String.format(template, agencyUrls));
     }
 
     // USER - LOGIN
@@ -329,7 +332,7 @@ public class ApexController {
             @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
             @RequestParam(value = "passengers", defaultValue = "") String passengers) {
         Connection conn = new OracleConnector().getConnection();
-        
+
         List<FlightRecord> flights = new ArrayList<FlightRecord>();
 
         try {
@@ -378,7 +381,8 @@ public class ApexController {
                         countResult.getInt("economy_quantity"), countResult.getInt("premium_quantity"), commentaries,
                         new RatingRecord(
                                 ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
-            }if (flights.isEmpty()) {
+            }
+            if (flights.isEmpty()) {
                 return new Object[0];
             }
 
@@ -822,15 +826,17 @@ public class ApexController {
             int rowCount = result.getInt(1);
 
             if (rowCount == 0) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                "INSERT INTO About_us (slogan, gif, yt, cards_amount, title_one, text_one, img_one, TITLE_TWO, text_two, img_two, title_three, text_three, img_three,\n" + //
-                "title_four, text_four, img_four) VALUES ('%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s',\n" + //
-                "'%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-                au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one,
-                            au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
-                            au.img_three, au.title_four, au.text_four, au.img_four)); 
-            insertStatement.executeUpdate();
-            return new WebSuccess("About Us information inserted");
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO About_us (slogan, gif, yt, cards_amount, title_one, text_one, img_one, TITLE_TWO, text_two, img_two, title_three, text_three, img_three,\n"
+                                + //
+                                "title_four, text_four, img_four) VALUES ('%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s',\n"
+                                + //
+                                "'%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                        au.slogan, au.gif, au.yt, au.cards_amoun, au.title_one, au.text_one, au.img_one,
+                        au.title_two, au.text_two, au.img_two, au.title_three, au.text_three,
+                        au.img_three, au.title_four, au.text_four, au.img_four));
+                insertStatement.executeUpdate();
+                return new WebSuccess("About Us information inserted");
             }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -1115,12 +1121,12 @@ public class ApexController {
             int rowCount = result.getInt(1);
 
             if (rowCount == 0) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                "INSERT INTO Header (TEXT_LOGO, SECTION, LINK_SECTION, LINK_PROFILE, LINK_LOGIN, LOGO) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", 
-                head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login,
-                            head.Logo)); 
-            insertStatement.executeUpdate();
-            return new WebSuccess("Header information inserted");
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO Header (TEXT_LOGO, SECTION, LINK_SECTION, LINK_PROFILE, LINK_LOGIN, LOGO) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+                        head.Text_Logo, head.Section, head.Link_Section, head.Link_Profile, head.Link_Login,
+                        head.Logo));
+                insertStatement.executeUpdate();
+                return new WebSuccess("Header information inserted");
             }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -1162,9 +1168,10 @@ public class ApexController {
                             flight_id));
             ticketquery.executeQuery();
             // API call to nexus cancelation ticket
-            // RestTemplate restTemplate = new RestTemplate();
-            // ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
-            //End of API call
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(agencyUrls +
+            "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
+            // End of API call
 
             return new WebSuccess("Flight and tickets canceled");
         } catch (Throwable e) {
@@ -1192,9 +1199,10 @@ public class ApexController {
                             ticket_id));
             query.executeQuery();
             // API call to nexus cancelation ticket
-            // RestTemplate restTemplate = new RestTemplate();
-            // ResponseEntity<String> response = restTemplate.exchange(NEXUS_API + "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
-            //End of API call
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(agencyUrls +
+            "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
+            // End of API call
             return new WebSuccess("User Ticket canceled");
         } catch (Throwable e) {
             e.printStackTrace();
@@ -1360,18 +1368,20 @@ public class ApexController {
             int rowCount = result.getInt(1);
 
             if (rowCount == 0) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                "INSERT INTO Footer (Title_1, SECTION_1, L1, SECTION_2, L2, SECTION_3, L3, SECTION_4, L4, SECTION_5, L5, SECTION_6, L6,\n" + //
-                "Title_2, Q_1, Link_quick_1, Q_2, Link_quick_2, Title_3, C_1, C_2, copyright) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',\n" + //
-                "'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-                footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3,
-                footer.L3, footer.Section_4, footer.L4,
-                footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2,
-                footer.Quick_Section_1, footer.Link_quick_1,
-                footer.Quick_Section_2, footer.Link_quick_2, footer.Title_3, footer.Contact_1,
-                footer.Contact_2, footer.copyright)); 
-            insertStatement.executeUpdate();
-            return new WebSuccess("Footer information inserted");
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO Footer (Title_1, SECTION_1, L1, SECTION_2, L2, SECTION_3, L3, SECTION_4, L4, SECTION_5, L5, SECTION_6, L6,\n"
+                                + //
+                                "Title_2, Q_1, Link_quick_1, Q_2, Link_quick_2, Title_3, C_1, C_2, copyright) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',\n"
+                                + //
+                                "'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                        footer.Title_1, footer.Section_1, footer.L1, footer.Section_2, footer.L2, footer.Section_3,
+                        footer.L3, footer.Section_4, footer.L4,
+                        footer.Section_5, footer.L5, footer.Section_6, footer.L6, footer.Title_2,
+                        footer.Quick_Section_1, footer.Link_quick_1,
+                        footer.Quick_Section_2, footer.Link_quick_2, footer.Title_3, footer.Contact_1,
+                        footer.Contact_2, footer.copyright));
+                insertStatement.executeUpdate();
+                return new WebSuccess("Footer information inserted");
             }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -1459,13 +1469,15 @@ public class ApexController {
             int rowCount = result.getInt(1);
 
             if (rowCount == 0) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                "INSERT INTO Partners (Title, Description, Partner_1, L1, Partner_2, L2, Partner_3, L3, Partner_4, L4, Partner_5, L5)\n" + //
-                "VALUES ('%s', '%s', '%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-                partner.Title, partner.Description, partner.Partner1, partner.L1, partner.Partner2,
-                partner.L2, partner.Partner3, partner.L3, partner.Partner4, partner.L4, partner.Partner5, partner.L5)); 
-            insertStatement.executeUpdate();
-            return new WebSuccess("Partner information inserted");
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO Partners (Title, Description, Partner_1, L1, Partner_2, L2, Partner_3, L3, Partner_4, L4, Partner_5, L5)\n"
+                                + //
+                                "VALUES ('%s', '%s', '%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                        partner.Title, partner.Description, partner.Partner1, partner.L1, partner.Partner2,
+                        partner.L2, partner.Partner3, partner.L3, partner.Partner4, partner.L4, partner.Partner5,
+                        partner.L5));
+                insertStatement.executeUpdate();
+                return new WebSuccess("Partner information inserted");
             }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -1641,13 +1653,14 @@ public class ApexController {
             int rowCount = result.getInt(1);
 
             if (rowCount == 0) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                "INSERT INTO Home (BACKGROUND_IMAGE, FEATUREIMAGE_1, TITLE_1, CONTENT_1, FEATUREIMAGE_2, TITLE_2, CONTENT_2, FEATUREIMAGE_3, TITLE_3, DESCRIPTION_3)\n" + //
-                "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-                Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2,
-                Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3)); 
-            insertStatement.executeUpdate();
-            return new WebSuccess("Home information inserted");
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO Home (BACKGROUND_IMAGE, FEATUREIMAGE_1, TITLE_1, CONTENT_1, FEATUREIMAGE_2, TITLE_2, CONTENT_2, FEATUREIMAGE_3, TITLE_3, DESCRIPTION_3)\n"
+                                + //
+                                "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                        Home.Background, Home.FlightImage1, Home.Title1, Home.Content1, Home.FlightImage2,
+                        Home.Title2, Home.Content2, Home.FlightImage3, Home.Title3, Home.Content3));
+                insertStatement.executeUpdate();
+                return new WebSuccess("Home information inserted");
             }
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -1674,27 +1687,28 @@ public class ApexController {
     // Scale Flights Simple - API
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
-        @RequestParam(value = "originCity", defaultValue = "") int origin,
-        @RequestParam(value = "destinationCity", defaultValue = "") int destination, 
-        @RequestParam(value = "departureDay", defaultValue = "") String departureDay
-        ) {
+            @RequestParam(value = "originCity", defaultValue = "") int origin,
+            @RequestParam(value = "destinationCity", defaultValue = "") int destination,
+            @RequestParam(value = "departureDay", defaultValue = "") String departureDay) {
         Connection conn = new OracleConnector().getConnection();
 
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
                             "SELECT f.flight_id, origin, c1.name AS origin_city, destination, c2.name AS destination_city, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium,\n"
-                            +//
-                            "f.price_normal, f.price_premium, f.detail, f.type, f.state FROM Flights f INNER JOIN Cities c1 ON f.origin = c1.city_id INNER JOIN Cities c2 ON f.destination = c2.city_id\n"
-                            +//
-                            "WHERE flight_id IN (SELECT f1.FLIGHT_ID AS first_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
-                            +//
-                            ") AND f.state = 1 AND TRUNC(f.departure_date) = TO_DATE('%s', 'YYYY-MM-DD') ORDER BY flight_id",
+                                    + //
+                                    "f.price_normal, f.price_premium, f.detail, f.type, f.state FROM Flights f INNER JOIN Cities c1 ON f.origin = c1.city_id INNER JOIN Cities c2 ON f.destination = c2.city_id\n"
+                                    + //
+                                    "WHERE flight_id IN (SELECT f1.FLIGHT_ID AS first_flight_id FROM Flights f1 INNER JOIN Flights f2 ON f1.destination = f2.ORIGIN WHERE f1.ORIGIN = %d AND f2.destination = %d\n"
+                                    + //
+                                    ") AND f.state = 1 AND TRUNC(f.departure_date) = TO_DATE('%s', 'YYYY-MM-DD') ORDER BY flight_id",
                             origin, destination, departureDay));
             ResultSet result = query.executeQuery();
 
-            record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId, String destinationCityName,
-                    String departureDate, String arrivalDate, int touristQuantity, int businessQuantity, int touristPrice, int businessPrice,
+            record FlightScale(int flightId, int originCityId, String originCityName, int destinationCityId,
+                    String destinationCityName,
+                    String departureDate, String arrivalDate, int touristQuantity, int businessQuantity,
+                    int touristPrice, int businessPrice,
                     String detail, int type, int state, List<CommentaryRecord> commentaries, RatingRecord rating) {
             }
 
@@ -1744,8 +1758,8 @@ public class ApexController {
                         result.getInt("price_premium"),
                         result.getString("detail"),
                         result.getInt("type"),
-                        result.getInt("state"), 
-                        commentaries, 
+                        result.getInt("state"),
+                        commentaries,
                         new RatingRecord(
                                 ratingsResult.getInt("rating"), ratingsResult.getInt("count"))));
             }
