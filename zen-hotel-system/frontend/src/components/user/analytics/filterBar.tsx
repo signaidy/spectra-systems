@@ -12,10 +12,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar as CalendarIcon } from "lucide-react";
+// Utils
+import { format, set } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export function FilterBar() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const [checkin, setCheckin] = useState<Date>();
+  const [checkout, setCheckout] = useState<Date>();
 
   const [filter, setFilter] = useState({
     source: searchParams.get("source") || null,
@@ -29,8 +43,8 @@ export function FilterBar() {
     const params = new URLSearchParams();
     filter.source && params.set("source", filter.source);
     filter.location && params.set("location", filter.location);
-    filter.checkin && params.set("checkin", filter.checkin);
-    filter.checkout && params.set("checkout", filter.checkout);
+    checkin && params.set("checkin", format(checkin, "MM/dd/yyyy"));
+    checkout && params.set("checkout", format(checkout, "MM/dd/yyyy"));
     filter.madeAt && params.set("guests", filter.madeAt);
 
     router.push(`/analytics?${params.toString()}`);
@@ -38,10 +52,10 @@ export function FilterBar() {
 
   useEffect(() => {
     handleFilter();
-  }, [filter]);
+  }, [filter, checkin, checkout]);
 
   return (
-    <div className="flex">
+    <div className="flex gap-x-4">
       <Select
         onValueChange={(value) => {
           setFilter({ ...filter, source: value });
@@ -55,6 +69,50 @@ export function FilterBar() {
           <SelectItem value="rest">Rest</SelectItem>
         </SelectContent>
       </Select>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-[280px] justify-start text-left font-normal",
+              !checkin && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {checkin ? format(checkin, "PPP") : <span>Check-In</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            selected={checkin}
+            onSelect={setCheckin}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-[280px] justify-start text-left font-normal",
+              !checkout && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {checkout ? format(checkout, "PPP") : <span>Check-Out</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            selected={checkout}
+            onSelect={setCheckout}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

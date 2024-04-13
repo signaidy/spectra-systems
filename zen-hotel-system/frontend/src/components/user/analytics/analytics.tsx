@@ -23,7 +23,7 @@ export async function Analytics({
           <h1 className="text-xl font-bold">No Analytics Found</h1>
         </div>
       )}
-      <div className="flex gap-y-3 flex-wrap justify-between">
+      <div className="flex gap-y-3 flex-wrap gap-x-4">
         {analytics.map((analytic) => (
           <AnalyticCard key={analytic._id} analytic={analytic} />
         ))}
