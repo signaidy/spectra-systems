@@ -437,14 +437,15 @@ export async function getAnalytics(filters: {
     const database = client.db(process.env.DB_NAME);
     const analyticsCollection = database.collection<Analytic>("analytics");
 
-    const result = analyticsCollection.find({ ...filters });
+    const result = analyticsCollection.aggregate([{ $match: { ...filters } }]);
 
     const analytics = [];
     for await (const analytic of result) {
       analytics.push({ ...analytic, _id: analytic._id.toString() });
     }
-
-    return analytics;
+    console.log(analytics);
+    
+    return analytics as Analytic[];
   } catch (e) {
     console.log(e);
     throw new Error("Failed to Retrieve Analytics");
