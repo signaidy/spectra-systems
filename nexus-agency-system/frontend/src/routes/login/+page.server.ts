@@ -1,5 +1,6 @@
 import { redirect } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 import jsonwebtoken from "jsonwebtoken";
 const { sign } = jsonwebtoken;
@@ -8,7 +9,7 @@ export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
     try {
-      const response = await fetch("http://localhost:42069/nexus/auth/login", {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

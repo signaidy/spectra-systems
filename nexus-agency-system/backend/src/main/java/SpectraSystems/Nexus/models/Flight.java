@@ -59,6 +59,9 @@ public class Flight {
     @Column(name = "state")
     private String state;
 
+    @Column(name = "bundle", nullable = true)
+    private String bundle;
+
     private Long rating;
     
     // Getters, setters, constructors, and other methods...
@@ -67,7 +70,7 @@ public class Flight {
 
     }
 
-    public Flight(Long id, Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, List<TicketPurchase> ticketPurchases, String type, LocalDate purchaseDate, Double price, String state, Long rating) {
+    public Flight(Long id, Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, List<TicketPurchase> ticketPurchases, String type, LocalDate purchaseDate, Double price, String state, String bundle, Long rating) {
         this.userid = user;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
@@ -80,7 +83,7 @@ public class Flight {
         this.purchaseDate = LocalDate.now();
     }
 
-    public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, String type, Double price) {
+    public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, String type, Double price, String bundle) {
         this.userid = user;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
@@ -91,6 +94,7 @@ public class Flight {
         this.price = price;
         this.state = "active";
         this.purchaseDate = LocalDate.now();
+        this.bundle = bundle;
     }
 
     public Long getId() {
@@ -188,4 +192,13 @@ public class Flight {
     public Long getRating(){
         return rating;
     }
+
+    public void setBundle(String bundle){
+        this.bundle = bundle;
+    }
+
+    public String getBundle(){
+        return bundle;
+    }
+
 }

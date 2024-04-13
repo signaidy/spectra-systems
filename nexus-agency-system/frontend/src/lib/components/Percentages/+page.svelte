@@ -1,8 +1,9 @@
 <script>
   import { onMount } from "svelte";
+  import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
   onMount(async () => {
-    const response = await fetch("http://localhost:42069/providers");
+    const response = await fetch(`${PUBLIC_BACKEND_URL}/providers`);
     const data = await response.json();
     console.log(data); 
   });

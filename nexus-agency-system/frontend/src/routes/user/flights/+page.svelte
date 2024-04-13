@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { Banknote } from 'lucide-svelte';
+    import { Banknote, GitMerge } from 'lucide-svelte';
     import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png"; 
   
     export let data;
@@ -14,7 +14,7 @@
       
     {:then flights} 
       {#if flights.length>0}
-        {#each flights as {id, type, state, flightNumber, departureLocation, arrivalLocation, departureDate, purchaseDate }}
+        {#each flights as {id, type, state, flightNumber, departureLocation, arrivalLocation, departureDate, purchaseDate, bundle }}
           <div class="p-10">
             <div
               class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
@@ -43,7 +43,16 @@
                   <p class="font-normal text-sm ml-1 text-gray-500">Economy</p>
                   {/if}
                 </div>
+                {#if bundle != null}
+                  <div
+                    class="flex mx-2 ml-6 h8 px-2 flex-row items-baseline rounded-full bg-gray-100 p-1"
+                  >
+                    <div class="reduct"><GitMerge /></div>
+                    <p class="font-normal text-sm ml-1 text-gray-500">Bundle</p>
+                  </div>
+                {/if}
               </div>
+              
               <div class="mt-2 flex sm:flex-row mx-6 sm:justify-between flex-wrap">
                 <div class="flex flex-row place-items-center p-2">
                   <img

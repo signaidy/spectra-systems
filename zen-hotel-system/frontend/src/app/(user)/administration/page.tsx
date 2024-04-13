@@ -35,6 +35,11 @@ export default function AdministrationHome() {
       name: "Reservations",
       description: "Visualize and Manage Reservations Information",
       href: "/administration/reservations",
+    },
+    {
+      name: "Agencies",
+      description: "Manage and Configure Agencies",
+      href: "/administration/agencies",
     }
   ];
 

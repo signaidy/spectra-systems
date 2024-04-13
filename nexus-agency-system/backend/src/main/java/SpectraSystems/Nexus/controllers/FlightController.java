@@ -4,18 +4,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.FlightPurchaseRequest;
+import SpectraSystems.Nexus.models.Reservation;
+import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
+import SpectraSystems.Nexus.repositories.ReservationRepository;
+import SpectraSystems.Nexus.repositories.UserRepository;
 import SpectraSystems.Nexus.services.FlightService;
+import SpectraSystems.Nexus.services.UserService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +36,21 @@ public class FlightController {
 
     private final FlightService flightService;
     private final FlightRepository flightRepository;
-    private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
+    private final ReservationRepository reservationRepository;
+    private final UserService userService;
+
+
+    // private static final Logger logger = LoggerFactory.getLogger(FlightController.class); Use for loggin errors lmao
 
     @Autowired
-    public FlightController(FlightRepository flightRepository, FlightService flightService) {
+    private JavaMailSender emailSender;
+
+    @Autowired
+    public FlightController(FlightRepository flightRepository, FlightService flightService, ReservationRepository reservationRepository, UserService userService) {
         this.flightRepository = flightRepository;
         this.flightService = flightService;
+        this.reservationRepository = reservationRepository;
+        this.userService = userService;
     }
 
     // Endpoint to retrieve all flights
@@ -139,9 +156,11 @@ public class FlightController {
             @PathVariable String method,
             @RequestBody FlightPurchaseRequest purchaseRequest
     ) throws JsonProcessingException {
-        flightService.purchaseFlight( amount,  method, purchaseRequest);
+        flightService.purchaseFlight(amount, method, purchaseRequest);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Flight purchased successfully.");
+        // Send email notification to the user
+        sendPurchaseConfirmationEmail(purchaseRequest.getUser_id());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -161,6 +180,21 @@ public class FlightController {
             for (Flight flight : flights) {
                 flight.setState("cancelled");
                 flightService.updateFlight(flight.getId(), flight);
+                String bundle = flight.getBundle();
+            
+                List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+                
+                for (Flight flightBundle : flightsWithSameBundle) {
+                    flightBundle.setState("cancelled");
+                    flightRepository.save(flightBundle);
+                    sendCancellationEmail(flightBundle.getUser(), "flight");
+                }
+                List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
+                for (Reservation reservation : reservationsWithSameBundle) {
+                    reservation.setState("cancelled");
+                    reservationRepository.save(reservation);
+                    sendCancellationEmail(reservation.getUser(), "reservation");
+                }
             }
             return new ResponseEntity<>(flights, HttpStatus.OK);
         } else {
@@ -170,11 +204,27 @@ public class FlightController {
 
     @PutMapping("/deactivateTicket/{id}")
     public ResponseEntity<List<Flight>> deactivateFlightsById(@PathVariable Long id) {
-        Optional<Flight> optionalFlights = flightService.getFlightById(id);
-        if(optionalFlights.isPresent()){
-            Flight flight = optionalFlights.get();
+        Optional<Flight> optionalFlight = flightService.getFlightById(id);
+        if(optionalFlight.isPresent()){
+            Flight flight = optionalFlight.get();
             flight.setState("cancelled");
             flightRepository.save(flight);
+            String bundle = flight.getBundle();
+            
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            
+            for (Flight flights : flightsWithSameBundle) {
+                flights.setState("cancelled");
+                flightRepository.save(flights);
+                sendCancellationEmail(flights.getUser(), "flight");
+            }
+            List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
+            for (Reservation reservation : reservationsWithSameBundle) {
+                reservation.setState("cancelled");
+                reservationRepository.save(reservation);
+                sendCancellationEmail(reservation.getUser(), "reservation");
+            }
+            
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -187,5 +237,62 @@ public class FlightController {
     public ResponseEntity<Void> deleteFlight(@PathVariable("id") Long id) {
         flightService.deleteFlight(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private void sendCancellationEmail(Long userId, String Type) {
+        try {
+            // Retrieve user by userId
+            Optional<User> optionalUser = userService.getUserById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String userEmail = user.getEmail();    
+                // Create MimeMessage
+                MimeMessage message = emailSender.createMimeMessage();
+                if (Type == "flight") {
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setTo(userEmail);
+                    helper.setSubject("Flight Reservation Cancellation");
+                    helper.setText("Your flight reservation has been cancelled.");
+                } else {
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setTo(userEmail);
+                    helper.setSubject("Hotel Reservation Cancellation");
+                    helper.setText("Your hotel reservation has been cancelled.");
+                }        
+                // Send email
+                emailSender.send(message);
+            } else {
+                throw new RuntimeException("User with id " + userId + " not found.");
+            }
+            
+        } catch (MessagingException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
+        }
+    }
+
+    private void sendPurchaseConfirmationEmail(Long userId) {
+        try {
+            // Retrieve user by userId
+            Optional<User> optionalUser = userService.getUserById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String userEmail = user.getEmail();
+                // Create MimeMessage
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                helper.setTo(userEmail);
+                helper.setSubject("Flight Purchase Confirmation");
+                helper.setText("Thank you for purchasing a flight with us. Your booking has been confirmed.");
+        
+                // Send email
+                emailSender.send(message);
+            } else {
+                throw new RuntimeException("User with id " + userId + " not found.");
+            }            
+        } catch (MessagingException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
+        }
     }
 }

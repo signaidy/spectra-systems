@@ -1,9 +1,11 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+
 export function load({ locals, url }) {
   const userId = locals.user.userId;
   const user = locals.user;
   async function getUserReservations() {
     const response = await fetch(
-      `http://localhost:42069/nexus/reservations/user/${userId}`,
+      `${PUBLIC_BACKEND_URL}/reservations/user/${userId}`,
       {
         method: "GET"
       }

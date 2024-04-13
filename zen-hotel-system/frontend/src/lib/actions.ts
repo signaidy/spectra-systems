@@ -658,6 +658,18 @@ export async function deletePartner(prevState: any, formData: FormData) {
 }
 
 export async function disableHotel(prevState: any, formData: FormData) {
+  // Travel Agency
+  const rawFormData = Object.fromEntries(formData.entries());
+  const database = client.db(process.env.DB_NAME);
+  const agencies = database.collection("agencies");
+
+  const result = agencies.find();
+  for await (const agency of result) {
+    fetch(`${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`, {
+      method: "PUT",
+    });
+  }
+  // ----------------
   try {
     const rawFormData = Object.fromEntries(formData.entries());
 
@@ -716,14 +728,6 @@ export async function disableHotel(prevState: any, formData: FormData) {
         } has been disabled.`,
       });
     }
-
-    // Travel Agency API
-    // await fetch(
-    //   `localhost:42069/nexus/reservations/cancelHotel/${rawFormData.hotelId})`,
-    //   {
-    //     method: "PUT",
-    //   }
-    // );
   } catch (e) {
     console.log(e);
     return {
@@ -786,6 +790,18 @@ export async function enableReservation(prevState: any, formData: FormData) {
 }
 
 export async function disableReservation(prevState: any, formData: FormData) {
+  // Travel Agency
+  const rawFormData = Object.fromEntries(formData.entries());
+  const database = client.db(process.env.DB_NAME);
+  const agencies = database.collection("agencies");
+
+  const result = agencies.find();
+  for await (const agency of result) {
+    fetch(`${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`, {
+      method: "PUT",
+    });
+  }
+  // ----------------
   try {
     const rawFormData = Object.fromEntries(formData.entries());
 
@@ -846,14 +862,6 @@ export async function disableReservation(prevState: any, formData: FormData) {
         console.log(info);
       }
     );
-
-    // Travel Agency API
-    // await fetch(
-    //   `localhost:42069/nexus/reservations/cancel/${rawFormData.reservationId})`,
-    //   {
-    //     method: "PUT",
-    //   }
-    // );
   } catch (e) {
     console.log(e);
     return {

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Suspense } from "react";
 // Data
 import { getCities, getFeaturedHotel } from "@/lib/data";
 // Components
@@ -24,7 +25,9 @@ export default async function Home() {
           className="object-cover -z-10"
           priority
         />
-        <SearchBar locations={cities} />
+        {/* <Suspense> */}
+          <SearchBar locations={cities} />
+        {/* </Suspense> */}
       </section>
       <Section title="Featured Hotel">
         {featuredHotel && (

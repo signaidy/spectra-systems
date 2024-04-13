@@ -3,33 +3,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
+import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.services.ReservationService;
-import org.springframework.http.MediaType;
+import SpectraSystems.Nexus.services.UserService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
-import java.io.IOException;
-import java.nio.file.Files;
+import org.springframework.http.MediaType;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/nexus/reservations")
@@ -39,12 +36,17 @@ public class ReservationController {
     private final RestTemplate restTemplate;
     private static final String HOTEL_USER_ID = "65f9310acfb50244b4e886b0";
     private static final SimpleDateFormat API_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(ReservationController.class); // use for logging stuff if needed
 
     @Autowired
-    public ReservationController(ReservationService reservationService, RestTemplate restTemplate) {
+    private JavaMailSender emailSender;
+
+    @Autowired
+    public ReservationController(ReservationService reservationService, RestTemplate restTemplate, UserService userService) {
         this.reservationService = reservationService;
         this.restTemplate = restTemplate;
+        this.userService = userService;
     }
 
     // Endpoint to retrieve all reservations
@@ -102,7 +104,8 @@ public class ReservationController {
             reservation.setReservationNumber(reservationId);
 
             Reservation createdReservation = reservationService.createReservation(reservation);
-
+            
+            sendPurchaseConfirmationEmail(reservation.getUser());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,39 +215,55 @@ public class ReservationController {
     }
 
     @GetMapping("/cities")
-    public ResponseEntity<List<Map<String, String>>> getCities() {
+    public ResponseEntity<List<String>> getCities() {
         // Define the URL for the external API
-        String apiUrl = "http://localhost:3001/get-hotels";
+        String apiUrl = "http://localhost:3001/get-cities";
 
         // Create a RestTemplate instance to make HTTP requests
         RestTemplate restTemplate = new RestTemplate();
 
         try {
             // Make a GET request to the external API
-            ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
+            ResponseEntity<List<String>> response = restTemplate.exchange(
                     apiUrl,
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+                    new ParameterizedTypeReference<List<String>>() {}
             );
 
             // Get the response body
-            List<Map<String, Object>> hotels = response.getBody();
-            List<Map<String, String>> cities = new ArrayList<>();
-
-            // Extract cities from the hotel data
-            for (Map<String, Object> hotel : hotels) {
-                String cityId = String.valueOf(cities.size() + 1);
-                String cityName = (String) ((Map<String, Object>) hotel.get("location")).get("city");
-                Map<String, String> cityMap = Map.of("cityId", cityId, "name", cityName);
-                cities.add(cityMap);
-            }
+            List<String> cities = response.getBody();
 
             return ResponseEntity.ok().body(cities);
         } catch (Exception e) {
             // Handle exceptions
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private void sendPurchaseConfirmationEmail(Long userId) {
+        try {
+            // Retrieve user by userId
+            Optional<User> optionalUser = userService.getUserById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String userEmail = user.getEmail();
+                // Create MimeMessage
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                helper.setTo(userEmail);
+                helper.setSubject("Hotel Reservation Confirmation");
+                helper.setText("Thank you for purchasing a hotel reservation with us. Your booking has been confirmed.");
+        
+                // Send email
+                emailSender.send(message);
+            } else {
+                throw new RuntimeException("User with id " + userId + " not found.");
+            }            
+        } catch (MessagingException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
         }
     }
     

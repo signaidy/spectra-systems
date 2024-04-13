@@ -1,9 +1,11 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+
 export function load({ locals, url }) {
   const userId = locals.user.userId;
   const user = locals.user;
   async function getUserFlights() {
     const response = await fetch(
-      `http://localhost:42069/nexus/flights`,
+      `${PUBLIC_BACKEND_URL}/flights`,
       {
         method: "GET"
       }
