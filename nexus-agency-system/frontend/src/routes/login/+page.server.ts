@@ -24,7 +24,7 @@ export const actions = {
         throw new Error(result.error);
       }
       cookies.set("token", result.token, { path: "/" });
-      cookies.set("User", JSON.stringify(result.user), { path: "/" });
+      cookies.set("User", JSON.stringify(result.user), { path: "/", secure: false });
     } catch (error) {
       if (error instanceof Error) {
         return fail(500, {

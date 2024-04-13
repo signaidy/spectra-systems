@@ -37,7 +37,7 @@ export const actions = {
 
       // const token = sign(result, JWT_SECRET);
 
-      cookies.set("token", result.token, { path: "/" });
+      cookies.set("token", result.token, { path: "/", secure: false });
     } catch (error) {
       if (error instanceof Error) {
         return fail(500, {
