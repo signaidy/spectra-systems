@@ -4,9 +4,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import SpectraSystems.Nexus.models.Aboutus;
 import SpectraSystems.Nexus.models.Role;
 import SpectraSystems.Nexus.models.User;
+import SpectraSystems.Nexus.repositories.AboutusRespository;
 import SpectraSystems.Nexus.repositories.UserRepository;
+import SpectraSystems.Nexus.services.AboutUsService;
 import SpectraSystems.Nexus.services.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,8 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 public class SeedDataConfig implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final AboutusRespository aboutusRespository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final AboutUsService aboutUsService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,6 +45,27 @@ public class SeedDataConfig implements CommandLineRunner {
 
         userService.save(admin);
         log.debug("created ADMIN user - {}", admin);
+      }
+      if (aboutusRespository.count() == 0) {
+
+        Aboutus admin = Aboutus
+                      .builder()
+                      .slogan("UwU")
+                      .gif("https://i.pinimg.com/originals/31/a7/2a/31a72afda250825d993400c3ef28c55c.gif")
+                      .yt("https://www.youtube.com/embed/a5plqZLfxRE?si=pPvS-7aP8J0ek8HY")
+                      .cardsAmount(2)
+                      .titleOne("ez")
+                      .imgOne("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_qnBaqCekVMgJ6kDf68fu_dv8znl_3czptk3F-NWnqw&s")
+                      .titleTwo("gateto")
+                      .imgTwo("https://i.imgflip.com/2/4mol3v.jpg")
+                      .titleThree(null)
+                      .imgThree(null)
+                      .titleFour(null)
+                      .imgFour(null)
+                      .build();
+
+        aboutUsService.saveOrUpdate(admin);
+        log.debug("created AboutUs info - {}", admin);
       }
     }
 
