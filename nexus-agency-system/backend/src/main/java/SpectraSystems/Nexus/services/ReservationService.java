@@ -5,8 +5,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
+import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.models.User;
+import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
 
 import java.util.List;
@@ -15,10 +17,12 @@ import java.util.Optional;
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
+    private final FlightRepository flightRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository) {
+    public ReservationService(ReservationRepository reservationRepository, FlightRepository flightRepository) {
         this.reservationRepository = reservationRepository;
+        this.flightRepository = flightRepository;
     }
 
     public List<Reservation> getAllReservations() {
@@ -51,8 +55,14 @@ public class ReservationService {
     public void cancelReservationsByHotelId(String hotelId) {
         List<Reservation> reservations = getReservationsByHotelId(hotelId);
         for (Reservation reservation : reservations) {
+            String bundle = reservation.getBundle();
             reservation.setState("cancelled");
             reservationRepository.save(reservation);
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            for (Flight flight : flightsWithSameBundle) {
+                flight.setState("cancelled");
+                flightRepository.save(flight);
+            }
         }
     }
 
@@ -60,8 +70,14 @@ public class ReservationService {
         Optional<Reservation> optionalReservation  = getReservationById(id);
         if (optionalReservation.isPresent()) {
             Reservation reservation = optionalReservation.get();
+            String bundle = reservation.getBundle();
             reservation.setState("cancelled");
             reservationRepository.save(reservation);
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            for (Flight flight : flightsWithSameBundle) {
+                flight.setState("cancelled");
+                flightRepository.save(flight);
+            }
         } else {
             throw new RuntimeException("Reservation was not found");
         }

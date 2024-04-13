@@ -13,8 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.FlightPurchaseRequest;
+import SpectraSystems.Nexus.models.Reservation;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
+import SpectraSystems.Nexus.repositories.ReservationRepository;
 import SpectraSystems.Nexus.services.FlightService;
 
 import java.util.HashMap;
@@ -28,12 +30,16 @@ public class FlightController {
 
     private final FlightService flightService;
     private final FlightRepository flightRepository;
+    private final ReservationRepository reservationRepository;
+
+
     private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
 
     @Autowired
-    public FlightController(FlightRepository flightRepository, FlightService flightService) {
+    public FlightController(FlightRepository flightRepository, FlightService flightService, ReservationRepository reservationRepository) {
         this.flightRepository = flightRepository;
         this.flightService = flightService;
+        this.reservationRepository = reservationRepository;
     }
 
     // Endpoint to retrieve all flights
@@ -161,6 +167,19 @@ public class FlightController {
             for (Flight flight : flights) {
                 flight.setState("cancelled");
                 flightService.updateFlight(flight.getId(), flight);
+                String bundle = flight.getBundle();
+            
+                List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+                
+                for (Flight flightBundle : flightsWithSameBundle) {
+                    flightBundle.setState("cancelled");
+                    flightRepository.save(flightBundle);
+                }
+                List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
+                for (Reservation reservation : reservationsWithSameBundle) {
+                    reservation.setState("cancelled");
+                    reservationRepository.save(reservation);
+                }
             }
             return new ResponseEntity<>(flights, HttpStatus.OK);
         } else {
@@ -170,11 +189,25 @@ public class FlightController {
 
     @PutMapping("/deactivateTicket/{id}")
     public ResponseEntity<List<Flight>> deactivateFlightsById(@PathVariable Long id) {
-        Optional<Flight> optionalFlights = flightService.getFlightById(id);
-        if(optionalFlights.isPresent()){
-            Flight flight = optionalFlights.get();
+        Optional<Flight> optionalFlight = flightService.getFlightById(id);
+        if(optionalFlight.isPresent()){
+            Flight flight = optionalFlight.get();
             flight.setState("cancelled");
             flightRepository.save(flight);
+            String bundle = flight.getBundle();
+            
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            
+            for (Flight flights : flightsWithSameBundle) {
+                flights.setState("cancelled");
+                flightRepository.save(flights);
+            }
+            List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
+            for (Reservation reservation : reservationsWithSameBundle) {
+                reservation.setState("cancelled");
+                reservationRepository.save(reservation);
+            }
+            
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

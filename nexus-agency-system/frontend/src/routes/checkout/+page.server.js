@@ -1,6 +1,7 @@
 export const actions = {
   default: async({request, cookies}) => {
     const token = cookies.get('token');
+    let bundle = null;
       const formData = await request.formData(); 
       const roundTrip = formData.get("roundTrip");
       const scale = formData.get("scale");
@@ -19,6 +20,11 @@ export const actions = {
       const rating = formData.get("rating");
       // Format departureDate to 'yyyy-MM-dd'
       departureDate = departureDate.split(" ")[0];
+      // Generate a random string based on the current date
+    if (roundTrip !=null || scale != null) { 
+      const currentDate = new Date();
+      bundle = currentDate.toISOString().replace(/\W/g, '');
+    }
       // Constructing the body object
       const body = {
         user_id: userId,
@@ -32,7 +38,8 @@ export const actions = {
         arrivalLocation: arrivalLocation,
         price: price,
         returnDate: null, // Assuming returnDate is always null for this case
-        rating: rating
+        rating: rating,
+        bundle: bundle
       };
       console.log(body);
       const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
@@ -66,7 +73,8 @@ export const actions = {
           arrivalLocation: arrivalLocation,
           price: price,
           returnDate: null, // Assuming returnDate is always null for this case
-          rating: rating
+          rating: rating,
+          bundle: bundle
         };
         console.log(body);
         const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
@@ -100,7 +108,8 @@ export const actions = {
           arrivalLocation: arrivalLocation,
           price: price,
           returnDate: null, // Assuming returnDate is always null for this case
-          rating: rating
+          rating: rating,
+          bundle: bundle
         };
         console.log(body);
         const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
@@ -133,7 +142,8 @@ export const actions = {
             arrivalLocation: arrivalLocation,
             price: price,
             returnDate: null, // Assuming returnDate is always null for this case
-            rating: rating
+            rating: rating,
+            bundle: bundle
           };
           console.log(body);
           const response = await fetch(`http://localhost:42069/nexus/flights/purchase/${amount}/${method}`, {
