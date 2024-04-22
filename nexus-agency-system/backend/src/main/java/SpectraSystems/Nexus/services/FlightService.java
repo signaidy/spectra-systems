@@ -184,7 +184,7 @@ public class FlightService {
     public void purchaseFlight(int amount, String method, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
         int discount = 20;
-        long userIdPurchase = 145;
+        long userIdPurchase = 1;
 
         // Create request body
         HttpHeaders headers = new HttpHeaders();
