@@ -43,6 +43,14 @@ import org.springframework.web.bind.annotation.CrossOrigin; // Import para el us
 import java.time.LocalDateTime; // Import para obtencion de tiempo actual
 import org.springframework.beans.factory.annotation.Value; // Import necesario para la inyección de dependencia
 
+/**
+ * La clase `ApexController` es un controlador RESTful utilizado en la aplicación backend.
+
+ * Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con las funcionalidades
+ * de la aplicacion.
+
+ * La clase utiliza anotaciones de Spring para definir los endpoints y manejar las peticiones.
+ */
 @CrossOrigin
 @RestController // Indica que la clase es un controlador RESTful
 public class ApexController {
@@ -59,6 +67,16 @@ public class ApexController {
     private final AtomicLong counter = new AtomicLong();
     private final String NEXUS_API = "http://localhost:42069/nexus/flights/";
 
+    // Greeting - API
+    /**
+     * End point para obtener un saludo personalizado.
+
+     * Este método maneja la solicitud GET a la ruta "/greeting" y devuelve un saludo personalizado 
+     * con el nombre proporcionado en el parámetro `name`.
+
+     * @param name Nombre de la persona a saludar (valor por defecto: "World").
+     * @return Objeto `Greeting` que contiene el identificador del saludo y el contenido del mensaje.
+     */
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, agencyUrls));
@@ -1049,6 +1067,17 @@ public class ApexController {
     }
 
     // About Us - UPDATE
+    /**
+     * End point para actualizar el contenido de la página "About us".
+
+     * Este método maneja la solicitud POST a la ruta "/update-aboutus" y actualiza el contenido de la página "About Us".
+
+     * @param au Objeto `AboutUs` que contiene la estructura de la página "About us".
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante la modificación dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-aboutus")
     public Object updateAboutUs(@RequestBody Aboutus au) {
         Connection conn = new OracleConnector().getConnection();
@@ -1100,6 +1129,21 @@ public class ApexController {
     }
 
     // Purchase - API
+    /**
+     * End point para realizar la compra de un boleto.
+
+     * Este método maneja la solicitud POST a la ruta "/purchase/{amount}/{method}/{discount}" donde amount es la cantidad, method es el tipo
+     * de compra y discount es el descuento aplicado. Registra la compra de un boleto en la base de datos.
+     * 
+     * @param ticket Objeto `Ticket_purchase` que contiene la estructura del ticket.
+     * @param amount Valor numérico representando la cantidad de tickets a comprar.
+     * @param amount String indicando el tipo de la compra.
+     * @param discount Valor numérico indicando el descuento de la compra.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetios de tipo `userTickets` representando los tickets del usuario.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos o si el usuario no posee tickets.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/purchase/{amount}/{method}/{discount}")
     public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method,
             @PathVariable int discount) {
@@ -1167,6 +1211,19 @@ public class ApexController {
     }
 
     // Tickets information - Purchase
+    /**
+     * End point para obtener información sobre los tickets disponibles para compra.
+
+     * Este método maneja la solicitud GET a la ruta "/availabletickets/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
+     * y category es la categoría del ticket a comprar. Devuelve la información de los tickets disponibles para la compra.
+     * 
+     * @param flight_id Valor numérico indicando el identificador del vuelo.
+     * @param category String indicando la categoría del ticket a comprar.
+     * @return Se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `Availabletickets` representando los tickets del usuario.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/availabletickets/{flight_id}/{category}")
     public Object getTicketstobuy(@PathVariable int flight_id, @PathVariable String category) {
         Connection conn = new OracleConnector().getConnection();
@@ -1212,6 +1269,19 @@ public class ApexController {
     }
 
     // Tickets available amount - Purchase
+    /**
+     * End point para obtener la cantidad de tickets disponibles de un vuelo.
+
+     * Este método maneja la solicitud GET a la ruta "/ticketsamount/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
+     * y category es la categoría del ticket a comprar. Devuelve la cantidad de tickets disponibles para la compra.
+     * 
+     * @param flight_id Valor numérico indicando el identificador del vuelo.
+     * @param category String indicando la categoría del ticket a comprar.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * La cantidad de tickets disponibles para el vuelo y categoría.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/ticketsamount/{flight_id}/{category}")
     public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String category) {
         Connection conn = new OracleConnector().getConnection();
@@ -1249,6 +1319,16 @@ public class ApexController {
     }
 
     // Purchase logs - API
+    /**
+     * End point para obtener los registros de compra.
+
+     * Este método maneja la solicitud GET a la ruta "/purchaselogs" y devuelve una lista con la información detallada de todas las compras realizadas.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `purchases` representando los registros de compra.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay compras realizadas.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/purchaselogs")
     public Object getpurchaselogs() {
         Connection conn = new OracleConnector().getConnection();
@@ -1299,6 +1379,16 @@ public class ApexController {
     }
 
     // Header - GET INFORMATION
+    /**
+     * End point para obtener la información del header.
+
+     * Este método maneja la solicitud GET a la ruta "/header" y devuelve un objeto con la información configurada para el header.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Header` representando la información del header.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/header")
     public Object getHeader() {
         Connection conn = new OracleConnector().getConnection();
@@ -1344,6 +1434,17 @@ public class ApexController {
     }
 
     // Header - UPDATE
+    /**
+     * End point para actualizar la información del header.
+
+     * Este método maneja la solicitud POST a la ruta "/update-header" y actualiza la información del header.
+     * 
+     * @param header Objeto de tipo `Header` representando la estructura del header.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-header")
     public Object updateHeader(@RequestBody Header head) {
         Connection conn = new OracleConnector().getConnection();
@@ -1385,6 +1486,18 @@ public class ApexController {
     }
 
     // FLight and Tickets - Cancelation
+    /**
+     * End point para la cancelación de un vuelo.
+
+     * Este método maneja la solicitud POST a la ruta "/cancelation/{flight_id}" donde flight_id es el identificador del vuelo.
+     * Cancela un vuelo y los tickets asociados a él.
+     * 
+     * @param flight_id Valor numérico indicando el identificador del vuelo.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/cancelation/{flight_id}")
     public Object updateFlightandTickets(@PathVariable int flight_id) {
         Connection conn = new OracleConnector().getConnection();
@@ -1423,6 +1536,18 @@ public class ApexController {
     }
 
     // Tickets Individual - Cancelation
+    /**
+     * End point para la cancelación individual de tickets.
+
+     * Este método maneja la solicitud POST a la ruta "/ticketcanceled/{ticket_id}" donde ticket_id es el identificador del ticket.
+     * Cancela un tickets individual.
+     * 
+     * @param ticket_id Valor numérico indicando el identificador del ticket.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/ticketcanceled/{ticket_id}")
     public Object updateIndividualTicket(@PathVariable int ticket_id) {
         Connection conn = new OracleConnector().getConnection();
@@ -1453,6 +1578,18 @@ public class ApexController {
     }
 
     // User Discount - GET
+    /**
+     * End point para obtener el descuento de un usuario.
+
+     * Este método maneja la solicitud GET a la ruta "/discount/{id}" donde id es el identificador del usuario.
+     * Obtiene el descuento aplicado a un usuario.
+     * 
+     * @param id Valor numérico indicando el identificador del usuario.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Discount` representando el porcentaje de descuento.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/discount/{id}")
     public Object getDiscount(@PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
@@ -1487,6 +1624,19 @@ public class ApexController {
     }
 
     // Update flight
+    /**
+     * End point para actualizar la información de un vuelo.
+
+     * Este método maneja la solicitud POST a la ruta "/update-flight/{flight_id}" donde flight_id es el identificador del vuelo.
+     * Actualiza la información de un vuelo.
+     * 
+     * @param flight Objeto `Flight` que contiene la estructura del vuelo.
+     * @param flight_id Valor numérico indicando el identificador del vuelo.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-flight/{flight_id}")
     public Object updateFlight(@RequestBody Flight flight, @PathVariable int flight_id) {
         Connection conn = new OracleConnector().getConnection();
@@ -1515,6 +1665,16 @@ public class ApexController {
     }
 
     // Footer - GET INFORMATION
+    /**
+     * End point para obtener la información del footer.
+     * 
+     * Este método maneja la solicitud GET a la ruta "/footer" y devuelve un objeto con la información configurada para el footer.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Footer` representando la información del footer.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/footer")
     public Object getFooter() {
         Connection conn = new OracleConnector().getConnection();
@@ -1591,6 +1751,17 @@ public class ApexController {
     }
 
     // Footer - UPDATE
+    /**
+     * End point para actualizar la información del footer.
+
+     * Este método maneja la solicitud POST a la ruta "/update-footer" y actualiza la información del footer.
+     * 
+     * @param footer Objeto de tipo `Footer` representando la estructura del footer.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-footer")
     public Object updateFooter(@RequestBody Footer footer) {
         Connection conn = new OracleConnector().getConnection();
@@ -1648,6 +1819,16 @@ public class ApexController {
     }
 
     // Partners - GET INFORMATION
+    /**
+     * End point para obtener la información de los partners.
+
+     * Este método maneja la solicitud GET a la ruta "/partners" y devuelve un objeto con la información de los partners.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Partner` representando la información de los partners.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/partners")
     public Object getPartners() {
         Connection conn = new OracleConnector().getConnection();
@@ -1693,6 +1874,17 @@ public class ApexController {
     }
 
     // Partners - UPDATE
+    /**
+     * End point para actualizar la información de los partners.
+
+     * Este método maneja la solicitud POST a la ruta "/update-partners" y actualiza la información de los partners.
+     * 
+     * @param partner Objeto de tipo `Partners` representando la estructura de los partners.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-partners")
     public Object updatePartners(@RequestBody Partners partner) {
         Connection conn = new OracleConnector().getConnection();
@@ -1740,6 +1932,18 @@ public class ApexController {
 
     // Modification Flight - GET INFORMATION OF RESPECTIVE USERS THAT THE FLIGHT
     // HAVE BEEN MODIFIED
+    /**
+     * End point para obtener la información de los usuarios que han comprado un ticket de un vuelo modificado.
+
+     * Este método maneja la solicitud GET a la ruta "/modification-notification/{flightid}" donde flightid es el identificador del vuelo.
+     * Obtiene la información de los usuarios que han comprado un ticket de un vuelo modificado.
+     * 
+     * @param flightid Valor numérico indicando el identificador del vuelo.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `userinformation` representando la información de los usuarios.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/modification-notification/{flightid}")
     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
         Connection conn = new OracleConnector().getConnection();
@@ -1783,6 +1987,18 @@ public class ApexController {
     }
 
     // City - REGISTRATION
+    /**
+     * End point para registrar una ciudad.
+
+     * Este método maneja la solicitud POST a la ruta "/create-city/{city}" donde city es el nombre de la ciudad.
+     * Registra una ciudad en la base de datos.
+     * 
+     * @param city Valor de tipo String indicando el nombre de la ciudad.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/create-city/{city}")
     public Object createCity(@PathVariable String city) {
         Connection conn = new OracleConnector().getConnection();
@@ -1809,6 +2025,19 @@ public class ApexController {
     }
 
     // Cities - UPDATE
+    /**
+     * End point para actualizar el nombre de una ciudad.
+
+     * Este método maneja la solicitud POST a la ruta "/update-city/{city}/{id}" donde city es el nombre de la ciudad y id es el identificador de la ciudad.
+     * Actualiza el nombre de una ciudad en la base de datos.
+     * 
+     * @param city Valor de tipo String indicando el nombre de la ciudad.
+     * @param id Valor numérico indicando el identificador de la ciudad.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-city/{city}/{id}")
     public Object updateCities(@PathVariable String city, @PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
@@ -1834,6 +2063,16 @@ public class ApexController {
     }
 
     // Home - GET INFORMATION
+    /**
+     * End point para obtener la información de la página de inicio.
+
+     * Este método maneja la solicitud GET a la ruta "/home" y devuelve un objeto con la información configurada para la página de inicio.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Home` representando la información de la página de inicio.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/home")
     public Object getHome() {
         Connection conn = new OracleConnector().getConnection();
@@ -1877,6 +2116,17 @@ public class ApexController {
     }
 
     // Home - UPDATE
+    /**
+     * End point para actualizar la información de la página de inicio.
+
+     * Este método maneja la solicitud POST a la ruta "/update-home" y actualiza la información de la página de inicio.
+     * 
+     * @param Home Objeto de tipo `Home` representando la estructura de la página de inicio.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-home")
     public Object updateHome(@RequestBody Home Home) {
         Connection conn = new OracleConnector().getConnection();
@@ -1919,6 +2169,16 @@ public class ApexController {
     }
 
     // Scale Flights Simple - API
+    /**
+     * End point para obtener la información de los vuelos directos.
+
+     * Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y devuelve un objeto con la información de los vuelos directos.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `FlightSimple` representando la información de los vuelos directos.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
             @RequestParam(value = "originCity", defaultValue = "") int origin,
@@ -2016,6 +2276,16 @@ public class ApexController {
     }
 
     // Get a Cities - API
+    /**
+     * End point para obtener la información de las ciudades.
+
+     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un objeto con la información de las ciudades.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `City` representando la información de las ciudades.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-city/{cityid}")
     public Object getOneCity(@PathVariable int cityid) {
         Connection conn = new OracleConnector().getConnection();
