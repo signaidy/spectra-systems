@@ -2151,6 +2151,16 @@ public class ApexController {
     }
 
     // Scale Flights Simple - API
+    /**
+     * End point para obtener la información de los vuelos directos.
+
+     * Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y devuelve un objeto con la información de los vuelos directos.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `FlightSimple` representando la información de los vuelos directos.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
             @RequestParam(value = "originCity", defaultValue = "") int origin,
