@@ -2045,6 +2045,16 @@ public class ApexController {
     }
 
     // Home - GET INFORMATION
+    /**
+     * End point para obtener la información de la página de inicio.
+
+     * Este método maneja la solicitud GET a la ruta "/home" y devuelve un objeto con la información configurada para la página de inicio.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Home` representando la información de la página de inicio.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/home")
     public Object getHome() {
         Connection conn = new OracleConnector().getConnection();
