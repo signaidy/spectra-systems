@@ -1856,6 +1856,17 @@ public class ApexController {
     }
 
     // Partners - UPDATE
+    /**
+     * End point para actualizar la información de los partners.
+
+     * Este método maneja la solicitud POST a la ruta "/update-partners" y actualiza la información de los partners.
+     * 
+     * @param partner Objeto de tipo `Partners` representando la estructura de los partners.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-partners")
     public Object updatePartners(@RequestBody Partners partner) {
         Connection conn = new OracleConnector().getConnection();
