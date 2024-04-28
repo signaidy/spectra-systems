@@ -17,11 +17,21 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    
+    /** 
+     * @param request
+     * @return JwtAuthenticationResponse
+     */
     @PostMapping("/signup")
     public JwtAuthenticationResponse signup(@RequestBody SignUpRequest request) {
         return authenticationService.signup(request);
     }
 
+    
+    /** 
+     * @param request
+     * @return JwtAuthenticationResponse
+     */
     @PostMapping("/login")
     public JwtAuthenticationResponse signin(@RequestBody SignInRequest request) {
         return authenticationService.signin(request);

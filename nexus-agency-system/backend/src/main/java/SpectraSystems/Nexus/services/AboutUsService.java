@@ -17,22 +17,46 @@ public class AboutUsService {
         this.aboutUsRepository = aboutUsRepository;
     }
 
+    
+    /** 
+     * @param aboutUsEntity
+     * @return Aboutus
+     */
     public Aboutus saveOrUpdate(Aboutus aboutUsEntity) {
         return aboutUsRepository.save(aboutUsEntity);
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<Aboutus>
+     */
     public Optional<Aboutus> findById(Long id) {
         return aboutUsRepository.findById(id);
     }
 
+    
+    /** 
+     * @return List<Aboutus>
+     */
     public List<Aboutus> findAll() {
         return aboutUsRepository.findAll();
     }
 
+    
+    /** 
+     * @param id
+     */
     public void deleteById(Long id) {
         aboutUsRepository.deleteById(id);
     }
     
+    
+    /** 
+     * @param id
+     * @param aboutUsDetails
+     * @return Aboutus
+     */
     public Aboutus updateAboutUs(Long id, Aboutus aboutUsDetails) {
         Aboutus aboutUs = aboutUsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("AboutUs not found with id: " + id));

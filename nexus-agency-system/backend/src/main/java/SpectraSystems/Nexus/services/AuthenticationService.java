@@ -21,6 +21,11 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
+  
+  /** 
+   * @param request
+   * @return JwtAuthenticationResponse
+   */
   public JwtAuthenticationResponse signup(SignUpRequest request) {
       var user = User
                   .builder()
@@ -40,6 +45,11 @@ public class AuthenticationService {
   }
 
 
+  
+  /** 
+   * @param request
+   * @return JwtAuthenticationResponse
+   */
   public JwtAuthenticationResponse signin(SignInRequest request) {
       authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));

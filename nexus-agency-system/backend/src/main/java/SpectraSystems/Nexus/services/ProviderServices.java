@@ -20,22 +20,45 @@ public class ProviderServices {
         this.providerRepository = providerRepository;
     }
 
+    
+    /** 
+     * @return List<Provider>
+     */
     public List<Provider> getAllProviders() {
         return providerRepository.findAll();
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<Provider>
+     */
     public Optional<Provider> getProviderById(Long id) {
         return providerRepository.findById(id);
     }
 
+    
+    /** 
+     * @param type
+     * @return List<Provider>
+     */
     public List<Provider> getProviderByType(Type type) {
         return providerRepository.findByType(type);
     }
 
+    
+    /** 
+     * @param provider
+     * @return Provider
+     */
     public Provider createProvider(Provider provider) {
         return providerRepository.save(provider);
     }
 
+    
+    /** 
+     * @param id
+     */
     public void deleteProvider(Long id) {
         providerRepository.deleteById(id);
     }

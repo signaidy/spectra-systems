@@ -99,114 +99,226 @@ public class Flight {
         this.bundle = bundle;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getId() {
         return id;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getState(){
         return state;
     }
 
+    
+    /** 
+     * @param state
+     */
     public void setState(String state){
         this.state = state;
     }
 
+    
+    /** 
+     * @param rating
+     */
     public void setRating(Long rating){
         this.rating = rating;
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getUser() {
         return userid;
     }
 
+    
+    /** 
+     * @param user
+     */
     public void setUser(Long user) {
         this.userid = user;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getFlightNumber() {
         return flightNumber;
     }
 
+    
+    /** 
+     * @param flightNumber
+     */
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
 
+    
+    /** 
+     * @return Date
+     */
     public Date getDepartureDate() {
         return departureDate;
     }
 
+    
+    /** 
+     * @param departureDate
+     */
     public void setDepartureDate(Date departureDate) {
         this.departureDate = departureDate;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getDepartureLocation() {
         return departureLocation;
     }
 
+    
+    /** 
+     * @param departureLocation
+     */
     public void setDepartureLocation(String departureLocation) {
         this.departureLocation = departureLocation;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getArrivalLocation() {
         return arrivalLocation;
     }
 
+    
+    /** 
+     * @param arrivalLocation
+     */
     public void setArrivalLocation(String arrivalLocation) {
         this.arrivalLocation = arrivalLocation;
     }
 
+    
+    /** 
+     * @return Date
+     */
     public Date getReturnDate() {
         return returnDate;
     }
 
+    
+    /** 
+     * @param returnDate
+     */
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getType() {
         return type;
     }
 
+    
+    /** 
+     * @param type
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    
+    /** 
+     * @return LocalDate
+     */
     public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
 
+    
+    /** 
+     * @param purchaseDate
+     */
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
+    
+    /** 
+     * @return Double
+     */
     public Double getPrice() {
         return price;
     }
 
+    
+    /** 
+     * @param price
+     */
     public void setPrice(Double price) {
         this.price = price;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getRating(){
         return rating;
     }
 
+    
+    /** 
+     * @param bundle
+     */
     public void setBundle(String bundle){
         this.bundle = bundle;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getBundle(){
         return bundle;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getProviderId(){
         return providerId;
     }
 
+    
+    /** 
+     * @param providerId
+     */
     public void setProviderId(Long providerId){
         this.providerId = providerId;
     }

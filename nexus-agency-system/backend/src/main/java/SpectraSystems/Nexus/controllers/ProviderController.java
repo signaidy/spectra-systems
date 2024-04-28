@@ -23,12 +23,21 @@ public class ProviderController {
         this.providerService = providerService;
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<Provider>>
+     */
     @GetMapping
     public ResponseEntity<List<Provider>> getAllProviders() {
         List<Provider> providers = providerService.getAllProviders();
         return new ResponseEntity<>(providers, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Provider>
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Provider> getProviderById(@PathVariable Long id) {
         return providerService.getProviderById(id)
@@ -36,18 +45,33 @@ public class ProviderController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    
+    /** 
+     * @param type
+     * @return ResponseEntity<List<Provider>>
+     */
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Provider>> getProviderByType(@PathVariable Type type) {
         List<Provider> providers = providerService.getProviderByType(type);
         return new ResponseEntity<>(providers, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param provider
+     * @return ResponseEntity<Provider>
+     */
     @PostMapping
     public ResponseEntity<Provider> createProvider(@RequestBody Provider provider) {
         Provider createdProvider = providerService.createProvider(provider);
         return new ResponseEntity<>(createdProvider, HttpStatus.CREATED);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable Long id) {
         providerService.deleteProvider(id);

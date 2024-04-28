@@ -21,6 +21,10 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<Comment>>
+     */
     // Endpoint to retrieve all comments
     @GetMapping
     public ResponseEntity<List<Comment>> getAllComments() {
@@ -28,6 +32,11 @@ public class CommentController {
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Comment>
+     */
     // Endpoint to retrieve a comment by ID
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable("id") Long id) {
@@ -39,6 +48,11 @@ public class CommentController {
         }
     }
 
+    
+    /** 
+     * @param comment
+     * @return ResponseEntity<Comment>
+     */
     // Endpoint to create a new comment
     @PostMapping
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
@@ -46,6 +60,12 @@ public class CommentController {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
+    
+    /** 
+     * @param id
+     * @param commentDetails
+     * @return ResponseEntity<Comment>
+     */
     // Endpoint to update an existing comment
     @PutMapping("/{id}")
     public ResponseEntity<Comment> updateComment(@PathVariable("id") Long id, @RequestBody Comment commentDetails) {
@@ -53,6 +73,11 @@ public class CommentController {
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     // Endpoint to delete a comment by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id) {

@@ -35,6 +35,10 @@ public class TicketPurchase {
         this.state = state;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getTicketId() {
         return ticketId;
     }

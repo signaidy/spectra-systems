@@ -100,154 +100,306 @@ public class Reservation {
         this.state = "active";
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getId() {
         return id;
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getState() {
         return state;
     }
 
+    
+    /** 
+     * @param state
+     */
     public void setState(String state) {
         this.state = state;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getHotelId(){
         return hotelId;
     }
 
+    
+    /** 
+     * @param hotelId
+     */
     public void setHotelId(String hotelId){
         this.hotelId = hotelId;
     }
 
+    
+    /** 
+     * @param rating
+     */
     public void setRating(Long rating) {
         this.rating = rating;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getRating( ) {
         return rating;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getUser() {
         return userid;
     }
 
+    
+    /** 
+     * @param user
+     */
     public void setUser(Long user) {
         this.userid = user;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getHotel() {
         return hotel;
     }
 
+    
+    /** 
+     * @param hotel
+     */
     public void setHotel(String hotel) {
         this.hotel = hotel;
     }
 
+    
+    /** 
+     * @return Date
+     */
     public Date getDateStart() {
         return dateStart;
     }
 
+    
+    /** 
+     * @param dateStart
+     */
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
+    
+    /** 
+     * @return Date
+     */
     public Date getDateEnd() {
         return dateEnd;
     }
 
+    
+    /** 
+     * @param dateEnd
+     */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getRoomType() {
         return roomType;
     }
 
+    
+    /** 
+     * @param roomType
+     */
     public void setRoomType(String roomType) {
         this.roomType = roomType;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getReservationNumber() {
         return reservationNumber;
     }
 
+    
+    /** 
+     * @param reservationNumber
+     */
     public void setReservationNumber(String reservationNumber) {
         this.reservationNumber = reservationNumber;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getLocation() {
         return location;
     }
 
+    
+    /** 
+     * @param location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getBedSize() {
         return bedSize;
     }
     
+    
+    /** 
+     * @param bedSize
+     */
     public void setBedSize(String bedSize) {
         this.bedSize = bedSize;
     }
     
+    
+    /** 
+     * @return Integer
+     */
     public Integer getBedAmount() {
         return bedAmount;
     }
     
+    
+    /** 
+     * @param bedAmount
+     */
     public void setBedAmount(Integer bedAmount) {
         this.bedAmount = bedAmount;
     }
     
+    
+    /** 
+     * @return Double
+     */
     public Double getPrice() {
         return price;
     }
     
+    
+    /** 
+     * @param price
+     */
     public void setPrice(Double price) {
         this.price = price;
     }
 
+    
+    /** 
+     * @return Integer
+     */
     public Integer getTotalDays() {
         return totalDays;
     }
 
+    
+    /** 
+     * @param totalDays
+     */
     public void setTotalDays(Integer totalDays) {
         this.totalDays = totalDays;
     }
 
+    
+    /** 
+     * @return Double
+     */
     public Double getTotalPrice() {
         return totalPrice;
     }
 
+    
+    /** 
+     * @param totalPrice
+     */
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
+    
+    /** 
+     * @return Integer
+     */
     public Integer getGuests() {
         return guests;
     }
 
+    
+    /** 
+     * @param guests
+     */
     public void setGuests(Integer guests) {
         this.guests = guests;
     }
 
+    
+    /** 
+     * @param bundle
+     */
     public void setBundle(String bundle){
         this.bundle = bundle;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getBundle(){
         return bundle;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getProviderId(){
         return providerId;
     }
 
+    
+    /** 
+     * @param providerId
+     */
     public void setProviderId(Long providerId){
         this.providerId = providerId;
     }

@@ -53,6 +53,10 @@ public class FlightController {
         this.userService = userService;
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<Flight>>
+     */
     // Endpoint to retrieve all flights
     @GetMapping
     public ResponseEntity<List<Flight>> getAllFlights() {
@@ -60,6 +64,11 @@ public class FlightController {
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Flight>
+     */
     // Endpoint to retrieve a flight by ID
     @GetMapping("/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable("id") Long id) {
@@ -68,6 +77,11 @@ public class FlightController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    
+    /** 
+     * @param userId
+     * @return ResponseEntity<List<Flight>>
+     */
     // Endpoint to retrieve all flights by userID
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Flight>> getAllFlightsByUserId(@PathVariable Long userId) {
@@ -75,12 +89,20 @@ public class FlightController {
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<externalFlight>>
+     */
     @GetMapping("/avianca/flights")
     public ResponseEntity<List<externalFlight>> getAllFlightsFromOtherBackend() {
         List<externalFlight> flights = flightService.getAllFlightsFromOtherBackend();
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<externalFlight>>
+     */
     @GetMapping("/avianca/one-way-flights")
     public ResponseEntity<List<externalFlight>> getOneWayFlightsFromOtherBackend(
         @RequestParam(value = "originCity") Long originCityId,
@@ -92,6 +114,10 @@ public class FlightController {
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<externalFlight>>
+     */
     @GetMapping("/avianca/round-trip-flights")
     public ResponseEntity<List<externalFlight>> getRoundTripFlights(
             @RequestParam(value = "originCity") Long originCityId,
@@ -121,6 +147,12 @@ public class FlightController {
         return new ResponseEntity<>(outboundFlights, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param outboundFlight
+     * @param returnFlight
+     * @return boolean
+     */
     // Method to check if flights match based on origin, destination cities, and scales
     private boolean matchFlights(externalFlight outboundFlight, externalFlight returnFlight) {
         if (outboundFlight.getScale() != null && returnFlight.getScale() != null) {
@@ -135,12 +167,21 @@ public class FlightController {
         }
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<City>>
+     */
     @GetMapping("/avianca/cities")
     public ResponseEntity<List<City>> getAllCitiesFromOtherBackend() {
         List<City> cities = flightService.getAllCitiesFromOtherBackend();
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param flight
+     * @return ResponseEntity<Flight>
+     */
     // Endpoint to create a new flight
     @PostMapping
     @PreAuthorize("hasRole('USER')")
@@ -149,6 +190,11 @@ public class FlightController {
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
     }
 
+    
+    /** 
+     * @return ResponseEntity<Map<String, String>>
+     * @throws JsonProcessingException
+     */
     // Endpoint for purchasing a flight
     @PostMapping("/purchase/{amount}/{method}")
     public ResponseEntity<Map<String, String>> purchaseFlight(
@@ -166,6 +212,12 @@ public class FlightController {
     }
 
 
+    
+    /** 
+     * @param id
+     * @param flightDetails
+     * @return ResponseEntity<Flight>
+     */
     // Endpoint to update an existing flight
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -174,6 +226,11 @@ public class FlightController {
         return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param flightNumber
+     * @return ResponseEntity<List<Flight>>
+     */
     @PutMapping("/deactivate/{flightNumber}")
     public ResponseEntity<List<Flight>> deactivateFlightsByFlightNumber(@PathVariable String flightNumber) {
         List<Flight> flights = flightService.getFlightsByFlightNumber(flightNumber);
@@ -203,6 +260,11 @@ public class FlightController {
         }
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<List<Flight>>
+     */
     @PutMapping("/deactivateTicket/{id}")
     public ResponseEntity<List<Flight>> deactivateFlightsById(@PathVariable Long id) {
         Optional<Flight> optionalFlight = flightService.getFlightById(id);
@@ -232,6 +294,11 @@ public class FlightController {
         }
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     // Endpoint to delete a flight by ID
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -240,6 +307,11 @@ public class FlightController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    
+    /** 
+     * @param userId
+     * @param Type
+     */
     private void sendCancellationEmail(Long userId, String Type) {
         try {
             // Retrieve user by userId
@@ -272,6 +344,10 @@ public class FlightController {
         }
     }
 
+    
+    /** 
+     * @param userId
+     */
     private void sendPurchaseConfirmationEmail(Long userId) {
         try {
             // Retrieve user by userId
