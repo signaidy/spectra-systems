@@ -1801,6 +1801,16 @@ public class ApexController {
     }
 
     // Partners - GET INFORMATION
+    /**
+     * End point para obtener la información de los partners.
+
+     * Este método maneja la solicitud GET a la ruta "/partners" y devuelve un objeto con la información de los partners.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Partner` representando la información de los partners.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/partners")
     public Object getPartners() {
         Connection conn = new OracleConnector().getConnection();
