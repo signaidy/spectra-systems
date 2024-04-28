@@ -43,6 +43,14 @@ import org.springframework.web.bind.annotation.CrossOrigin; // Import para el us
 import java.time.LocalDateTime; // Import para obtencion de tiempo actual
 import org.springframework.beans.factory.annotation.Value; // Import necesario para la inyección de dependencia
 
+/**
+ * La clase `ApexController` es un controlador RESTful utilizado en la aplicación backend.
+
+ * Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con las funcionalidades
+ * de la aplicacion.
+
+ * La clase utiliza anotaciones de Spring para definir los endpoints y manejar las peticiones.
+ */
 @CrossOrigin
 @RestController // Indica que la clase es un controlador RESTful
 public class ApexController {
