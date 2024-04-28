@@ -53,6 +53,10 @@ public class FlightService {
         this.ticketPurchaseRepository = ticketPurchaseRepository;
     }
 
+    
+    /** 
+     * @return List<Flight>
+     */
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
@@ -194,8 +198,8 @@ public class FlightService {
         String requestBody = "{"
                 + "\"user_id\": \"" + userIdPurchase + "\","
                 + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
-                + "\"state\": \"\","
-                + "\"type\": \"\""
+                + "\"state\": \"" + purchaseRequest.getState() + "\","
+                + "\"type\": \"" + purchaseRequest.getType() + "\"\""
                 + "}";
 
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
