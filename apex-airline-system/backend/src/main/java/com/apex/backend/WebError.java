@@ -1,9 +1,9 @@
 package com.apex.backend;
 
 /**
- * La clase `WebError` es un registro inmutable que representa un error web.
+ * La clase `WebError` es un registro que representa un error web.
 
- * Este registro se utiliza para encapsular información sobre un error ocurrido 
+ * Este registro se utiliza para  información sobre un error ocurrido 
  * durante una interacción con el backend.
 
   * @author Juan Pablo Estrada Lucero
