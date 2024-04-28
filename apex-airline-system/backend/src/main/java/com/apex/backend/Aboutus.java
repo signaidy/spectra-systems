@@ -1,5 +1,22 @@
 package com.apex.backend;
 
+/**
+ * La clase `Aboutus` representa la información de la sección "Acerca de nosotros".
+
+ * Esta clase almacena los datos necesarios para construir dicha sección, incluyendo:
+
+ * `slogan`: El eslogan de la compañía.
+ * `gif`: La URL de un GIF animado de la compañía a mostrar.
+ * `yt`: URL del video a mostrar dentro de esta sección relacionado con la compañía.
+ * `cards_amount`: La cantidad de tarjetas informativas que se mostrarán.
+ * `title_one`, `text_one`, `img_one`: Título, texto e imagen de la primera tarjeta informativa.
+ * `title_two`, `text_two`, `img_two`: Título, texto e imagen de la segunda tarjeta informativa.
+ * `title_three`, `text_three`, `img_three`: Título, texto e imagen de la tercera tarjeta informativa.
+ * `title_four`, `text_four`, `img_four`: Título, texto e imagen de la cuarta tarjeta informativa.
+
+ * @author (Juan Pablo Estrada Lucero)
+ * @version (1)
+ */
 public class Aboutus {
     String slogan;
     String gif;
