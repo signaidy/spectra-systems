@@ -53,6 +53,9 @@ import org.springframework.beans.factory.annotation.Value; // Import necesario p
  */
 @CrossOrigin
 @RestController // Indica que la clase es un controlador RESTful
+/**
+ * Crea una instancia de `ApexController` el cual representara el controlado del BE
+ */
 public class ApexController {
     /**
      * URL base de la API de Nexus (valor inyectado mediante `@Value`).
@@ -60,6 +63,11 @@ public class ApexController {
     @Value("${agency.urls}")
     private String agencyUrls;
 
+    /**
+     * Representa un mensaje de bienvenida establecido para el usuario
+     * @param id Id del usuario
+     * @param content Contenido dentro del mensaje de bienvenida
+    */
     public record Greeting(long id, String content) {
     }
 
@@ -1414,8 +1422,7 @@ public class ApexController {
      * End point para actualizar la información del header.
 
      * Este método maneja la solicitud POST a la ruta "/update-header" y actualiza la información del header.
-     * 
-     * @param header Objeto de tipo `Header` representando la estructura del header.
+     * @param head Valor correspondiente al de la clase para acceso a atributos
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
@@ -2135,7 +2142,9 @@ public class ApexController {
      * End point para obtener la información de los vuelos directos.
 
      * Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y devuelve un objeto con la información de los vuelos directos.
-     * 
+     * @param origin Representa el pais seleccionado de busqueda el cual sera el origen
+     * @param destination Representa el pais seleccionado de busqueda el cual sera el destino
+     * @param departureDay Dia de salida establecido en la busqueda
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `FlightSimple` representando la información de los vuelos directos.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
@@ -2241,7 +2250,7 @@ public class ApexController {
      * End point para obtener la información de las ciudades.
 
      * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un objeto con la información de las ciudades.
-     * 
+     * @param cityid Id correspondiente al ID de la ciudad seleccionada
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `City` representando la información de las ciudades.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.

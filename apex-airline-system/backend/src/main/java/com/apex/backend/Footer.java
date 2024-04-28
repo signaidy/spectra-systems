@@ -59,7 +59,7 @@ public class Footer {
      * @param  Link_quick_2 Link de la segunda subseccion de la segunda seccion
      * @param Title_3 Título principal de la tercera sección del pie de página.
      * @param Contact_1 Informacion de contacto 1.
-     * @param Contact_1 Informacion de contacto 2.
+     * @param Contact_2 Informacion de contacto 2.
      * @param copyright Texto de copyright del pie de página.
      */
 
