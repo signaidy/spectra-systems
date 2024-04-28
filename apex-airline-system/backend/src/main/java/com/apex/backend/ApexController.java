@@ -67,6 +67,7 @@ public class ApexController {
     private final AtomicLong counter = new AtomicLong();
     private final String NEXUS_API = "http://localhost:42069/nexus/flights/";
 
+    @GetMapping("/greeting")
     // Greeting - API
     /**
      * End point para obtener un saludo personalizado.
@@ -77,7 +78,6 @@ public class ApexController {
      * @param name Nombre de la persona a saludar (valor por defecto: "World").
      * @return Objeto `Greeting` que contiene el identificador del saludo y el contenido del mensaje.
      */
-    @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, agencyUrls));
     }
