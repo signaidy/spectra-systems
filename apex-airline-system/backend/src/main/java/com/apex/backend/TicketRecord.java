@@ -1,5 +1,45 @@
 package com.apex.backend;
 
-public record TicketRecord(int ticketId, int price, int flightId, String type, String state, int userId, String userName, String email) {
+/**
+ * La clase `TicketRecord` es un registro que representa un resumen detallado de un boleto.
+
+ * Esta clase registra la información de un boleto junto con detalles del usuario asociado a la compra 
+
+  * @author Juan Pablo Estrada Lucero
+  * @version 1.0
+  */
+public record TicketRecord(
+    /**
+     * Identificador único del boleto.
+     */
+    int ticketId, 
+    /**
+     * Precio del boleto.
+     */
+    int price, 
+    /**
+     * Identificador del vuelo asociado al boleto.
+     */
+    int flightId, 
+    /**
+     * Tipo de boleto.
+     */
+    String type, 
+    /**
+     * Estado actual del boleto (por ejemplo, "disponible", "vendido", "cancelado").
+     */
+    String state, 
+    /** 
+     * Identificador del usuario que compró el boleto .
+     */
+    int userId, 
+     /** 
+      * Nombre del usuario que compró el boleto.
+      */
+    String userName, 
+    /** 
+     * Correo electrónico del usuario que compró el boleto .
+     */
+    String email) {
     
 }

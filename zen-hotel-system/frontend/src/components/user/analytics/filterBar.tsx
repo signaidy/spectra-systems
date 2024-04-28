@@ -20,11 +20,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { LocationPicker } from "@/components/user/analytics/locationPicker";
 // Utils
 import { format, set } from "date-fns";
 import { cn } from "@/lib/utils";
 
-export function FilterBar() {
+export function FilterBar({ locations }: { locations: string[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -113,6 +114,13 @@ export function FilterBar() {
           />
         </PopoverContent>
       </Popover>
+      <LocationPicker
+        locations={locations}
+        currentLocation={searchParams.get("location") || ""}
+        setLocation={(value) => {
+          setFilter({ ...filter, location: value });
+        }}
+      />
     </div>
   );
 }

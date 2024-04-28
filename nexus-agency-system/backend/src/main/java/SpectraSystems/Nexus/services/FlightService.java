@@ -53,6 +53,10 @@ public class FlightService {
         this.ticketPurchaseRepository = ticketPurchaseRepository;
     }
 
+    
+    /** 
+     * @return List<Flight>
+     */
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
@@ -184,7 +188,7 @@ public class FlightService {
     public void purchaseFlight(int amount, String method, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
         int discount = 20;
-        long userIdPurchase = 145;
+        long userIdPurchase = 1;
 
         // Create request body
         HttpHeaders headers = new HttpHeaders();
@@ -194,8 +198,8 @@ public class FlightService {
         String requestBody = "{"
                 + "\"user_id\": \"" + userIdPurchase + "\","
                 + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
-                + "\"state\": \"\","
-                + "\"type\": \"\""
+                + "\"state\": \"" + purchaseRequest.getState() + "\","
+                + "\"type\": \"" + purchaseRequest.getType() + "\"\""
                 + "}";
 
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
