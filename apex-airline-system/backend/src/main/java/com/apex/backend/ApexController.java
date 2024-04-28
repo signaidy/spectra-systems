@@ -1518,6 +1518,18 @@ public class ApexController {
     }
 
     // Tickets Individual - Cancelation
+    /**
+     * End point para la cancelación individual de tickets.
+
+     * Este método maneja la solicitud POST a la ruta "/ticketcanceled/{ticket_id}" donde ticket_id es el identificador del ticket.
+     * Cancela un tickets individual.
+     * 
+     * @param ticket_id Valor numérico indicando el identificador del ticket.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/ticketcanceled/{ticket_id}")
     public Object updateIndividualTicket(@PathVariable int ticket_id) {
         Connection conn = new OracleConnector().getConnection();
