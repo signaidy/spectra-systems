@@ -34,18 +34,37 @@ public class ReservationService {
         this.userService = userService;
     }
 
+    
+    /** 
+     * @return List<Reservation>
+     */
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<Reservation>
+     */
     public Optional<Reservation> getReservationById(Long id) {
         return reservationRepository.findById(id);
     }
 
+    
+    /** 
+     * @param userId
+     * @return List<Reservation>
+     */
     public List<Reservation> getAllReservationsByUserId(Long userId) {
         return reservationRepository.findByUserid(userId);
     }
 
+    
+    /** 
+     * @param reservation
+     * @return Reservation
+     */
     public Reservation createReservation(Reservation reservation) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = ((User) authentication.getPrincipal()).getId();
@@ -56,10 +75,19 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    
+    /** 
+     * @param hotelId
+     * @return List<Reservation>
+     */
     public List<Reservation> getReservationsByHotelId(String hotelId) {
         return reservationRepository.findAllByHotelId(hotelId);
     }
 
+    
+    /** 
+     * @param hotelId
+     */
     // Method to cancel reservations by hotelId
     public void cancelReservationsByHotelId(String hotelId) {
         List<Reservation> reservations = getReservationsByHotelId(hotelId);
@@ -75,6 +103,10 @@ public class ReservationService {
         }
     }
 
+    
+    /** 
+     * @param id
+     */
     public void cancelReservationsById(Long id) {
         Optional<Reservation> optionalReservation  = getReservationById(id);
         if (optionalReservation.isPresent()) {
@@ -94,6 +126,12 @@ public class ReservationService {
         }
     }
 
+    
+    /** 
+     * @param id
+     * @param reservationDetails
+     * @return Reservation
+     */
     public Reservation updateReservation(Long id, Reservation reservationDetails) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found with id: " + id));
@@ -110,10 +148,19 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    
+    /** 
+     * @param id
+     */
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
     }
 
+    
+    /** 
+     * @param userId
+     * @param Type
+     */
     private void sendCancellationEmail(Long userId, String Type) {
         try {
             // Retrieve user by userId

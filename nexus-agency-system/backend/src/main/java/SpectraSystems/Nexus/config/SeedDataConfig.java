@@ -26,6 +26,11 @@ public class SeedDataConfig implements CommandLineRunner {
     private final UserService userService;
     private final AboutUsService aboutUsService;
 
+    
+    /** 
+     * @param args
+     * @throws Exception
+     */
     @Override
     public void run(String... args) throws Exception {
         

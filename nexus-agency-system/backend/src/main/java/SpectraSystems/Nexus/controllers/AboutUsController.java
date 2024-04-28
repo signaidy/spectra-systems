@@ -16,12 +16,22 @@ import java.util.Optional;
 public class AboutUsController {
     private final AboutUsService aboutUsService;
 
+    
+    /** 
+     * @param aboutUsEntity
+     * @return ResponseEntity<Aboutus>
+     */
     @PostMapping
     public ResponseEntity<Aboutus> createOrUpdateAboutUs(@RequestBody Aboutus aboutUsEntity) {
         Aboutus savedAboutUs = aboutUsService.saveOrUpdate(aboutUsEntity);
         return new ResponseEntity<>(savedAboutUs, HttpStatus.CREATED);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Aboutus>
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{id}")
     public ResponseEntity<Aboutus> getAboutUsById(@PathVariable Long id) {
@@ -30,12 +40,22 @@ public class AboutUsController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<Aboutus>>
+     */
     @GetMapping
     public ResponseEntity<List<Aboutus>> getAllAboutUs() {
         List<Aboutus> allAboutUs = aboutUsService.findAll();
         return new ResponseEntity<>(allAboutUs, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @param aboutUs
+     * @return ResponseEntity<Aboutus>
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Aboutus> updateAboutUs(@PathVariable Long id, @RequestBody Aboutus aboutUs) {
         if (!aboutUsService.findById(id).isPresent()) {
@@ -46,6 +66,11 @@ public class AboutUsController {
         return ResponseEntity.ok(updatedAboutUs);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAboutUs(@PathVariable Long id) {
         aboutUsService.deleteById(id);

@@ -71,74 +71,146 @@ public class Comment {
         this.children =  new ArrayList<>();
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
     
+    
+    /** 
+     * @param userId
+     */
     public void setUserId(Long userId) {
         this.userId = userId;
     }
     
+    
+    /** 
+     * @param content
+     */
     public void setContent(String content) {
         this.content = content;
     }
     
+    
+    /** 
+     * @param creationDate
+     */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
     
+    
+    /** 
+     * @param path
+     */
     public void setPath(String path) {
         this.path = path;
     }
     
+    
+    /** 
+     * @param parentComment
+     */
     public void setParentComment(Long parentComment) {
         this.parentComment = parentComment;
     }
     
+    
+    /** 
+     * @param flightId
+     */
     public void setFlightId(Long flightId) {
         this.flightId = flightId;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getId() {
         return id;
     }
     
+    
+    /** 
+     * @return Long
+     */
     public Long getUserId() {
         return userId;
     }
     
+    
+    /** 
+     * @return String
+     */
     public String getContent() {
         return content;
     }
     
+    
+    /** 
+     * @return Date
+     */
     public Date getCreationDate() {
         return creationDate;
     }
     
+    
+    /** 
+     * @return String
+     */
     public String getPath() {
         return path;
     }
     
+    
+    /** 
+     * @return Long
+     */
     public Long getParentComment() {
         return parentComment;
     }
     
+    
+    /** 
+     * @return Long
+     */
     public Long getFlightId() {
         return flightId;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getUserName() {
         return userName;
     }
 
+    
+    /** 
+     * @param userName
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    
+    /** 
+     * @return List<Comment>
+     */
     public List<Comment> getChildren() {
         return children;
     }
 
+    
+    /** 
+     * @param children
+     */
     public void setChildren(List<Comment> children) {
         this.children = children;
     }

@@ -21,6 +21,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<User>>
+     */
     // Endpoint to retrieve all users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -28,6 +32,11 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<User>
+     */
     // Endpoint to retrieve a user by ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
@@ -36,6 +45,11 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    
+    /** 
+     * @param user
+     * @return ResponseEntity<User>
+     */
     // Endpoint to create a new user
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -43,6 +57,12 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
+    
+    /** 
+     * @param id
+     * @param userDetails
+     * @return ResponseEntity<User>
+     */
     // Endpoint to update an existing user
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User userDetails) {
@@ -50,6 +70,11 @@ public class UserController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     // Endpoint to delete a user by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {

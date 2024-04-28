@@ -57,60 +57,116 @@ public class Provider {
         this.percentageDiscount = percentageDiscount;
     }
 
+    
+    /** 
+     * @return Long
+     */
     // Getters and Setters
 
     public Long getId() {
         return id;
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getProviderName() {
         return providerName;
     }
 
+    
+    /** 
+     * @param providerName
+     */
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getProviderUrl() {
         return providerUrl;
     }
 
+    
+    /** 
+     * @param providerUrl
+     */
     public void setProviderUrl(String providerUrl) {
         this.providerUrl = providerUrl;
     }
 
+    
+    /** 
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    
+    /** 
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    
+    /** 
+     * @return Double
+     */
     public Double getGainsFlights() {
         return gainsFlights != null ? gainsFlights : 0.0;
     }
 
+    
+    /** 
+     * @param gainsFlights
+     */
     public void setGainsFlights(double gainsFlights) {
         this.gainsFlights = gainsFlights;
     }
 
+    
+    /** 
+     * @return Double
+     */
     public Double getGainsHotel() {
         return gainsHotel != null ? gainsHotel : 0.0;
     }
 
+    
+    /** 
+     * @param gainsHotel
+     */
     public void setGainsHotel(double gainsHotel) {
         this.gainsHotel = gainsHotel;
     }
 
+    
+    /** 
+     * @return Double
+     */
     public Double getPercentageDiscount() {
         return percentageDiscount != null ? percentageDiscount : 0.0;
     }
 
+    
+    /** 
+     * @param percentageDiscount
+     */
     public void setPercentageDiscount(double percentageDiscount) {
         this.percentageDiscount = percentageDiscount;
     }

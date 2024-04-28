@@ -16,25 +16,50 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    
+    /** 
+     * @return List<Comment>
+     */
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }
 
     
+    
+    /** 
+     * @param flightId
+     * @return List<Comment>
+     */
     public List<Comment> getCommentsByFlightId(Long flightId) {
         return commentRepository.findByFlightId(flightId);
     }
 
     
+    
+    /** 
+     * @param id
+     * @return Optional<Comment>
+     */
     public Optional<Comment> getCommentById(Long id) {
         return commentRepository.findById(id);
     }
 
     
+    
+    /** 
+     * @param comment
+     * @return Comment
+     */
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
     }
 
+    
+    /** 
+     * @param id
+     * @param commentDetails
+     * @return Comment
+     */
     public Comment updateComment(Long id, Comment commentDetails) {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         if (optionalComment.isPresent()) {
@@ -47,6 +72,10 @@ public class CommentService {
         }
     }
     
+    
+    /** 
+     * @param id
+     */
     public void deleteComment(Long id) {
         commentRepository.deleteById(id);
     }

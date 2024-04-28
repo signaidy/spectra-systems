@@ -78,6 +78,10 @@ public class User implements UserDetails{
         this.role = role;
     }
 
+    
+    /** 
+     * @return Long
+     */
     public Long getId() {
         return id;
     }

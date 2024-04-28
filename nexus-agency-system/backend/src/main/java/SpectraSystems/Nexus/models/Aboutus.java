@@ -90,140 +90,276 @@ public class Aboutus {
         this.textFour = textFour;
         this.imgFour = imgFour;
     }
+    
+    /** 
+     * @return Long
+     */
     // Getters and setters for all fields
 
     public Long getId() {
         return id;
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getSlogan() {
         return slogan;
     }
 
+    
+    /** 
+     * @param slogan
+     */
     public void setSlogan(String slogan) {
         this.slogan = slogan;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getGif() {
         return gif;
     }
 
+    
+    /** 
+     * @param gif
+     */
     public void setGif(String gif) {
         this.gif = gif;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getYt() {
         return yt;
     }
 
+    
+    /** 
+     * @param yt
+     */
     public void setYt(String yt) {
         this.yt = yt;
     }
 
+    
+    /** 
+     * @return Integer
+     */
     public Integer getCardsAmount() {
         return cardsAmount;
     }
 
+    
+    /** 
+     * @param cardsAmount
+     */
     public void setCardsAmount(Integer cardsAmount) {
         this.cardsAmount = cardsAmount;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTitleOne() {
         return titleOne;
     }
 
+    
+    /** 
+     * @param titleOne
+     */
     public void setTitleOne(String titleOne) {
         this.titleOne = titleOne;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTextOne() {
         return textOne;
     }
 
+    
+    /** 
+     * @param textOne
+     */
     public void setTextOne(String textOne) {
         this.textOne = textOne;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getImgOne() {
         return imgOne;
     }
 
+    
+    /** 
+     * @param imgOne
+     */
     public void setImgOne(String imgOne) {
         this.imgOne = imgOne;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTitleTwo() {
         return titleTwo;
     }
 
+    
+    /** 
+     * @param titleTwo
+     */
     public void setTitleTwo(String titleTwo) {
         this.titleTwo = titleTwo;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTextTwo() {
         return textTwo;
     }
 
+    
+    /** 
+     * @param textTwo
+     */
     public void setTextTwo(String textTwo) {
         this.textTwo = textTwo;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getImgTwo() {
         return imgTwo;
     }
 
+    
+    /** 
+     * @param imgTwo
+     */
     public void setImgTwo(String imgTwo) {
         this.imgTwo = imgTwo;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTitleThree() {
         return titleThree;
     }
 
+    
+    /** 
+     * @param titleThree
+     */
     public void setTitleThree(String titleThree) {
         this.titleThree = titleThree;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTextThree() {
         return textThree;
     }
 
+    
+    /** 
+     * @param textThree
+     */
     public void setTextThree(String textThree) {
         this.textThree = textThree;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getImgThree() {
         return imgThree;
     }
 
+    
+    /** 
+     * @param imgThree
+     */
     public void setImgThree(String imgThree) {
         this.imgThree = imgThree;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTitleFour() {
         return titleFour;
     }
 
+    
+    /** 
+     * @param titleFour
+     */
     public void setTitleFour(String titleFour) {
         this.titleFour = titleFour;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getTextFour() {
         return textFour;
     }
 
+    
+    /** 
+     * @param textFour
+     */
     public void setTextFour(String textFour) {
         this.textFour = textFour;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getImgFour() {
         return imgFour;
     }
 
+    
+    /** 
+     * @param imgFour
+     */
     public void setImgFour(String imgFour) {
         this.imgFour = imgFour;
     }

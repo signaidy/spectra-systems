@@ -57,6 +57,10 @@ public class ReservationController {
         this.userService = userService;
     }
 
+    
+    /** 
+     * @return ResponseEntity<List<Reservation>>
+     */
     // Endpoint to retrieve all reservations
     @GetMapping
     public ResponseEntity<List<Reservation>> getAllReservations() {
@@ -64,12 +68,22 @@ public class ReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param userId
+     * @return ResponseEntity<List<Reservation>>
+     */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Reservation>> getAllReservationsByUserId(@PathVariable Long userId) {
         List<Reservation> Reservations = reservationService.getAllReservationsByUserId(userId);
         return new ResponseEntity<>(Reservations, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Reservation>
+     */
     // Endpoint to retrieve a reservation by ID
     @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservationById(@PathVariable("id") Long id) {
@@ -78,6 +92,13 @@ public class ReservationController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    
+    /** 
+     * @param "providerId"
+     * @param providerId
+     * @param reservation
+     * @return ResponseEntity<Reservation>
+     */
     // Endpoint to create a new reservation
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestParam(value = "providerId", required = true) Long providerId, @RequestBody Reservation reservation) {
@@ -138,6 +159,12 @@ public class ReservationController {
         }
     }
 
+    
+    /** 
+     * @param id
+     * @param reservationDetails
+     * @return ResponseEntity<Reservation>
+     */
     // Endpoint to update an existing reservation
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -146,6 +173,11 @@ public class ReservationController {
         return new ResponseEntity<>(updatedReservation, HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     // Endpoint to delete a reservation by ID
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -154,18 +186,33 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    
+    /** 
+     * @param hotelId
+     * @return ResponseEntity<Void>
+     */
     @PutMapping("/cancelHotel/{hotelId}")
     public ResponseEntity<Void> cancelReservationsByHotelId(@PathVariable String hotelId) {
         reservationService.cancelReservationsByHotelId(hotelId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param id
+     * @return ResponseEntity<Void>
+     */
     @PutMapping("/cancel/{id}")
     public ResponseEntity<Void> cancelReservationById(@PathVariable Long id) {
         reservationService.cancelReservationsById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    
+    /** 
+     * @param getHotels(
+     * @return ResponseEntity<List<Map<String, Object>>>
+     */
     @GetMapping(value = "/hotelsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Map<String, Object>>> getHotels(
             @RequestParam(value = "city", required = false) String city,
@@ -213,6 +260,11 @@ public class ReservationController {
         return ResponseEntity.ok().body(allHotels);
     }
 
+    
+    /** 
+     * @param getHotelRoomById(
+     * @return ResponseEntity<Map<String, Object>>
+     */
     @GetMapping(value = "/roomsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> getHotelRoomById(
             @RequestParam(value = "id", required = false) String id,
@@ -252,6 +304,11 @@ public class ReservationController {
         }
     }
 
+    
+    /** 
+     * @param hotel
+     * @return Map<String, Object>
+     */
     private Map<String, Object> constructResponse(Map<String, Object> hotel) {
         // Construct the JSON response with hotel id and rooms
         Map<String, Object> response = Map.of(
@@ -262,6 +319,10 @@ public class ReservationController {
         return response;
     }
 
+    
+    /** 
+     * @return List<String>
+     */
     @GetMapping("/cities")
     public List<String> getAllHotelCitiesFromOtherBackend() {
     List<String> allHotelCities = new ArrayList<>();
@@ -295,6 +356,10 @@ public class ReservationController {
         return allHotelCities;
     }
 
+    
+    /** 
+     * @param userId
+     */
     private void sendPurchaseConfirmationEmail(Long userId) {
         try {
             // Retrieve user by userId
