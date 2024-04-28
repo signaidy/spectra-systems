@@ -2007,6 +2007,19 @@ public class ApexController {
     }
 
     // Cities - UPDATE
+    /**
+     * End point para actualizar el nombre de una ciudad.
+
+     * Este método maneja la solicitud POST a la ruta "/update-city/{city}/{id}" donde city es el nombre de la ciudad y id es el identificador de la ciudad.
+     * Actualiza el nombre de una ciudad en la base de datos.
+     * 
+     * @param city Valor de tipo String indicando el nombre de la ciudad.
+     * @param id Valor numérico indicando el identificador de la ciudad.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-city/{city}/{id}")
     public Object updateCities(@PathVariable String city, @PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
