@@ -14,8 +14,8 @@ package com.apex.backend;
  * `title_three`, `text_three`, `img_three`: Título, texto e imagen de la tercera tarjeta informativa.
  * `title_four`, `text_four`, `img_four`: Título, texto e imagen de la cuarta tarjeta informativa.
 
- * @author (Juan Pablo Estrada Lucero)
- * @version (1)
+ * @author Juan Pablo Estrada Lucero
+ * @version 1.0
  */
 public class Aboutus {
     String slogan;
