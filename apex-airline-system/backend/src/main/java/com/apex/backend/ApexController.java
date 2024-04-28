@@ -1733,6 +1733,17 @@ public class ApexController {
     }
 
     // Footer - UPDATE
+    /**
+     * End point para actualizar la información del footer.
+
+     * Este método maneja la solicitud POST a la ruta "/update-footer" y actualiza la información del footer.
+     * 
+     * @param footer Objeto de tipo `Footer` representando la estructura del footer.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-footer")
     public Object updateFooter(@RequestBody Footer footer) {
         Connection conn = new OracleConnector().getConnection();
