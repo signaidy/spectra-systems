@@ -1914,6 +1914,18 @@ public class ApexController {
 
     // Modification Flight - GET INFORMATION OF RESPECTIVE USERS THAT THE FLIGHT
     // HAVE BEEN MODIFIED
+    /**
+     * End point para obtener la información de los usuarios que han comprado un ticket de un vuelo modificado.
+
+     * Este método maneja la solicitud GET a la ruta "/modification-notification/{flightid}" donde flightid es el identificador del vuelo.
+     * Obtiene la información de los usuarios que han comprado un ticket de un vuelo modificado.
+     * 
+     * @param flightid Valor numérico indicando el identificador del vuelo.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `userinformation` representando la información de los usuarios.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/modification-notification/{flightid}")
     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
         Connection conn = new OracleConnector().getConnection();
