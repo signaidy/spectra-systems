@@ -1049,6 +1049,17 @@ public class ApexController {
     }
 
     // About Us - UPDATE
+    /**
+     * End point para actualizar el contenido de la página "About us".
+
+     * Este método maneja la solicitud POST a la ruta "/update-aboutus" y actualiza el contenido de la página "About Us".
+
+     * @param au Objeto `AboutUs` que contiene la estructura de la página "About us".
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante la modificación dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-aboutus")
     public Object updateAboutUs(@RequestBody Aboutus au) {
         Connection conn = new OracleConnector().getConnection();
