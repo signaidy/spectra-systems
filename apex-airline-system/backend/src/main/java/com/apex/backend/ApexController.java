@@ -1969,6 +1969,18 @@ public class ApexController {
     }
 
     // City - REGISTRATION
+    /**
+     * End point para registrar una ciudad.
+
+     * Este método maneja la solicitud POST a la ruta "/create-city/{city}" donde city es el nombre de la ciudad.
+     * Registra una ciudad en la base de datos.
+     * 
+     * @param city Valor de tipo String indicando el nombre de la ciudad.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/create-city/{city}")
     public Object createCity(@PathVariable String city) {
         Connection conn = new OracleConnector().getConnection();
