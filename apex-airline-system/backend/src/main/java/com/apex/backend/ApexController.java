@@ -2098,6 +2098,17 @@ public class ApexController {
     }
 
     // Home - UPDATE
+    /**
+     * End point para actualizar la información de la página de inicio.
+
+     * Este método maneja la solicitud POST a la ruta "/update-home" y actualiza la información de la página de inicio.
+     * 
+     * @param Home Objeto de tipo `Home` representando la estructura de la página de inicio.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-home")
     public Object updateHome(@RequestBody Home Home) {
         Connection conn = new OracleConnector().getConnection();
