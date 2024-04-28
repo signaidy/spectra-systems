@@ -1416,6 +1416,17 @@ public class ApexController {
     }
 
     // Header - UPDATE
+    /**
+     * End point para actualizar la información del header.
+
+     * Este método maneja la solicitud POST a la ruta "/update-header" y actualiza la información del header.
+     * 
+     * @param header Objeto de tipo `Header` representando la estructura del header.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-header")
     public Object updateHeader(@RequestBody Header head) {
         Connection conn = new OracleConnector().getConnection();
