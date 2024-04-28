@@ -1560,6 +1560,18 @@ public class ApexController {
     }
 
     // User Discount - GET
+    /**
+     * End point para obtener el descuento de un usuario.
+
+     * Este método maneja la solicitud GET a la ruta "/discount/{id}" donde id es el identificador del usuario.
+     * Obtiene el descuento aplicado a un usuario.
+     * 
+     * @param id Valor numérico indicando el identificador del usuario.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Discount` representando el porcentaje de descuento.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/discount/{id}")
     public Object getDiscount(@PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
