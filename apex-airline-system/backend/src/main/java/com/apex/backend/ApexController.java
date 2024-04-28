@@ -1,39 +1,54 @@
 package com.apex.backend;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+/**
+ * La clase `ApexController` es un controlador RESTful utilizado en la aplicación backend.
+
+ * Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con las funcionalidades
+ * de la aplicacion.
+
+ * La clase utiliza anotaciones de Spring Framework para definir los endpoints y manejar las peticiones.
+
+  * @author Juan Pablo Estrada Lucero & Max Arturo Marroquin Arango
+  * @version 1.0
+  */
+
+import java.sql.*; // Import necesario para la conexión JDBC
+import java.util.ArrayList; // Importacion de listas de arreglos
+import java.util.List; // Importacion de listas
+import java.util.Map; // Importacion de funcion map
 import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Server;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity; // Importacion de response http de spring
+import org.springframework.http.HttpMethod; // Importacion de metodos http
+import org.springframework.security.crypto.bcrypt.BCrypt; // Importacion de encriptacion de datos
+import org.springframework.util.LinkedMultiValueMap; // Importacion de listas de map
+import org.springframework.util.MultiValueMap; // Importacion de multiples valores map
+import org.springframework.web.bind.annotation.GetMapping; // Importacion de GetMapping
+import org.springframework.web.bind.annotation.RequestParam; // Importacion de RequestParam
+import org.springframework.web.bind.annotation.RestController; // Importacion de controlador Rest
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestTemplate; // Importacion de templates para rest
 
 import oracle.security.o3logon.a;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.time.format.DateTimeFormatter;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PathVariable; // Import para el uso de variables en el path de URL
+import org.springframework.web.bind.annotation.PostMapping; // Import de PostMapping
+import org.springframework.web.bind.annotation.RequestBody; // Import de Request Body
+import java.time.format.DateTimeFormatter; // Import para formateo de fechas
+import org.springframework.web.bind.annotation.CrossOrigin; // Import para el uso de CORS en web
+import java.time.LocalDateTime; // Import para obtencion de tiempo actual
+import org.springframework.beans.factory.annotation.Value; // Import necesario para la inyección de dependencia
 
 @CrossOrigin
-@RestController
+@RestController // Indica que la clase es un controlador RESTful
 public class ApexController {
+    /**
+     * URL base de la API de Nexus (valor inyectado mediante `@Value`).
+     */
     @Value("${agency.urls}")
     private String agencyUrls;
 
@@ -50,6 +65,14 @@ public class ApexController {
     }
 
     // USER - LOGIN
+     /**
+     * End point para el inicio de sesión de usuario.
+     *
+     * @param user Objeto `User` que contiene las credenciales del usuario.
+     * @return Dependiendo del resultado del login, se devuelve un objeto `WebError` 
+     *         indicando un error, un objeto `LoggedUser` con los datos del usuario logueado, 
+     * @throws SQLException
+     */
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
         Connection conn = new OracleConnector().getConnection();
@@ -92,6 +115,20 @@ public class ApexController {
     }
 
     // USER - SIGN UP
+    /**
+     * End point para crear un nuevo usuario en el sistema.
+
+     * Este método maneja la solicitud POST a la ruta "/create-user/{token}" y registra un nuevo usuario.
+
+     * @param user Objeto `User` que contiene la información del usuario a crear (correo electrónico, contraseña, 
+     *         nombre, apellido, país de origen, número de pasaporte, edad).
+     *         La contraseña se espera en texto plano y será encriptada antes de guardarla.
+     * @param token Token de reCAPTCHA v2 para verificar que la solicitud no sea de un bot.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebError`: En caso de error (correo electrónico duplicado, error de reCAPTCHA, error genérico).
+     *         * `LoggedUser`: Objeto que contiene la información del usuario registrado exitosamente.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/create-user/{token}")
     public Object createUser(@RequestBody User user, @PathVariable String token) {
         String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR";
@@ -162,6 +199,20 @@ public class ApexController {
         }
     }
 
+
+    /**
+     * End point para obtener la información básica de un usuario.
+
+     * Este método maneja la solicitud GET a la ruta "/get-user/{id}" y devuelve 
+     * un resumen de la información del usuario identificado por el parámetro `{id}`.
+
+     * @param id Identificador único del usuario (valor esperado: número entero).
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * `User`: Objeto que contiene el nombre y correo electrónico del usuario encontrado 
+     *                   (se usa un record temporal dentro del método).
+     *         * `WebError`: En caso de error (usuario no encontrado, error genérico).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-user/{id}")
     public Object getUser(@PathVariable Long id) {
         Connection conn = new OracleConnector().getConnection();
@@ -192,7 +243,17 @@ public class ApexController {
         }
     }
 
+
     // Get All Users - API
+    /**
+     * End point para obtener la lista de todos los usuarios registrados en el sistema.
+
+     * Este método maneja la solicitud GET a la ruta "/get-users" y devuelve una lista 
+     * con la información detallada de todos los usuarios.
+
+     * @return Lista de objetos `LoggedUser` que contienen la información completa de cada usuario registrado.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-users")
     public Object getUsers() {
         Connection conn = new OracleConnector().getConnection();
@@ -233,6 +294,21 @@ public class ApexController {
     }
 
     // Update User
+    /**
+     * End point para actualizar la información de un usuario existente.
+
+     * Este método maneja la solicitud POST a la ruta "/update-user" y permite modificar 
+     * los datos del usuario enviado en el cuerpo de la petición (`@RequestBody`).
+
+     * @param user Objeto `User` que contiene la información actualizada del usuario 
+     *        (nombre, apellido, país de origen, número de pasaporte opcional, rol, edad opcional, porcentaje opcional).
+     *        Se espera que el objeto `user` tenga establecido el identificador único (`userId`) 
+     *        para identificar al usuario a actualizar.
+     * @return Dependiendo del resultado de la actualización, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: En caso de éxito en la actualización del usuario.
+     *         * `WebError`: En caso de error (error genérico).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-user")
     public Object updateUser(@RequestBody User user) {
         Connection conn = new OracleConnector().getConnection();
@@ -261,6 +337,19 @@ public class ApexController {
     }
 
     // FLIGHT - REGISTRATION
+    /**
+     * End point para crear un nuevo registro de vuelo en el sistema.
+
+     * Este método maneja la solicitud POST a la ruta "/create-flight" y registra un nuevo vuelo.
+ 
+     * @param flight Objeto `Flight` que contiene la información del vuelo a crear 
+     *        (ciudad de origen, ciudad destino, fecha y hora de salida, fecha y hora de llegada, 
+     *         capacidad y precio de tickets turista, capacidad y precio de tickets premium, detalles del vuelo, tipo de vuelo).
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: En caso de éxito en la creación del vuelo.
+     *         * `WebError`: En caso de error (error genérico).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/create-flight")
     public Object createFlight(@RequestBody Flight flight) {
         Connection conn = new OracleConnector().getConnection();
@@ -325,6 +414,24 @@ public class ApexController {
     }
 
     // Get One Way Flights - API
+    /**
+     * End point para buscar vuelos de ida (one-way) disponibles en el sistema.
+
+     * Este método maneja la solicitud GET a la ruta "/get-one-way-flights" y permite buscar vuelos 
+     * de un origen a un destino específico, filtrados por fecha de salida y cantidad de pasajeros 
+     * (informada como cadena de texto).
+
+     * @param originCity Parámetro opcional para filtrar por ciudad de origen (valor por defecto vacío).
+     * @param destinationCity Parámetro opcional para filtrar por ciudad destino (valor por defecto vacío).
+     * @param departureDay Parámetro opcional para filtrar por fecha de salida (formato YYYY-MM-DD, valor por defecto vacío).
+     * @param passengers Parámetro opcional para informar la cantidad de pasajeros (cadena de texto, valor por defecto vacío).
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * Lista de objetos `FlightRecord`: En caso de encontrar vuelos que coincidan con los filtros. 
+     *             Cada objeto `FlightRecord` contiene la información del vuelo y detalles adicionales.
+     *         * Arreglo vacío (`Object[]`): Si no se encuentran vuelos que coincidan con los filtros. 
+     *         * `WebError`: En caso de error (error genérico).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-one-way-flights")
     public Object getOneWayFlights(
             @RequestParam(value = "originCity", defaultValue = "") String originCity,
@@ -402,6 +509,20 @@ public class ApexController {
     }
 
     // Comments - Insert - API
+    /**
+     * End point para crear un nuevo comentario asociado a un vuelo específico.
+
+     * Este método maneja la solicitud POST a la ruta "/create-commentary" y registra un nuevo comentario 
+     * enviado en el cuerpo de la petición (`@RequestBody`).
+
+     * @param commentary Objeto `Commentary` que contiene la información del comentario 
+     *        (identificador del comentario padre opcional, identificador del usuario que realiza el comentario, 
+     *         contenido del comentario, identificador del vuelo asociado).
+     * @return Dependiendo del resultado de la creación del comentario, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: En caso de éxito en la creación del comentario.
+     *         * `WebError`: En caso de error (error genérico).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/create-commentary")
     public Object createCommentary(@RequestBody Commentary commentary) {
         Connection conn = new OracleConnector().getConnection();
@@ -430,6 +551,19 @@ public class ApexController {
     }
 
     // Ratings - Insert - API
+    /**
+     * End point para crear una nueva calificación asociada a un vuelo específico por un usuario registrado.
+
+     * Este método maneja la solicitud POST a la ruta "/create-rating" y registra una nueva calificación 
+     * enviada en el cuerpo de la petición (`@RequestBody`). Solo se permite una calificación por usuario y vuelo.
+ 
+     * @param rating Objeto `Rating` que contiene la información de la calificación 
+     *        (identificador del usuario que realiza la calificación, identificador del vuelo asociado, valor de la calificación).
+     * @return Dependiendo del resultado de la creación de la calificación, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: En caso de éxito en la creación de la calificación.
+     *         * `WebError`: En caso de error (error genérico o intento de calificar un vuelo ya calificado).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/create-rating")
     public Object createRating(@RequestBody Rating rating) {
         Connection conn = new OracleConnector().getConnection();
@@ -462,6 +596,16 @@ public class ApexController {
     }
 
     // Get all Tickets - API
+    /**
+     * End point para obtener la lista de todos los tickets del sistema.
+
+     * Este método maneja la solicitud GET a la ruta "/get-all-tickets" y devuelve una lista 
+     * con la información de todos los tickets registrados.
+
+     * @return Lista de objetos `TicketRecord` que contienen la información de cada ticket 
+     *         (incluyendo datos del usuario asociado si existe).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-all-tickets")
     public Object getAllTickets() {
         Connection conn = new OracleConnector().getConnection();
@@ -497,6 +641,17 @@ public class ApexController {
     }
 
     // Get all Flights - API
+    /**
+     * End point para obtener la lista de todos los vuelos del sistema.
+
+     * Este método maneja la solicitud GET a la ruta "/get-all-flights" y devuelve una lista 
+     * con la información detallada de todos los vuelos registrados.
+
+     * @return Lista de objetos `CompleteFlightRecord` que contienen la información completa de cada vuelo, 
+     *         incluyendo la cantidad disponible de tickets por tipo (económico y premium), 
+     *         y su estado (activo o inactivo).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-all-flights")
     public Object getFlights() {
         Connection conn = new OracleConnector().getConnection();
@@ -545,6 +700,15 @@ public class ApexController {
     }
 
     // Get all Cities - API
+    /**
+     * End point para obtener la lista de todas las ciudades registradas en el sistema.
+
+     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve una lista 
+     * con información básica de todas las ciudades.
+
+     * @return Lista de objetos `City` que contienen el identificador único (city_id) y el nombre de cada ciudad.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-cities")
     public Object getCities() {
         Connection conn = new OracleConnector().getConnection();
@@ -575,6 +739,17 @@ public class ApexController {
     }
 
     // Ticket information - API
+    /**
+     * End point para obtener la información de un ticket específico.
+
+     * Este método maneja la solicitud GET a la ruta "/ticket-information" y devuelve la información completa de ese ticket.
+
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * Objeto `Ticket` que contiene la información detallada de un ticket 
+     *           (identificador, precio, identificador de vuelo asociado, tipo y estado).
+     *         * `WebError`: En caso de error (error genérico o ticket no encontrado).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/ticket-information")
     public Object getAllticketinfo() {
         Connection conn = new OracleConnector().getConnection();
@@ -608,6 +783,21 @@ public class ApexController {
     }
 
     // User tickets - API
+    /**
+     * End point para obtener la lista de tickets asociados a un usuario registrado.
+
+     * Este método maneja la solicitud GET a la ruta "/user_tickets/{id}" donde `{id}` representa el identificador 
+     * del usuario. Devuelve una lista con la información detallada de todos los tickets del usuario especificado.
+
+     * @param id Identificador del usuario del cual se desean obtener los tickets.
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * Lista de objetos `UserTicket` que contienen la información detallada de cada ticket asociado 
+     *         al usuario (identificador de ticket, precio, tipo, estado, identificador de vuelo asociado, 
+     *         origen, destino, fecha de salida y llegada del vuelo).
+     *         * `WebError`: En caso de error (error genérico o si el usuario no posee tickets).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     * @PathVariable  indica que el parámetro `{id}` se obtiene de la ruta.
+     */
     @GetMapping("/user_tickets/{id}")
     public Object getUsertickets(@PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
@@ -658,6 +848,23 @@ public class ApexController {
     }
 
     // Historical purchases - API
+    /**
+     * End point para obtener el historial de compras de un usuario registrado.
+
+     * Este método maneja la solicitud GET a la ruta "/historical_purchases/{id}" donde `{id}` representa el identificador 
+     * del usuario. Devuelve una lista con la información detallada de todas las compras históricas 
+     * (independientemente del estado actual de los tickets) asociadas al usuario.
+
+     * @param id Identificador del usuario del cual se desea obtener el historial de compras.
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * Lista de objetos `User_purchases` que contienen la información detallada de cada compra histórica 
+     *         del usuario (número de compra, ticket asociado, tipo de ticket, origen, destino, fecha de compra, 
+     *         precio, método de pago, fecha de salida, fecha de llegada, nombre de usuario, descuento aplicado 
+     *         e identificador del usuario).
+     *         * `WebError`: En caso de error (error genérico o si el usuario no posee un historial de compras).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     * @PathVariable  indica que el parámetro `{id}` se obtiene de la ruta.
+     */
     @GetMapping("/historical_purchases/{id}")
     public Object getHistoricpurchases(@PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
@@ -710,6 +917,20 @@ public class ApexController {
     }
 
     // FLIGHTS - ALL
+    /**
+     * End point para obtener la lista de todos los vuelos del sistema.
+
+     * Este método maneja la solicitud GET a la ruta "/inventory" y devuelve una lista 
+     * con la información básica de todos los vuelos registrados.
+
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * Lista de objetos `FLIGHTS` que contienen la información esencial de cada vuelo 
+     *         (origen, destino, fechas de salida y llegada, cantidades y precios disponibles por tipo 
+     *         (económico y premium), detalles, tipo de vuelo (regular o charter), estado 
+     *         (activo o inactivo) e identificador del vuelo).
+     *         * `WebError`: En caso de error (error genérico o si no hay vuelos registrados).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/inventory")
     public Object getInvetory() {
         Connection conn = new OracleConnector().getConnection();
@@ -763,6 +984,19 @@ public class ApexController {
     }
 
     // AboutUs - GET INFORMATION
+    /**
+     * End point para obtener la información de la página "Acerca de Nosotros".
+
+     * Este método maneja la solicitud GET a la ruta "/aboutus" y devuelve un objeto 
+     * que contiene la información configurada para la sección "Acerca de Nosotros".
+
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
+     *         * Objeto `aboutus` que contiene la configuración completa de la sección "Acerca de Nosotros" 
+     *         (lema, GIF animado, enlace de Youtube, cantidad de tarjetas informativas, títulos, textos e imágenes 
+     *         de cada tarjeta).
+     *         * `WebError`: En caso de error (error genérico o si no se encuentra la información configurada).
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/aboutus")
     public Object getAbout() {
         Connection conn = new OracleConnector().getConnection();

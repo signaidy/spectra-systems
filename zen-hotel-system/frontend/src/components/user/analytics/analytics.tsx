@@ -42,7 +42,7 @@ export async function Analytics({
           </div>
         </div>
       )}
-      <div className="flex gap-y-3 flex-wrap gap-x-4">
+      <div className="grid grid-cols-4 gap-x-3 gap-y-3">
         {analytics.map((analytic) => (
           <AnalyticCard key={analytic._id} analytic={analytic} />
         ))}

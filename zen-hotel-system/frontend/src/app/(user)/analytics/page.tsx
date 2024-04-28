@@ -1,11 +1,12 @@
 import { Suspense } from "react";
+import { getCities } from "@/lib/data";
 // Components
 import { SectionTitle } from "@/components/user/sectionTitle";
 import { Analytics } from "@/components/user/analytics/analytics";
 import { AnalyticCardSkeleton } from "@/components/skeletons/analyticCardSkeleton";
 import { FilterBar } from "@/components/user/analytics/filterBar";
 
-export default function AnalyticsHome({
+export default async function AnalyticsHome({
   searchParams,
 }: {
   searchParams: {
@@ -16,6 +17,8 @@ export default function AnalyticsHome({
     madeAt?: string;
   };
 }) {
+  const cities = await getCities();
+
   return (
     <>
       <SectionTitle
@@ -34,7 +37,7 @@ export default function AnalyticsHome({
         }
       >
         <div className="flex flex-col gap-y-3 mb-8 flex-wrap mr-8">
-          <FilterBar />
+          <FilterBar locations={cities}  />
           <Analytics searchParams={searchParams} />
         </div>
       </Suspense>
