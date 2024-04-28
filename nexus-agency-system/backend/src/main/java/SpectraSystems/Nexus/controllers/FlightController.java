@@ -154,9 +154,10 @@ public class FlightController {
     public ResponseEntity<Map<String, String>> purchaseFlight(
             @PathVariable int amount,
             @PathVariable String method,
+            @PathVariable Long providerId,
             @RequestBody FlightPurchaseRequest purchaseRequest
     ) throws JsonProcessingException {
-        flightService.purchaseFlight(amount, method, purchaseRequest);
+        flightService.purchaseFlight(amount, method, providerId, purchaseRequest);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Flight purchased successfully.");
         // Send email notification to the user

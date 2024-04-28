@@ -14,14 +14,18 @@ import org.springframework.stereotype.Service;
 import SpectraSystems.Nexus.exceptions.ResourceNotFoundException;
 import SpectraSystems.Nexus.models.Flight;
 import SpectraSystems.Nexus.models.FlightPurchaseRequest;
+import SpectraSystems.Nexus.models.Provider;
 import SpectraSystems.Nexus.models.TicketPurchase;
+import SpectraSystems.Nexus.models.Type;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
+import SpectraSystems.Nexus.repositories.ProviderRepository;
 import SpectraSystems.Nexus.repositories.TicketPurchaseRepository;
 import SpectraSystems.Nexus.models.City;
 import SpectraSystems.Nexus.models.Comment;
 
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -44,6 +48,9 @@ public class FlightService {
     private static final Logger logger = LoggerFactory.getLogger(FlightService.class);
 
     @Autowired
+    private ProviderRepository providerRepository;
+
+    @Autowired
     private CommentService commentService; 
 
     @Autowired
@@ -61,14 +68,29 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
+    
+    /** 
+     * @param id
+     * @return Optional<Flight>
+     */
     public Optional<Flight> getFlightById(Long id) {
         return flightRepository.findById(id);
     }
     
+    
+    /** 
+     * @param userId
+     * @return List<Flight>
+     */
     public List<Flight> getAllFlightsByUserId(Long userId) {
         return flightRepository.findByUserid(userId);
     }
 
+    
+    /** 
+     * @param flight
+     * @return Flight
+     */
     public Flight createFlight(Flight flight) {
         if (flight != null) {
             return flightRepository.save(flight);
@@ -76,119 +98,214 @@ public class FlightService {
             return null;
         }
     }
-
+    
+    
+    /** 
+     * @param flightNumber
+     * @return List<Flight>
+     */
     public List<Flight> getFlightsByFlightNumber(String flightNumber) {
         return flightRepository.findAllByFlightNumber(flightNumber);
     }
 
+    
+    /** 
+     * @return List<externalFlight>
+     */
     public List<externalFlight> getAllFlightsFromOtherBackend() {
-        ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
-            "http://localhost:8080/get-all-flights",
-            HttpMethod.GET,
-            null,
-            externalFlight[].class
-        );
-        externalFlight[] externalFlights = responseEntity.getBody();
-        return Arrays.asList(externalFlights);
+        List<externalFlight> allFlights = new ArrayList<>();
+    
+        // Find all providers with type FLIGHT
+        List<Provider> flightProviders = providerRepository.findByType(Type.AEROLINEA);
+    
+        for (Provider provider : flightProviders) {
+            String providerUrl = provider.getProviderUrl();
+    
+            // Construct the URL with query parameters (assuming no additional parameters needed)
+            String apiUrl = providerUrl + "/get-all-flights";
+    
+            try {
+                ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
+                        apiUrl,
+                        HttpMethod.GET,
+                        null,
+                        externalFlight[].class
+                );
+    
+                externalFlight[] providerFlights = responseEntity.getBody();
+    
+                // Add provider ID to each flight
+                for (externalFlight flight : providerFlights) {
+                    flight.setProviderId(provider.getId());
+                }
+    
+                // Add flights from this provider to the list
+                allFlights.addAll(Arrays.asList(providerFlights));
+            } catch (RestClientResponseException e) {
+                // Handle potential exceptions during the request (optional)
+                System.out.println("Error fetching flights from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+            }
+        }
+    
+        return allFlights;
     }
+    
 
+    
+    /** 
+     * @param originCity
+     * @param destinationCity
+     * @param departureDay
+     * @param passengers
+     * @return List<externalFlight>
+     */
     public List<externalFlight> getOneWayFlightsFromOtherBackend(
-        Long originCity,
-        Long destinationCity,
-        String departureDay,
-        int passengers
+            Long originCity,
+            Long destinationCity,
+            String departureDay,
+            int passengers
     ) {
-        // Call the other backend to get flights
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
-                .queryParam("originCity", originCity)
-                .queryParam("destinationCity", destinationCity)
-                .queryParam("departureDay", departureDay)
-                .queryParam("passengers", passengers);
+        List<externalFlight> allFlights = new ArrayList<>(); // List to store all flights
 
-        ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
-            builder.toUriString(),
-            HttpMethod.GET,
-            null,
-            externalFlight[].class
-        );
-        
-        // Get flights from the other backend
-        externalFlight[] externalFlights = responseEntity.getBody();
-        
-        
+        // Find all providers with type FLIGHT
+        List<Provider> flightProviders = providerRepository.findByType(Type.AEROLINEA);
 
-        builder = UriComponentsBuilder.fromUriString("http://localhost:8080/scale-flights")
-                .queryParam("originCity", originCity)
-                .queryParam("destinationCity", destinationCity)
-                .queryParam("departureDay", departureDay);
+        for (Provider provider : flightProviders) {
+            String providerUrl = provider.getProviderUrl();
 
-        responseEntity = restTemplate.exchange(
-                builder.toUriString(),
-                HttpMethod.GET,
-                null,
-                externalFlight[].class
-        );
-
-        // Get scale flights from the other backend
-        externalFlight[] scaleFlights = responseEntity.getBody();
-        // For each scale flight, fetch corresponding flights to final destination
-        for (externalFlight scaleFlight : scaleFlights) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            String formattedDepartureDay = dateFormat.format(scaleFlight.getArrivalDate());
-            builder = UriComponentsBuilder.fromUriString("http://localhost:8080/get-one-way-flights")
-                    .queryParam("originCity", scaleFlight.getDestinationCityId())
+            // 1. One-Way Flights
+            // Construct URL with query parameters for one-way flights
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(providerUrl + "/get-one-way-flights")
+                    .queryParam("originCity", originCity)
                     .queryParam("destinationCity", destinationCity)
-                    .queryParam("departureDay", formattedDepartureDay)
+                    .queryParam("departureDay", departureDay)
                     .queryParam("passengers", passengers);
 
-            ResponseEntity<externalFlight[]> secondaryResponseEntity = restTemplate.exchange(
+            ResponseEntity<externalFlight[]> responseEntity = restTemplate.exchange(
                     builder.toUriString(),
                     HttpMethod.GET,
                     null,
                     externalFlight[].class
             );
 
-            externalFlight[] secondaryFlights = secondaryResponseEntity.getBody();
-            if (secondaryFlights != null && secondaryFlights.length > 0) {
-                // Add the first flight from the secondaryFlights array to the scaleFlight
-                scaleFlight.setScale(secondaryFlights[0]);
-            }
-        }
+            externalFlight[] providerFlights = responseEntity.getBody();
+            allFlights.addAll(Arrays.asList(providerFlights)); // Add one-way flights
 
-        // Merge regular and scale flights
-        List<externalFlight> allFlights = new ArrayList<>();
-        allFlights.addAll(Arrays.asList(externalFlights));
-        allFlights.addAll(Arrays.asList(scaleFlights));
+            // 2. Scale Flights (Optional)
+            // Construct URL with query parameters for scale flights
+            builder = UriComponentsBuilder.fromUriString(providerUrl + "/scale-flights")
+                    .queryParam("originCity", originCity)
+                    .queryParam("destinationCity", destinationCity)
+                    .queryParam("departureDay", departureDay);
 
-        // Embed comments from database
-        for (externalFlight flight : allFlights) {
-            List<Comment> comment = commentService.getCommentsByFlightId(flight.getFlightId());
-            if (comment.isEmpty()) {
-                flight.setCommentaries(new ArrayList<>());
-            } else {
-                flight.setCommentaries(comment);
+            responseEntity = restTemplate.exchange(
+                    builder.toUriString(),
+                    HttpMethod.GET,
+                    null,
+                    externalFlight[].class
+            );
+
+            externalFlight[] scaleFlights = responseEntity.getBody();
+
+            for (externalFlight scaleFlight : scaleFlights) {
+                // Format arrival date for secondary flight search
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String formattedDepartureDay = dateFormat.format(scaleFlight.getArrivalDate());
+
+                // 3. Connecting Flights for Scale Flights (from same provider)
+                builder = UriComponentsBuilder.fromUriString(providerUrl + "/get-one-way-flights")
+                        .queryParam("originCity", scaleFlight.getDestinationCityId())
+                        .queryParam("destinationCity", destinationCity)
+                        .queryParam("departureDay", formattedDepartureDay)
+                        .queryParam("passengers", passengers);
+
+                ResponseEntity<externalFlight[]> secondaryResponseEntity = restTemplate.exchange(
+                        builder.toUriString(),
+                        HttpMethod.GET,
+                        null,
+                        externalFlight[].class
+                );
+
+                externalFlight[] secondaryFlights = secondaryResponseEntity.getBody();
+
+                if (secondaryFlights != null && secondaryFlights.length > 0) {
+                    // Set connecting flight for the scale flight (assuming a setter exists)
+                    scaleFlight.setScale(secondaryFlights[0]);
+
+                    // Add processed scale flight to the list
+                    allFlights.add(scaleFlight);
+                }
             }
         }
 
         return allFlights;
     }
 
+
+    
+    /** 
+     * @return List<City>
+     */
     public List<City> getAllCitiesFromOtherBackend() {
-        // Make a request to the other backend to get cities
-        ResponseEntity<List<City>> responseEntity = restTemplate.exchange(
-            "http://localhost:8080/get-cities",
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<City>>() {}
-        );
-        return responseEntity.getBody();
+        List<City> allCities = new ArrayList<>();
+    
+        // Find all providers with type AEROLINEA
+        List<Provider> aerolíneaProviders = providerRepository.findByType(Type.AEROLINEA);
+        
+        for (Provider provider : aerolíneaProviders) {
+            String providerUrl = provider.getProviderUrl();
+            
+            // Make a request to the provider's URL to get cities
+            try {
+                ResponseEntity<List<City>> responseEntity = restTemplate.exchange(
+                    providerUrl + "/get-cities", 
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<City>>() {}
+                );
+                List<City> providerCities = responseEntity.getBody();
+                for (City city : providerCities) {
+                    if (!allCities.contains(city)) {
+                        allCities.add(city);
+                    }
+                }
+            } catch (RestClientResponseException e) {
+                // Handle potential exceptions during the request
+                System.out.println("Error fetching cities from provider: " + provider.getProviderName() + ", URL: " + providerUrl);
+            }
+        }
+        
+        return allCities;
     }
 
-    public void purchaseFlight(int amount, String method, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
+    
+    /** 
+     * @param amount
+     * @param method
+     * @param providerId
+     * @param purchaseRequest
+     * @throws HttpServerErrorException
+     * @throws JsonProcessingException
+     */
+    public void purchaseFlight(int amount, String method, Long providerId, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
         int discount = 20;
         long userIdPurchase = 1;
+
+        if (providerId == null) {
+            throw new RuntimeException("Missing provider ID for flight purchase"); // Or provide a more specific error message
+        }
+    
+        // Find the provider by ID
+        Optional<Provider> providerOptional = providerRepository.findById(providerId);
+        if (!providerOptional.isPresent()) {
+            throw new RuntimeException("Provider not found for flight purchase with ID: " + providerId); // Handle provider not found
+        }
+        Provider provider = providerOptional.get();
+    
+        // Construct the URL for purchasing a flight based on provider URL format (assuming a POST request to a specific endpoint)
+        String apiUrl = provider.getProviderUrl() + "/purchase-flight/" + amount + '/' + method + '/' + discount;
 
         // Create request body
         HttpHeaders headers = new HttpHeaders();
@@ -204,9 +321,7 @@ public class FlightService {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        // Make the POST request
-        String url = String.format("http://localhost:8080/purchase/%d/%s/%d", amount, method, discount);
-        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, requestEntity, String.class);
 
         
         // Check if the purchase was successful
@@ -251,6 +366,12 @@ public class FlightService {
         }
     }
 
+    
+    /** 
+     * @param id
+     * @param flightDetails
+     * @return Flight
+     */
     public Flight updateFlight(Long id, Flight flightDetails) {
         Flight flight = flightRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Flight not found with id: " + id));
@@ -264,6 +385,10 @@ public class FlightService {
         return flightRepository.save(flight);
     }
 
+    
+    /** 
+     * @param id
+     */
     public void deleteFlight(Long id) {
         flightRepository.deleteById(id);
     }

@@ -26,7 +26,7 @@ public class ReservationRepositoryTest {
     @Test
     public void reservationRepository_SaveAll_RetrunSavedReservation(){
         // Arrange
-        Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20).guests(20).build();
+        Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20D).guests(20).build();
         //Act
         Reservation savedReservation = reservationRepository.save(reservation);
         //Assert
@@ -37,9 +37,9 @@ public class ReservationRepositoryTest {
     @Test 
     public void reservationRepository_GetAll_ReturnsMoreThanOne(){
         // Arrange
-       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20).guests(20).build();
+       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20D).guests(20).build();
         
-        Reservation reservation2 = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something2").price(20).guests(20).build();
+        Reservation reservation2 = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something2").price(20D).guests(20).build();
        //Act
        reservationRepository.save(reservation);
        reservationRepository.save(reservation2);
@@ -53,7 +53,7 @@ public class ReservationRepositoryTest {
     @Test
     public void reservationRepository_FindById_RetrunSavedRes(){
         // Arrange
-       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20).guests(20).build();
+       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20D).guests(20).build();
         
         //Act
         reservationRepository.save(reservation);
@@ -65,12 +65,12 @@ public class ReservationRepositoryTest {
     @Test
     public void reservationRepository_UpdateReservation_RetrunReservation(){
         // Arrange
-       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20).guests(20).build();
+       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20D).guests(20).build();
         
         //Act
         reservationRepository.save(reservation);
         Reservation reservationFound = reservationRepository.findById(reservation.getId()).get();
-        reservationFound.setPrice(8000);
+        reservationFound.setPrice(8000D);
         reservationFound.setRating(5L);
         Reservation updateReservation  = reservationRepository.save(reservationFound);
         //Assert
@@ -81,7 +81,7 @@ public class ReservationRepositoryTest {
     @Test 
     public  void reservationRepository_Delete_ReturnsReservationEmpty(){
         //Arrange
-       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20).guests(20).build();
+       Reservation reservation = Reservation.builder().userid(45L).hotelId("45").hotel("null").dateStart(new Date()).dateEnd(new Date()).location("Spain").reservationNumber("something").price(20D).guests(20).build();
         
         
         //Act

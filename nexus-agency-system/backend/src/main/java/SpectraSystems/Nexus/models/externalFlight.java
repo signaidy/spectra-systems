@@ -13,6 +13,7 @@ public class externalFlight {
     private String originCityName;
     private Long destinationCityId;
     private String destinationCityName;
+    private Long providerId;
 
     @JsonProperty("commentaries")
     private List<Comment> commentaries;
@@ -196,6 +197,14 @@ public class externalFlight {
 
     public void setReturnFlight(externalFlight returnFlight) {
         this.returnFlight = returnFlight;
+    }
+
+    public Long getProviderId(){
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId){
+        this.providerId = providerId;
     }
 }
 

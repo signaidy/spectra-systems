@@ -10,11 +10,16 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import SpectraSystems.Nexus.models.Provider;
 import SpectraSystems.Nexus.models.Reservation;
+import SpectraSystems.Nexus.models.Type;
 import SpectraSystems.Nexus.models.User;
+import SpectraSystems.Nexus.repositories.ProviderRepository;
 import SpectraSystems.Nexus.services.ReservationService;
 import SpectraSystems.Nexus.services.UserService;
 import jakarta.mail.MessagingException;
@@ -41,6 +46,9 @@ public class ReservationController {
 
     @Autowired
     private JavaMailSender emailSender;
+
+    @Autowired
+    private ProviderRepository providerRepository;
 
     @Autowired
     public ReservationController(ReservationService reservationService, RestTemplate restTemplate, UserService userService) {
@@ -72,13 +80,30 @@ public class ReservationController {
 
     // Endpoint to create a new reservation
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        String formattedCheckin = API_DATE_FORMAT.format(reservation.getDateStart());
-        String formattedCheckout = API_DATE_FORMAT.format(reservation.getDateEnd());
+    public ResponseEntity<Reservation> createReservation(@RequestParam(value = "providerId", required = true) Long providerId, @RequestBody Reservation reservation) {
+        if (providerId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // Find the provider by ID
+        Optional<Provider> providerOptional = providerRepository.findById(providerId);
+        if (!providerOptional.isPresent()) {
+            return ResponseEntity.notFound().build(); // Provider with ID not found
+        }
+        Provider provider = providerOptional.get();
+
+        // Construct the URL for creating reservation based on provider URL format
+        String apiUrl = provider.getProviderUrl() + "/create-reservation";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Prepare the request body
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("hotelId", reservation.getHotelId());
         requestBody.put("userId", HOTEL_USER_ID);
+        String formattedCheckin = API_DATE_FORMAT.format(reservation.getDateStart());
         requestBody.put("checkin", formattedCheckin);
+        String formattedCheckout = API_DATE_FORMAT.format(reservation.getDateEnd());
         requestBody.put("checkout", formattedCheckout);
         requestBody.put("roomType", reservation.getRoomType());
         requestBody.put("roomPrice", reservation.getPrice());
@@ -86,17 +111,15 @@ public class ReservationController {
         requestBody.put("stayDays", reservation.getTotalDays());
         requestBody.put("totalPrice", reservation.getTotalPrice());
 
-        
-
-        // Make a POST request to the external API to create the reservation
-        String apiUrl = "http://localhost:3001/create-reservation";
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
-
-        if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.CREATED) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
         try {
+            // Make a POST request to the provider's URL
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
+
+            if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.CREATED) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+            // Parse the response to extract reservation ID
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(responseEntity.getBody());
             String reservationId = rootNode.get("_id").asText();
@@ -104,9 +127,11 @@ public class ReservationController {
             reservation.setReservationNumber(reservationId);
 
             Reservation createdReservation = reservationService.createReservation(reservation);
-            
             sendPurchaseConfirmationEmail(reservation.getUser());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
+        } catch (RestClientResponseException e) {
+            System.out.println("Error creating reservation with provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -148,57 +173,80 @@ public class ReservationController {
             @RequestParam(value = "check-out", required = false) String checkOut,
             @RequestParam(value = "guests", required = false) Integer guests) {
 
-        // Define the URL for the external API
-        String apiUrl = "http://localhost:3001/get-filtered-hotels?city=" + city;
+        List<Map<String, Object>> allHotels = new ArrayList<>();
+        // Find all providers with type HOTEL
+        List<Provider> hotelProviders = providerRepository.findByType(Type.HOTEL);
 
-        // Create a RestTemplate instance to make HTTP requests
-        RestTemplate restTemplate = new RestTemplate();
+        for (Provider provider : hotelProviders) {
+            String providerUrl = provider.getProviderUrl();
+            // Construct the URL with query parameters
+            String apiUrl = providerUrl + "/get-filtered-hotels?city=" + city;
+            if (checkIn != null) {
+                apiUrl += "&check-in=" + checkIn;
+            }
+            if (checkOut != null) {
+                apiUrl += "&check-out=" + checkOut;
+            }
+            if (guests != null) {
+                apiUrl += "&guests=" + guests;
+            }
 
-        try {
-            // Make a GET request to the external API
-            ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
-                    apiUrl,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Map<String, Object>>>() {}
-            );
-
-            // Get the response body
-            List<Map<String, Object>> hotels = response.getBody();
-
-            return ResponseEntity.ok().body(hotels);
-        } catch (Exception e) {
-            // Handle exceptions
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            // Make a request to the provider's URL
+            try {
+                ResponseEntity<List<Map<String, Object>>> responseEntity = restTemplate.exchange(
+                        apiUrl,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+                );
+                List<Map<String, Object>> providerHotels = responseEntity.getBody();
+                // Add provider ID to each hotel
+                for (Map<String, Object> hotel : providerHotels) {
+                    hotel.put("providerId", provider.getId());
+                }
+                allHotels.addAll(providerHotels);
+            } catch (RestClientResponseException e) {
+                // Handle potential exceptions during the request (optional)
+                System.out.println("Error fetching hotels from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+            }
         }
+        return ResponseEntity.ok().body(allHotels);
     }
 
     @GetMapping(value = "/roomsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> getHotelRoomById(
             @RequestParam(value = "id", required = false) String id,
-            @RequestParam(value = "city", required = false) String city) {
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "providerId", required = true) Long providerId) {
 
-        // Define the URL for the external API
-        String apiUrl = "http://localhost:3001/get-hotel-by-id/" + id;
+        // Validate and handle missing providerId (optional)
+        if (providerId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
 
+        // Find the provider by ID
+        Optional<Provider> providerOptional = providerRepository.findById(providerId);
+        if (!providerOptional.isPresent()) {
+            return ResponseEntity.notFound().build(); // Provider with ID not found
+        }
+
+        Provider provider = providerOptional.get();
+        String apiUrl = provider.getProviderUrl() + "/get-hotel-by-id/" + id;
         RestTemplate restTemplate = new RestTemplate();
 
         try {
             ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
-
             Map<String, Object> hotel = response.getBody();
-
             // Check if the response contains hotel data
             if (hotel == null) {
                 return ResponseEntity.notFound().build();
             }
-
             Map<String, Object> responseBody = constructResponse(hotel);
-
             return ResponseEntity.ok().body(responseBody);
+        } catch (RestClientResponseException e) {
+            System.out.println("Error fetching hotel from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } catch (Exception e) {
-            // Handle exceptions
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -215,31 +263,36 @@ public class ReservationController {
     }
 
     @GetMapping("/cities")
-    public ResponseEntity<List<String>> getCities() {
-        // Define the URL for the external API
-        String apiUrl = "http://localhost:3001/get-cities";
-
-        // Create a RestTemplate instance to make HTTP requests
-        RestTemplate restTemplate = new RestTemplate();
-
+    public List<String> getAllHotelCitiesFromOtherBackend() {
+    List<String> allHotelCities = new ArrayList<>();
+    
+    // Find all providers with type HOTEL
+    List<Provider> hotelProviders = providerRepository.findByType(Type.HOTEL);
+    
+    for (Provider provider : hotelProviders) {
+        String providerUrl = provider.getProviderUrl();
+        
+        // Make a request to the provider's URL to get cities
         try {
-            // Make a GET request to the external API
-            ResponseEntity<List<String>> response = restTemplate.exchange(
-                    apiUrl,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<String>>() {}
+            ResponseEntity<List<String>> responseEntity = restTemplate.exchange(
+                providerUrl + "/get-cities",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<String>>() {}
             );
-
-            // Get the response body
-            List<String> cities = response.getBody();
-
-            return ResponseEntity.ok().body(cities);
-        } catch (Exception e) {
-            // Handle exceptions
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            List<String> providerHotelCities = responseEntity.getBody();
+            
+            // Filter new hotel cities by comparing names with allHotelCities
+            for (String cityName : providerHotelCities) {
+                if (!allHotelCities.contains(cityName)) {
+                    allHotelCities.add(cityName);
+                }
+            }
+        } catch (RestClientResponseException e) {
+            System.out.println("Error fetching cities from provider: " + provider.getProviderName() + ", URL: " + providerUrl);
         }
+    }        
+        return allHotelCities;
     }
 
     private void sendPurchaseConfirmationEmail(Long userId) {

@@ -75,12 +75,14 @@ public class Reservation {
     @Column(name="bundle")
     private String bundle;
 
+    private Long providerId;
+
     public Reservation() {
 
     }
 
     public Reservation(Long id, String hotelId, Long user,  String hotel, Date dateStart, Date dateEnd, String roomType,
-            String reservationNumber, String location, Long rating, String bedSize, Integer bedAmount, Double price, Integer totalDays, Double totalPrice, Integer guests, String state, String bundle) {
+            String reservationNumber, String location, Long rating, String bedSize, Integer bedAmount, Double price, Integer totalDays, Double totalPrice, Integer guests, String state, String bundle, Long providerId) {
         this.userid = user;
         this.hotelId = hotelId;
         this.hotel = hotel;
@@ -240,6 +242,14 @@ public class Reservation {
 
     public String getBundle(){
         return bundle;
+    }
+
+    public Long getProviderId(){
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId){
+        this.providerId = providerId;
     }
 }
 

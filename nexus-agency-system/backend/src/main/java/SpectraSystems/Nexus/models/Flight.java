@@ -63,6 +63,8 @@ public class Flight {
     private String bundle;
 
     private Long rating;
+
+    private Long providerId;
     
     // Getters, setters, constructors, and other methods...
 
@@ -70,7 +72,7 @@ public class Flight {
 
     }
 
-    public Flight(Long id, Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, List<TicketPurchase> ticketPurchases, String type, LocalDate purchaseDate, Double price, String state, String bundle, Long rating) {
+    public Flight(Long id, Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, List<TicketPurchase> ticketPurchases, String type, LocalDate purchaseDate, Double price, String state, String bundle, Long rating, Long providerId) {
         this.userid = user;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
@@ -199,6 +201,14 @@ public class Flight {
 
     public String getBundle(){
         return bundle;
+    }
+
+    public Long getProviderId(){
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId){
+        this.providerId = providerId;
     }
 
 }
