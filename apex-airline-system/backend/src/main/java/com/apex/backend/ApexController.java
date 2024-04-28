@@ -1361,6 +1361,16 @@ public class ApexController {
     }
 
     // Header - GET INFORMATION
+    /**
+     * End point para obtener la información del header.
+
+     * Este método maneja la solicitud GET a la ruta "/header" y devuelve un objeto con la información configurada para el header.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Header` representando la información del header.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/header")
     public Object getHeader() {
         Connection conn = new OracleConnector().getConnection();
