@@ -2258,6 +2258,16 @@ public class ApexController {
     }
 
     // Get a Cities - API
+    /**
+     * End point para obtener la información de las ciudades.
+
+     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un objeto con la información de las ciudades.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `City` representando la información de las ciudades.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/get-city/{cityid}")
     public Object getOneCity(@PathVariable int cityid) {
         Connection conn = new OracleConnector().getConnection();
