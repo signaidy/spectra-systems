@@ -1647,6 +1647,16 @@ public class ApexController {
     }
 
     // Footer - GET INFORMATION
+    /**
+     * End point para obtener la información del footer.
+     * 
+     * Este método maneja la solicitud GET a la ruta "/footer" y devuelve un objeto con la información configurada para el footer.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Un objeto de tipo `Footer` representando la información del footer.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/footer")
     public Object getFooter() {
         Connection conn = new OracleConnector().getConnection();
