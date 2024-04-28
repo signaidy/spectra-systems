@@ -1301,6 +1301,16 @@ public class ApexController {
     }
 
     // Purchase logs - API
+    /**
+     * End point para obtener los registros de compra.
+
+     * Este método maneja la solicitud GET a la ruta "/purchaselogs" y devuelve una lista con la información detallada de todas las compras realizadas.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `purchases` representando los registros de compra.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay compras realizadas.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/purchaselogs")
     public Object getpurchaselogs() {
         Connection conn = new OracleConnector().getConnection();
