@@ -1193,6 +1193,19 @@ public class ApexController {
     }
 
     // Tickets information - Purchase
+    /**
+     * End point para obtener información sobre los tickets disponibles para compra.
+
+     * Este método maneja la solicitud GET a la ruta "/availabletickets/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
+     * y category es la categoría del ticket a comprar. Devuelve la información de los tickets disponibles para la compra.
+     * 
+     * @param flight_id Valor numérico indicando el identificador del vuelo.
+     * @param category String indicando la categoría del ticket a comprar.
+     * @return Se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetos de tipo `Availabletickets` representando los tickets del usuario.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @GetMapping("/availabletickets/{flight_id}/{category}")
     public Object getTicketstobuy(@PathVariable int flight_id, @PathVariable String category) {
         Connection conn = new OracleConnector().getConnection();
