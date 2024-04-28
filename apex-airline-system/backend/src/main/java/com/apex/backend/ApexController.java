@@ -1606,6 +1606,19 @@ public class ApexController {
     }
 
     // Update flight
+    /**
+     * End point para actualizar la información de un vuelo.
+
+     * Este método maneja la solicitud POST a la ruta "/update-flight/{flight_id}" donde flight_id es el identificador del vuelo.
+     * Actualiza la información de un vuelo.
+     * 
+     * @param flight Objeto `Flight` que contiene la estructura del vuelo.
+     * @param flight_id Valor numérico indicando el identificador del vuelo.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/update-flight/{flight_id}")
     public Object updateFlight(@RequestBody Flight flight, @PathVariable int flight_id) {
         Connection conn = new OracleConnector().getConnection();
