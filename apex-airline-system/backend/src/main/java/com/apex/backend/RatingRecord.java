@@ -9,6 +9,13 @@ package com.apex.backend;
   * @author Juan Pablo Estrada Lucero
   * @version 1.0
   */
+
+/**
+   * Constructor de la clase `RatingRecord`.
+   * 
+   * @param average Promedio del valor de ratings asociados al vuelo
+   * @param count Cantidad de reviews realizadas
+   */
 public record RatingRecord(
                 /**
                  * Promedio de las calificaciones registradas.

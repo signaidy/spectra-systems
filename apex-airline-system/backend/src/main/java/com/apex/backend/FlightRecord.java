@@ -12,6 +12,25 @@ import java.util.List;
   * @author Juan Pablo Estrada Lucero
   * @version 1.0
   */
+
+   /**
+     * Constructor de la clase `FlightRecord`.
+     * 
+     * @param flightId Identificador del vuelo
+     * @param originCityId ID de ciudad de origen
+     * @param originCityName Nombre de la ciudad de origen
+     * @param destinationCityId ID de ciudad de destino
+     * @param destinationCityName Nombre de la ciudad de destino
+     * @param departureDate Fecha de salida del vuelo
+     * @param arrivalDate Fecha de llegada del vuelo
+     * @param touristPrice Precio del boleto de turista
+     * @param businessPrice Precio del boleto premium
+     * @param detail Detalle adicional
+     * @param touristQuantity Cantidad de boletos de turista
+     * @param businessQuantity Cantidad de boletos premium
+     * @param commentaries Listado de comentarios asociados
+     * @param rating Rating asociado al vuelo
+     */
 public record FlightRecord(
                 int flightId,
                 int originCityId,

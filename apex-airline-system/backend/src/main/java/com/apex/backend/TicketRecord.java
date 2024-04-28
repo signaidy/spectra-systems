@@ -8,6 +8,19 @@ package com.apex.backend;
   * @author Juan Pablo Estrada Lucero
   * @version 1.0
   */
+
+  /**
+   * Constructor de la clase `TicketRecord`.
+   * 
+   * @param ticketId Identificador único del boleto.
+   * @param price Precio del boleto.
+   * @param flightId Identificador del vuelo asociado al boleto.
+   * @param type Tipo de boleto.
+   * @param state Estado actual del boleto.
+   * @param userId  Identificador del usuario que compró el boleto .
+   * @param userName Nombre del usuario que compró el boleto.
+   * @param email Correo electrónico del usuario que compró el boleto .
+   */
 public record TicketRecord(
     /**
      * Identificador único del boleto.
@@ -26,7 +39,7 @@ public record TicketRecord(
      */
     String type, 
     /**
-     * Estado actual del boleto (por ejemplo, "disponible", "vendido", "cancelado").
+     * Estado actual del boleto.
      */
     String state, 
     /** 
