@@ -1111,6 +1111,21 @@ public class ApexController {
     }
 
     // Purchase - API
+    /**
+     * End point para realizar la compra de un boleto.
+
+     * Este método maneja la solicitud POST a la ruta "/purchase/{amount}/{method}/{discount}" donde amount es la cantidad, method es el tipo
+     * de compra y discount es el descuento aplicado. Registra la compra de un boleto en la base de datos.
+     * 
+     * @param ticket Objeto `Ticket_purchase` que contiene la estructura del ticket.
+     * @param amount Valor numérico representando la cantidad de tickets a comprar.
+     * @param amount String indicando el tipo de la compra.
+     * @param discount Valor numérico indicando el descuento de la compra.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     *         * Una lista con objetios de tipo `userTickets` representando los tickets del usuario.
+     *         * `WebError`: En caso de error durante el registro dentro de la base de datos o si el usuario no posee tickets.
+     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
+     */
     @PostMapping("/purchase/{amount}/{method}/{discount}")
     public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method,
             @PathVariable int discount) {
