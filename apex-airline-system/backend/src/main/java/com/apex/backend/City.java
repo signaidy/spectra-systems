@@ -9,5 +9,12 @@ package com.apex.backend;
  * @author Juan Pablo Estrada Lucero
  * @version 1.0
  */
+
+ /**
+   * Constructor de la clase `CIty`.
+   * 
+   * @param cityId ID de ciudad
+   * @param name Nombre de la ciudad asociado al ID
+   */
 public record City(String cityId, String name) {
 }

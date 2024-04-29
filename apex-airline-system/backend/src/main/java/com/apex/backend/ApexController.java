@@ -53,6 +53,9 @@ import org.springframework.beans.factory.annotation.Value; // Import necesario p
  */
 @CrossOrigin
 @RestController // Indica que la clase es un controlador RESTful
+/**
+ * Crea una instancia de `ApexController` el cual representara el controlado del BE
+ */
 public class ApexController {
     /**
      * URL base de la API de Nexus (valor inyectado mediante `@Value`).
@@ -60,6 +63,11 @@ public class ApexController {
     @Value("${agency.urls}")
     private String agencyUrls;
 
+    /**
+     * Representa un mensaje de bienvenida establecido para el usuario
+     * @param id Id del usuario
+     * @param content Contenido dentro del mensaje de bienvenida
+    */
     public record Greeting(long id, String content) {
     }
 
@@ -89,8 +97,8 @@ public class ApexController {
      * @param user Objeto `User` que contiene las credenciales del usuario.
      * @return Dependiendo del resultado del login, se devuelve un objeto `WebError` 
      *         indicando un error, un objeto `LoggedUser` con los datos del usuario logueado, 
-     * @throws SQLException
      */
+
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
         Connection conn = new OracleConnector().getConnection();
@@ -145,7 +153,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebError`: En caso de error (correo electrónico duplicado, error de reCAPTCHA, error genérico).
      *         * `LoggedUser`: Objeto que contiene la información del usuario registrado exitosamente.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/create-user/{token}")
     public Object createUser(@RequestBody User user, @PathVariable String token) {
@@ -229,7 +236,6 @@ public class ApexController {
      *         * `User`: Objeto que contiene el nombre y correo electrónico del usuario encontrado 
      *                   (se usa un record temporal dentro del método).
      *         * `WebError`: En caso de error (usuario no encontrado, error genérico).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-user/{id}")
     public Object getUser(@PathVariable Long id) {
@@ -270,7 +276,6 @@ public class ApexController {
      * con la información detallada de todos los usuarios.
 
      * @return Lista de objetos `LoggedUser` que contienen la información completa de cada usuario registrado.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-users")
     public Object getUsers() {
@@ -325,7 +330,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la actualización, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la actualización del usuario.
      *         * `WebError`: En caso de error (error genérico).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-user")
     public Object updateUser(@RequestBody User user) {
@@ -366,7 +370,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la creación del vuelo.
      *         * `WebError`: En caso de error (error genérico).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/create-flight")
     public Object createFlight(@RequestBody Flight flight) {
@@ -448,7 +451,6 @@ public class ApexController {
      *             Cada objeto `FlightRecord` contiene la información del vuelo y detalles adicionales.
      *         * Arreglo vacío (`Object[]`): Si no se encuentran vuelos que coincidan con los filtros. 
      *         * `WebError`: En caso de error (error genérico).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-one-way-flights")
     public Object getOneWayFlights(
@@ -539,7 +541,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la creación del comentario, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la creación del comentario.
      *         * `WebError`: En caso de error (error genérico).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/create-commentary")
     public Object createCommentary(@RequestBody Commentary commentary) {
@@ -580,7 +581,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la creación de la calificación, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la creación de la calificación.
      *         * `WebError`: En caso de error (error genérico o intento de calificar un vuelo ya calificado).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/create-rating")
     public Object createRating(@RequestBody Rating rating) {
@@ -622,7 +622,6 @@ public class ApexController {
 
      * @return Lista de objetos `TicketRecord` que contienen la información de cada ticket 
      *         (incluyendo datos del usuario asociado si existe).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-all-tickets")
     public Object getAllTickets() {
@@ -668,7 +667,6 @@ public class ApexController {
      * @return Lista de objetos `CompleteFlightRecord` que contienen la información completa de cada vuelo, 
      *         incluyendo la cantidad disponible de tickets por tipo (económico y premium), 
      *         y su estado (activo o inactivo).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-all-flights")
     public Object getFlights() {
@@ -725,7 +723,6 @@ public class ApexController {
      * con información básica de todas las ciudades.
 
      * @return Lista de objetos `City` que contienen el identificador único (city_id) y el nombre de cada ciudad.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-cities")
     public Object getCities() {
@@ -766,7 +763,6 @@ public class ApexController {
      *         * Objeto `Ticket` que contiene la información detallada de un ticket 
      *           (identificador, precio, identificador de vuelo asociado, tipo y estado).
      *         * `WebError`: En caso de error (error genérico o ticket no encontrado).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/ticket-information")
     public Object getAllticketinfo() {
@@ -813,8 +809,6 @@ public class ApexController {
      *         al usuario (identificador de ticket, precio, tipo, estado, identificador de vuelo asociado, 
      *         origen, destino, fecha de salida y llegada del vuelo).
      *         * `WebError`: En caso de error (error genérico o si el usuario no posee tickets).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
-     * @PathVariable  indica que el parámetro `{id}` se obtiene de la ruta.
      */
     @GetMapping("/user_tickets/{id}")
     public Object getUsertickets(@PathVariable int id) {
@@ -880,8 +874,6 @@ public class ApexController {
      *         precio, método de pago, fecha de salida, fecha de llegada, nombre de usuario, descuento aplicado 
      *         e identificador del usuario).
      *         * `WebError`: En caso de error (error genérico o si el usuario no posee un historial de compras).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
-     * @PathVariable  indica que el parámetro `{id}` se obtiene de la ruta.
      */
     @GetMapping("/historical_purchases/{id}")
     public Object getHistoricpurchases(@PathVariable int id) {
@@ -947,7 +939,6 @@ public class ApexController {
      *         (económico y premium), detalles, tipo de vuelo (regular o charter), estado 
      *         (activo o inactivo) e identificador del vuelo).
      *         * `WebError`: En caso de error (error genérico o si no hay vuelos registrados).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/inventory")
     public Object getInvetory() {
@@ -1013,7 +1004,6 @@ public class ApexController {
      *         (lema, GIF animado, enlace de Youtube, cantidad de tarjetas informativas, títulos, textos e imágenes 
      *         de cada tarjeta).
      *         * `WebError`: En caso de error (error genérico o si no se encuentra la información configurada).
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/aboutus")
     public Object getAbout() {
@@ -1076,7 +1066,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante la modificación dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-aboutus")
     public Object updateAboutUs(@RequestBody Aboutus au) {
@@ -1137,12 +1126,11 @@ public class ApexController {
      * 
      * @param ticket Objeto `Ticket_purchase` que contiene la estructura del ticket.
      * @param amount Valor numérico representando la cantidad de tickets a comprar.
-     * @param amount String indicando el tipo de la compra.
+     * @param method String indicando el tipo de tarjeta utilizado para la compra. 
      * @param discount Valor numérico indicando el descuento de la compra.
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetios de tipo `userTickets` representando los tickets del usuario.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos o si el usuario no posee tickets.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/purchase/{amount}/{method}/{discount}")
     public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method,
@@ -1222,7 +1210,6 @@ public class ApexController {
      * @return Se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `Availabletickets` representando los tickets del usuario.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/availabletickets/{flight_id}/{category}")
     public Object getTicketstobuy(@PathVariable int flight_id, @PathVariable String category) {
@@ -1280,7 +1267,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * La cantidad de tickets disponibles para el vuelo y categoría.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/ticketsamount/{flight_id}/{category}")
     public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String category) {
@@ -1327,7 +1313,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `purchases` representando los registros de compra.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay compras realizadas.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/purchaselogs")
     public Object getpurchaselogs() {
@@ -1387,7 +1372,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Un objeto de tipo `Header` representando la información del header.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/header")
     public Object getHeader() {
@@ -1438,12 +1422,10 @@ public class ApexController {
      * End point para actualizar la información del header.
 
      * Este método maneja la solicitud POST a la ruta "/update-header" y actualiza la información del header.
-     * 
-     * @param header Objeto de tipo `Header` representando la estructura del header.
+     * @param head Valor correspondiente al de la clase para acceso a atributos
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-header")
     public Object updateHeader(@RequestBody Header head) {
@@ -1496,7 +1478,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/cancelation/{flight_id}")
     public Object updateFlightandTickets(@PathVariable int flight_id) {
@@ -1546,7 +1527,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/ticketcanceled/{ticket_id}")
     public Object updateIndividualTicket(@PathVariable int ticket_id) {
@@ -1588,7 +1568,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Un objeto de tipo `Discount` representando el porcentaje de descuento.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/discount/{id}")
     public Object getDiscount(@PathVariable int id) {
@@ -1635,7 +1614,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-flight/{flight_id}")
     public Object updateFlight(@RequestBody Flight flight, @PathVariable int flight_id) {
@@ -1673,7 +1651,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Un objeto de tipo `Footer` representando la información del footer.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/footer")
     public Object getFooter() {
@@ -1760,7 +1737,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-footer")
     public Object updateFooter(@RequestBody Footer footer) {
@@ -1827,7 +1803,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Un objeto de tipo `Partner` representando la información de los partners.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/partners")
     public Object getPartners() {
@@ -1883,7 +1858,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-partners")
     public Object updatePartners(@RequestBody Partners partner) {
@@ -1942,7 +1916,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `userinformation` representando la información de los usuarios.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/modification-notification/{flightid}")
     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
@@ -1997,7 +1970,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/create-city/{city}")
     public Object createCity(@PathVariable String city) {
@@ -2036,7 +2008,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-city/{city}/{id}")
     public Object updateCities(@PathVariable String city, @PathVariable int id) {
@@ -2071,7 +2042,6 @@ public class ApexController {
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Un objeto de tipo `Home` representando la información de la página de inicio.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/home")
     public Object getHome() {
@@ -2125,7 +2095,6 @@ public class ApexController {
      * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
      *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @PostMapping("/update-home")
     public Object updateHome(@RequestBody Home Home) {
@@ -2173,11 +2142,12 @@ public class ApexController {
      * End point para obtener la información de los vuelos directos.
 
      * Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y devuelve un objeto con la información de los vuelos directos.
-     * 
+     * @param origin Representa el pais seleccionado de busqueda el cual sera el origen
+     * @param destination Representa el pais seleccionado de busqueda el cual sera el destino
+     * @param departureDay Dia de salida establecido en la busqueda
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `FlightSimple` representando la información de los vuelos directos.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
@@ -2280,11 +2250,10 @@ public class ApexController {
      * End point para obtener la información de las ciudades.
 
      * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un objeto con la información de las ciudades.
-     * 
+     * @param cityid Id correspondiente al ID de la ciudad seleccionada
      * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
      *         * Una lista con objetos de tipo `City` representando la información de las ciudades.
      *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
-     * @throws SQLException Se lanza una excepción si ocurre un error al acceder a la base de datos.
      */
     @GetMapping("/get-city/{cityid}")
     public Object getOneCity(@PathVariable int cityid) {

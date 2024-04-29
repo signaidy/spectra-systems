@@ -9,6 +9,12 @@ package com.apex.backend;
   * @author Juan Pablo Estrada Lucero
   * @version 1.0
   */
+
+/**
+   * Constructor de la clase `Flight_registered`.
+   * 
+   * @param Flight_ID Identificador único del vuelo
+   */
 public record Flight_registered (String Flight_ID) {
 
 }

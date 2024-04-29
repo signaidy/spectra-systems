@@ -3,20 +3,14 @@ package com.apex.backend;
 /**
  * La clase `Aboutus` representa la información de la sección "Acerca de nosotros".
 
- * Esta clase almacena los datos necesarios para construir dicha sección, incluyendo:
-
- * `slogan`: El eslogan de la compañía.
- * `gif`: La URL de un GIF animado de la compañía a mostrar.
- * `yt`: URL del video a mostrar dentro de esta sección relacionado con la compañía.
- * `cards_amount`: La cantidad de tarjetas informativas que se mostrarán.
- * `title_one`, `text_one`, `img_one`: Título, texto e imagen de la primera tarjeta informativa.
- * `title_two`, `text_two`, `img_two`: Título, texto e imagen de la segunda tarjeta informativa.
- * `title_three`, `text_three`, `img_three`: Título, texto e imagen de la tercera tarjeta informativa.
- * `title_four`, `text_four`, `img_four`: Título, texto e imagen de la cuarta tarjeta informativa.
+ * Esta clase contiene toda la informacion necesaria respecto a los atributos de 
+ * guardado para el apartado de la pagina de about us de la pagina. 
 
  * @author Juan Pablo Estrada Lucero
  * @version 1.0
  */
+
+
 public class Aboutus {
     String slogan;
     String gif;
@@ -34,6 +28,27 @@ public class Aboutus {
     String title_four;
     String text_four;
     String img_four;
+
+      /**
+   * Constructor de la clase `Aboutus`.
+   * 
+    * @param slogan El eslogan de la compañía.
+    * @param gif La URL de un GIF animado de la compañía a mostrar.
+    * @param yt URL del video a mostrar dentro de esta sección relacionado con la compañía.
+    * @param cards_amoun La cantidad de tarjetas informativas que se mostrarán.
+    * @param title_one Título de la primera tarjeta informativa
+    * @param text_one Texto de la primera tarjeta informativa
+    * @param img_one Imagen de la primera tarjeta informativa.
+    * @param title_two Título de la segunda tarjeta informativa
+    * @param text_two Texto de la segunda tarjeta informativa
+    * @param img_two Imagen de la segunda tarjeta informativa.
+    * @param title_three Título de la tercera tarjeta informativa
+    * @param text_three Texto de la tercera tarjeta informativa
+    * @param img_three Imagen de la tercera tarjeta informativa.
+    * @param title_four Título la cuarta tarjeta informativa
+    * @param text_four Textode la cuarta tarjeta informativa
+    * @param img_four Imagen de la cuarta tarjeta informativa.   
+   */
 
     public Aboutus(String slogan,
             String gif,

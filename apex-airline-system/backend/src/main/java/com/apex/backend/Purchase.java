@@ -30,7 +30,7 @@ public class Purchase {
      * 
      * @param user_id Identificador del usuario que realizó la compra.
      * @param ticket_id Identificador del boleto comprado.
-     * @param payment_method Método de pago utilizado para la compra (por ejemplo, "tarjeta de crédito", "débito").
+     * @param paymenth_method Método de pago utilizado para la compra (por ejemplo, "tarjeta de crédito", "débito").
      */
 
     public Purchase(Integer user_id, Integer ticket_id, String paymenth_method){
