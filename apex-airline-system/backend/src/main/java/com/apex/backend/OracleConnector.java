@@ -22,7 +22,6 @@ public class OracleConnector {
      * detalles de conexión proporcionados (URL, nombre de usuario y contraseña). En caso de 
      * fallo de conexión, se imprime un mensaje de error y se lanza una excepción.
 
-     * @throws SQLException Se lanza si se produce un error al establecer la conexión.
      */
 
     public OracleConnector() {

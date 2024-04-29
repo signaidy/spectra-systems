@@ -11,6 +11,10 @@ java {
 	sourceCompatibility = '21'
 }
 
+javadoc {
+    destinationDir = file("./JAVADOC-Apex/javadoc")
+}
+
 repositories {
 	mavenCentral()
 }
