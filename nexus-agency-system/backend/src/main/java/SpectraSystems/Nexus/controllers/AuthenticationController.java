@@ -20,7 +20,7 @@ public class AuthenticationController {
     
     /** 
      * @param request
-     * @return JwtAuthenticationResponse
+     * @return the 'JwtAuthenticationResponse'
      */
     @PostMapping("/signup")
     public JwtAuthenticationResponse signup(@RequestBody SignUpRequest request) {
@@ -30,7 +30,7 @@ public class AuthenticationController {
     
     /** 
      * @param request
-     * @return JwtAuthenticationResponse
+     * @return the'JwtAuthenticationResponse'
      */
     @PostMapping("/login")
     public JwtAuthenticationResponse signin(@RequestBody SignInRequest request) {

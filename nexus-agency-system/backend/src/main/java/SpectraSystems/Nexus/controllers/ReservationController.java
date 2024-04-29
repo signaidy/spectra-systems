@@ -59,7 +59,7 @@ public class ReservationController {
 
     
     /** 
-     * @return ResponseEntity<List<Reservation>>
+     * @return a 'ResponseEntity<List<Reservation>>'
      */
     // Endpoint to retrieve all reservations
     @GetMapping
@@ -71,7 +71,7 @@ public class ReservationController {
     
     /** 
      * @param userId
-     * @return ResponseEntity<List<Reservation>>
+     * @return a 'ResponseEntity<List<Reservation>>'
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Reservation>> getAllReservationsByUserId(@PathVariable Long userId) {
@@ -82,7 +82,7 @@ public class ReservationController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Reservation>
+     * @return a 'ResponseEntity<Reservation>'
      */
     // Endpoint to retrieve a reservation by ID
     @GetMapping("/{id}")
@@ -97,7 +97,7 @@ public class ReservationController {
      * @param "providerId"
      * @param providerId
      * @param reservation
-     * @return ResponseEntity<Reservation>
+     * @return a 'ResponseEntity<Reservation>'
      */
     // Endpoint to create a new reservation
     @PostMapping
@@ -163,7 +163,7 @@ public class ReservationController {
     /** 
      * @param id
      * @param reservationDetails
-     * @return ResponseEntity<Reservation>
+     * @return a 'ResponseEntity<Reservation>'
      */
     // Endpoint to update an existing reservation
     @PutMapping("/{id}")
@@ -176,7 +176,7 @@ public class ReservationController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return a 'ResponseEntity<Void>'
      */
     // Endpoint to delete a reservation by ID
     @DeleteMapping("/{id}")
@@ -189,7 +189,7 @@ public class ReservationController {
     
     /** 
      * @param hotelId
-     * @return ResponseEntity<Void>
+     * @return a 'ResponseEntity<Void>'
      */
     @PutMapping("/cancelHotel/{hotelId}")
     public ResponseEntity<Void> cancelReservationsByHotelId(@PathVariable String hotelId) {
@@ -200,7 +200,7 @@ public class ReservationController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return a 'ResponseEntity<Void>'
      */
     @PutMapping("/cancel/{id}")
     public ResponseEntity<Void> cancelReservationById(@PathVariable Long id) {
@@ -211,7 +211,7 @@ public class ReservationController {
     
     /** 
      * @param getHotels(
-     * @return ResponseEntity<List<Map<String, Object>>>
+     * @return a 'ResponseEntity<List<Map<String, Object>>>'
      */
     @GetMapping(value = "/hotelsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Map<String, Object>>> getHotels(
@@ -263,7 +263,7 @@ public class ReservationController {
     
     /** 
      * @param getHotelRoomById(
-     * @return ResponseEntity<Map<String, Object>>
+     * @return a 'ResponseEntity<Map<String, Object>>'
      */
     @GetMapping(value = "/roomsearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> getHotelRoomById(
@@ -307,7 +307,7 @@ public class ReservationController {
     
     /** 
      * @param hotel
-     * @return Map<String, Object>
+     * @return a 'Map<String, Object>'
      */
     private Map<String, Object> constructResponse(Map<String, Object> hotel) {
         // Construct the JSON response with hotel id and rooms
@@ -321,7 +321,7 @@ public class ReservationController {
 
     
     /** 
-     * @return List<String>
+     * @return a 'List<String>'
      */
     @GetMapping("/cities")
     public List<String> getAllHotelCitiesFromOtherBackend() {

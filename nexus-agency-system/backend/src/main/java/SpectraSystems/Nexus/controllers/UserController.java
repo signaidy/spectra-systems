@@ -23,7 +23,7 @@ public class UserController {
 
     
     /** 
-     * @return ResponseEntity<List<User>>
+     * @return a 'ResponseEntity<List<User>>'
      */
     // Endpoint to retrieve all users
     @GetMapping
@@ -35,7 +35,7 @@ public class UserController {
     
     /** 
      * @param id
-     * @return ResponseEntity<User>
+     * @return a 'ResponseEntity<User>'
      */
     // Endpoint to retrieve a user by ID
     @GetMapping("/{id}")
@@ -48,7 +48,7 @@ public class UserController {
     
     /** 
      * @param user
-     * @return ResponseEntity<User>
+     * @return a 'ResponseEntity<User>'
      */
     // Endpoint to create a new user
     @PostMapping
@@ -61,7 +61,7 @@ public class UserController {
     /** 
      * @param id
      * @param userDetails
-     * @return ResponseEntity<User>
+     * @return a 'ResponseEntity<User>'
      */
     // Endpoint to update an existing user
     @PutMapping("/{id}")
@@ -73,7 +73,7 @@ public class UserController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return a 'ResponseEntity<Void>'
      */
     // Endpoint to delete a user by ID
     @DeleteMapping("/{id}")

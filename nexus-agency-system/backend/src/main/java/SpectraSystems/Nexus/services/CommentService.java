@@ -18,7 +18,7 @@ public class CommentService {
 
     
     /** 
-     * @return List<Comment>
+     * @return 'List<Comment>'
      */
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
@@ -28,7 +28,7 @@ public class CommentService {
     
     /** 
      * @param flightId
-     * @return List<Comment>
+     * @return 'List<Comment>'
      */
     public List<Comment> getCommentsByFlightId(Long flightId) {
         return commentRepository.findByFlightId(flightId);
@@ -38,7 +38,7 @@ public class CommentService {
     
     /** 
      * @param id
-     * @return Optional<Comment>
+     * @return 'Optional<Comment>'
      */
     public Optional<Comment> getCommentById(Long id) {
         return commentRepository.findById(id);
@@ -48,7 +48,7 @@ public class CommentService {
     
     /** 
      * @param comment
-     * @return Comment
+     * @return 'Comment'
      */
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
@@ -58,7 +58,7 @@ public class CommentService {
     /** 
      * @param id
      * @param commentDetails
-     * @return Comment
+     * @return 'Comment'
      */
     public Comment updateComment(Long id, Comment commentDetails) {
         Optional<Comment> optionalComment = commentRepository.findById(id);

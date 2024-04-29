@@ -92,7 +92,7 @@ public class Aboutus {
     }
     
     /** 
-     * @return Long
+     * @return 'Long'
      */
     // Getters and setters for all fields
 
@@ -110,7 +110,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getSlogan() {
         return slogan;
@@ -126,7 +126,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getGif() {
         return gif;
@@ -142,7 +142,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getYt() {
         return yt;
@@ -158,7 +158,7 @@ public class Aboutus {
 
     
     /** 
-     * @return Integer
+     * @return 'Integer'
      */
     public Integer getCardsAmount() {
         return cardsAmount;
@@ -174,7 +174,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTitleOne() {
         return titleOne;
@@ -190,7 +190,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTextOne() {
         return textOne;
@@ -206,7 +206,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getImgOne() {
         return imgOne;
@@ -222,7 +222,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTitleTwo() {
         return titleTwo;
@@ -238,7 +238,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTextTwo() {
         return textTwo;
@@ -254,7 +254,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getImgTwo() {
         return imgTwo;
@@ -270,7 +270,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTitleThree() {
         return titleThree;
@@ -286,7 +286,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTextThree() {
         return textThree;
@@ -302,7 +302,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getImgThree() {
         return imgThree;
@@ -318,7 +318,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTitleFour() {
         return titleFour;
@@ -334,7 +334,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getTextFour() {
         return textFour;
@@ -350,7 +350,7 @@ public class Aboutus {
 
     
     /** 
-     * @return String
+     * @return 'String'
      */
     public String getImgFour() {
         return imgFour;

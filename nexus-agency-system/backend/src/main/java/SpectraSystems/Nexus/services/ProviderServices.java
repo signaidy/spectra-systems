@@ -22,7 +22,7 @@ public class ProviderServices {
 
     
     /** 
-     * @return List<Provider>
+     * @return 'List<Provider>'
      */
     public List<Provider> getAllProviders() {
         return providerRepository.findAll();
@@ -31,7 +31,7 @@ public class ProviderServices {
     
     /** 
      * @param id
-     * @return Optional<Provider>
+     * @return 'Optional<Provider>'
      */
     public Optional<Provider> getProviderById(Long id) {
         return providerRepository.findById(id);
@@ -40,7 +40,7 @@ public class ProviderServices {
     
     /** 
      * @param type
-     * @return List<Provider>
+     * @return 'List<Provider>'
      */
     public List<Provider> getProviderByType(Type type) {
         return providerRepository.findByType(type);
@@ -49,7 +49,7 @@ public class ProviderServices {
     
     /** 
      * @param provider
-     * @return Provider
+     * @return 'Provider'
      */
     public Provider createProvider(Provider provider) {
         return providerRepository.save(provider);

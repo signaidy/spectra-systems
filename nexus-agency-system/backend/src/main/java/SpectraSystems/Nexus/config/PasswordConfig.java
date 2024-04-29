@@ -9,7 +9,7 @@ public class PasswordConfig {
 
     
     /** 
-     * @return PasswordEncoder
+     * @return returns a 'PasswordEncoder'
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

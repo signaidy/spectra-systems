@@ -24,7 +24,7 @@ public class AuthenticationService {
   
   /** 
    * @param request
-   * @return JwtAuthenticationResponse
+   * @return 'JwtAuthenticationResponse'
    */
   public JwtAuthenticationResponse signup(SignUpRequest request) {
       var user = User
@@ -48,7 +48,7 @@ public class AuthenticationService {
   
   /** 
    * @param request
-   * @return JwtAuthenticationResponse
+   * @return 'JwtAuthenticationResponse'
    */
   public JwtAuthenticationResponse signin(SignInRequest request) {
       authenticationManager.authenticate(

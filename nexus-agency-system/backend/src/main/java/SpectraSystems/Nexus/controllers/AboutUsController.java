@@ -19,7 +19,7 @@ public class AboutUsController {
     
     /** 
      * @param aboutUsEntity
-     * @return ResponseEntity<Aboutus>
+     * @return returns a 'ResponseEntity<Aboutus>'
      */
     @PostMapping
     public ResponseEntity<Aboutus> createOrUpdateAboutUs(@RequestBody Aboutus aboutUsEntity) {
@@ -30,7 +30,7 @@ public class AboutUsController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Aboutus>
+     * @return returns a 'ResponseEntity<Aboutus>'
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{id}")
@@ -42,7 +42,7 @@ public class AboutUsController {
 
     
     /** 
-     * @return ResponseEntity<List<Aboutus>>
+     * @return returns a 'ResponseEntity<List<Aboutus>>'
      */
     @GetMapping
     public ResponseEntity<List<Aboutus>> getAllAboutUs() {
@@ -54,7 +54,7 @@ public class AboutUsController {
     /** 
      * @param id
      * @param aboutUs
-     * @return ResponseEntity<Aboutus>
+     * @return returns a 'ResponseEntity<Aboutus>'
      */
     @PutMapping("/{id}")
     public ResponseEntity<Aboutus> updateAboutUs(@PathVariable Long id, @RequestBody Aboutus aboutUs) {
@@ -69,7 +69,7 @@ public class AboutUsController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return returns a 'ResponseEntity<Void>'
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAboutUs(@PathVariable Long id) {

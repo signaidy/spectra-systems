@@ -25,7 +25,7 @@ public class ProviderController {
 
     
     /** 
-     * @return ResponseEntity<List<Provider>>
+     * @return a 'ResponseEntity<List<Provider>>'
      */
     @GetMapping
     public ResponseEntity<List<Provider>> getAllProviders() {
@@ -36,7 +36,7 @@ public class ProviderController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Provider>
+     * @return a 'ResponseEntity<Provider>'
      */
     @GetMapping("/{id}")
     public ResponseEntity<Provider> getProviderById(@PathVariable Long id) {
@@ -48,7 +48,7 @@ public class ProviderController {
     
     /** 
      * @param type
-     * @return ResponseEntity<List<Provider>>
+     * @return a 'ResponseEntity<List<Provider>>'
      */
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Provider>> getProviderByType(@PathVariable Type type) {
@@ -59,7 +59,7 @@ public class ProviderController {
     
     /** 
      * @param provider
-     * @return ResponseEntity<Provider>
+     * @return a 'ResponseEntity<Provider>'
      */
     @PostMapping
     public ResponseEntity<Provider> createProvider(@RequestBody Provider provider) {
@@ -70,7 +70,7 @@ public class ProviderController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return a 'ResponseEntity<Void>'
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable Long id) {

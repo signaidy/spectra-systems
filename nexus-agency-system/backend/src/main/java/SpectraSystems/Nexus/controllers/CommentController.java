@@ -23,7 +23,7 @@ public class CommentController {
 
     
     /** 
-     * @return ResponseEntity<List<Comment>>
+     * @return the 'ResponseEntity<List<Comment>>'
      */
     // Endpoint to retrieve all comments
     @GetMapping
@@ -35,7 +35,7 @@ public class CommentController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Comment>
+     * @return the 'ResponseEntity<Comment>'
      */
     // Endpoint to retrieve a comment by ID
     @GetMapping("/{id}")
@@ -51,7 +51,7 @@ public class CommentController {
     
     /** 
      * @param comment
-     * @return ResponseEntity<Comment>
+     * @return the 'ResponseEntity<Comment>'
      */
     // Endpoint to create a new comment
     @PostMapping
@@ -64,7 +64,7 @@ public class CommentController {
     /** 
      * @param id
      * @param commentDetails
-     * @return ResponseEntity<Comment>
+     * @return the 'ResponseEntity<Comment>'
      */
     // Endpoint to update an existing comment
     @PutMapping("/{id}")
@@ -76,7 +76,7 @@ public class CommentController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return the 'ResponseEntity<Void>'
      */
     // Endpoint to delete a comment by ID
     @DeleteMapping("/{id}")

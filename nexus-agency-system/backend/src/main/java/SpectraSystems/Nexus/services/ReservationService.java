@@ -36,7 +36,7 @@ public class ReservationService {
 
     
     /** 
-     * @return List<Reservation>
+     * @return 'List<Reservation>'
      */
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
@@ -45,7 +45,7 @@ public class ReservationService {
     
     /** 
      * @param id
-     * @return Optional<Reservation>
+     * @return 'Optional<Reservation>'
      */
     public Optional<Reservation> getReservationById(Long id) {
         return reservationRepository.findById(id);
@@ -54,7 +54,7 @@ public class ReservationService {
     
     /** 
      * @param userId
-     * @return List<Reservation>
+     * @return 'List<Reservation>'
      */
     public List<Reservation> getAllReservationsByUserId(Long userId) {
         return reservationRepository.findByUserid(userId);
@@ -63,7 +63,7 @@ public class ReservationService {
     
     /** 
      * @param reservation
-     * @return Reservation
+     * @return 'Reservation'
      */
     public Reservation createReservation(Reservation reservation) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -130,7 +130,7 @@ public class ReservationService {
     /** 
      * @param id
      * @param reservationDetails
-     * @return Reservation
+     * @return 'Reservation'
      */
     public Reservation updateReservation(Long id, Reservation reservationDetails) {
         Reservation reservation = reservationRepository.findById(id)

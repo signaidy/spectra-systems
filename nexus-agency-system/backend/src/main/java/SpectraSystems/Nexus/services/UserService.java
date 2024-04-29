@@ -27,7 +27,7 @@ public class UserService {
 
     
     /** 
-     * @return List<User>
+     * @return 'List<User>'
      */
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -36,7 +36,7 @@ public class UserService {
     
     /** 
      * @param id
-     * @return Optional<User>
+     * @return 'Optional<User>'
      */
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
@@ -45,7 +45,7 @@ public class UserService {
     
     /** 
      * @param user
-     * @return User
+     * @return 'User'
      */
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword())); // Hash password before saving
@@ -56,7 +56,7 @@ public class UserService {
     /** 
      * @param id
      * @param userDetails
-     * @return User
+     * @return 'User'
      */
     public User updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
@@ -83,7 +83,7 @@ public class UserService {
 
     
     /** 
-     * @return UserDetailsService
+     * @return 'UserDetailsService'
      */
     public UserDetailsService userDetailsService(){
         return new UserDetailsService() {
@@ -97,7 +97,7 @@ public class UserService {
     
     /** 
      * @param newUser
-     * @return User
+     * @return 'User'
      */
     public User save(User newUser) {
         if (newUser.getId() == null) {
