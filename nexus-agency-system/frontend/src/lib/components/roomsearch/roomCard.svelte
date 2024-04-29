@@ -16,8 +16,9 @@
   // export let form;
   let checkin = $page.url.searchParams.get("check-in");
   let checkout = $page.url.searchParams.get("check-out");
+  let providerId = $page.url.searchParams.get("providerId");
 
-  const handleCheckout = (hotel, guests, roomType, price, hotelname, beds, city, bedAmount) => {
+  const handleCheckout = (hotel, guests, roomType, price, hotelname, beds, city, bedAmount, providerId) => {
     goto(
       `/hotelcheckout?hotelid=${hotel}&checkin=${checkin}&checkout=${checkout}&roomtype=${roomType}&price=${price}&guests=${guests}&hotelname=${hotelname}&beds=${beds}&city=${city}&bedAmount=${bedAmount}`
     );

@@ -29,32 +29,6 @@
             </span>
           </a>
         </div>
-        <!-- <div class="flex-1 group">
-          <a
-            on:click={() => (valueselected = "Flights")}
-            href="#"
-            class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
-          >
-            <span class="block px-1 pt-1 pb-2">
-              <i class="far fa-compass text-2xl pt-1 mx-4 block"><Plane /></i>
-              <span class="block text-xs pb-1">Flights</span>
-            </span>
-          </a>
-        </div> -->
-        <div class="flex-1 group">
-          <a
-            on:click={() => (valueselected = "Tickets")}
-            href="#"
-            class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500"
-          >
-            <span class="block px-1 pt-1 pb-2">
-              <i class="far fa-search text-2xl pt-1 mx-4 block"
-                ><TicketPercent /></i
-              >
-              <span class="block text-xs pb-1">Tickets</span>
-            </span>
-          </a>
-        </div>
         <div class="flex-1 group">
           <a
             on:click={() => (valueselected = "Settings")}
@@ -74,10 +48,7 @@
 
 {#if valueselected == "Users"}
   <Userconfig />
-{:else if valueselected == "Flights"}
-<Button href="/user/administration/create-flight">Create Flight</Button>
-{:else if valueselected == "Tickets"}
-<p>On maintainance</p>
 {:else if valueselected == "Settings"}
 <Button href="/user/administration/update-aboutus">About us</Button>
+<Button href="/user/administration/proveedores">Providers</Button>
 {/if}

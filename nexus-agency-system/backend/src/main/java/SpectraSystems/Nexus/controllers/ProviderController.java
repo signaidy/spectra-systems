@@ -67,6 +67,30 @@ public class ProviderController {
         return new ResponseEntity<>(createdProvider, HttpStatus.CREATED);
     }
 
+    /** 
+     * Update an existing provider by ID
+     *
+     * @param id       The ID of the provider to update
+     * @param provider The updated provider data
+     * @return         ResponseEntity containing the updated provider data or NOT_FOUND if the provider with the given ID is not found
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Provider> updateProvider(@PathVariable Long id, @RequestBody Provider provider) {
+        // Set the ID of the provider to update
+        provider.setId(id);
+        
+        // Update the provider data in the database
+        Provider updatedProvider = providerService.updateProvider(provider);
+        
+        if (updatedProvider != null) {
+            // If provider updated successfully, return it with OK status
+            return new ResponseEntity<>(updatedProvider, HttpStatus.OK);
+        } else {
+            // If provider with the given ID is not found, return NOT_FOUND status
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     
     /** 
      * @param id

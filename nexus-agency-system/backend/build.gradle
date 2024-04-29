@@ -5,6 +5,14 @@ plugins {
 	id "io.freefair.lombok" version "8.6"
 }
 
+sourceSets {
+    main {
+        java {
+            './src/main/java/SpectraSystems/Nexus'
+        }
+    }
+}
+
 group = 'SpectraSystems'
 version = '0.0.1-SNAPSHOT'
 
@@ -13,9 +21,8 @@ java {
 }
 
 javadoc {
-    destinationDir = file("${buildDir}/docs/javadoc")
-	exclude 'build/generated/sources/lombok'
-	include 'src/main/java/SpectraSystems/Nexus'
+    destinationDir = file("./docsNexus/javadoc")
+	exclude './build/generated/sources/delombok'
 }
 
 repositories {
