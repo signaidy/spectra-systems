@@ -12,6 +12,12 @@ java {
 	sourceCompatibility = '21'
 }
 
+javadoc {
+    destinationDir = file("${buildDir}/docs/javadoc")
+	exclude 'build/generated/sources/lombok'
+	include 'src/main/java/SpectraSystems/Nexus'
+}
+
 repositories {
 	mavenCentral()
 }

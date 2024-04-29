@@ -20,7 +20,7 @@ public class AboutUsService {
     
     /** 
      * @param aboutUsEntity
-     * @return Aboutus
+     * @return 'Aboutus'
      */
     public Aboutus saveOrUpdate(Aboutus aboutUsEntity) {
         return aboutUsRepository.save(aboutUsEntity);
@@ -29,7 +29,7 @@ public class AboutUsService {
     
     /** 
      * @param id
-     * @return Optional<Aboutus>
+     * @return 'Optional<Aboutus>'
      */
     public Optional<Aboutus> findById(Long id) {
         return aboutUsRepository.findById(id);
@@ -37,7 +37,7 @@ public class AboutUsService {
 
     
     /** 
-     * @return List<Aboutus>
+     * @return 'List<Aboutus>'
      */
     public List<Aboutus> findAll() {
         return aboutUsRepository.findAll();
@@ -55,7 +55,7 @@ public class AboutUsService {
     /** 
      * @param id
      * @param aboutUsDetails
-     * @return Aboutus
+     * @return 'Aboutus'
      */
     public Aboutus updateAboutUs(Long id, Aboutus aboutUsDetails) {
         Aboutus aboutUs = aboutUsRepository.findById(id)

@@ -52,7 +52,6 @@ public class SeedDataConfig implements CommandLineRunner {
         log.debug("created ADMIN user - {}", admin);
       }
       if (aboutusRespository.count() == 0) {
-
         Aboutus admin = Aboutus
                       .builder()
                       .slogan("UwU")

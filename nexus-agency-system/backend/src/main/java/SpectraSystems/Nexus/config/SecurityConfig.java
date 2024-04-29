@@ -31,7 +31,7 @@ public class SecurityConfig {
     
     
     /** 
-     * @return AuthenticationProvider
+     * @return returns the 'AuthenticationProvider'
      */
     @Bean
     public AuthenticationProvider authenticationProvider(){
@@ -41,11 +41,23 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    
+    /** 
+     * @param config
+     * @return returns the 'AuthenticationManager'
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
         return config.getAuthenticationManager();
     }
 
+    
+    /** 
+     * @param http
+     * @return returns the 'SecurityFilterChain'
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

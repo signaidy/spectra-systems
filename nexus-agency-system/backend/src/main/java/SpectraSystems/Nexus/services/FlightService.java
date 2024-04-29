@@ -62,7 +62,7 @@ public class FlightService {
 
     
     /** 
-     * @return List<Flight>
+     * @return 'List<Flight>'
      */
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
@@ -80,7 +80,7 @@ public class FlightService {
     
     /** 
      * @param userId
-     * @return List<Flight>
+     * @return 'List<Flight>'
      */
     public List<Flight> getAllFlightsByUserId(Long userId) {
         return flightRepository.findByUserid(userId);
@@ -89,7 +89,7 @@ public class FlightService {
     
     /** 
      * @param flight
-     * @return Flight
+     * @return 'Flight'
      */
     public Flight createFlight(Flight flight) {
         if (flight != null) {
@@ -102,7 +102,7 @@ public class FlightService {
     
     /** 
      * @param flightNumber
-     * @return List<Flight>
+     * @return 'List<Flight>'
      */
     public List<Flight> getFlightsByFlightNumber(String flightNumber) {
         return flightRepository.findAllByFlightNumber(flightNumber);
@@ -110,7 +110,7 @@ public class FlightService {
 
     
     /** 
-     * @return List<externalFlight>
+     * @return 'List<externalFlight>'
      */
     public List<externalFlight> getAllFlightsFromOtherBackend() {
         List<externalFlight> allFlights = new ArrayList<>();
@@ -157,7 +157,7 @@ public class FlightService {
      * @param destinationCity
      * @param departureDay
      * @param passengers
-     * @return List<externalFlight>
+     * @return 'List<externalFlight>'
      */
     public List<externalFlight> getOneWayFlightsFromOtherBackend(
             Long originCity,
@@ -245,7 +245,7 @@ public class FlightService {
 
     
     /** 
-     * @return List<City>
+     * @return 'List<City>'
      */
     public List<City> getAllCitiesFromOtherBackend() {
         List<City> allCities = new ArrayList<>();
@@ -370,7 +370,7 @@ public class FlightService {
     /** 
      * @param id
      * @param flightDetails
-     * @return Flight
+     * @return 'Flight'
      */
     public Flight updateFlight(Long id, Flight flightDetails) {
         Flight flight = flightRepository.findById(id)

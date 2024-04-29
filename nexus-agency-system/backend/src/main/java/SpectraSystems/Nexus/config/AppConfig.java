@@ -9,7 +9,7 @@ public class AppConfig {
 
     
     /** 
-     * @return RestTemplate
+     * @return returns a 'RestTemplate'
      */
     @Bean
     public RestTemplate restTemplate() {

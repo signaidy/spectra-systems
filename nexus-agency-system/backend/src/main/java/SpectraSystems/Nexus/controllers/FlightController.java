@@ -19,7 +19,6 @@ import SpectraSystems.Nexus.models.User;
 import SpectraSystems.Nexus.models.externalFlight;
 import SpectraSystems.Nexus.repositories.FlightRepository;
 import SpectraSystems.Nexus.repositories.ReservationRepository;
-import SpectraSystems.Nexus.repositories.UserRepository;
 import SpectraSystems.Nexus.services.FlightService;
 import SpectraSystems.Nexus.services.UserService;
 import jakarta.mail.MessagingException;
@@ -55,7 +54,7 @@ public class FlightController {
 
     
     /** 
-     * @return ResponseEntity<List<Flight>>
+     * @return a 'ResponseEntity<List<Flight>>'
      */
     // Endpoint to retrieve all flights
     @GetMapping
@@ -67,7 +66,7 @@ public class FlightController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Flight>
+     * @return a 'ResponseEntity<Flight>'
      */
     // Endpoint to retrieve a flight by ID
     @GetMapping("/{id}")
@@ -80,7 +79,7 @@ public class FlightController {
     
     /** 
      * @param userId
-     * @return ResponseEntity<List<Flight>>
+     * @return a 'ResponseEntity<List<Flight>>'
      */
     // Endpoint to retrieve all flights by userID
     @GetMapping("/user/{userId}")
@@ -91,7 +90,7 @@ public class FlightController {
 
     
     /** 
-     * @return ResponseEntity<List<externalFlight>>
+     * @return a 'ResponseEntity<List<externalFlight>>'
      */
     @GetMapping("/avianca/flights")
     public ResponseEntity<List<externalFlight>> getAllFlightsFromOtherBackend() {
@@ -101,7 +100,7 @@ public class FlightController {
 
     
     /** 
-     * @return ResponseEntity<List<externalFlight>>
+     * @return a 'ResponseEntity<List<externalFlight>>'
      */
     @GetMapping("/avianca/one-way-flights")
     public ResponseEntity<List<externalFlight>> getOneWayFlightsFromOtherBackend(
@@ -116,7 +115,7 @@ public class FlightController {
 
     
     /** 
-     * @return ResponseEntity<List<externalFlight>>
+     * @return a 'ResponseEntity<List<externalFlight>>' 
      */
     @GetMapping("/avianca/round-trip-flights")
     public ResponseEntity<List<externalFlight>> getRoundTripFlights(
@@ -151,7 +150,7 @@ public class FlightController {
     /** 
      * @param outboundFlight
      * @param returnFlight
-     * @return boolean
+     * @return a 'boolean' if the flights match
      */
     // Method to check if flights match based on origin, destination cities, and scales
     private boolean matchFlights(externalFlight outboundFlight, externalFlight returnFlight) {
@@ -169,7 +168,7 @@ public class FlightController {
 
     
     /** 
-     * @return ResponseEntity<List<City>>
+     * @return the 'ResponseEntity<List<City>>'
      */
     @GetMapping("/avianca/cities")
     public ResponseEntity<List<City>> getAllCitiesFromOtherBackend() {
@@ -180,7 +179,7 @@ public class FlightController {
     
     /** 
      * @param flight
-     * @return ResponseEntity<Flight>
+     * @return the 'ResponseEntity<Flight>'
      */
     // Endpoint to create a new flight
     @PostMapping
@@ -192,7 +191,7 @@ public class FlightController {
 
     
     /** 
-     * @return ResponseEntity<Map<String, String>>
+     * @return the 'ResponseEntity<Map<String, String>>'
      * @throws JsonProcessingException
      */
     // Endpoint for purchasing a flight
@@ -216,7 +215,7 @@ public class FlightController {
     /** 
      * @param id
      * @param flightDetails
-     * @return ResponseEntity<Flight>
+     * @return the 'ResponseEntity<Flight>'
      */
     // Endpoint to update an existing flight
     @PutMapping("/{id}")
@@ -229,7 +228,7 @@ public class FlightController {
     
     /** 
      * @param flightNumber
-     * @return ResponseEntity<List<Flight>>
+     * @return the 'ResponseEntity<List<Flight>>'
      */
     @PutMapping("/deactivate/{flightNumber}")
     public ResponseEntity<List<Flight>> deactivateFlightsByFlightNumber(@PathVariable String flightNumber) {
@@ -263,7 +262,7 @@ public class FlightController {
     
     /** 
      * @param id
-     * @return ResponseEntity<List<Flight>>
+     * @return the 'ResponseEntity<List<Flight>>'
      */
     @PutMapping("/deactivateTicket/{id}")
     public ResponseEntity<List<Flight>> deactivateFlightsById(@PathVariable Long id) {
@@ -297,7 +296,7 @@ public class FlightController {
     
     /** 
      * @param id
-     * @return ResponseEntity<Void>
+     * @return the 'ResponseEntity<Void>'
      */
     // Endpoint to delete a flight by ID
     @DeleteMapping("/{id}")
