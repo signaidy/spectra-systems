@@ -2285,4 +2285,36 @@ public class ApexController {
         }
     }
 
+    //GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
+    @PostMapping("/citysearch/{id}")
+    public Object citysearch(@PathVariable int id) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement checkStatement = conn.prepareStatement(String.format("SELECT * FROM GRAPH2 WHERE CITY_ID = %d", id));
+            ResultSet result = checkStatement.executeQuery();
+
+            if (!result.next()) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                    "INSERT INTO GRAPH2 (CITY_ID, COUNT) VALUES (%d, %d)", id, 1));
+            insertStatement.executeQuery();
+            } else {
+                PreparedStatement updatestatement = conn.prepareStatement(String.format(
+                    "UPDATE GRAPH2 SET COUNT = COUNT + 1 WHERE CITY_ID = %d", id));
+                    updatestatement.executeQuery();
+            }
+            return new WebSuccess("City search information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
