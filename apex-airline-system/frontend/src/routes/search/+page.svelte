@@ -17,13 +17,28 @@
   let originprintId = $page.url.searchParams.get("originCity"); 
   let originprint; 
 
+  async function handlePostRequest(data) {
+    const response = await fetch(`${PUBLIC_BASE_URL}/citysearch/${data}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    } else {
+      const responseData = await response.json();
+      console.log("POST response:", responseData);
+    }
+  }
   
   onMount(async () => {
     const response = await fetch(
       `${PUBLIC_BASE_URL}/get-city/${destinationprintId}`
     );
     const data = await response.json();
+    console.log(destinationprintId); 
     destiantionprint = data.name;
+    handlePostRequest(destinationprintId)
   });
 
   onMount(async () => {
