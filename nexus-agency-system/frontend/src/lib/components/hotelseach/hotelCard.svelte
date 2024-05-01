@@ -22,6 +22,7 @@
       const searchParams = new URLSearchParams();
       searchParams.append("id", hotel_id);
       searchParams.append("city", city);
+      searchParams.append("providerId", hotel.providerId);
       searchParams.append("check-in", checkin);
       searchParams.append("check-out", checkout);
       searchParams.append("guests", guests.toString());
