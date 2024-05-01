@@ -2317,6 +2317,44 @@ public class ApexController {
         }
     }
 
+    //GRAPH1 - SELECT DATA 
+    @GetMapping("/typesearch")
+    public Object typesearch() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT TYPE, Count FROM GRAPH1"));
+            ResultSet result = query.executeQuery();
+
+            record datagraph(String TYPE, int count) {
+            }
+
+            List<datagraph> datagraphs = new ArrayList<>();
+            while (result.next()) {
+                datagraphs.add(new datagraph(
+                        result.getString("TYPE"),
+                        result.getInt("COUNT")));
+            }
+            if (datagraphs.isEmpty()) {
+                return new WebError("Users havent search any type of flight");
+            }
+            return datagraphs;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get type stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     //GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
     @PostMapping("/citysearch/{id}")
     public Object citysearch(@PathVariable int id) {

@@ -31,6 +31,19 @@
       const responseData = await response.json();
     }
   }
+
+  async function handletypecount(data) {
+    const response = await fetch(`${PUBLIC_BASE_URL}/typesearch/${data}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    } else {
+      const responseData = await response.json();
+    }
+  }
   
   onMount(async () => {
     const response = await fetch(
@@ -41,8 +54,7 @@
     destiantionprint = data.name;
     handlecitycount(destinationprintId)
     let typeflight = $page.url.searchParams.get("type"); 
-    console.log(typeflight + "aksjdasd");
-
+    handletypecount(typeflight); 
   });
 
   onMount(async () => {
