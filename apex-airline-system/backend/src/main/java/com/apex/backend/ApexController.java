@@ -2425,5 +2425,46 @@ public class ApexController {
         }
     }
 
+//GRAPH3 - SELECT DATA 
+@GetMapping("/userspurchasedata")
+public Object userspurchasedata() {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "SELECT CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END AS role, COUNT(*) AS Count \n"
+                        + //
+                        "FROM GRAPH3_DATA GROUP BY CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END"
+                        ));
+        ResultSet result = query.executeQuery();
+
+        record datagraph(String Role, int count) {
+        }
+
+        List<datagraph> datagraphs = new ArrayList<>();
+        while (result.next()) {
+            datagraphs.add(new datagraph(
+                    result.getString("ROLE"),
+                    result.getInt("COUNT")));
+        }
+        if (datagraphs.isEmpty()) {
+            return new WebError("No users have made a purchase");
+        }
+        return datagraphs;
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to get users purchase stats");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 
 }
