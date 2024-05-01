@@ -2317,4 +2317,43 @@ public class ApexController {
         }
     }
 
+    //GRAPH2 - SELECT DATA 
+    @GetMapping("/citysearchgraph")
+    public Object citysearchgraph() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT C.name CITY, G.count FROM GRAPH2 G JOIN Cities C ON G.CITY_ID = C.CITY_ID"));
+            ResultSet result = query.executeQuery();
+
+            record datagraph(String CITY, int count) {
+            }
+
+            List<datagraph> datagraphs = new ArrayList<>();
+            while (result.next()) {
+                datagraphs.add(new datagraph(
+                        result.getString("CITY"),
+                        result.getInt("count")));
+            }
+            if (datagraphs.isEmpty()) {
+                return new WebError("No cities have been searched");
+            }
+            return datagraphs;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get city stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }
