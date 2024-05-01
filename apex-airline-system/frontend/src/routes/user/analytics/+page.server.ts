@@ -10,10 +10,20 @@ export function load({ locals }) {
     return result;
   }
 
+  async function datagraph1() {
+    const response = await fetch(`${PUBLIC_BASE_URL}/typesearch`, {
+      method: "GET",
+    });
+
+    const result = await response.json();
+    return result;
+  }
+
 
 
   return {
     user: locals.user,
+    G1: datagraph1(), 
     G2: datagraph2()
   };
 }

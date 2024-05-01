@@ -7,7 +7,81 @@
 
   onMount(async () => {
     const information = await data.G2;
+    const graph1 = await data.G1;
 
+    //GRAPH1 (TYPE SEARCHES)------------------------------------------------------------------------------------------------------------------------------------------------
+    //Creation of PIE Chart
+    if (graph1.length > 0) {
+      const pieData = graph1;
+
+      const pieWidth = 500;
+      const pieHeight = 400;
+      const radius = Math.min(pieWidth, pieHeight) / 2;
+
+      const svgPie = d3
+        .select("#pie-chart")
+        .append("svg")
+        .attr("width", pieWidth)
+        .attr("height", pieHeight);
+
+      const color = d3
+        .scaleOrdinal()
+        .domain(pieData.map((d) => d.TYPE))
+        .range(["#ff9999", "#66b3ff"]);
+
+      const arc = d3
+        .arc()
+        .innerRadius(radius * 0.4)
+        .outerRadius(radius)
+        .padAngle(0.02);
+
+      const pie = d3.pie().value((d) => d.count);
+
+      const g = svgPie
+        .append("g")
+        .attr("transform", `translate(${pieWidth / 2}, ${pieHeight / 2})`);
+
+      const pieSlices = g.selectAll("path").data(pie(pieData)).enter();
+
+      pieSlices
+        .append("path")
+        .attr("d", arc)
+        .attr("fill", (d) => color(d.data.TYPE))
+        .attr("stroke", "white")
+        .attr("stroke-width", "2px");
+
+      //Percentaje lables
+      const pieLabels = pieSlices
+        .append("text")
+        .attr("class", "pie-chart-label")
+        .attr("text-anchor", "middle")
+        .attr("transform", (d) => `translate(${arc.centroid(d)})`); 
+      //Calculation of %
+      pieLabels.text((d) => {
+        const total = d3.sum(pieData, (v) => v.count);
+        const percent = Math.round((d.data.count / total) * 100);
+        return `${percent}%`;
+      });
+
+      //Position of lable
+      pieLabels.attr("dy", "2.1em");
+
+
+      //Labels for each slice
+      pieSlices
+        .append("text")
+        .attr("class", "pie-chart-label")
+        .attr("text-anchor", "middle")
+        .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+        .attr("dy", ".35em")
+        .text((d) => d.data.TYPE);
+    } else {
+      console.log("No data for pie chart");
+    }
+
+    //GRAPH2 (CITIES SEACHED)--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    if (information.length > 0) { 
     //Chart dimensions once created
     margin = { top: 20, right: 20, bottom: 50, left: 60 };
     width = 1000 - margin.left - margin.right;
@@ -74,6 +148,10 @@
       .attr("x", -height / 2)
       .attr("y", -margin.left + 20)
       .text("Count");
+    } else { 
+      console.log("No data for bar chart");
+    }
+    //GRAPH3 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   });
 </script>
 
@@ -81,5 +159,6 @@
   <h1 class="text-xl font-bold">Analytics</h1>
 </div>
 <div class="mx-10">
-  <svg id="bar-chart" height="10000" width="10000"></svg>
+  <svg id="bar-chart" height="400" width="1000"></svg>
+  <svg id="pie-chart" height="400" width="500"></svg>
 </div>
