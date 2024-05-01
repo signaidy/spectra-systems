@@ -14,10 +14,12 @@
   let destinationprintId = $page.url.searchParams.get("destinationCity"); 
   let destiantionprint; 
 
+
+
   let originprintId = $page.url.searchParams.get("originCity"); 
   let originprint; 
 
-  async function handlePostRequest(data) {
+  async function handlecitycount(data) {
     const response = await fetch(`${PUBLIC_BASE_URL}/citysearch/${data}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -27,7 +29,6 @@
       console.error("Error:", response.statusText);
     } else {
       const responseData = await response.json();
-      console.log("POST response:", responseData);
     }
   }
   
@@ -38,7 +39,10 @@
     const data = await response.json();
     console.log(destinationprintId); 
     destiantionprint = data.name;
-    handlePostRequest(destinationprintId)
+    handlecitycount(destinationprintId)
+    let typeflight = $page.url.searchParams.get("type"); 
+    console.log(typeflight + "aksjdasd");
+
   });
 
   onMount(async () => {

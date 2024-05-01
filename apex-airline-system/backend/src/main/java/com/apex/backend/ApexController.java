@@ -2285,6 +2285,38 @@ public class ApexController {
         }
     }
 
+    //GRAPH1 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR TYPE
+    @PostMapping("/typesearch/{type}")
+    public Object typesearch(@PathVariable String type) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement checkStatement = conn.prepareStatement(String.format("SELECT * FROM GRAPH1 WHERE TYPE = '%s'", type));
+            ResultSet result = checkStatement.executeQuery();
+
+            if (!result.next()) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                    "INSERT INTO GRAPH1 (TYPE, COUNT) VALUES ('%s', %d)", type, 1));
+            insertStatement.executeQuery();
+            } else {
+                PreparedStatement updatestatement = conn.prepareStatement(String.format(
+                    "UPDATE GRAPH1 SET COUNT = COUNT + 1 WHERE TYPE = '%s'", type));
+                    updatestatement.executeQuery();
+            }
+            return new WebSuccess("Type search information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     //GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
     @PostMapping("/citysearch/{id}")
     public Object citysearch(@PathVariable int id) {
