@@ -19,12 +19,22 @@ export function load({ locals }) {
     return result;
   }
 
+  async function datagraph3() {
+    const response = await fetch(`${PUBLIC_BASE_URL}/userspurchasedata`, {
+      method: "GET",
+    });
+
+    const result = await response.json();
+    return result;
+  }
+
 
 
   return {
     user: locals.user,
     G1: datagraph1(), 
-    G2: datagraph2()
+    G2: datagraph2(),
+    G3: datagraph3()
   };
 }
 
