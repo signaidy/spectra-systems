@@ -81,6 +81,7 @@ export class HotelService {
   }
 
   async getFilteredHotels(city: string) {
+    this.registerAnalytic(city);
     try {
       const hotelsCollection = this.db.collection("hotels");
 
@@ -291,5 +292,23 @@ export class HotelService {
         throw new Error(`Field '${key}' is required`);
       }
     }
+  }
+
+  async registerAnalytic(
+    location: string
+    // checkin: string,
+    // checkout: string,
+    // guests: number
+  ) {
+    const analytics = this.db.collection("analytics");
+
+    await analytics.insertOne({
+      source: "rest",
+      location,
+      checkin: format(new Date(), "MM/dd/yyyy HH:mm"),
+      checkout: format(new Date(), "MM/dd/yyyy HH:mm"),
+      guests: 1,
+      madeAt: format(new Date(), "MM/dd/yyyy HH:mm"),
+    });
   }
 }
