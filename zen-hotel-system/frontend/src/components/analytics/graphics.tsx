@@ -85,12 +85,20 @@ export async function Graphics() {
 
   return (
     <>
-      <div className="h-96 bg-white my-5 text-black">
-        <Bar data={barAnalytics} />
-      </div>
-      <div className="h-96 bg-white my-5 text-black">
-        <Line data={lineAnalytics} />
-      </div>
+      {analytics.length === 0 ? (
+        <div className={"flex justify-center items-center"}>
+          <h1 className="text-xl font-bold">No Analytics Found</h1>
+        </div>
+      ) : (
+        <>
+          <div className="h-96 bg-white my-5 text-black">
+            <Bar data={barAnalytics} />
+          </div>
+          <div className="h-96 bg-white my-5 text-black">
+            <Line data={lineAnalytics} />
+          </div>
+        </>
+      )}
     </>
   );
 }
