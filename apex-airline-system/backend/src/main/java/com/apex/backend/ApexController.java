@@ -2466,5 +2466,8 @@ public Object userspurchasedata() {
     }
 }
 
+//Insertion of searches made. 
+
+
 
 }
