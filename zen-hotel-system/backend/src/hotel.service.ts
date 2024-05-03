@@ -103,7 +103,7 @@ export class HotelService {
     }
   }
 
-  async getPartnerHotels(city: string, checkin: string, checkout: string, guests: string) {
+  async getPartnerHotels(city: string, checkin: string, checkout: string, guests: string, key: string) {
     this.registerAnalytic(city);
     try {
       const hotelsCollection = this.db.collection("hotels");

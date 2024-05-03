@@ -45,7 +45,7 @@ export class HotelController {
 
   @Get("get-partner-hotels")
   getPartnerHotels(@Query() query) {
-    return this.hotelService.getPartnerHotels(query.city, query.checkin, query.checkout, query.guests);
+    return this.hotelService.getPartnerHotels(query.city, query.checkin, query.checkout, query.guests, query.key);
   }
 
   @Get("get-user-reservations/:id")
