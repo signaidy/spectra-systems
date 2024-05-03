@@ -6,20 +6,19 @@ import { ResponsiveBar } from "@nivo/bar";
 // no chart will be rendered.
 // website examples showcase many properties,
 // you'll often use just a few of them.
-export function Bar({
+export function Bar2({
   data /* see data tab */,
 }: {
   data: {
-    location: string;
-    web: number;
-    rest: number;
+    label: string;
+    count: number;
   }[];
 }) {
   return (
     <ResponsiveBar
       data={data}
-      keys={["web", "rest"]}
-      indexBy="location"
+      keys={["count"]}
+      indexBy="label"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}

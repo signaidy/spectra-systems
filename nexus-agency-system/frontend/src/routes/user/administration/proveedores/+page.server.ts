@@ -110,5 +110,30 @@ export const actions = {
         });
       }
     }
-  },
+  },deleteProvider: async ({request, cookies}) => {
+    console.log("Received DELETE request to delete a provider");
+    const token = cookies.get("token");
+    let id = (await request.formData()).get("providerId")
+    try {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/providers/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      const result = await response.json();
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return fail(500, {
+          error: error.message,
+        });
+      }
+    }
+  }
 };

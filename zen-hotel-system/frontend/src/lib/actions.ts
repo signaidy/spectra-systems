@@ -665,9 +665,12 @@ export async function disableHotel(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    fetch(`${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`, {
-      method: "PUT",
-    });
+    fetch(
+      `${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`,
+      {
+        method: "PUT",
+      }
+    );
   }
   // ----------------
   try {
@@ -789,6 +792,49 @@ export async function enableReservation(prevState: any, formData: FormData) {
   revalidatePath("/");
 }
 
+export async function createAgency(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const agencies = database.collection("agencies");
+
+    const agency = {
+      name: rawFormData.name,
+      endpoint: rawFormData.endpoint,
+    };
+
+    await agencies.insertOne(agency);
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Agency.",
+    };
+  }
+
+  redirect("/administration/agencies");
+}
+
+export async function deleteAgency(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const agencies = database.collection("agencies");
+    console.log(rawFormData)
+    await agencies.deleteOne({
+      _id: new ObjectId(rawFormData.id as string),
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Delete Agency.",
+    };
+  }
+
+  revalidatePath("/administration/agencies");
+}
+
 export async function disableReservation(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
@@ -797,9 +843,12 @@ export async function disableReservation(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    fetch(`${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`, {
-      method: "PUT",
-    });
+    fetch(
+      `${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`,
+      {
+        method: "PUT",
+      }
+    );
   }
   // ----------------
   try {

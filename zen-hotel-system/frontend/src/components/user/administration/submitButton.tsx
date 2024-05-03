@@ -9,15 +9,30 @@ export function SubmitButton({
   className,
   children,
   onClick,
+  variant,
 }: {
   className?: string;
   children: React.ReactNode;
   onClick?: any;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link"
+    | null;
 }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button onClick={onClick} type="submit" className={className} disabled={pending}>
+    <Button
+      onClick={onClick}
+      type="submit"
+      className={className}
+      variant={variant}
+      disabled={pending}
+    >
       {children}
       {pending ? (
         <Loader2 className="h-4 w-4 ml-3 animate-spin" />

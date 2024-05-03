@@ -1,4 +1,5 @@
 import { Bar } from "@/components/analytics/bar";
+import { Bar2 } from "@/components/analytics/bar2";
 import { Line } from "@/components/analytics/line";
 import { getAnalytics } from "@/lib/data";
 import { format } from "date-fns";
@@ -67,7 +68,6 @@ export async function Graphics() {
       );
     }
 
-    console.log(results);
     return Object.values(results).map((result) => {
       const { location, ...rest } = result;
       return {
@@ -80,8 +80,32 @@ export async function Graphics() {
     });
   }
 
+  function getBar2Analytics(data: Analytic[]) {
+    const results = [
+      {
+        label: "web",
+        count: 0,
+      },
+      {
+        label: "rest",
+        count: 0,
+      },
+    ];
+
+    for (const analytic of data) {
+      if (analytic.source === "web") {
+        results[0].count += 1;
+      } else {
+        results[1].count += 1;
+      }
+    }
+
+    return results;
+  }
+
   const barAnalytics = getBarAnalytics(analytics);
   const lineAnalytics = getLineAnalytics(analytics);
+  const bar2Analytics = getBar2Analytics(analytics);
 
   return (
     <>
@@ -90,14 +114,17 @@ export async function Graphics() {
           <h1 className="text-xl font-bold">No Analytics Found</h1>
         </div>
       ) : (
-        <>
+        <div className="h-[500vh]">
           <div className="h-96 bg-white my-5 text-black">
             <Bar data={barAnalytics} />
           </div>
           <div className="h-96 bg-white my-5 text-black">
             <Line data={lineAnalytics} />
           </div>
-        </>
+          <div className="h-96 bg-white my-5 text-black">
+            <Bar2 data={bar2Analytics} />
+          </div>
+        </div>
       )}
     </>
   );

@@ -2,16 +2,16 @@ import { Suspense } from "react";
 // Components
 import { SectionTitle } from "@/components/user/sectionTitle";
 import { Agencies } from "@/components/agencies/agencies";
-import { AgencyCreationForm } from "@/components/agencies/agencyCreationForm";
+import { AllianceCreationForm } from "@/components/alliance/allianceCreationForm";
 
-export default function AgenciesAdministrationHome() {
+export default function AllianceAdministrationHome() {
   return (
     <>
       <SectionTitle
-        title="Agencies Administration"
-        description="Manage and Configure Agencies"
+        title="Airline Alliance Administration"
+        description="Manage and Configure Airline Alliance"
       />
-      <AgencyCreationForm />
+      <AllianceCreationForm />
       <Suspense
         fallback={
           <div className="flex flex-col gap-y-3 mt-5 mb-8 mr-8 flex-wrap">
