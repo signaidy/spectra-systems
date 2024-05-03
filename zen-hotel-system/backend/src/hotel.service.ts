@@ -103,6 +103,31 @@ export class HotelService {
     }
   }
 
+  async getPartnerHotels(city: string, checkin: string, checkout: string, guests: string) {
+    this.registerAnalytic(city);
+    try {
+      const hotelsCollection = this.db.collection("hotels");
+
+      const result = hotelsCollection.find({
+        "location.city": city,
+        state: "active",
+      });
+
+      const hotels = [];
+      for await (const hotel of result) {
+        const commentaries = this.generateCommentaryTree(hotel.commentaries);
+        const searchParams = new URLSearchParams(`location=${city}&checkin=${checkin}&checkout=${checkout}&guests=${guests}`).toString();
+        const path = `/search/${hotel._id.toString()}?${searchParams}`;
+
+        hotels.push({ ...hotel, _id: hotel._id.toString(), commentaries, path });
+      }
+
+      return hotels;
+    } catch (e) {
+      return this.errorHandler("Failed to Retrieve Hotels", e);
+    }
+  }
+
   async getUserReservations(id: string) {
     try {
       const reservationsCollection = this.db.collection("reservations");
