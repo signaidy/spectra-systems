@@ -812,6 +812,26 @@ export async function createAgency(prevState: any, formData: FormData) {
   redirect("/administration/agencies");
 }
 
+export async function deleteAgency(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const agencies = database.collection("agencies");
+    console.log(rawFormData)
+    await agencies.deleteOne({
+      _id: new ObjectId(rawFormData.id as string),
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Delete Agency.",
+    };
+  }
+
+  revalidatePath("/administration/agencies");
+}
+
 export async function disableReservation(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
