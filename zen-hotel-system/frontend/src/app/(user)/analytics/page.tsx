@@ -1,6 +1,9 @@
 import { Suspense } from "react";
 import { getCities } from "@/lib/data";
+import Link from "next/link";
 // Components
+import { Button } from "@/components/ui/button";
+import { Graphics } from "@/components/analytics/graphics";
 import { SectionTitle } from "@/components/user/sectionTitle";
 import { Analytics } from "@/components/user/analytics/analytics";
 import { AnalyticCardSkeleton } from "@/components/skeletons/analyticCardSkeleton";
@@ -15,6 +18,7 @@ export default async function AnalyticsHome({
     checkin?: string;
     checkout?: string;
     madeAt?: string;
+    mode?: "list" | "graphics";
   };
 }) {
   const cities = await getCities();
@@ -36,10 +40,23 @@ export default async function AnalyticsHome({
           </div>
         }
       >
-        <div className="flex flex-col gap-y-3 mb-8 flex-wrap mr-8">
-          <FilterBar locations={cities}  />
-          <Analytics searchParams={searchParams} />
-        </div>
+        <Button asChild className="mb-5">
+          <Link
+            href={
+              searchParams.mode === "graphics" ? "/analytics" : "?mode=graphics"
+            }
+          >
+            {searchParams.mode === "graphics" ? "View List" : "View Graphics"}
+          </Link>
+        </Button>
+        {searchParams.mode === "graphics" ? (
+          <Graphics />
+        ) : (
+          <div className="flex flex-col gap-y-3 mb-8 flex-wrap mr-8">
+            <FilterBar locations={cities} />
+            <Analytics searchParams={searchParams} />
+          </div>
+        )}
       </Suspense>
     </>
   );

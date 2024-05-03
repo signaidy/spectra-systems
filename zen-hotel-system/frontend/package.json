@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nivo/bar": "^0.86.0",
+    "@nivo/line": "^0.86.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
@@ -31,10 +33,10 @@
     "next": "14.1.0",
     "nodemailer": "^6.9.13",
     "react": "^18",
-    "react-charts": "^3.0.0-beta.57",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
+    "recharts": "^2.12.6",
     "sharp": "^0.33.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"

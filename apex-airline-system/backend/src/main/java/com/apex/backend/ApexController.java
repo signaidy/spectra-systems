@@ -2285,4 +2285,186 @@ public class ApexController {
         }
     }
 
+    //GRAPH1 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR TYPE
+    @PostMapping("/typesearch/{type}")
+    public Object typesearch(@PathVariable String type) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement checkStatement = conn.prepareStatement(String.format("SELECT * FROM GRAPH1 WHERE TYPE = '%s'", type));
+            ResultSet result = checkStatement.executeQuery();
+
+            if (!result.next()) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                    "INSERT INTO GRAPH1 (TYPE, COUNT) VALUES ('%s', %d)", type, 1));
+            insertStatement.executeQuery();
+            } else {
+                PreparedStatement updatestatement = conn.prepareStatement(String.format(
+                    "UPDATE GRAPH1 SET COUNT = COUNT + 1 WHERE TYPE = '%s'", type));
+                    updatestatement.executeQuery();
+            }
+            return new WebSuccess("Type search information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //GRAPH1 - SELECT DATA 
+    @GetMapping("/typesearch")
+    public Object typesearch() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT TYPE, Count FROM GRAPH1"));
+            ResultSet result = query.executeQuery();
+
+            record datagraph(String TYPE, int count) {
+            }
+
+            List<datagraph> datagraphs = new ArrayList<>();
+            while (result.next()) {
+                datagraphs.add(new datagraph(
+                        result.getString("TYPE"),
+                        result.getInt("COUNT")));
+            }
+            if (datagraphs.isEmpty()) {
+                return new WebError("Users havent search any type of flight");
+            }
+            return datagraphs;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get type stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
+    @PostMapping("/citysearch/{id}")
+    public Object citysearch(@PathVariable int id) {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+            PreparedStatement checkStatement = conn.prepareStatement(String.format("SELECT * FROM GRAPH2 WHERE CITY_ID = %d", id));
+            ResultSet result = checkStatement.executeQuery();
+
+            if (!result.next()) {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                    "INSERT INTO GRAPH2 (CITY_ID, COUNT) VALUES (%d, %d)", id, 1));
+            insertStatement.executeQuery();
+            } else {
+                PreparedStatement updatestatement = conn.prepareStatement(String.format(
+                    "UPDATE GRAPH2 SET COUNT = COUNT + 1 WHERE CITY_ID = %d", id));
+                    updatestatement.executeQuery();
+            }
+            return new WebSuccess("City search information updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //GRAPH2 - SELECT DATA 
+    @GetMapping("/citysearchgraph")
+    public Object citysearchgraph() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT C.name CITY, G.count FROM GRAPH2 G JOIN Cities C ON G.CITY_ID = C.CITY_ID"));
+            ResultSet result = query.executeQuery();
+
+            record datagraph(String CITY, int count) {
+            }
+
+            List<datagraph> datagraphs = new ArrayList<>();
+            while (result.next()) {
+                datagraphs.add(new datagraph(
+                        result.getString("CITY"),
+                        result.getInt("count")));
+            }
+            if (datagraphs.isEmpty()) {
+                return new WebError("No cities have been searched");
+            }
+            return datagraphs;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get city stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+//GRAPH3 - SELECT DATA 
+@GetMapping("/userspurchasedata")
+public Object userspurchasedata() {
+    Connection conn = new OracleConnector().getConnection();
+    try {
+
+        PreparedStatement query = conn
+                .prepareStatement(String.format(
+                        "SELECT CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END AS role, COUNT(*) AS Count \n"
+                        + //
+                        "FROM GRAPH3_DATA GROUP BY CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END"
+                        ));
+        ResultSet result = query.executeQuery();
+
+        record datagraph(String Role, int count) {
+        }
+
+        List<datagraph> datagraphs = new ArrayList<>();
+        while (result.next()) {
+            datagraphs.add(new datagraph(
+                    result.getString("ROLE"),
+                    result.getInt("COUNT")));
+        }
+        if (datagraphs.isEmpty()) {
+            return new WebError("No users have made a purchase");
+        }
+        return datagraphs;
+    } catch (Throwable e) {
+        e.printStackTrace();
+        return new WebError("Failed to get users purchase stats");
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
 }
