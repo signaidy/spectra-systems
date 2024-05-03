@@ -9,6 +9,7 @@
   // Utilities
   import type { DateRange } from "bits-ui";
   import { goto } from "$app/navigation";
+  import { PUBLIC_BASE_URL } from "$env/static/public";
 
   export let cities: Promise<any> = [];
 
@@ -19,6 +20,40 @@
   let destinationCity: string;
   let days: DateRange | undefined;
   let passengers: number;
+
+  function combinedFunction() {
+  searchFlights();
+  handlecitycount(destinationCity);
+  handletypecount(type); 
+}
+  
+  async function handlecitycount(data) {
+    const response = await fetch(`${PUBLIC_BASE_URL}/citysearch/${data}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    } else {
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+  }
+
+  async function handletypecount(data) {
+    const response = await fetch(`${PUBLIC_BASE_URL}/typesearch/${data}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    } else {
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+  }
 
   function searchFlights() {
     if (originCity && destinationCity && days && days.start && days.end && passengers) {
@@ -79,6 +114,6 @@
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
     <div class="text-background">Find</div>
-    <Button on:click={searchFlights}>Find Flights</Button>
+    <Button on:click={combinedFunction}>Find Flights</Button>
   </div>
 </div>

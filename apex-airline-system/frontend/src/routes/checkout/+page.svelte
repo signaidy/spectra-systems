@@ -170,7 +170,7 @@
       </div>
       <div class="mb-5 text-gray-400">
         <a href="/" class="focus:outline-none hover:underline text-gray-500"
-          >Home {type}</a
+          >Home</a
         >
         /
         <a href="#" class="focus:outline-none hover:underline text-gray-500"

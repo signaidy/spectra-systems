@@ -43,6 +43,11 @@ export class HotelController {
     return this.hotelService.getFilteredHotels(query.city);
   }
 
+  @Get("get-partner-hotels")
+  getPartnerHotels(@Query() query) {
+    return this.hotelService.getPartnerHotels(query.city, query.checkin, query.checkout, query.guests);
+  }
+
   @Get("get-user-reservations/:id")
   getUserReservations(@Param("id") id: string) {
     return this.hotelService.getUserReservations(id);

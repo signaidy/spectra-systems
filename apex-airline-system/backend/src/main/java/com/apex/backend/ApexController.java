@@ -2159,7 +2159,7 @@ public class ApexController {
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
-                            "SELECT f.flight_id, origin, c1.name AS origin_city, destination, c2.name AS destination_city, f.departure_date, f.arrival_date, f.amount_normal, f.amount_premium,\n"
+                            "SELECT f.flight_id, origin, c1.name AS origin_city, destination, c2.name AS destination_city, f.departure_date, f.arrival_date,\n"
                                     + //
                                     "f.price_normal, f.price_premium, f.detail, f.type, f.state FROM Flights f INNER JOIN Cities c1 ON f.origin = c1.city_id INNER JOIN Cities c2 ON f.destination = c2.city_id\n"
                                     + //
@@ -2216,8 +2216,8 @@ public class ApexController {
                         result.getString("destination_city"),
                         result.getString("departure_date"),
                         result.getString("arrival_date"),
-                        result.getInt("amount_normal"),
-                        result.getInt("amount_premium"),
+                        countResult.getInt("economy_quantity"),
+                        countResult.getInt("premium_quantity"),
                         result.getInt("price_normal"),
                         result.getInt("price_premium"),
                         result.getString("detail"),
