@@ -2,6 +2,7 @@ import { Suspense } from "react";
 // Components
 import { SectionTitle } from "@/components/user/sectionTitle";
 import { Agencies } from "@/components/agencies/agencies";
+import { AgencyCreationForm } from "@/components/agencies/agencyCreationForm";
 
 export default function AgenciesAdministrationHome() {
   return (
@@ -10,6 +11,7 @@ export default function AgenciesAdministrationHome() {
         title="Agencies Administration"
         description="Manage and Configure Agencies"
       />
+      <AgencyCreationForm />
       <Suspense
         fallback={
           <div className="flex flex-col gap-y-3 mt-5 mb-8 mr-8 flex-wrap">
