@@ -14,36 +14,8 @@
   let destinationprintId = $page.url.searchParams.get("destinationCity"); 
   let destiantionprint; 
 
-
-
   let originprintId = $page.url.searchParams.get("originCity"); 
   let originprint; 
-
-  async function handlecitycount(data) {
-    const response = await fetch(`${PUBLIC_BASE_URL}/citysearch/${data}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (!response.ok) {
-      console.error("Error:", response.statusText);
-    } else {
-      const responseData = await response.json();
-    }
-  }
-
-  async function handletypecount(data) {
-    const response = await fetch(`${PUBLIC_BASE_URL}/typesearch/${data}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (!response.ok) {
-      console.error("Error:", response.statusText);
-    } else {
-      const responseData = await response.json();
-    }
-  }
   
   onMount(async () => {
     const response = await fetch(
@@ -52,9 +24,6 @@
     const data = await response.json();
     console.log(destinationprintId); 
     destiantionprint = data.name;
-    handlecitycount(destinationprintId)
-    let typeflight = $page.url.searchParams.get("type"); 
-    handletypecount(typeflight); 
   });
 
   onMount(async () => {
