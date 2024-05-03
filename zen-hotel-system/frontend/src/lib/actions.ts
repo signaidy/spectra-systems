@@ -789,6 +789,29 @@ export async function enableReservation(prevState: any, formData: FormData) {
   revalidatePath("/");
 }
 
+export async function createAgency(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const agencies = database.collection("agencies");
+
+    const agency = {
+      name: rawFormData.name,
+      endpoint: rawFormData.endpoint,
+    };
+
+    await agencies.insertOne(agency);
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Agency.",
+    };
+  }
+
+  redirect("/administration/agencies");
+}
+
 export async function disableReservation(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
