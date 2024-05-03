@@ -454,6 +454,7 @@
     <input type="hidden" name="arrivalLocation" value={flight?.destinationCityName} />
     <input type="hidden" name="returnDate" value={flight?.returnDate} />
     <input type="hidden" name="rating" value={flight?.rating.average} />
+    <input type="hidden" name="providerId" value={flight?.providerId} />
     {#if category === 'economy'}
       <input type="hidden" name="category" value="economy" />
       <input type="hidden" name="price" value={flight?.touristPrice} />

@@ -172,8 +172,8 @@ public class FlightService {
 
         for (Provider provider : flightProviders) {
             String providerUrl = provider.getProviderUrl();
+            Long providerId = provider.getId();
 
-            // 1. One-Way Flights
             // Construct URL with query parameters for one-way flights
             UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(providerUrl + "/get-one-way-flights")
                     .queryParam("originCity", originCity)
@@ -189,9 +189,11 @@ public class FlightService {
             );
 
             externalFlight[] providerFlights = responseEntity.getBody();
+            for (externalFlight flight : providerFlights) {
+                flight.setProviderId(providerId);
+            }
             allFlights.addAll(Arrays.asList(providerFlights)); // Add one-way flights
 
-            // 2. Scale Flights (Optional)
             // Construct URL with query parameters for scale flights
             builder = UriComponentsBuilder.fromUriString(providerUrl + "/scale-flights")
                     .queryParam("originCity", originCity)
@@ -206,7 +208,9 @@ public class FlightService {
             );
 
             externalFlight[] scaleFlights = responseEntity.getBody();
-
+            for (externalFlight flight : scaleFlights) {
+                flight.setProviderId(providerId);
+            }
             for (externalFlight scaleFlight : scaleFlights) {
                 // Format arrival date for secondary flight search
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -228,7 +232,9 @@ public class FlightService {
                 );
 
                 externalFlight[] secondaryFlights = secondaryResponseEntity.getBody();
-
+                for (externalFlight flight : secondaryFlights) {
+                    flight.setProviderId(providerId);
+                }
                 if (secondaryFlights != null && secondaryFlights.length > 0) {
                     // Set connecting flight for the scale flight (assuming a setter exists)
                     scaleFlight.setScale(secondaryFlights[0]);
@@ -290,7 +296,6 @@ public class FlightService {
      */
     public void purchaseFlight(int amount, String method, Long providerId, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
-        int discount = 20;
         long userIdPurchase = 1;
 
         if (providerId == null) {
@@ -303,9 +308,9 @@ public class FlightService {
             throw new RuntimeException("Provider not found for flight purchase with ID: " + providerId); // Handle provider not found
         }
         Provider provider = providerOptional.get();
-    
+        int discount = (int) (provider.getPercentageDiscount() * 100);
         // Construct the URL for purchasing a flight based on provider URL format (assuming a POST request to a specific endpoint)
-        String apiUrl = provider.getProviderUrl() + "/purchase-flight/" + amount + '/' + method + '/' + discount;
+        String apiUrl = provider.getProviderUrl() + "/purchase/" + amount + '/' + method + '/' + discount;
 
         // Create request body
         HttpHeaders headers = new HttpHeaders();
@@ -319,10 +324,15 @@ public class FlightService {
                 + "\"type\": \"" + purchaseRequest.getType() + "\"\""
                 + "}";
 
+        logger.info("Sending HTTP request to: {}", apiUrl);
+        logger.debug("Request body: {}", requestBody);
+
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, requestEntity, String.class);
 
+        logger.info("Received HTTP response with status code: {}", response.getStatusCode());
+        logger.debug("Response body: {}", response.getBody());
         
         // Check if the purchase was successful
         if (response.getStatusCode() == HttpStatus.OK) {
