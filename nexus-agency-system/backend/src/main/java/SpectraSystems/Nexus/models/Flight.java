@@ -23,7 +23,6 @@ import lombok.Builder;
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "userid", nullable = false)
@@ -85,7 +84,8 @@ public class Flight {
         this.purchaseDate = LocalDate.now();
     }
 
-    public Flight(Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, String type, Double price, String bundle) {
+    public Flight(Long id, Long user, String flightNumber, Date departureDate, String departureLocation, String arrivalLocation, Date returnDate, String type, Double price, String bundle) {
+        this.id = id;
         this.userid = user;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;

@@ -316,12 +316,34 @@ public class FlightService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        // Construct the URL to retrieve available tickets
+        String ticketsUrl = provider.getProviderUrl() + "/availabletickets/" + purchaseRequest.getFlightId() + "/" + purchaseRequest.getType();
+
+        // Make a GET request to retrieve available tickets
+        ResponseEntity<String> ticketsResponse = restTemplate.getForEntity(ticketsUrl, String.class);
+
+        // Parse the response to extract the ticket_id
+        ObjectMapper TobjectMapper = new ObjectMapper();
+        JsonNode ticketsResponseBody = TobjectMapper.readTree(ticketsResponse.getBody());
+        // Extract ticket_id from the first ticket
+
+        List<Long> ticketIds = new ArrayList<>();
+        if (ticketsResponseBody.isArray()) {
+            for (JsonNode ticketNode : ticketsResponseBody) {
+                Long ticketId = ticketNode.get("ticket_id").asLong();
+                ticketIds.add(ticketId);
+            }
+        } else {
+            throw new RuntimeException("Unexpected response format: Not an array");
+        }
+        Long firstTicketId = ticketIds.get(0);
+        
+        logger.info("TicketId: {}", firstTicketId);
+
         // Create the body as JSON
         String requestBody = "{"
                 + "\"user_id\": \"" + userIdPurchase + "\","
-                + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
-                + "\"state\": \"" + purchaseRequest.getState() + "\","
-                + "\"type\": \"" + purchaseRequest.getType() + "\"\""
+                + "\"ticket_id\": \"" + firstTicketId + "\""
                 + "}";
 
         logger.info("Sending HTTP request to: {}", apiUrl);
@@ -338,7 +360,9 @@ public class FlightService {
         if (response.getStatusCode() == HttpStatus.OK) {
             // Create and save Flight object
             for (int i = 0; i < amount; i++) {
-                Flight flight = new Flight(purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate(), purchaseRequest.getType(), purchaseRequest.getPrice(), purchaseRequest.getBundle());
+                Flight flight = new Flight(firstTicketId ,purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate(), purchaseRequest.getType(), purchaseRequest.getPrice(), purchaseRequest.getBundle());
+                flight.setProviderId(providerId);
+                logger.info("Sending HTTP request to: {}", flight.getId());
                 flightRepository.save(flight);
             }
 
