@@ -665,9 +665,12 @@ export async function disableHotel(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    fetch(`${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`, {
-      method: "PUT",
-    });
+    fetch(
+      `${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`,
+      {
+        method: "PUT",
+      }
+    );
   }
   // ----------------
   try {
@@ -840,9 +843,12 @@ export async function disableReservation(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    fetch(`${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`, {
-      method: "PUT",
-    });
+    fetch(
+      `${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`,
+      {
+        method: "PUT",
+      }
+    );
   }
   // ----------------
   try {
