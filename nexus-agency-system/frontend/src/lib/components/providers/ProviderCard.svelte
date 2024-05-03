@@ -5,7 +5,7 @@
     import { Label } from "$lib/components/ui/label";
     import { Input } from "$lib/components/ui/input";
 
-    import { Loader2 } from "lucide-svelte";
+    import { Loader2, Trash2 } from "lucide-svelte";
     export let provider;
     export let form;
     let editing = false;
@@ -38,6 +38,12 @@
       <div class="pr-3 py-3">
         <Button on:click={() => (editing = true)}>Edit</Button>
       </div>
+      <form action="?/deleteProvider" method="post">
+        <input type="hidden" name="providerId" value={provider.id} />
+        <div class="pr-3 py-3">
+            <Button type="submit"><Trash2 /></Button>
+        </div>
+      </form>
     </div>
   </div>
   {:else}
