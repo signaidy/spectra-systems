@@ -37,12 +37,6 @@
 
   const adminRoutes = [
     {
-      value: "inventory",
-      label: "Inventory",
-      href: "/user/inventory",
-      icon: Table2,
-    },
-    {
       value: "administration",
       label: "Administration",
       href: "/user/administration",
