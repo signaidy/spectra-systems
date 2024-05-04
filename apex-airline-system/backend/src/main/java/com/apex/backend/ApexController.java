@@ -2704,4 +2704,51 @@ public class ApexController {
         }
     }
 
+    // Selection of searches made
+    @GetMapping("/searchdatatake")
+    public Object searchdatatake() {
+        Connection conn = new OracleConnector().getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT o.name as Origin, d.name as Destination, Departure, Return, Passengers, Flight_type, type_search, date_made\n"
+                            + // 
+                            "FROM SEARCHES s JOIN cities o ON s.origin = o.city_id JOIN cities d ON s.destination = d.city_id"));
+            ResultSet result = query.executeQuery();
+
+            record list(String Origin, String Destination, String Departure_date, String Return_date, int passengers, String Flight_type, String type_search,
+            String date_made) {
+            }
+
+            List<list> list = new ArrayList<>();
+            while (result.next()) {
+                list.add(new list(
+                        result.getString("Origin"),
+                        result.getString("Destination"),
+                        result.getString("Departure"),
+                        result.getString("Return"),
+                        result.getInt("Passengers"),
+                        result.getString("Flight_type"),
+                        result.getString("type_search"),
+                        result.getString("date_made")));
+            }
+            if (list.isEmpty()) {
+                return new WebError("No users have made a search");
+            }
+            return list;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get users search stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
