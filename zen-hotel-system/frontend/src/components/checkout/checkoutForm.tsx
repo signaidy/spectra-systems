@@ -21,6 +21,7 @@ export function CheckoutForm({
     checkout: string;
     guests: string;
     type: "juniorSuite" | "standardSuite" | "doubleSuite" | "bigSuite";
+    discount?: string;
   };
 }) {
   const { toast } = useToast();
@@ -30,7 +31,10 @@ export function CheckoutForm({
     new Date(searchParams.checkin)
   );
 
-  const totalPrice = hotel.rooms[searchParams.type].price * stayDays;
+  const price = hotel.rooms[searchParams.type].price * stayDays;
+  const discountPrice = price - (price / 100 * Number(searchParams.discount));
+
+  const totalPrice = searchParams.discount ? discountPrice : price;
 
   const initialState = { error: "" };
   const [state, formAction] = useFormState(createReservation, initialState);
@@ -96,7 +100,7 @@ export function CheckoutForm({
         <CheckoutSection title="Check Out" value={searchParams.checkout} />
         <CheckoutSection title="Guests" value={searchParams.guests} />
         <CheckoutSection title="Total Stay" value={stayDays + " Days"} />
-        <CheckoutSection title="Total" value={totalPrice + " USD"} />
+        <CheckoutSection title="Total" value={totalPrice + " USD" + (searchParams.discount ? ` (${searchParams.discount}% Discount Applied from Alliance)` : "")} />
       </div>
       <SubmitButton className="mt-auto mx-3 mb-3">
         Complete Purchase

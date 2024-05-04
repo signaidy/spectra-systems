@@ -43,6 +43,10 @@ export function AllianceCreationForm() {
         <Label>Discount</Label>
         <Input id="discount" name="discount" type="number" required />
       </div>
+      <div className="flex flex-col gap-y-2 w-full">
+        <Label>Key</Label>
+        <Input id="key" name="key" type="text" required />
+      </div>
       <div className="flex flex-col gap-y-2">
         <Label className="invisible">Create</Label>
         <SubmitButton>Create Alliance</SubmitButton>
