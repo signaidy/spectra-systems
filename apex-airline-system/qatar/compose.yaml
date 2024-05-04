@@ -18,9 +18,9 @@ services:
   qatar-frontend:
     build:
       context: ../frontend
-      # args:
-      #   PUBLIC_BASE_URL:
-      #   JWT_SECRET:
+      args:
+        PUBLIC_BASE_URL:
+        JWT_SECRET:
     ports:
       - 3014:3000
     env_file:
