@@ -40,7 +40,7 @@
   class="min-h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
 >
   <div class="flex flex-col container items-center p-8 h-full">
-    <SearchBar cities={data.cities} />
+    <SearchBar cities={data.cities}/>
     {#await Promise.all([data.flights, data.scaleflights])}
       {#each Array(3).fill(0) as _}
         <FlightCardSkeleton />

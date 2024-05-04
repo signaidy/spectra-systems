@@ -12,9 +12,7 @@
 
   export let cities: Promise<any> = [];
 
-    console.log(localStorage.user_id);
-
-  let isValid = true;
+    let isValid = true;
 
   let type = "one-way";
   let originCity: string;
@@ -27,6 +25,7 @@
     searchFlights();
     handlecitycount(destinationCity);
     handletypecount(type);
+    searchregister();
   }
 
   async function handlecitycount(data) {
@@ -53,8 +52,6 @@
         departure_date: departureDay?.toString(),
         passengers: passengers,
         flight_type: type,
-        email: "abc@mgmail.com",
-        type_user: "Admin",
         type_search: "Rest"
       }),
     });

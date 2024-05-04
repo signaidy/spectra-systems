@@ -25,12 +25,36 @@
   searchFlights();
   handlecitycount(destinationCity);
   handletypecount(type); 
+  searchregister();
 }
   
   async function handlecitycount(data) {
     const response = await fetch(`${PUBLIC_BASE_URL}/citysearch/${data}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    } else {
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+  }
+
+  async function searchregister() {
+    const response = await fetch(`${PUBLIC_BASE_URL}/searchregistration`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        origin: originCity,
+        destination: destinationCity,
+        departure_date: days.start.toString(),
+        return_date: days.end.toString(),
+        passengers: passengers,
+        flight_type: type,
+        type_search: "Rest"
+      }),
     });
 
     if (!response.ok) {
