@@ -5,7 +5,7 @@ export function load({ locals, url }) {
   const user = locals.user;
   async function getUserFlights() {
     const response = await fetch(
-      `${PUBLIC_BACKEND_URL}/flights`,
+      `${PUBLIC_BACKEND_URL}/flights/user/${userId}`,
       {
         method: "GET"
       }

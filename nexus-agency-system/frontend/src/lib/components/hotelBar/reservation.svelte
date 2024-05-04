@@ -59,6 +59,6 @@
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
     <div class="text-background">Find</div>
-    <Button on:click={searchHotels}>Find Flights</Button>
+    <Button on:click={searchHotels}>Find Hotels</Button>
   </div>
 </div>

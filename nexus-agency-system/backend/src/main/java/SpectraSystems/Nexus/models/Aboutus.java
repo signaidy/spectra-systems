@@ -10,7 +10,7 @@ import lombok.Builder;
 
 @Entity
 @Builder
-@Table(name = "NEXUSABOUTUS")
+@Table(name = "ABOUTUS")
 public class Aboutus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
