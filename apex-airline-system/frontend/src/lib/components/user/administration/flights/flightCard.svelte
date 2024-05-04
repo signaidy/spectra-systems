@@ -8,7 +8,7 @@
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { MoveLeft } from "lucide-svelte";
-  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let flight: CompleteFlight;
 

@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { Banknote } from 'lucide-svelte';
   import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png"; 
-  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data;
   let userid = data.user.userId

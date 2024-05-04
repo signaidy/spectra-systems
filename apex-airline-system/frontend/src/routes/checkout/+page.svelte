@@ -5,7 +5,7 @@
   import mastercardImage from "$lib/assets/mastercard.png";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
-  import { PUBLIC_BASE_URL } from "$env/dynamic/public";
+  import { PUBLIC_BASE_URL } from "$env/static/public";
 
   export let data;
   export let isOpen = false;
