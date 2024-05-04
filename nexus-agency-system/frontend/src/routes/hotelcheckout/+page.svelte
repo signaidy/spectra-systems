@@ -31,6 +31,7 @@
   let userid = data.user.userId;
   let hotelid = $page.url.searchParams.get("hotelid");
   let hotelname = $page.url.searchParams.get("hotelname");
+  let providerId = $page.url.searchParams.get("providerId");
   let checkin = $page.url.searchParams.get("checkin").split(" ")[0];
   let checkout = $page.url.searchParams.get("checkout").split(" ")[0];
   let checkinDate = new Date(checkin);
@@ -357,6 +358,7 @@
       </div>
     </div>
     <input type="hidden" name="hotelid" value={hotelid} />
+    <input type="hidden" name="providerId" value={providerId} />
     <input type="hidden" name="hotelname" value={hotelname} />
     <input type="hidden" name="randomValue" value={randomValue} />
     <input type="hidden" name="user_id" value={userid} />
@@ -871,6 +873,7 @@
       </div>
       <input type="hidden" name="hotelid" value={hotelid} />
       <input type="hidden" name="hotelname" value={hotelname} />
+      <input type="hidden" name="providerId" value={providerId} />
       <input type="hidden" name="randomValue" value={randomValue} />
       <input type="hidden" name="user_id" value={userid} />
       <input type="hidden" name="checkin" value={checkin} />
@@ -893,7 +896,7 @@
       <input type="hidden" name="arrivalLocation" value={flight?.destinationCityName} />
       <input type="hidden" name="returnDate" value={flight?.returnDate} />
       <input type="hidden" name="rating" value={flight?.rating.average} />
-      <input type="hidden" name="providerId" value={flight?.providerId} />
+      <input type="hidden" name="FlightProviderId" value={flight?.providerId} />
       {#if category === 'economy'}
         <input type="hidden" name="category" value="economy" />
         <input type="hidden" name="price" value={flight?.touristPrice * 0.95} />

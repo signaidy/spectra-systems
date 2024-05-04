@@ -358,6 +358,18 @@ public class FlightService {
         
         // Check if the purchase was successful
         if (response.getStatusCode() == HttpStatus.OK) {
+            // Check if the response body contains an error message
+            ObjectMapper EobjectMapper = new ObjectMapper();
+            JsonNode EresponseBody = EobjectMapper.readTree(response.getBody());
+            
+            if (EresponseBody.has("error")) {
+                String errorMessage = EresponseBody.get("error").asText();
+                // Handle the error case appropriately
+                logger.error("Error received from the external service: {}", errorMessage);
+                // You can throw an exception or handle it based on your application's requirements
+                // For example:
+                throw new RuntimeException("Error received from the external service: " + errorMessage);
+            }
             // Create and save Flight object
             for (int i = 0; i < amount; i++) {
                 Flight flight = new Flight(firstTicketId ,purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate(), purchaseRequest.getType(), purchaseRequest.getPrice(), purchaseRequest.getBundle());

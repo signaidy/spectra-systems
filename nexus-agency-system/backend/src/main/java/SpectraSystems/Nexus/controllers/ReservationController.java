@@ -293,7 +293,13 @@ public class ReservationController {
             if (hotel == null) {
                 return ResponseEntity.notFound().build();
             }
-            Map<String, Object> responseBody = constructResponse(hotel);
+        
+            // Create a new mutable map to construct the response body
+            Map<String, Object> responseBody = new HashMap<>(constructResponse(hotel));
+            
+            // Add the providerId field to the response body
+            responseBody.put("providerId", providerId);
+        
             return ResponseEntity.ok().body(responseBody);
         } catch (RestClientResponseException e) {
             System.out.println("Error fetching hotel from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
@@ -302,6 +308,8 @@ public class ReservationController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+        
+        
     }
 
     
