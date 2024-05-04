@@ -1,5 +1,5 @@
 // Components
-// import { AgencyDeletionForm } from "@/components/agencies/agencyDeletionForm";
+import { AllianceDeletionForm } from "@/components/alliance/allianceDeletionForm";
 
 export function AllianceCard({ alliance }: { alliance: Alliance }) {
   return (
@@ -9,11 +9,15 @@ export function AllianceCard({ alliance }: { alliance: Alliance }) {
           <div className="font-bold">Name</div>
           <div>{alliance.name}</div>
         </div>
-        {/* <AgencyDeletionForm id={agency._id} /> */}
+        <AllianceDeletionForm id={alliance._id} />
       </div>
       <div className="flex flex-col text-sm">
-        <div className="font-bold">Endpoint</div>
-        <div>{alliance.key}</div>
+        <div className="font-bold">Address</div>
+        <div>{alliance.address}</div>
+      </div>
+      <div className="flex flex-col text-sm">
+        <div className="font-bold">Discount</div>
+        <div>{alliance.discount} %</div>
       </div>
     </div>
   );

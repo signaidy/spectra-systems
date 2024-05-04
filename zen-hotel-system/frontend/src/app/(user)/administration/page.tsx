@@ -44,7 +44,7 @@ export default function AdministrationHome() {
     {
       name: "Airline Alliance",
       description: "Manage and Configure Airline Alliance",
-      href: "/administration/agencies",
+      href: "/administration/alliances",
     }
   ];
 
