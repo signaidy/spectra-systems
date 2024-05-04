@@ -13,6 +13,7 @@ package com.apex.backend;
   */
 
 import java.sql.*; // Import necesario para la conexión JDBC
+import java.text.SimpleDateFormat;
 import java.util.ArrayList; // Importacion de listas de arreglos
 import java.util.List; // Importacion de listas
 import java.util.Map; // Importacion de funcion map
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Server;
 import org.springframework.http.ResponseEntity; // Importacion de response http de spring
@@ -34,6 +36,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate; // Importacion de templates para rest
 
 import oracle.security.o3logon.a;
+import oracle.sql.DATE;
 
 import org.springframework.web.bind.annotation.PathVariable; // Import para el uso de variables en el path de URL
 import org.springframework.web.bind.annotation.PostMapping; // Import de PostMapping
@@ -44,17 +47,21 @@ import java.time.LocalDateTime; // Import para obtencion de tiempo actual
 import org.springframework.beans.factory.annotation.Value; // Import necesario para la inyección de dependencia
 
 /**
- * La clase `ApexController` es un controlador RESTful utilizado en la aplicación backend.
-
- * Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con las funcionalidades
+ * La clase `ApexController` es un controlador RESTful utilizado en la
+ * aplicación backend.
+ * 
+ * Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con
+ * las funcionalidades
  * de la aplicacion.
-
- * La clase utiliza anotaciones de Spring para definir los endpoints y manejar las peticiones.
+ * 
+ * La clase utiliza anotaciones de Spring para definir los endpoints y manejar
+ * las peticiones.
  */
 @CrossOrigin
 @RestController // Indica que la clase es un controlador RESTful
 /**
- * Crea una instancia de `ApexController` el cual representara el controlado del BE
+ * Crea una instancia de `ApexController` el cual representara el controlado del
+ * BE
  */
 public class ApexController {
     /**
@@ -65,9 +72,10 @@ public class ApexController {
 
     /**
      * Representa un mensaje de bienvenida establecido para el usuario
-     * @param id Id del usuario
+     * 
+     * @param id      Id del usuario
      * @param content Contenido dentro del mensaje de bienvenida
-    */
+     */
     public record Greeting(long id, String content) {
     }
 
@@ -78,12 +86,14 @@ public class ApexController {
     // Greeting - API
     /**
      * End point para obtener un saludo personalizado.
-
-     * Este método maneja la solicitud GET a la ruta "/greeting" y devuelve un saludo personalizado 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/greeting" y devuelve un
+     * saludo personalizado
      * con el nombre proporcionado en el parámetro `name`.
-
+     * 
      * @param name Nombre de la persona a saludar (valor por defecto: "World").
-     * @return Objeto `Greeting` que contiene el identificador del saludo y el contenido del mensaje.
+     * @return Objeto `Greeting` que contiene el identificador del saludo y el
+     *         contenido del mensaje.
      */
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -91,12 +101,13 @@ public class ApexController {
     }
 
     // USER - LOGIN
-     /**
+    /**
      * End point para el inicio de sesión de usuario.
      *
      * @param user Objeto `User` que contiene las credenciales del usuario.
-     * @return Dependiendo del resultado del login, se devuelve un objeto `WebError` 
-     *         indicando un error, un objeto `LoggedUser` con los datos del usuario logueado, 
+     * @return Dependiendo del resultado del login, se devuelve un objeto `WebError`
+     *         indicando un error, un objeto `LoggedUser` con los datos del usuario
+     *         logueado,
      */
 
     @PostMapping("/login")
@@ -143,16 +154,23 @@ public class ApexController {
     // USER - SIGN UP
     /**
      * End point para crear un nuevo usuario en el sistema.
-
-     * Este método maneja la solicitud POST a la ruta "/create-user/{token}" y registra un nuevo usuario.
-
-     * @param user Objeto `User` que contiene la información del usuario a crear (correo electrónico, contraseña, 
-     *         nombre, apellido, país de origen, número de pasaporte, edad).
-     *         La contraseña se espera en texto plano y será encriptada antes de guardarla.
-     * @param token Token de reCAPTCHA v2 para verificar que la solicitud no sea de un bot.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebError`: En caso de error (correo electrónico duplicado, error de reCAPTCHA, error genérico).
-     *         * `LoggedUser`: Objeto que contiene la información del usuario registrado exitosamente.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/create-user/{token}" y
+     * registra un nuevo usuario.
+     * 
+     * @param user  Objeto `User` que contiene la información del usuario a crear
+     *              (correo electrónico, contraseña,
+     *              nombre, apellido, país de origen, número de pasaporte, edad).
+     *              La contraseña se espera en texto plano y será encriptada antes
+     *              de guardarla.
+     * @param token Token de reCAPTCHA v2 para verificar que la solicitud no sea de
+     *              un bot.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebError`: En caso de error (correo electrónico duplicado, error
+     *         de reCAPTCHA, error genérico).
+     *         * `LoggedUser`: Objeto que contiene la información del usuario
+     *         registrado exitosamente.
      */
     @PostMapping("/create-user/{token}")
     public Object createUser(@RequestBody User user, @PathVariable String token) {
@@ -224,18 +242,21 @@ public class ApexController {
         }
     }
 
-
     /**
      * End point para obtener la información básica de un usuario.
-
-     * Este método maneja la solicitud GET a la ruta "/get-user/{id}" y devuelve 
-     * un resumen de la información del usuario identificado por el parámetro `{id}`.
-
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-user/{id}" y devuelve
+     * un resumen de la información del usuario identificado por el parámetro
+     * `{id}`.
+     * 
      * @param id Identificador único del usuario (valor esperado: número entero).
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * `User`: Objeto que contiene el nombre y correo electrónico del usuario encontrado 
-     *                   (se usa un record temporal dentro del método).
-     *         * `WebError`: En caso de error (usuario no encontrado, error genérico).
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `User`: Objeto que contiene el nombre y correo electrónico del
+     *         usuario encontrado
+     *         (se usa un record temporal dentro del método).
+     *         * `WebError`: En caso de error (usuario no encontrado, error
+     *         genérico).
      */
     @GetMapping("/get-user/{id}")
     public Object getUser(@PathVariable Long id) {
@@ -267,15 +288,17 @@ public class ApexController {
         }
     }
 
-
     // Get All Users - API
     /**
-     * End point para obtener la lista de todos los usuarios registrados en el sistema.
-
-     * Este método maneja la solicitud GET a la ruta "/get-users" y devuelve una lista 
+     * End point para obtener la lista de todos los usuarios registrados en el
+     * sistema.
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-users" y devuelve una
+     * lista
      * con la información detallada de todos los usuarios.
-
-     * @return Lista de objetos `LoggedUser` que contienen la información completa de cada usuario registrado.
+     * 
+     * @return Lista de objetos `LoggedUser` que contienen la información completa
+     *         de cada usuario registrado.
      */
     @GetMapping("/get-users")
     public Object getUsers() {
@@ -319,15 +342,19 @@ public class ApexController {
     // Update User
     /**
      * End point para actualizar la información de un usuario existente.
-
-     * Este método maneja la solicitud POST a la ruta "/update-user" y permite modificar 
+     * 
+     * Este método maneja la solicitud POST a la ruta "/update-user" y permite
+     * modificar
      * los datos del usuario enviado en el cuerpo de la petición (`@RequestBody`).
-
-     * @param user Objeto `User` que contiene la información actualizada del usuario 
-     *        (nombre, apellido, país de origen, número de pasaporte opcional, rol, edad opcional, porcentaje opcional).
-     *        Se espera que el objeto `user` tenga establecido el identificador único (`userId`) 
-     *        para identificar al usuario a actualizar.
-     * @return Dependiendo del resultado de la actualización, se devuelve uno de los siguientes objetos:
+     * 
+     * @param user Objeto `User` que contiene la información actualizada del usuario
+     *             (nombre, apellido, país de origen, número de pasaporte opcional,
+     *             rol, edad opcional, porcentaje opcional).
+     *             Se espera que el objeto `user` tenga establecido el identificador
+     *             único (`userId`)
+     *             para identificar al usuario a actualizar.
+     * @return Dependiendo del resultado de la actualización, se devuelve uno de los
+     *         siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la actualización del usuario.
      *         * `WebError`: En caso de error (error genérico).
      */
@@ -361,13 +388,17 @@ public class ApexController {
     // FLIGHT - REGISTRATION
     /**
      * End point para crear un nuevo registro de vuelo en el sistema.
-
-     * Este método maneja la solicitud POST a la ruta "/create-flight" y registra un nuevo vuelo.
- 
-     * @param flight Objeto `Flight` que contiene la información del vuelo a crear 
-     *        (ciudad de origen, ciudad destino, fecha y hora de salida, fecha y hora de llegada, 
-     *         capacidad y precio de tickets turista, capacidad y precio de tickets premium, detalles del vuelo, tipo de vuelo).
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+     * 
+     * Este método maneja la solicitud POST a la ruta "/create-flight" y registra un
+     * nuevo vuelo.
+     * 
+     * @param flight Objeto `Flight` que contiene la información del vuelo a crear
+     *               (ciudad de origen, ciudad destino, fecha y hora de salida,
+     *               fecha y hora de llegada,
+     *               capacidad y precio de tickets turista, capacidad y precio de
+     *               tickets premium, detalles del vuelo, tipo de vuelo).
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la creación del vuelo.
      *         * `WebError`: En caso de error (error genérico).
      */
@@ -437,19 +468,29 @@ public class ApexController {
     // Get One Way Flights - API
     /**
      * End point para buscar vuelos de ida (one-way) disponibles en el sistema.
-
-     * Este método maneja la solicitud GET a la ruta "/get-one-way-flights" y permite buscar vuelos 
-     * de un origen a un destino específico, filtrados por fecha de salida y cantidad de pasajeros 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-one-way-flights" y
+     * permite buscar vuelos
+     * de un origen a un destino específico, filtrados por fecha de salida y
+     * cantidad de pasajeros
      * (informada como cadena de texto).
-
-     * @param originCity Parámetro opcional para filtrar por ciudad de origen (valor por defecto vacío).
-     * @param destinationCity Parámetro opcional para filtrar por ciudad destino (valor por defecto vacío).
-     * @param departureDay Parámetro opcional para filtrar por fecha de salida (formato YYYY-MM-DD, valor por defecto vacío).
-     * @param passengers Parámetro opcional para informar la cantidad de pasajeros (cadena de texto, valor por defecto vacío).
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * Lista de objetos `FlightRecord`: En caso de encontrar vuelos que coincidan con los filtros. 
-     *             Cada objeto `FlightRecord` contiene la información del vuelo y detalles adicionales.
-     *         * Arreglo vacío (`Object[]`): Si no se encuentran vuelos que coincidan con los filtros. 
+     * 
+     * @param originCity      Parámetro opcional para filtrar por ciudad de origen
+     *                        (valor por defecto vacío).
+     * @param destinationCity Parámetro opcional para filtrar por ciudad destino
+     *                        (valor por defecto vacío).
+     * @param departureDay    Parámetro opcional para filtrar por fecha de salida
+     *                        (formato YYYY-MM-DD, valor por defecto vacío).
+     * @param passengers      Parámetro opcional para informar la cantidad de
+     *                        pasajeros (cadena de texto, valor por defecto vacío).
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Lista de objetos `FlightRecord`: En caso de encontrar vuelos que
+     *         coincidan con los filtros.
+     *         Cada objeto `FlightRecord` contiene la información del vuelo y
+     *         detalles adicionales.
+     *         * Arreglo vacío (`Object[]`): Si no se encuentran vuelos que
+     *         coincidan con los filtros.
      *         * `WebError`: En caso de error (error genérico).
      */
     @GetMapping("/get-one-way-flights")
@@ -531,14 +572,19 @@ public class ApexController {
     // Comments - Insert - API
     /**
      * End point para crear un nuevo comentario asociado a un vuelo específico.
-
-     * Este método maneja la solicitud POST a la ruta "/create-commentary" y registra un nuevo comentario 
+     * 
+     * Este método maneja la solicitud POST a la ruta "/create-commentary" y
+     * registra un nuevo comentario
      * enviado en el cuerpo de la petición (`@RequestBody`).
-
-     * @param commentary Objeto `Commentary` que contiene la información del comentario 
-     *        (identificador del comentario padre opcional, identificador del usuario que realiza el comentario, 
-     *         contenido del comentario, identificador del vuelo asociado).
-     * @return Dependiendo del resultado de la creación del comentario, se devuelve uno de los siguientes objetos:
+     * 
+     * @param commentary Objeto `Commentary` que contiene la información del
+     *                   comentario
+     *                   (identificador del comentario padre opcional, identificador
+     *                   del usuario que realiza el comentario,
+     *                   contenido del comentario, identificador del vuelo
+     *                   asociado).
+     * @return Dependiendo del resultado de la creación del comentario, se devuelve
+     *         uno de los siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la creación del comentario.
      *         * `WebError`: En caso de error (error genérico).
      */
@@ -571,16 +617,22 @@ public class ApexController {
 
     // Ratings - Insert - API
     /**
-     * End point para crear una nueva calificación asociada a un vuelo específico por un usuario registrado.
-
-     * Este método maneja la solicitud POST a la ruta "/create-rating" y registra una nueva calificación 
-     * enviada en el cuerpo de la petición (`@RequestBody`). Solo se permite una calificación por usuario y vuelo.
- 
-     * @param rating Objeto `Rating` que contiene la información de la calificación 
-     *        (identificador del usuario que realiza la calificación, identificador del vuelo asociado, valor de la calificación).
-     * @return Dependiendo del resultado de la creación de la calificación, se devuelve uno de los siguientes objetos:
+     * End point para crear una nueva calificación asociada a un vuelo específico
+     * por un usuario registrado.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/create-rating" y registra
+     * una nueva calificación
+     * enviada en el cuerpo de la petición (`@RequestBody`). Solo se permite una
+     * calificación por usuario y vuelo.
+     * 
+     * @param rating Objeto `Rating` que contiene la información de la calificación
+     *               (identificador del usuario que realiza la calificación,
+     *               identificador del vuelo asociado, valor de la calificación).
+     * @return Dependiendo del resultado de la creación de la calificación, se
+     *         devuelve uno de los siguientes objetos:
      *         * `WebSuccess`: En caso de éxito en la creación de la calificación.
-     *         * `WebError`: En caso de error (error genérico o intento de calificar un vuelo ya calificado).
+     *         * `WebError`: En caso de error (error genérico o intento de calificar
+     *         un vuelo ya calificado).
      */
     @PostMapping("/create-rating")
     public Object createRating(@RequestBody Rating rating) {
@@ -616,11 +668,13 @@ public class ApexController {
     // Get all Tickets - API
     /**
      * End point para obtener la lista de todos los tickets del sistema.
-
-     * Este método maneja la solicitud GET a la ruta "/get-all-tickets" y devuelve una lista 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-all-tickets" y devuelve
+     * una lista
      * con la información de todos los tickets registrados.
-
-     * @return Lista de objetos `TicketRecord` que contienen la información de cada ticket 
+     * 
+     * @return Lista de objetos `TicketRecord` que contienen la información de cada
+     *         ticket
      *         (incluyendo datos del usuario asociado si existe).
      */
     @GetMapping("/get-all-tickets")
@@ -660,12 +714,15 @@ public class ApexController {
     // Get all Flights - API
     /**
      * End point para obtener la lista de todos los vuelos del sistema.
-
-     * Este método maneja la solicitud GET a la ruta "/get-all-flights" y devuelve una lista 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-all-flights" y devuelve
+     * una lista
      * con la información detallada de todos los vuelos registrados.
-
-     * @return Lista de objetos `CompleteFlightRecord` que contienen la información completa de cada vuelo, 
-     *         incluyendo la cantidad disponible de tickets por tipo (económico y premium), 
+     * 
+     * @return Lista de objetos `CompleteFlightRecord` que contienen la información
+     *         completa de cada vuelo,
+     *         incluyendo la cantidad disponible de tickets por tipo (económico y
+     *         premium),
      *         y su estado (activo o inactivo).
      */
     @GetMapping("/get-all-flights")
@@ -717,12 +774,15 @@ public class ApexController {
 
     // Get all Cities - API
     /**
-     * End point para obtener la lista de todas las ciudades registradas en el sistema.
-
-     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve una lista 
+     * End point para obtener la lista de todas las ciudades registradas en el
+     * sistema.
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve una
+     * lista
      * con información básica de todas las ciudades.
-
-     * @return Lista de objetos `City` que contienen el identificador único (city_id) y el nombre de cada ciudad.
+     * 
+     * @return Lista de objetos `City` que contienen el identificador único
+     *         (city_id) y el nombre de cada ciudad.
      */
     @GetMapping("/get-cities")
     public Object getCities() {
@@ -756,13 +816,17 @@ public class ApexController {
     // Ticket information - API
     /**
      * End point para obtener la información de un ticket específico.
-
-     * Este método maneja la solicitud GET a la ruta "/ticket-information" y devuelve la información completa de ese ticket.
-
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * Objeto `Ticket` que contiene la información detallada de un ticket 
-     *           (identificador, precio, identificador de vuelo asociado, tipo y estado).
-     *         * `WebError`: En caso de error (error genérico o ticket no encontrado).
+     * 
+     * Este método maneja la solicitud GET a la ruta "/ticket-information" y
+     * devuelve la información completa de ese ticket.
+     * 
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Objeto `Ticket` que contiene la información detallada de un ticket
+     *         (identificador, precio, identificador de vuelo asociado, tipo y
+     *         estado).
+     *         * `WebError`: En caso de error (error genérico o ticket no
+     *         encontrado).
      */
     @GetMapping("/ticket-information")
     public Object getAllticketinfo() {
@@ -799,16 +863,22 @@ public class ApexController {
     // User tickets - API
     /**
      * End point para obtener la lista de tickets asociados a un usuario registrado.
-
-     * Este método maneja la solicitud GET a la ruta "/user_tickets/{id}" donde `{id}` representa el identificador 
-     * del usuario. Devuelve una lista con la información detallada de todos los tickets del usuario especificado.
-
+     * 
+     * Este método maneja la solicitud GET a la ruta "/user_tickets/{id}" donde
+     * `{id}` representa el identificador
+     * del usuario. Devuelve una lista con la información detallada de todos los
+     * tickets del usuario especificado.
+     * 
      * @param id Identificador del usuario del cual se desean obtener los tickets.
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * Lista de objetos `UserTicket` que contienen la información detallada de cada ticket asociado 
-     *         al usuario (identificador de ticket, precio, tipo, estado, identificador de vuelo asociado, 
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Lista de objetos `UserTicket` que contienen la información
+     *         detallada de cada ticket asociado
+     *         al usuario (identificador de ticket, precio, tipo, estado,
+     *         identificador de vuelo asociado,
      *         origen, destino, fecha de salida y llegada del vuelo).
-     *         * `WebError`: En caso de error (error genérico o si el usuario no posee tickets).
+     *         * `WebError`: En caso de error (error genérico o si el usuario no
+     *         posee tickets).
      */
     @GetMapping("/user_tickets/{id}")
     public Object getUsertickets(@PathVariable int id) {
@@ -862,18 +932,26 @@ public class ApexController {
     // Historical purchases - API
     /**
      * End point para obtener el historial de compras de un usuario registrado.
-
-     * Este método maneja la solicitud GET a la ruta "/historical_purchases/{id}" donde `{id}` representa el identificador 
-     * del usuario. Devuelve una lista con la información detallada de todas las compras históricas 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/historical_purchases/{id}"
+     * donde `{id}` representa el identificador
+     * del usuario. Devuelve una lista con la información detallada de todas las
+     * compras históricas
      * (independientemente del estado actual de los tickets) asociadas al usuario.
-
-     * @param id Identificador del usuario del cual se desea obtener el historial de compras.
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * Lista de objetos `User_purchases` que contienen la información detallada de cada compra histórica 
-     *         del usuario (número de compra, ticket asociado, tipo de ticket, origen, destino, fecha de compra, 
-     *         precio, método de pago, fecha de salida, fecha de llegada, nombre de usuario, descuento aplicado 
+     * 
+     * @param id Identificador del usuario del cual se desea obtener el historial de
+     *           compras.
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Lista de objetos `User_purchases` que contienen la información
+     *         detallada de cada compra histórica
+     *         del usuario (número de compra, ticket asociado, tipo de ticket,
+     *         origen, destino, fecha de compra,
+     *         precio, método de pago, fecha de salida, fecha de llegada, nombre de
+     *         usuario, descuento aplicado
      *         e identificador del usuario).
-     *         * `WebError`: En caso de error (error genérico o si el usuario no posee un historial de compras).
+     *         * `WebError`: En caso de error (error genérico o si el usuario no
+     *         posee un historial de compras).
      */
     @GetMapping("/historical_purchases/{id}")
     public Object getHistoricpurchases(@PathVariable int id) {
@@ -929,16 +1007,22 @@ public class ApexController {
     // FLIGHTS - ALL
     /**
      * End point para obtener la lista de todos los vuelos del sistema.
-
-     * Este método maneja la solicitud GET a la ruta "/inventory" y devuelve una lista 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/inventory" y devuelve una
+     * lista
      * con la información básica de todos los vuelos registrados.
-
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * Lista de objetos `FLIGHTS` que contienen la información esencial de cada vuelo 
-     *         (origen, destino, fechas de salida y llegada, cantidades y precios disponibles por tipo 
-     *         (económico y premium), detalles, tipo de vuelo (regular o charter), estado 
+     * 
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Lista de objetos `FLIGHTS` que contienen la información esencial de
+     *         cada vuelo
+     *         (origen, destino, fechas de salida y llegada, cantidades y precios
+     *         disponibles por tipo
+     *         (económico y premium), detalles, tipo de vuelo (regular o charter),
+     *         estado
      *         (activo o inactivo) e identificador del vuelo).
-     *         * `WebError`: En caso de error (error genérico o si no hay vuelos registrados).
+     *         * `WebError`: En caso de error (error genérico o si no hay vuelos
+     *         registrados).
      */
     @GetMapping("/inventory")
     public Object getInvetory() {
@@ -995,15 +1079,19 @@ public class ApexController {
     // AboutUs - GET INFORMATION
     /**
      * End point para obtener la información de la página "Acerca de Nosotros".
-
-     * Este método maneja la solicitud GET a la ruta "/aboutus" y devuelve un objeto 
+     * 
+     * Este método maneja la solicitud GET a la ruta "/aboutus" y devuelve un objeto
      * que contiene la información configurada para la sección "Acerca de Nosotros".
-
-     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-     *         * Objeto `aboutus` que contiene la configuración completa de la sección "Acerca de Nosotros" 
-     *         (lema, GIF animado, enlace de Youtube, cantidad de tarjetas informativas, títulos, textos e imágenes 
+     * 
+     * @return Dependiendo del resultado de la búsqueda, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Objeto `aboutus` que contiene la configuración completa de la
+     *         sección "Acerca de Nosotros"
+     *         (lema, GIF animado, enlace de Youtube, cantidad de tarjetas
+     *         informativas, títulos, textos e imágenes
      *         de cada tarjeta).
-     *         * `WebError`: En caso de error (error genérico o si no se encuentra la información configurada).
+     *         * `WebError`: En caso de error (error genérico o si no se encuentra
+     *         la información configurada).
      */
     @GetMapping("/aboutus")
     public Object getAbout() {
@@ -1059,13 +1147,18 @@ public class ApexController {
     // About Us - UPDATE
     /**
      * End point para actualizar el contenido de la página "About us".
-
-     * Este método maneja la solicitud POST a la ruta "/update-aboutus" y actualiza el contenido de la página "About Us".
-
-     * @param au Objeto `AboutUs` que contiene la estructura de la página "About us".
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante la modificación dentro de la base de datos.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/update-aboutus" y actualiza
+     * el contenido de la página "About Us".
+     * 
+     * @param au Objeto `AboutUs` que contiene la estructura de la página "About
+     *           us".
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante la modificación dentro de la
+     *         base de datos.
      */
     @PostMapping("/update-aboutus")
     public Object updateAboutUs(@RequestBody Aboutus au) {
@@ -1120,17 +1213,25 @@ public class ApexController {
     // Purchase - API
     /**
      * End point para realizar la compra de un boleto.
-
-     * Este método maneja la solicitud POST a la ruta "/purchase/{amount}/{method}/{discount}" donde amount es la cantidad, method es el tipo
-     * de compra y discount es el descuento aplicado. Registra la compra de un boleto en la base de datos.
      * 
-     * @param ticket Objeto `Ticket_purchase` que contiene la estructura del ticket.
-     * @param amount Valor numérico representando la cantidad de tickets a comprar.
-     * @param method String indicando el tipo de tarjeta utilizado para la compra. 
+     * Este método maneja la solicitud POST a la ruta
+     * "/purchase/{amount}/{method}/{discount}" donde amount es la cantidad, method
+     * es el tipo
+     * de compra y discount es el descuento aplicado. Registra la compra de un
+     * boleto en la base de datos.
+     * 
+     * @param ticket   Objeto `Ticket_purchase` que contiene la estructura del
+     *                 ticket.
+     * @param amount   Valor numérico representando la cantidad de tickets a
+     *                 comprar.
+     * @param method   String indicando el tipo de tarjeta utilizado para la compra.
      * @param discount Valor numérico indicando el descuento de la compra.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * Una lista con objetios de tipo `userTickets` representando los tickets del usuario.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos o si el usuario no posee tickets.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Una lista con objetios de tipo `userTickets` representando los
+     *         tickets del usuario.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos o si el usuario no posee tickets.
      */
     @PostMapping("/purchase/{amount}/{method}/{discount}")
     public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method,
@@ -1201,15 +1302,20 @@ public class ApexController {
     // Tickets information - Purchase
     /**
      * End point para obtener información sobre los tickets disponibles para compra.
-
-     * Este método maneja la solicitud GET a la ruta "/availabletickets/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
-     * y category es la categoría del ticket a comprar. Devuelve la información de los tickets disponibles para la compra.
+     * 
+     * Este método maneja la solicitud GET a la ruta
+     * "/availabletickets/{flight_id}/{category}" donde flight_id es el
+     * identificador del vuelo,
+     * y category es la categoría del ticket a comprar. Devuelve la información de
+     * los tickets disponibles para la compra.
      * 
      * @param flight_id Valor numérico indicando el identificador del vuelo.
-     * @param category String indicando la categoría del ticket a comprar.
+     * @param category  String indicando la categoría del ticket a comprar.
      * @return Se devuelve uno de los siguientes objetos:
-     *         * Una lista con objetos de tipo `Availabletickets` representando los tickets del usuario.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
+     *         * Una lista con objetos de tipo `Availabletickets` representando los
+     *         tickets del usuario.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos o si no hay tickets disponibles.
      */
     @GetMapping("/availabletickets/{flight_id}/{category}")
     public Object getTicketstobuy(@PathVariable int flight_id, @PathVariable String category) {
@@ -1258,15 +1364,20 @@ public class ApexController {
     // Tickets available amount - Purchase
     /**
      * End point para obtener la cantidad de tickets disponibles de un vuelo.
-
-     * Este método maneja la solicitud GET a la ruta "/ticketsamount/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
-     * y category es la categoría del ticket a comprar. Devuelve la cantidad de tickets disponibles para la compra.
+     * 
+     * Este método maneja la solicitud GET a la ruta
+     * "/ticketsamount/{flight_id}/{category}" donde flight_id es el identificador
+     * del vuelo,
+     * y category es la categoría del ticket a comprar. Devuelve la cantidad de
+     * tickets disponibles para la compra.
      * 
      * @param flight_id Valor numérico indicando el identificador del vuelo.
-     * @param category String indicando la categoría del ticket a comprar.
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     * @param category  String indicando la categoría del ticket a comprar.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
      *         * La cantidad de tickets disponibles para el vuelo y categoría.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos o si no hay tickets disponibles.
      */
     @GetMapping("/ticketsamount/{flight_id}/{category}")
     public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String category) {
@@ -1307,12 +1418,16 @@ public class ApexController {
     // Purchase logs - API
     /**
      * End point para obtener los registros de compra.
-
-     * Este método maneja la solicitud GET a la ruta "/purchaselogs" y devuelve una lista con la información detallada de todas las compras realizadas.
      * 
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Una lista con objetos de tipo `purchases` representando los registros de compra.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay compras realizadas.
+     * Este método maneja la solicitud GET a la ruta "/purchaselogs" y devuelve una
+     * lista con la información detallada de todas las compras realizadas.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Una lista con objetos de tipo `purchases` representando los
+     *         registros de compra.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos o si no hay compras realizadas.
      */
     @GetMapping("/purchaselogs")
     public Object getpurchaselogs() {
@@ -1366,12 +1481,15 @@ public class ApexController {
     // Header - GET INFORMATION
     /**
      * End point para obtener la información del header.
-
-     * Este método maneja la solicitud GET a la ruta "/header" y devuelve un objeto con la información configurada para el header.
      * 
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     * Este método maneja la solicitud GET a la ruta "/header" y devuelve un objeto
+     * con la información configurada para el header.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
      *         * Un objeto de tipo `Header` representando la información del header.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos.
      */
     @GetMapping("/header")
     public Object getHeader() {
@@ -1420,12 +1538,17 @@ public class ApexController {
     // Header - UPDATE
     /**
      * End point para actualizar la información del header.
-
-     * Este método maneja la solicitud POST a la ruta "/update-header" y actualiza la información del header.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/update-header" y actualiza
+     * la información del header.
+     * 
      * @param head Valor correspondiente al de la clase para acceso a atributos
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/update-header")
     public Object updateHeader(@RequestBody Header head) {
@@ -1470,14 +1593,18 @@ public class ApexController {
     // FLight and Tickets - Cancelation
     /**
      * End point para la cancelación de un vuelo.
-
-     * Este método maneja la solicitud POST a la ruta "/cancelation/{flight_id}" donde flight_id es el identificador del vuelo.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/cancelation/{flight_id}"
+     * donde flight_id es el identificador del vuelo.
      * Cancela un vuelo y los tickets asociados a él.
      * 
      * @param flight_id Valor numérico indicando el identificador del vuelo.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/cancelation/{flight_id}")
     public Object updateFlightandTickets(@PathVariable int flight_id) {
@@ -1498,7 +1625,7 @@ public class ApexController {
             // API call to nexus cancelation ticket
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(agencyUrls +
-            "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
+                    "deactivate/" + flight_id, HttpMethod.PUT, null, String.class);
             // End of API call
 
             return new WebSuccess("Flight and tickets canceled");
@@ -1519,14 +1646,18 @@ public class ApexController {
     // Tickets Individual - Cancelation
     /**
      * End point para la cancelación individual de tickets.
-
-     * Este método maneja la solicitud POST a la ruta "/ticketcanceled/{ticket_id}" donde ticket_id es el identificador del ticket.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/ticketcanceled/{ticket_id}"
+     * donde ticket_id es el identificador del ticket.
      * Cancela un tickets individual.
      * 
      * @param ticket_id Valor numérico indicando el identificador del ticket.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/ticketcanceled/{ticket_id}")
     public Object updateIndividualTicket(@PathVariable int ticket_id) {
@@ -1540,7 +1671,7 @@ public class ApexController {
             // API call to nexus cancelation ticket
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(agencyUrls +
-            "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
+                    "deactivateTicket/" + ticket_id, HttpMethod.PUT, null, String.class);
             // End of API call
             return new WebSuccess("User Ticket canceled");
         } catch (Throwable e) {
@@ -1560,14 +1691,18 @@ public class ApexController {
     // User Discount - GET
     /**
      * End point para obtener el descuento de un usuario.
-
-     * Este método maneja la solicitud GET a la ruta "/discount/{id}" donde id es el identificador del usuario.
+     * 
+     * Este método maneja la solicitud GET a la ruta "/discount/{id}" donde id es el
+     * identificador del usuario.
      * Obtiene el descuento aplicado a un usuario.
      * 
      * @param id Valor numérico indicando el identificador del usuario.
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Un objeto de tipo `Discount` representando el porcentaje de descuento.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Un objeto de tipo `Discount` representando el porcentaje de
+     *         descuento.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos.
      */
     @GetMapping("/discount/{id}")
     public Object getDiscount(@PathVariable int id) {
@@ -1605,15 +1740,19 @@ public class ApexController {
     // Update flight
     /**
      * End point para actualizar la información de un vuelo.
-
-     * Este método maneja la solicitud POST a la ruta "/update-flight/{flight_id}" donde flight_id es el identificador del vuelo.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/update-flight/{flight_id}"
+     * donde flight_id es el identificador del vuelo.
      * Actualiza la información de un vuelo.
      * 
-     * @param flight Objeto `Flight` que contiene la estructura del vuelo.
+     * @param flight    Objeto `Flight` que contiene la estructura del vuelo.
      * @param flight_id Valor numérico indicando el identificador del vuelo.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/update-flight/{flight_id}")
     public Object updateFlight(@RequestBody Flight flight, @PathVariable int flight_id) {
@@ -1646,11 +1785,14 @@ public class ApexController {
     /**
      * End point para obtener la información del footer.
      * 
-     * Este método maneja la solicitud GET a la ruta "/footer" y devuelve un objeto con la información configurada para el footer.
+     * Este método maneja la solicitud GET a la ruta "/footer" y devuelve un objeto
+     * con la información configurada para el footer.
      * 
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
      *         * Un objeto de tipo `Footer` representando la información del footer.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos.
      */
     @GetMapping("/footer")
     public Object getFooter() {
@@ -1730,13 +1872,17 @@ public class ApexController {
     // Footer - UPDATE
     /**
      * End point para actualizar la información del footer.
-
-     * Este método maneja la solicitud POST a la ruta "/update-footer" y actualiza la información del footer.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/update-footer" y actualiza
+     * la información del footer.
      * 
      * @param footer Objeto de tipo `Footer` representando la estructura del footer.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/update-footer")
     public Object updateFooter(@RequestBody Footer footer) {
@@ -1797,12 +1943,16 @@ public class ApexController {
     // Partners - GET INFORMATION
     /**
      * End point para obtener la información de los partners.
-
-     * Este método maneja la solicitud GET a la ruta "/partners" y devuelve un objeto con la información de los partners.
      * 
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Un objeto de tipo `Partner` representando la información de los partners.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * Este método maneja la solicitud GET a la ruta "/partners" y devuelve un
+     * objeto con la información de los partners.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Un objeto de tipo `Partner` representando la información de los
+     *         partners.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos.
      */
     @GetMapping("/partners")
     public Object getPartners() {
@@ -1851,13 +2001,18 @@ public class ApexController {
     // Partners - UPDATE
     /**
      * End point para actualizar la información de los partners.
-
-     * Este método maneja la solicitud POST a la ruta "/update-partners" y actualiza la información de los partners.
      * 
-     * @param partner Objeto de tipo `Partners` representando la estructura de los partners.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * Este método maneja la solicitud POST a la ruta "/update-partners" y actualiza
+     * la información de los partners.
+     * 
+     * @param partner Objeto de tipo `Partners` representando la estructura de los
+     *                partners.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/update-partners")
     public Object updatePartners(@RequestBody Partners partner) {
@@ -1907,15 +2062,22 @@ public class ApexController {
     // Modification Flight - GET INFORMATION OF RESPECTIVE USERS THAT THE FLIGHT
     // HAVE BEEN MODIFIED
     /**
-     * End point para obtener la información de los usuarios que han comprado un ticket de un vuelo modificado.
-
-     * Este método maneja la solicitud GET a la ruta "/modification-notification/{flightid}" donde flightid es el identificador del vuelo.
-     * Obtiene la información de los usuarios que han comprado un ticket de un vuelo modificado.
+     * End point para obtener la información de los usuarios que han comprado un
+     * ticket de un vuelo modificado.
+     * 
+     * Este método maneja la solicitud GET a la ruta
+     * "/modification-notification/{flightid}" donde flightid es el identificador
+     * del vuelo.
+     * Obtiene la información de los usuarios que han comprado un ticket de un vuelo
+     * modificado.
      * 
      * @param flightid Valor numérico indicando el identificador del vuelo.
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Una lista con objetos de tipo `userinformation` representando la información de los usuarios.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Una lista con objetos de tipo `userinformation` representando la
+     *         información de los usuarios.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos o si no hay información disponible.
      */
     @GetMapping("/modification-notification/{flightid}")
     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
@@ -1962,14 +2124,18 @@ public class ApexController {
     // City - REGISTRATION
     /**
      * End point para registrar una ciudad.
-
-     * Este método maneja la solicitud POST a la ruta "/create-city/{city}" donde city es el nombre de la ciudad.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/create-city/{city}" donde
+     * city es el nombre de la ciudad.
      * Registra una ciudad en la base de datos.
      * 
      * @param city Valor de tipo String indicando el nombre de la ciudad.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/create-city/{city}")
     public Object createCity(@PathVariable String city) {
@@ -1999,15 +2165,19 @@ public class ApexController {
     // Cities - UPDATE
     /**
      * End point para actualizar el nombre de una ciudad.
-
-     * Este método maneja la solicitud POST a la ruta "/update-city/{city}/{id}" donde city es el nombre de la ciudad y id es el identificador de la ciudad.
+     * 
+     * Este método maneja la solicitud POST a la ruta "/update-city/{city}/{id}"
+     * donde city es el nombre de la ciudad y id es el identificador de la ciudad.
      * Actualiza el nombre de una ciudad en la base de datos.
      * 
      * @param city Valor de tipo String indicando el nombre de la ciudad.
-     * @param id Valor numérico indicando el identificador de la ciudad.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * @param id   Valor numérico indicando el identificador de la ciudad.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/update-city/{city}/{id}")
     public Object updateCities(@PathVariable String city, @PathVariable int id) {
@@ -2036,12 +2206,16 @@ public class ApexController {
     // Home - GET INFORMATION
     /**
      * End point para obtener la información de la página de inicio.
-
-     * Este método maneja la solicitud GET a la ruta "/home" y devuelve un objeto con la información configurada para la página de inicio.
      * 
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Un objeto de tipo `Home` representando la información de la página de inicio.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos.
+     * Este método maneja la solicitud GET a la ruta "/home" y devuelve un objeto
+     * con la información configurada para la página de inicio.
+     * 
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Un objeto de tipo `Home` representando la información de la página
+     *         de inicio.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos.
      */
     @GetMapping("/home")
     public Object getHome() {
@@ -2088,13 +2262,18 @@ public class ApexController {
     // Home - UPDATE
     /**
      * End point para actualizar la información de la página de inicio.
-
-     * Este método maneja la solicitud POST a la ruta "/update-home" y actualiza la información de la página de inicio.
      * 
-     * @param Home Objeto de tipo `Home` representando la estructura de la página de inicio.
-     * @return Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-     *         * `WebError`: En caso de error durante el registro dentro de la base de datos.
+     * Este método maneja la solicitud POST a la ruta "/update-home" y actualiza la
+     * información de la página de inicio.
+     * 
+     * @param Home Objeto de tipo `Home` representando la estructura de la página de
+     *             inicio.
+     * @return Dependiendo del resultado del registro, se devuelve uno de los
+     *         siguientes objetos:
+     *         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+     *         exitosamente.
+     *         * `WebError`: En caso de error durante el registro dentro de la base
+     *         de datos.
      */
     @PostMapping("/update-home")
     public Object updateHome(@RequestBody Home Home) {
@@ -2140,14 +2319,21 @@ public class ApexController {
     // Scale Flights Simple - API
     /**
      * End point para obtener la información de los vuelos directos.
-
-     * Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y devuelve un objeto con la información de los vuelos directos.
-     * @param origin Representa el pais seleccionado de busqueda el cual sera el origen
-     * @param destination Representa el pais seleccionado de busqueda el cual sera el destino
+     * 
+     * Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y
+     * devuelve un objeto con la información de los vuelos directos.
+     * 
+     * @param origin       Representa el pais seleccionado de busqueda el cual sera
+     *                     el origen
+     * @param destination  Representa el pais seleccionado de busqueda el cual sera
+     *                     el destino
      * @param departureDay Dia de salida establecido en la busqueda
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Una lista con objetos de tipo `FlightSimple` representando la información de los vuelos directos.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Una lista con objetos de tipo `FlightSimple` representando la
+     *         información de los vuelos directos.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos o si no hay información disponible.
      */
     @GetMapping("/scale-flights")
     public Object getScaleFLights(
@@ -2248,12 +2434,17 @@ public class ApexController {
     // Get a Cities - API
     /**
      * End point para obtener la información de las ciudades.
-
-     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un objeto con la información de las ciudades.
+     * 
+     * Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un
+     * objeto con la información de las ciudades.
+     * 
      * @param cityid Id correspondiente al ID de la ciudad seleccionada
-     * @return Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-     *         * Una lista con objetos de tipo `City` representando la información de las ciudades.
-     *         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.
+     * @return Dependiendo del resultado de la consulta, se devuelve uno de los
+     *         siguientes objetos:
+     *         * Una lista con objetos de tipo `City` representando la información
+     *         de las ciudades.
+     *         * `WebError`: En caso de error durante la consulta dentro de la base
+     *         de datos o si no hay información disponible.
      */
     @GetMapping("/get-city/{cityid}")
     public Object getOneCity(@PathVariable int cityid) {
@@ -2285,22 +2476,23 @@ public class ApexController {
         }
     }
 
-    //GRAPH1 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR TYPE
+    // GRAPH1 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR TYPE
     @PostMapping("/typesearch/{type}")
     public Object typesearch(@PathVariable String type) {
         Connection conn = new OracleConnector().getConnection();
         try {
-            PreparedStatement checkStatement = conn.prepareStatement(String.format("SELECT * FROM GRAPH1 WHERE TYPE = '%s'", type));
+            PreparedStatement checkStatement = conn
+                    .prepareStatement(String.format("SELECT * FROM GRAPH1 WHERE TYPE = '%s'", type));
             ResultSet result = checkStatement.executeQuery();
 
             if (!result.next()) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                    "INSERT INTO GRAPH1 (TYPE, COUNT) VALUES ('%s', %d)", type, 1));
-            insertStatement.executeQuery();
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO GRAPH1 (TYPE, COUNT) VALUES ('%s', %d)", type, 1));
+                insertStatement.executeQuery();
             } else {
                 PreparedStatement updatestatement = conn.prepareStatement(String.format(
-                    "UPDATE GRAPH1 SET COUNT = COUNT + 1 WHERE TYPE = '%s'", type));
-                    updatestatement.executeQuery();
+                        "UPDATE GRAPH1 SET COUNT = COUNT + 1 WHERE TYPE = '%s'", type));
+                updatestatement.executeQuery();
             }
             return new WebSuccess("Type search information updated");
         } catch (Throwable e) {
@@ -2317,7 +2509,7 @@ public class ApexController {
         }
     }
 
-    //GRAPH1 - SELECT DATA 
+    // GRAPH1 - SELECT DATA
     @GetMapping("/typesearch")
     public Object typesearch() {
         Connection conn = new OracleConnector().getConnection();
@@ -2355,22 +2547,23 @@ public class ApexController {
         }
     }
 
-    //GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
+    // GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
     @PostMapping("/citysearch/{id}")
     public Object citysearch(@PathVariable int id) {
         Connection conn = new OracleConnector().getConnection();
         try {
-            PreparedStatement checkStatement = conn.prepareStatement(String.format("SELECT * FROM GRAPH2 WHERE CITY_ID = %d", id));
+            PreparedStatement checkStatement = conn
+                    .prepareStatement(String.format("SELECT * FROM GRAPH2 WHERE CITY_ID = %d", id));
             ResultSet result = checkStatement.executeQuery();
 
             if (!result.next()) {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                    "INSERT INTO GRAPH2 (CITY_ID, COUNT) VALUES (%d, %d)", id, 1));
-            insertStatement.executeQuery();
+                PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                        "INSERT INTO GRAPH2 (CITY_ID, COUNT) VALUES (%d, %d)", id, 1));
+                insertStatement.executeQuery();
             } else {
                 PreparedStatement updatestatement = conn.prepareStatement(String.format(
-                    "UPDATE GRAPH2 SET COUNT = COUNT + 1 WHERE CITY_ID = %d", id));
-                    updatestatement.executeQuery();
+                        "UPDATE GRAPH2 SET COUNT = COUNT + 1 WHERE CITY_ID = %d", id));
+                updatestatement.executeQuery();
             }
             return new WebSuccess("City search information updated");
         } catch (Throwable e) {
@@ -2387,7 +2580,7 @@ public class ApexController {
         }
     }
 
-    //GRAPH2 - SELECT DATA 
+    // GRAPH2 - SELECT DATA
     @GetMapping("/citysearchgraph")
     public Object citysearchgraph() {
         Connection conn = new OracleConnector().getConnection();
@@ -2425,49 +2618,99 @@ public class ApexController {
         }
     }
 
-//GRAPH3 - SELECT DATA 
-@GetMapping("/userspurchasedata")
-public Object userspurchasedata() {
-    Connection conn = new OracleConnector().getConnection();
-    try {
-
-        PreparedStatement query = conn
-                .prepareStatement(String.format(
-                        "SELECT CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END AS role, COUNT(*) AS Count \n"
-                        + //
-                        "FROM GRAPH3_DATA GROUP BY CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END"
-                        ));
-        ResultSet result = query.executeQuery();
-
-        record datagraph(String Role, int count) {
-        }
-
-        List<datagraph> datagraphs = new ArrayList<>();
-        while (result.next()) {
-            datagraphs.add(new datagraph(
-                    result.getString("ROLE"),
-                    result.getInt("COUNT")));
-        }
-        if (datagraphs.isEmpty()) {
-            return new WebError("No users have made a purchase");
-        }
-        return datagraphs;
-    } catch (Throwable e) {
-        e.printStackTrace();
-        return new WebError("Failed to get users purchase stats");
-    } finally {
+    // GRAPH3 - SELECT DATA
+    @GetMapping("/userspurchasedata")
+    public Object userspurchasedata() {
+        Connection conn = new OracleConnector().getConnection();
         try {
-            if (conn != null) {
-                conn.close();
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END AS role, COUNT(*) AS Count \n"
+                                    + //
+                                    "FROM GRAPH3_DATA GROUP BY CASE WHEN role = 'admin' THEN 'Admin' WHEN role = 'user' THEN 'Users' ELSE 'Enterprise' END"));
+            ResultSet result = query.executeQuery();
+
+            record datagraph(String Role, int count) {
             }
-        } catch (SQLException e) {
+
+            List<datagraph> datagraphs = new ArrayList<>();
+            while (result.next()) {
+                datagraphs.add(new datagraph(
+                        result.getString("ROLE"),
+                        result.getInt("COUNT")));
+            }
+            if (datagraphs.isEmpty()) {
+                return new WebError("No users have made a purchase");
+            }
+            return datagraphs;
+        } catch (Throwable e) {
             e.printStackTrace();
+            return new WebError("Failed to get users purchase stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
 
-//Insertion of searches made. 
+    // Insertion of searches made
+    @PostMapping("/searchregistration")
+    public Object searchregistration(@RequestBody Search search) {
+        Connection conn = new OracleConnector().getConnection();
 
+        Date currentDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = formatter.format(currentDate);
 
+        try {
+            PreparedStatement insertStatement = conn.prepareStatement(String.format(
+                    "SELECT EMAIL, ROLE FROM USERS WHERE USER_ID = %d",
+                    search.id));
+            ResultSet resultSet = insertStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String email = resultSet.getString("EMAIL");
+                String type_user = resultSet.getString("ROLE");
+                if (search.return_date == null) {
+                    PreparedStatement insertStatemento = conn.prepareStatement(String.format(
+                            "INSERT INTO SEARCHES (ORIGIN, DESTINATION, DEPARTURE, RETURN, PASSENGERS, FLIGHT_TYPE, EMAIL, TYPE_USER, TYPE_SEARCH, DATE_MADE)\n"
+                                    + //
+                                    "VALUES (%d, %d, TO_DATE('%s', 'YYYY-MM-DD'), NULL, %d, '%s', '%s', '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD'))",
+                            search.origin, search.destination, search.departure_date, search.passengers,
+                            search.flight_type, email, type_user, search.type_search, formattedDate));
+                    insertStatemento.executeUpdate();
+                    return new WebSuccess("Search information inserted");
+                } else {
+                    PreparedStatement insertStatementt = conn.prepareStatement(String.format(
+                            "INSERT INTO SEARCHES (ORIGIN, DESTINATION, DEPARTURE, RETURN, PASSENGERS, FLIGHT_TYPE, EMAIL, TYPE_USER, TYPE_SEARCH, DATE_MADE)\n"
+                                    + //
+                                    "VALUES (%d, %d, TO_DATE('%s', 'YYYY-MM-DD'), TO_DATE('%s', 'YYYY-MM-DD'), %d, '%s', '%s', '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD'))",
+                            search.origin, search.destination, search.departure_date, search.return_date,
+                            search.passengers,
+                            search.flight_type, email, type_user, search.type_search, formattedDate));
+                    insertStatementt.executeUpdate();
+                    return new WebSuccess("Search information inserted");
+                }
+            }
+            return new WebSuccess("Search information inserted");
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to insert information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

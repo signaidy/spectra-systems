@@ -7,8 +7,7 @@ public class Search {
     String return_date;
     int passengers;
     String flight_type;
-    String email;
-    String type_user;
+    int id; 
     String type_search;
     String date_made;
 
@@ -18,8 +17,7 @@ public class Search {
     String return_date,
     int passengers,
     String flight_type,
-    String email,
-    String type_user,
+    int id,
     String type_search,
     String date_made) {
         this.origin = origin;
@@ -28,8 +26,7 @@ public class Search {
         this.return_date = return_date;
         this.passengers = passengers;
         this.flight_type = flight_type;
-        this.email = email;
-        this.type_user = type_user;
+        this.id = id;
         this.type_search = type_search;
         this.date_made = date_made;
     }
