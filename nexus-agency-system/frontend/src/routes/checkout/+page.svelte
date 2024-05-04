@@ -296,10 +296,18 @@
                 {#if flight?.scale != null}
                   <div class="w-32">
                     <span class="text-gray-600 font-semibold">Scale on:  </span>
-                  </div>
+                  </div>                  
                   <div class="flex-grow pl-3">
-                    <span>{flight?.destinationCityName}</span>
+                    <span>{flight?.destinationCityName} </span>
                   </div>
+                  {#if flight?.returnFlight.scale != null}                  
+                    <div class="flex-grow pl-3">
+                      <span class="text-gray-600 font-semibold">and</span>
+                    </div>
+                    <div class="flex-grow pl-3">
+                      <span>{flight?.returnFlight.destinationCityName}</span>
+                    </div>
+                  {/if}
                 {/if}
               </div>
               <div class="w-full flex items-center">
