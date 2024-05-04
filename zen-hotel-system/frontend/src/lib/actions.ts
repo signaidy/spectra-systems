@@ -821,7 +821,7 @@ export async function deleteAgency(prevState: any, formData: FormData) {
 
     const database = client.db(process.env.DB_NAME);
     const agencies = database.collection("agencies");
-    console.log(rawFormData)
+    console.log(rawFormData);
     await agencies.deleteOne({
       _id: new ObjectId(rawFormData.id as string),
     });
@@ -835,6 +835,58 @@ export async function deleteAgency(prevState: any, formData: FormData) {
   revalidatePath("/administration/agencies");
 }
 
+export async function createAlliance(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const alliances = database.collection("alliances");
+
+    const results = await alliances.find().toArray();
+
+    if (results.length >= 1) {
+      return {
+        error: "Only one alliance is allowed.",
+      };
+    }
+
+    const alliance = {
+      name: rawFormData.name,
+      address: rawFormData.address,
+      discount: rawFormData.discount,
+    };
+
+    await alliances.insertOne(alliance);
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Create Alliance.",
+    };
+  }
+
+  redirect("/administration/alliances");
+}
+
+export async function deleteAlliance(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const alliances = database.collection("alliances");
+
+    await alliances.deleteOne({
+      _id: new ObjectId(rawFormData.id as string),
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Delete Alliance.",
+    };
+  }
+
+  revalidatePath("/administration/alliances");
+}
+
 export async function disableReservation(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
@@ -843,12 +895,14 @@ export async function disableReservation(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    fetch(
-      `${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`,
+    console.log(`${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`)
+    const result = await fetch(
+      `${agency.endpoint}/reservations/cancel/${rawFormData.reservationId}`,
       {
         method: "PUT",
       }
     );
+    console.log(result);
   }
   // ----------------
   try {

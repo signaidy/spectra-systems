@@ -2668,36 +2668,27 @@ public class ApexController {
         String formattedDate = formatter.format(currentDate);
 
         try {
-            PreparedStatement insertStatement = conn.prepareStatement(String.format(
-                    "SELECT EMAIL, ROLE FROM USERS WHERE USER_ID = %d",
-                    search.id));
-            ResultSet resultSet = insertStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String email = resultSet.getString("EMAIL");
-                String type_user = resultSet.getString("ROLE");
-                if (search.return_date == null) {
-                    PreparedStatement insertStatemento = conn.prepareStatement(String.format(
-                            "INSERT INTO SEARCHES (ORIGIN, DESTINATION, DEPARTURE, RETURN, PASSENGERS, FLIGHT_TYPE, EMAIL, TYPE_USER, TYPE_SEARCH, DATE_MADE)\n"
-                                    + //
-                                    "VALUES (%d, %d, TO_DATE('%s', 'YYYY-MM-DD'), NULL, %d, '%s', '%s', '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD'))",
-                            search.origin, search.destination, search.departure_date, search.passengers,
-                            search.flight_type, email, type_user, search.type_search, formattedDate));
-                    insertStatemento.executeUpdate();
-                    return new WebSuccess("Search information inserted");
-                } else {
-                    PreparedStatement insertStatementt = conn.prepareStatement(String.format(
-                            "INSERT INTO SEARCHES (ORIGIN, DESTINATION, DEPARTURE, RETURN, PASSENGERS, FLIGHT_TYPE, EMAIL, TYPE_USER, TYPE_SEARCH, DATE_MADE)\n"
-                                    + //
-                                    "VALUES (%d, %d, TO_DATE('%s', 'YYYY-MM-DD'), TO_DATE('%s', 'YYYY-MM-DD'), %d, '%s', '%s', '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD'))",
-                            search.origin, search.destination, search.departure_date, search.return_date,
-                            search.passengers,
-                            search.flight_type, email, type_user, search.type_search, formattedDate));
-                    insertStatementt.executeUpdate();
-                    return new WebSuccess("Search information inserted");
-                }
+            if (search.return_date == null) {
+                PreparedStatement insertStatemento = conn.prepareStatement(String.format(
+                        "INSERT INTO SEARCHES (ORIGIN, DESTINATION, DEPARTURE, RETURN, PASSENGERS, FLIGHT_TYPE, TYPE_SEARCH, DATE_MADE)\n"
+                                + //
+                                "VALUES (%d, %d, TO_DATE('%s', 'YYYY-MM-DD'), NULL, %d, '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD'))",
+                        search.origin, search.destination, search.departure_date, search.passengers,
+                        search.flight_type, search.type_search, formattedDate));
+                insertStatemento.executeUpdate();
+                return new WebSuccess("Search information inserted");
+            } else {
+                PreparedStatement insertStatementt = conn.prepareStatement(String.format(
+                        "INSERT INTO SEARCHES (ORIGIN, DESTINATION, DEPARTURE, RETURN, PASSENGERS, FLIGHT_TYPE, TYPE_SEARCH, DATE_MADE)\n"
+                                + //
+                                "VALUES (%d, %d, TO_DATE('%s', 'YYYY-MM-DD'), TO_DATE('%s', 'YYYY-MM-DD'), %d, '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD'))",
+                        search.origin, search.destination, search.departure_date, search.return_date,
+                        search.passengers,
+                        search.flight_type, search.type_search, formattedDate));
+                insertStatementt.executeUpdate();
+                return new WebSuccess("Search information inserted");
             }
-            return new WebSuccess("Search information inserted");
+            // return new WebSuccess("Search information inserted");
 
         } catch (Throwable e) {
             e.printStackTrace();
