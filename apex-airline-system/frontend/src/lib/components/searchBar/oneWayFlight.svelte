@@ -12,6 +12,8 @@
 
   export let cities: Promise<any> = [];
 
+    console.log(localStorage.user_id);
+
   let isValid = true;
 
   let type = "one-way";
@@ -20,17 +22,41 @@
   let departureDay: DateValue | undefined;
   let passengers: number;
 
-  function combinedFunction() {
-  searchFlights();
-  handlecitycount(destinationCity);
-  handletypecount(type); 
-}
 
+  function combinedFunction() {
+    searchFlights();
+    handlecitycount(destinationCity);
+    handletypecount(type);
+  }
 
   async function handlecitycount(data) {
     const response = await fetch(`${PUBLIC_BASE_URL}/citysearch/${data}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    } else {
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+  }
+
+  async function searchregister() {
+    const response = await fetch(`${PUBLIC_BASE_URL}/searchregistration`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        origin: originCity,
+        destination: destinationCity,
+        departure_date: departureDay?.toString(),
+        passengers: passengers,
+        flight_type: type,
+        email: "abc@mgmail.com",
+        type_user: "Admin",
+        type_search: "Rest"
+      }),
     });
 
     if (!response.ok) {
@@ -43,8 +69,8 @@
 
   async function handletypecount(data) {
     const response = await fetch(`${PUBLIC_BASE_URL}/typesearch/${data}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
     });
 
     if (!response.ok) {
