@@ -3,7 +3,7 @@
   import { Banknote } from "lucide-svelte";
   import aviancalogo from "$lib/assets/Avianca-Ticket-logo.png";
   import { jsPDF } from "jspdf";
-  import { PUBLIC_BASE_URL } from '$env/static/public';
+  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
   export let data;
   let userid = data.user.userId;

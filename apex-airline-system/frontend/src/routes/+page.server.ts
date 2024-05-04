@@ -1,4 +1,4 @@
-import { PUBLIC_BASE_URL } from '$env/static/public';
+import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
 export function load({ locals }) {
   async function getCities() {

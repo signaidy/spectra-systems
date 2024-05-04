@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Footer from "$lib/components/footer/footer.svelte";
-  import { PUBLIC_BASE_URL } from '$env/static/public';
+  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
   let Title;
   let Description;

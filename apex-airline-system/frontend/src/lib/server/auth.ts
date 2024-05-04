@@ -1,6 +1,6 @@
 import type { RequestEvent } from "@sveltejs/kit";
 
-import { JWT_SECRET } from "$env/static/private";
+import { JWT_SECRET } from "$env/dynamic/private";
 import jsonwebtoken from "jsonwebtoken";
 const { verify } = jsonwebtoken;
 

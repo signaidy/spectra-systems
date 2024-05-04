@@ -2,7 +2,7 @@
   import { Receipt } from "lucide-svelte";
   import { Settings } from "lucide-svelte";
   import { MoveLeft } from "lucide-svelte";
-  import { PUBLIC_BASE_URL } from '$env/static/public';
+  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
   export let ticket: Ticket;
 
