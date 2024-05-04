@@ -53,6 +53,15 @@ public class ReservationService {
 
     
     /** 
+     * @param id
+     * @return Optional<Reservation>
+     */
+    public Optional<Reservation> getReservationByReservationNumber(String id){
+        return reservationRepository.findByReservationNumber(id);
+    }
+
+    
+    /** 
      * @param userId
      * @return 'List<Reservation>'
      */
@@ -107,15 +116,14 @@ public class ReservationService {
     /** 
      * @param id
      */
-    public void cancelReservationsById(Long id) {
-        Optional<Reservation> optionalReservation  = getReservationById(id);
+    public void cancelReservationsById(String id) {
+        Optional<Reservation> optionalReservation  = getReservationByReservationNumber(id);
         if (optionalReservation.isPresent()) {
             Reservation reservation = optionalReservation.get();
-            String bundle = reservation.getBundle();
             reservation.setState("cancelled");
             reservationRepository.save(reservation);
             sendCancellationEmail(reservation.getUser(), "reservation");
-            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
+            List<Flight> flightsWithSameBundle = flightRepository.findByBundle(reservation.getBundle());
             for (Flight flight : flightsWithSameBundle) {
                 flight.setState("cancelled");
                 flightRepository.save(flight);

@@ -23,13 +23,13 @@ public class OracleConnector {
      * fallo de conexión, se imprime un mensaje de error y se lanza una excepción.
 
      */
-
-    public OracleConnector() {
+    public OracleConnector(String username) {
         try {
+            System.out.println("USER:   " + username);
             OracleDataSource ods = new OracleDataSource();
             ods = new OracleDataSource();
             ods.setURL("jdbc:oracle:thin:@137.184.88.75:1521/FREE");
-            ods.setUser("system");
+            ods.setUser(username);
             ods.setPassword("sudoadmin");
             conn = ods.getConnection();
         } catch (SQLException e) {

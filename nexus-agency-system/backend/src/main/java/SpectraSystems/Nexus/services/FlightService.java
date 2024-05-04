@@ -340,17 +340,17 @@ public class FlightService {
         
         logger.info("TicketId: {}", firstTicketId);
 
-        String type = purchaseRequest.getType().equals("economy") ? "premium" : "economy";
-
+        // Create the body as JSON
         String requestBody = "{"
-                        + "\"user_id\": \"" + userIdPurchase + "\","
-                        + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
-                        + "\"state\": \"" + "1" + "\","
-                        + "\"type\": \"" + type + "\","
-                        + "\"ticket_id\": \"" + firstTicketId + "\""
-                        + "}";
+                + "\"user_id\": \"" + userIdPurchase + "\","
+                + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
+                + "\"state\": \"" + "active" + "\","
+                + "\"type\": \"" + purchaseRequest.getType() + "\","
+                + "\"ticket_id\": \"" + firstTicketId + "\""
+                + "}";
+
         logger.info("Sending HTTP request to: {}", apiUrl);
-        logger.debug("Request body: {}", requestBody);
+        logger.info("Request body: {}", requestBody);
 
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 

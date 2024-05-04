@@ -70,6 +70,9 @@ public class ApexController {
     @Value("${agency.urls}")
     private String agencyUrls;
 
+    @Value("${oracle.user}")
+    private String oracleUser;
+
     /**
      * Representa un mensaje de bienvenida establecido para el usuario
      * 
@@ -112,7 +115,7 @@ public class ApexController {
 
     @PostMapping("/login")
     public Object signIn(@RequestBody User user) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -176,7 +179,7 @@ public class ApexController {
     public Object createUser(@RequestBody User user, @PathVariable String token) {
         String secretkey = "6LfqapMpAAAAABzyK_kit2nrY39Hg1_VTg92SBXR";
 
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
 
@@ -260,7 +263,7 @@ public class ApexController {
      */
     @GetMapping("/get-user/{id}")
     public Object getUser(@PathVariable Long id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -302,7 +305,7 @@ public class ApexController {
      */
     @GetMapping("/get-users")
     public Object getUsers() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         List<LoggedUser> users = new ArrayList<LoggedUser>();
 
@@ -360,7 +363,7 @@ public class ApexController {
      */
     @PostMapping("/update-user")
     public Object updateUser(@RequestBody User user) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -404,7 +407,7 @@ public class ApexController {
      */
     @PostMapping("/create-flight")
     public Object createFlight(@RequestBody Flight flight) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement flightQuery = conn
@@ -499,7 +502,7 @@ public class ApexController {
             @RequestParam(value = "destinationCity", defaultValue = "") String destinationCity,
             @RequestParam(value = "departureDay", defaultValue = "") String departureDay,
             @RequestParam(value = "passengers", defaultValue = "") String passengers) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         List<FlightRecord> flights = new ArrayList<FlightRecord>();
 
@@ -590,7 +593,7 @@ public class ApexController {
      */
     @PostMapping("/create-commentary")
     public Object createCommentary(@RequestBody Commentary commentary) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -636,7 +639,7 @@ public class ApexController {
      */
     @PostMapping("/create-rating")
     public Object createRating(@RequestBody Rating rating) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -679,7 +682,7 @@ public class ApexController {
      */
     @GetMapping("/get-all-tickets")
     public Object getAllTickets() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         List<TicketRecord> tickets = new ArrayList<TicketRecord>();
 
@@ -727,7 +730,7 @@ public class ApexController {
      */
     @GetMapping("/get-all-flights")
     public Object getFlights() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         List<CompleteFlightRecord> flights = new ArrayList<CompleteFlightRecord>();
 
@@ -786,7 +789,7 @@ public class ApexController {
      */
     @GetMapping("/get-cities")
     public Object getCities() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         List<City> cities = new ArrayList<City>();
 
@@ -830,7 +833,7 @@ public class ApexController {
      */
     @GetMapping("/ticket-information")
     public Object getAllticketinfo() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -882,7 +885,7 @@ public class ApexController {
      */
     @GetMapping("/user_tickets/{id}")
     public Object getUsertickets(@PathVariable int id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -955,7 +958,7 @@ public class ApexController {
      */
     @GetMapping("/historical_purchases/{id}")
     public Object getHistoricpurchases(@PathVariable int id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1026,7 +1029,7 @@ public class ApexController {
      */
     @GetMapping("/inventory")
     public Object getInvetory() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1095,7 +1098,7 @@ public class ApexController {
      */
     @GetMapping("/aboutus")
     public Object getAbout() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1162,7 +1165,7 @@ public class ApexController {
      */
     @PostMapping("/update-aboutus")
     public Object updateAboutUs(@RequestBody Aboutus au) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             Statement checkStatement = conn.createStatement();
@@ -1236,7 +1239,7 @@ public class ApexController {
     @PostMapping("/purchase/{amount}/{method}/{discount}")
     public Object purchase(@RequestBody Ticket_purchase ticket, @PathVariable int amount, @PathVariable String method,
             @PathVariable int discount) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
         try {
@@ -1319,7 +1322,7 @@ public class ApexController {
      */
     @GetMapping("/availabletickets/{flight_id}/{category}")
     public Object getTicketstobuy(@PathVariable int flight_id, @PathVariable String category) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1381,7 +1384,7 @@ public class ApexController {
      */
     @GetMapping("/ticketsamount/{flight_id}/{category}")
     public Object getAmounttickets(@PathVariable int flight_id, @PathVariable String category) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1431,7 +1434,7 @@ public class ApexController {
      */
     @GetMapping("/purchaselogs")
     public Object getpurchaselogs() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1493,7 +1496,7 @@ public class ApexController {
      */
     @GetMapping("/header")
     public Object getHeader() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1552,7 +1555,7 @@ public class ApexController {
      */
     @PostMapping("/update-header")
     public Object updateHeader(@RequestBody Header head) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             Statement checkStatement = conn.createStatement();
@@ -1608,7 +1611,7 @@ public class ApexController {
      */
     @PostMapping("/cancelation/{flight_id}")
     public Object updateFlightandTickets(@PathVariable int flight_id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -1661,7 +1664,7 @@ public class ApexController {
      */
     @PostMapping("/ticketcanceled/{ticket_id}")
     public Object updateIndividualTicket(@PathVariable int ticket_id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -1706,7 +1709,7 @@ public class ApexController {
      */
     @GetMapping("/discount/{id}")
     public Object getDiscount(@PathVariable int id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1756,7 +1759,7 @@ public class ApexController {
      */
     @PostMapping("/update-flight/{flight_id}")
     public Object updateFlight(@RequestBody Flight flight, @PathVariable int flight_id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -1796,7 +1799,7 @@ public class ApexController {
      */
     @GetMapping("/footer")
     public Object getFooter() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -1886,7 +1889,7 @@ public class ApexController {
      */
     @PostMapping("/update-footer")
     public Object updateFooter(@RequestBody Footer footer) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             Statement checkStatement = conn.createStatement();
@@ -1956,7 +1959,7 @@ public class ApexController {
      */
     @GetMapping("/partners")
     public Object getPartners() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -2016,7 +2019,7 @@ public class ApexController {
      */
     @PostMapping("/update-partners")
     public Object updatePartners(@RequestBody Partners partner) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             Statement checkStatement = conn.createStatement();
             ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM Partners");
@@ -2081,7 +2084,7 @@ public class ApexController {
      */
     @GetMapping("/modification-notification/{flightid}")
     public Object getEmailParametersFlightModified(@PathVariable int flightid) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -2139,7 +2142,7 @@ public class ApexController {
      */
     @PostMapping("/create-city/{city}")
     public Object createCity(@PathVariable String city) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -2181,7 +2184,7 @@ public class ApexController {
      */
     @PostMapping("/update-city/{city}/{id}")
     public Object updateCities(@PathVariable String city, @PathVariable int id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -2219,7 +2222,7 @@ public class ApexController {
      */
     @GetMapping("/home")
     public Object getHome() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format(
@@ -2277,7 +2280,7 @@ public class ApexController {
      */
     @PostMapping("/update-home")
     public Object updateHome(@RequestBody Home Home) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             Statement checkStatement = conn.createStatement();
             ResultSet result = checkStatement.executeQuery("SELECT COUNT(*) FROM Home");
@@ -2340,7 +2343,7 @@ public class ApexController {
             @RequestParam(value = "originCity", defaultValue = "") int origin,
             @RequestParam(value = "destinationCity", defaultValue = "") int destination,
             @RequestParam(value = "departureDay", defaultValue = "") String departureDay) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         try {
             PreparedStatement query = conn
@@ -2448,7 +2451,7 @@ public class ApexController {
      */
     @GetMapping("/get-city/{cityid}")
     public Object getOneCity(@PathVariable int cityid) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement query = conn
                     .prepareStatement(String.format("SELECT name FROM cities WHERE city_id = %d", cityid));
@@ -2479,7 +2482,7 @@ public class ApexController {
     // GRAPH1 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR TYPE
     @PostMapping("/typesearch/{type}")
     public Object typesearch(@PathVariable String type) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement checkStatement = conn
                     .prepareStatement(String.format("SELECT * FROM GRAPH1 WHERE TYPE = '%s'", type));
@@ -2512,7 +2515,7 @@ public class ApexController {
     // GRAPH1 - SELECT DATA
     @GetMapping("/typesearch")
     public Object typesearch() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -2550,7 +2553,7 @@ public class ApexController {
     // GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
     @PostMapping("/citysearch/{id}")
     public Object citysearch(@PathVariable int id) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
             PreparedStatement checkStatement = conn
                     .prepareStatement(String.format("SELECT * FROM GRAPH2 WHERE CITY_ID = %d", id));
@@ -2583,7 +2586,7 @@ public class ApexController {
     // GRAPH2 - SELECT DATA
     @GetMapping("/citysearchgraph")
     public Object citysearchgraph() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -2621,7 +2624,7 @@ public class ApexController {
     // GRAPH3 - SELECT DATA
     @GetMapping("/userspurchasedata")
     public Object userspurchasedata() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
@@ -2661,7 +2664,7 @@ public class ApexController {
     // Insertion of searches made
     @PostMapping("/searchregistration")
     public Object searchregistration(@RequestBody Search search) {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
 
         Date currentDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
