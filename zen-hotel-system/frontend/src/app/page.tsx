@@ -29,11 +29,11 @@ export default async function Home() {
           <SearchBar locations={cities} />
         {/* </Suspense> */}
       </section>
-      <Section title="Featured Hotel">
+      {/* <Section title="Featured Hotel">
         {featuredHotel && (
           <HotelInventoryCard hotel={featuredHotel} searchParams={{}} />
         )}
-      </Section>
+      </Section> */}
       <Section title="Our Locations">
         <Locations />
       </Section>
