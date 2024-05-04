@@ -1,5 +1,5 @@
 // Data
-import { getHotelById } from "@/lib/data";
+import { getHotelById, confirmAlliance } from "@/lib/data";
 // Components
 import { CheckoutForm } from "@/components/checkout/checkoutForm";
 // UI Components
@@ -17,9 +17,17 @@ export default async function CheckoutHome({
     checkout: string;
     guests: string;
     type: "juniorSuite" | "standardSuite" | "doubleSuite" | "bigSuite";
+    discount?: string;
+    key?: string;
   };
 }) {
   const hotel = await getHotelById(params._id);
+
+  let alliance = null;
+  if (searchParams.key) {
+    alliance = await confirmAlliance(searchParams.key);
+    searchParams.discount = alliance.discount;
+  }
 
   return (
     <div className="grid grid-cols-2 gap-x-10 container py-8 min-h-[calc(100vh-4.813rem)]">
