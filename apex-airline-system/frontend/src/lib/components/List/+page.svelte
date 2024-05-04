@@ -5,7 +5,11 @@
 
   export let data;
   console.log(data);
-  let listinformation: any;
+  let listinformation: any[];
+
+  let currentPage = 1;
+  const itemsPerPage = 25;
+
 
   let isModalOpen = false;
 
@@ -78,6 +82,10 @@
     link.download = "search_data.csv";
     link.click();
   }
+
+  function navigatePage(pageNumber: number) {
+    currentPage = pageNumber;
+  }
 </script>
 
 <svelte:head>
@@ -130,7 +138,7 @@
 {/if}
 
 <h2 class="text-3xl font-bold text-center">
-  List of searches made in the website + {isModalOpen}
+  List of searches made in the website
 </h2>
 
 {#if listinformation}
@@ -148,7 +156,7 @@
       </tr>
     </thead>
     <tbody>
-      {#each listinformation as list}
+      {#each listinformation.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) as list}
         <tr class="border-b hover:bg-gray-200">
           <td class="text-center">{list.Origin}</td>
           <td class="text-center">{list.Destination}</td>
@@ -163,9 +171,30 @@
     </tbody>
   </table>
   <div class="flex justify-end mr-3">
+    <span class="text-gray-600 mt-1">Records {Math.min(currentPage * itemsPerPage, listinformation.length)} of {listinformation.length} entries</span>
+    </div>
+  <div class="flex justify-start mr-3">
+    <button
+      on:click={() => navigatePage(currentPage - 1)}
+      disabled={currentPage === 1}
+      class="bg-indigo-500 text-white py-2 px-4 rounded shadow-sm hover:bg-blue-700 mt-5 flex-right"
+    >
+      Previous
+    </button>
+    <button
+      on:click={() => navigatePage(currentPage + 1)}
+      disabled={!listinformation || Math.ceil(listinformation.length / itemsPerPage) === currentPage}
+      class="bg-indigo-500 text-white py-2 px-4 rounded shadow-sm hover:bg-blue-700 mt-5 flex-right ml-5"
+    >
+      Next
+    </button>
+  </div>
+
+  <div class="flex justify-end mr-3 mb-5">
+    
     <button
       on:click={download}
-      class="bg-indigo-500 text-white py-2 px-4 rounded shadow-sm hover:bg-blue-700 mt-5 flex-right"
+      class="bg-indigo-500 text-white py-2 px-4 rounded shadow-sm hover:bg-blue-700 mt-5 flex-right ml-5"
     >
       Download
     </button>
@@ -176,4 +205,4 @@
       Export to CSV
     </button>
   </div>
-{/if}
+  {/if}

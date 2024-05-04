@@ -2710,7 +2710,7 @@ public class ApexController {
     // Selection of searches made
     @GetMapping("/searchdatatake")
     public Object searchdatatake() {
-        Connection conn = new OracleConnector().getConnection();
+        Connection conn = new OracleConnector(oracleUser).getConnection();
         try {
 
             PreparedStatement query = conn
