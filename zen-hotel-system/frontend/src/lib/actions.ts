@@ -72,7 +72,7 @@ export async function signIn(prevState: any, formData: FormData) {
   const params = formData.get("params") as string;
   const searchParams = new URLSearchParams(params);
 
-  redirect(searchParams ? `${searchParams.get("pathname")}?${params}` : "/");
+  redirect(params ? `${searchParams.get("pathname")}?${params}` : "/");
 }
 
 export async function signUp(prevState: any, formData: FormData) {
@@ -130,7 +130,7 @@ export async function signUp(prevState: any, formData: FormData) {
   const params = formData.get("params") as string;
   const searchParams = new URLSearchParams(params);
 
-  redirect(searchParams ? `${searchParams.get("pathname")}?${params}` : "/");
+  redirect(params ? `${searchParams.get("pathname")}?${params}` : "/");
 }
 
 export async function createHotel(prevState: any, formData: FormData) {
