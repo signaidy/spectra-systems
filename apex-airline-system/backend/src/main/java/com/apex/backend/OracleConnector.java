@@ -24,12 +24,15 @@ public class OracleConnector {
 
      */
 
+    @Value("${oracle.user:system}")
+    private String oracleUser;
+
     public OracleConnector() {
         try {
             OracleDataSource ods = new OracleDataSource();
             ods = new OracleDataSource();
             ods.setURL("jdbc:oracle:thin:@137.184.88.75:1521/FREE");
-            ods.setUser("system");
+            ods.setUser(oracleUser);
             ods.setPassword("sudoadmin");
             conn = ods.getConnection();
         } catch (SQLException e) {
