@@ -18,6 +18,9 @@ services:
   avianca-frontend:
     build:
       context: ../frontend
+      # args:
+      #   PUBLIC_BASE_URL:
+      #   JWT_SECRET:
     ports:
       - 3002:3000
     env_file:
