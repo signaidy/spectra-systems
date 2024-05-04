@@ -14,7 +14,7 @@ public class DynamicTableNamingStrategy extends PhysicalNamingStrategyStandardIm
      */
     @Override
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
-        String projectName = "Nexus";
+        String projectName = "Trivago";
         return new Identifier(projectName.toUpperCase() + name.getText(), true);
     }
 }
