@@ -10,6 +10,9 @@ FROM node:21.7.2
 
 WORKDIR /usr/src/app
 
+ARG PUBLIC_BACKEND_URL
+ENV PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+
 # Copy the rest of the source files into the image.
 COPY . .
 

@@ -12,14 +12,14 @@ services:
     build:
       context: ../backend-3
     ports:
-      - 3005:42069
+      - 3017:42069
     env_file:
       - .env
   telair-frontend:
     build:
       context: ../frontend
     ports:
-      - 3004:3000
+      - 3016:3000
     env_file:
       - .env
     depends_on:
