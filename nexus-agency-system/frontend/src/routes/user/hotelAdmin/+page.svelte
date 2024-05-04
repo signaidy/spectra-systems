@@ -6,16 +6,16 @@
 
   export let data;
   let userid = data.user.userId
-  let flights = data.reservations;
+  let reservations = data.reservations;
 </script>
 
 <h1 class="text-xl font-bold mb-8">Booked Reservations</h1>
 <div class="max-w-screen-lg mx-auto">
   {#await data.reservations}
     
-  {:then flights} 
-    {#if flights.length>0}
-      {#each flights as {reservationNumber, roomType, state, id, location, bedSize, dateStart, dateEnd, hotel, bundle }}
+  {:then reservations} 
+    {#if reservations.length>0}
+      {#each reservations as {reservationNumber, roomType, state, id, location, bedSize, dateStart, dateEnd, hotel, bundle }}
         <div class="p-10">
           <div
             class="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg"
@@ -35,7 +35,7 @@
                   action="?/cancelReservation"
                   class="flex gap-x-2"
                 >
-                  <input type="hidden" name="id" value={id} />
+                  <input type="hidden" name="id" value={reservationNumber} />
                   <Button type="submit"><X class="h-4 w-4" /></Button>
                 </form>
               </div>
@@ -49,7 +49,7 @@
                   action="?/cancelReservation"
                   class="flex gap-x-2"
                 >
-                  <input type="hidden" name="id" value={id} />
+                  <input type="hidden" name="id" value={reservationNumber} />
                   <Button type="submit"><X class="h-4 w-4" /></Button>
                 </form>
               </div>
