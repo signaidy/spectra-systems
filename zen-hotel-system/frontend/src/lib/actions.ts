@@ -69,7 +69,10 @@ export async function signIn(prevState: any, formData: FormData) {
     };
   }
 
-  redirect("/");
+  const params = formData.get("params") as string;
+  const searchParams = new URLSearchParams(params);
+
+  redirect(searchParams ? `${searchParams.get("pathname")}?${params}` : "/");
 }
 
 export async function signUp(prevState: any, formData: FormData) {
@@ -124,7 +127,10 @@ export async function signUp(prevState: any, formData: FormData) {
     };
   }
 
-  redirect("/");
+  const params = formData.get("params") as string;
+  const searchParams = new URLSearchParams(params);
+
+  redirect(searchParams ? `${searchParams.get("pathname")}?${params}` : "/");
 }
 
 export async function createHotel(prevState: any, formData: FormData) {
@@ -665,7 +671,7 @@ export async function disableHotel(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    fetch(
+    await fetch(
       `${agency.endpoint}/reservations/cancelHotel/${rawFormData.hotelId})`,
       {
         method: "PUT",
@@ -854,6 +860,7 @@ export async function createAlliance(prevState: any, formData: FormData) {
       name: rawFormData.name,
       address: rawFormData.address,
       discount: rawFormData.discount,
+      key: rawFormData.key,
     };
 
     await alliances.insertOne(alliance);
