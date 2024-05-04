@@ -340,12 +340,15 @@ public class FlightService {
         
         logger.info("TicketId: {}", firstTicketId);
 
-        // Create the body as JSON
-        String requestBody = "{"
-                + "\"user_id\": \"" + userIdPurchase + "\","
-                + "\"ticket_id\": \"" + firstTicketId + "\""
-                + "}";
+        String type = purchaseRequest.getType().equals("economy") ? "premium" : "economy";
 
+        String requestBody = "{"
+                        + "\"user_id\": \"" + userIdPurchase + "\","
+                        + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
+                        + "\"state\": \"" + "1" + "\","
+                        + "\"type\": \"" + type + "\","
+                        + "\"ticket_id\": \"" + firstTicketId + "\""
+                        + "}";
         logger.info("Sending HTTP request to: {}", apiUrl);
         logger.debug("Request body: {}", requestBody);
 
