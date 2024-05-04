@@ -2850,4 +2850,67 @@ public class ApexController {
         }
     }
 
+    @GetMapping("/getAliances")
+    public Object getAliances() {
+        Connection conn = new OracleConnector(oracleUser).getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT * FROM aliance"));
+            ResultSet result = query.executeQuery();
+
+            record aliance(int ID, String IP, String endpoint, String key) {
+            }
+
+            List<aliance> aliance = new ArrayList<>();
+            while (result.next()) {
+                aliance.add(new aliance(
+                        result.getInt("ID"),
+                        result.getString("IP"),
+                        result.getString("endpoint"),
+                        result.getString("key")));
+            }
+            if (aliance.isEmpty()) {
+                return new WebError("No users have made a search");
+            }
+            return aliance;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get users search stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @PostMapping("/update-aliance/{id}")
+    public Object updateAliance(@PathVariable int id, @RequestBody Aliance aliance) {
+        Connection conn = new OracleConnector(oracleUser).getConnection();
+        try {
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "UPDATE ALIANCE SET IP = '%s', ENDPOINT = '%s', KEY = '%s' WHERE ID = %d",
+                            aliance.IP, aliance.endpoint, aliance.key, id));
+            query.executeQuery();
+            return new WebSuccess("Aliance updated");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to update Aliance");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
