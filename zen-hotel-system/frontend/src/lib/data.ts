@@ -364,6 +364,10 @@ export async function getFeaturedHotel() {
 
     const array = await result.toArray();
 
+    if (array.length === 0) {
+      return null;
+    }
+    
     const commentaries = generateCommentaryTree(array[0].commentaries);
 
     const featuredHotel = {
