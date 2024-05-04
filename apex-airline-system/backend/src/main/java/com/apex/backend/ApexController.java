@@ -2816,4 +2816,38 @@ public class ApexController {
         }
     }
 
+    // Insertion of hotel aliance
+    /**
+     * Registra alianzas e informacion de estas en la base de datos
+     * 
+     * 
+     * El método guarda la IP, endpoint y un key necesario para zen como token.
+     * 
+     * @param aliance Objeto `Aliance` que contiene los detalles de la alianza.
+     * @return WebSuccess en caso de éxito, WebError en caso de fallo.
+     */
+    @PostMapping("/alianceinsertion")
+    public Object alianceinsertion(@RequestBody Aliance aliance) {
+        Connection conn = new OracleConnector(oracleUser).getConnection();
+
+        try {
+            PreparedStatement insertStatemento = conn.prepareStatement(String.format(
+                    "INSERT INTO ALIANCE (IP, ENDPOINT, KEY) VALUES ('%s', '%s', '%s')",
+                    aliance.IP, aliance.endpoint, aliance.key));
+            insertStatemento.executeUpdate();
+            return new WebSuccess("Aliance information inserted");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to insert information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
