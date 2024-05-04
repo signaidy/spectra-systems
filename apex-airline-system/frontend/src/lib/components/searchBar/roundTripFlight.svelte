@@ -9,7 +9,7 @@
   // Utilities
   import type { DateRange } from "bits-ui";
   import { goto } from "$app/navigation";
-  import { PUBLIC_BASE_URL } from "$env/dynamic/public";
+  import { PUBLIC_BASE_URL } from "$env/static/public";
 
   export let cities: Promise<any> = [];
 

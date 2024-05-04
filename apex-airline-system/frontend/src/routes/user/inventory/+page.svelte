@@ -4,7 +4,7 @@
   import { MoveRight } from "lucide-svelte";
   import { Gem } from "lucide-svelte";
   import { TicketPercent } from "lucide-svelte";
-  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   let inventory = [];
 

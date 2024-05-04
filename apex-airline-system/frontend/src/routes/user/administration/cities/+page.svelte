@@ -2,7 +2,7 @@
   import { Button } from "$lib/components/ui/button";
   import CityCard from "$lib/components/user/administration/cities/cityCard.svelte";
   import CitySkeleton from "$lib/components/user/administration/cities/citieSkeleton.svelte";
-  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data;
 

@@ -3,7 +3,7 @@
   import { CircleUserRound } from "lucide-svelte";
   import logo from "$lib/assets/logo.png";
   import imageTab from "$lib/assets/Image-Tab.png";
-  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data: { user: User | null };
 

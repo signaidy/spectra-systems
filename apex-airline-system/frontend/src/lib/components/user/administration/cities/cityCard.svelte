@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
-    import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+    import { PUBLIC_BASE_URL } from '$env/static/public';
   
     export  let cities: City[] = [];
   

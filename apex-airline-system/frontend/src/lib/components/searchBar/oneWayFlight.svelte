@@ -8,7 +8,7 @@
   // Utilities
   import { type DateValue, DateFormatter } from "@internationalized/date";
   import { goto } from "$app/navigation";
-  import { PUBLIC_BASE_URL } from "$env/dynamic/public";
+  import { PUBLIC_BASE_URL } from "$env/static/public";
 
   export let cities: Promise<any> = [];
 

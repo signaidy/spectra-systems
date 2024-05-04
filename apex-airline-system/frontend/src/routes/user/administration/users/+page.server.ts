@@ -1,5 +1,5 @@
 import { fail } from "@sveltejs/kit";
-import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 export async function load({ locals }) {
   async function getUsers() {

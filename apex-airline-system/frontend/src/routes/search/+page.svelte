@@ -6,7 +6,7 @@
   import Roundflight from "$lib/components/search/roundflight.svelte";
   import { onMount } from "svelte";
   import { scale } from "svelte/transition";
-  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
+  import { PUBLIC_BASE_URL } from '$env/static/public';
 
   export let data;
   export let form;

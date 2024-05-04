@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as d3 from "d3";
   import { onMount } from "svelte";
-  import { PUBLIC_BASE_URL } from "$env/dynamic/public";
+  import { PUBLIC_BASE_URL } from "$env/static/public";
 
   let margin, width, height;
   let selection = "";
