@@ -867,6 +867,26 @@ export async function createAlliance(prevState: any, formData: FormData) {
   redirect("/administration/alliances");
 }
 
+export async function deleteAlliance(prevState: any, formData: FormData) {
+  try {
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    const database = client.db(process.env.DB_NAME);
+    const alliances = database.collection("alliances");
+
+    await alliances.deleteOne({
+      _id: new ObjectId(rawFormData.id as string),
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: "Database Error: Failed to Delete Alliance.",
+    };
+  }
+
+  revalidatePath("/administration/alliances");
+}
+
 export async function disableReservation(prevState: any, formData: FormData) {
   // Travel Agency
   const rawFormData = Object.fromEntries(formData.entries());
