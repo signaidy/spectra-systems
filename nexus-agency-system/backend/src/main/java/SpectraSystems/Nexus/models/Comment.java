@@ -18,7 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "NEXUSCOMMENTS")
+@Table(name = "COMMENTS")
 public class Comment {
 
      @Id

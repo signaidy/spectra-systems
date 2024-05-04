@@ -17,14 +17,14 @@ services:
         DB_NAME:
         EMAIL_CREDENTIALS:
     ports:
-      - 3000:3012
+      - 3012:3000
   hyatt-services:
     build:
       context: ../backend
     env_file:
       - .env
     ports:
-      - 3001:3013
+      - 3013:3001
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

@@ -26,7 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @ToString
-@Table(name = "NEXUSUSER")
+@Table(name = "USER")
 public class User implements UserDetails{
 
     @Id

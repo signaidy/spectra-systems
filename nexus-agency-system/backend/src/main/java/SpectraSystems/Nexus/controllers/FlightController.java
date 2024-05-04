@@ -133,6 +133,8 @@ public class FlightController {
         List<externalFlight> returnFlights = flightService.getOneWayFlightsFromOtherBackend(
                 destinationCityId, originCityId, returnDay, passengers);
 
+        
+
         // Add return flights to each outbound flight
         for (externalFlight outboundFlight : outboundFlights) {
             for (externalFlight returnFlight : returnFlights) {
@@ -142,7 +144,6 @@ public class FlightController {
                 }
             }
         }
-
         return new ResponseEntity<>(outboundFlights, HttpStatus.OK);
     }
 
@@ -156,7 +157,7 @@ public class FlightController {
     private boolean matchFlights(externalFlight outboundFlight, externalFlight returnFlight) {
         if (outboundFlight.getScale() != null && returnFlight.getScale() != null) {
             return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
-                    outboundFlight.getScale().getOriginCityId().equals(returnFlight.getDestinationCityId());
+                    outboundFlight.getOriginCityId().equals(returnFlight.getScale().getDestinationCityId());
         } else if (outboundFlight.getScale() != null) {
             return outboundFlight.getScale().getDestinationCityId().equals(returnFlight.getOriginCityId()) &&
                     outboundFlight.getOriginCityId().equals(returnFlight.getDestinationCityId());

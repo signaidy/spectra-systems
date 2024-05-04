@@ -4,23 +4,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.cglib.core.Local;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.TemporalType;
 import lombok.Builder;
 
 @Entity
 @Builder
-@Table(name = "NEXUSFLIGHT")
+@Table(name = "FLIGHT")
 public class Flight {
+
+    
 
     @Id
     private Long id;

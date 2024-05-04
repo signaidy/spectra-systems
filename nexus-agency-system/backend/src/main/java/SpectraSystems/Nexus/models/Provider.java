@@ -10,7 +10,7 @@ import lombok.Builder;
 
 @Entity
 @Builder
-@Table(name = "NEXUSPROVIDERS")
+@Table(name = "PROVIDERS")
 public class Provider {
 
     @Id

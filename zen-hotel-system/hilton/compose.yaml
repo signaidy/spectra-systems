@@ -17,14 +17,14 @@ services:
         DB_NAME:
         EMAIL_CREDENTIALS:
     ports:
-      - 3000:3006
+      - 3006:3000
   hilton-services:
     build:
       context: ../backend
     env_file:
       - .env
     ports:
-      - 3001:3007
+      - 3007:3001
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

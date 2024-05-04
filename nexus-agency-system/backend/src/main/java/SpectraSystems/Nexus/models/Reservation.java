@@ -14,7 +14,7 @@ import lombok.Builder;
 
 @Entity
 @Builder
-@Table(name = "NEXUSRESERVATION")
+@Table(name = "RESERVATION")
 public class Reservation {
 
     @Id
