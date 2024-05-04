@@ -496,6 +496,25 @@ export async function getAgencies() {
   }
 }
 
+export async function getAlliances() {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const alliancesCollection = database.collection<Alliance>("alliances");
+
+    const result = alliancesCollection.find();
+
+    const alliances = [];
+    for await (const alliance of result) {
+      alliances.push({ ...alliance, _id: alliance._id.toString() });
+    }
+
+    return alliances;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Retrieve Alliances");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""

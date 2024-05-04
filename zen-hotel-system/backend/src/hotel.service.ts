@@ -103,7 +103,7 @@ export class HotelService {
     }
   }
 
-  async getPartnerHotels(city: string, checkin: string, checkout: string, guests: string) {
+  async getPartnerHotels(city: string, checkin: string, checkout: string, guests: string, key: string) {
     this.registerAnalytic(city);
     try {
       const hotelsCollection = this.db.collection("hotels");
@@ -116,7 +116,7 @@ export class HotelService {
       const hotels = [];
       for await (const hotel of result) {
         const commentaries = this.generateCommentaryTree(hotel.commentaries);
-        const searchParams = new URLSearchParams(`location=${city}&checkin=${checkin}&checkout=${checkout}&guests=${guests}`).toString();
+        const searchParams = new URLSearchParams(`location=${city}&checkin=${checkin}&checkout=${checkout}&guests=${guests}&key=${key}`).toString();
         const path = `/search/${hotel._id.toString()}?${searchParams}`;
 
         hotels.push({ ...hotel, _id: hotel._id.toString(), commentaries, path });
