@@ -18,6 +18,8 @@ services:
   trivago-frontend:
     build:
       context: ../frontend
+      args:
+        PUBLIC_BACKEND_URL:
     ports:
       - 3010:3000
     env_file:
