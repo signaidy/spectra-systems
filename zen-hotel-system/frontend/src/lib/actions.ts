@@ -895,8 +895,9 @@ export async function disableReservation(prevState: any, formData: FormData) {
 
   const result = agencies.find();
   for await (const agency of result) {
-    const result = fetch(
-      `${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`,
+    console.log(`${agency.endpoint}/reservations/cancel/${rawFormData.reservationId})`)
+    const result = await fetch(
+      `${agency.endpoint}/reservations/cancel/${rawFormData.reservationId}`,
       {
         method: "PUT",
       }
