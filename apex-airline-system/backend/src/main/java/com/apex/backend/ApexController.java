@@ -2480,6 +2480,16 @@ public class ApexController {
     }
 
     // GRAPH1 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR TYPE
+    /**
+     * Actualiza la información del tipo de búsqueda en la tabla GRAPH1 aumentando
+     * el
+     * valor de la busqueda dependiendo del tipo que se haya realizado o inserta el
+     * dato
+     * en caso de que no encuentre dentro de la tabla.
+     * 
+     * @param type Tipo de búsqueda a actualizar (one-way o roundtrip)
+     * @return WebSuccess en caso de éxito, WebError en caso de fallo.
+     */
     @PostMapping("/typesearch/{type}")
     public Object typesearch(@PathVariable String type) {
         Connection conn = new OracleConnector(oracleUser).getConnection();
@@ -2513,6 +2523,13 @@ public class ApexController {
     }
 
     // GRAPH1 - SELECT DATA
+    /**
+     * Obtiene información sobre tipos de búsqueda y la cantidad de busquedas
+     * realizadas para cada uno de ellos para alimentar
+     * a la grafica respectiva
+     * 
+     * @return Lista de datagraphs o WebError.
+     */
     @GetMapping("/typesearch")
     public Object typesearch() {
         Connection conn = new OracleConnector(oracleUser).getConnection();
@@ -2551,6 +2568,16 @@ public class ApexController {
     }
 
     // GRAPH2 - INSERTION DATA AND ADITION OF COUNT SEACHES FOR CITIES
+    /**
+     * Actualiza la información de las ciudades buscadas en la tabla GRAPH2
+     * aumentando
+     * el valor de la busqueda correspondiente dependiendo del la ciudad buscada
+     * en caso de que no encuentre dentro de la tabla inserta la ciudad con un
+     * conteo de 1.
+     * 
+     * @param id Identificador de la ciudad.
+     * @return WebSuccess en caso de éxito, WebError en caso de fallo.
+     */
     @PostMapping("/citysearch/{id}")
     public Object citysearch(@PathVariable int id) {
         Connection conn = new OracleConnector(oracleUser).getConnection();
@@ -2584,6 +2611,13 @@ public class ApexController {
     }
 
     // GRAPH2 - SELECT DATA
+    /**
+     * Obtiene información sobre las ciuades buscadas y la cantidad de busquedas
+     * asociadas a cada ciudad para generar los datos en la grafica
+     * a la grafica respectiva
+     * 
+     * @return Lista de datagraphs o WebError.
+     */
     @GetMapping("/citysearchgraph")
     public Object citysearchgraph() {
         Connection conn = new OracleConnector(oracleUser).getConnection();
@@ -2622,6 +2656,14 @@ public class ApexController {
     }
 
     // GRAPH3 - SELECT DATA
+    /**
+     * Obtiene información de las compras realizadas por cada tipo de usuario
+     * adjuntando su conteo de valores
+     * para posteriormente ser utilizados en el FE para generar datos estadisticos
+     * respecto a esta informacion
+     * 
+     * @return Lista de datagraphs o WebError.
+     */
     @GetMapping("/userspurchasedata")
     public Object userspurchasedata() {
         Connection conn = new OracleConnector(oracleUser).getConnection();
@@ -2662,6 +2704,20 @@ public class ApexController {
     }
 
     // Insertion of searches made
+    /**
+     * Registra búsquedas de vuelos en la base de datos.
+     * 
+     * Este método recibe un objeto `Search` que toma los detalles de la
+     * búsqueda (origen, destino, fechas, etc.)
+     * e inserta la información en la tabla `SEARCHES`.
+     * 
+     * El método maneja dos escenarios: vuelos de ida y vuelta (con fecha de
+     * regreso) y vuelos de ida
+     * (sin fecha de regreso).
+     * 
+     * @param search Objeto `Search` que contiene los detalles de la búsqueda.
+     * @return WebSuccess en caso de éxito, WebError en caso de fallo.
+     */
     @PostMapping("/searchregistration")
     public Object searchregistration(@RequestBody Search search) {
         Connection conn = new OracleConnector(oracleUser).getConnection();
@@ -2693,6 +2749,93 @@ public class ApexController {
             }
             // return new WebSuccess("Search information inserted");
 
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to insert information");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Selection of searches made
+    /**
+     * Obtiene historial de búsquedas realizadas dentro del sistema.
+     * 
+     * @return Lista de búsquedas o WebError.
+     */
+    @GetMapping("/searchdatatake")
+    public Object searchdatatake() {
+        Connection conn = new OracleConnector(oracleUser).getConnection();
+        try {
+
+            PreparedStatement query = conn
+                    .prepareStatement(String.format(
+                            "SELECT o.name as Origin, d.name as Destination, Departure, Return, Passengers, Flight_type, type_search, date_made\n"
+                                    + //
+                                    "FROM SEARCHES s JOIN cities o ON s.origin = o.city_id JOIN cities d ON s.destination = d.city_id"));
+            ResultSet result = query.executeQuery();
+
+            record list(String Origin, String Destination, String Departure_date, String Return_date, int passengers,
+                    String Flight_type, String type_search,
+                    String date_made) {
+            }
+
+            List<list> list = new ArrayList<>();
+            while (result.next()) {
+                list.add(new list(
+                        result.getString("Origin"),
+                        result.getString("Destination"),
+                        result.getString("Departure"),
+                        result.getString("Return"),
+                        result.getInt("Passengers"),
+                        result.getString("Flight_type"),
+                        result.getString("type_search"),
+                        result.getString("date_made")));
+            }
+            if (list.isEmpty()) {
+                return new WebError("No users have made a search");
+            }
+            return list;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new WebError("Failed to get users search stats");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Insertion of hotel aliance
+    /**
+     * Registra alianzas e informacion de estas en la base de datos
+     * 
+     * 
+     * El método guarda la IP, endpoint y un key necesario para zen como token.
+     * 
+     * @param aliance Objeto `Aliance` que contiene los detalles de la alianza.
+     * @return WebSuccess en caso de éxito, WebError en caso de fallo.
+     */
+    @PostMapping("/alianceinsertion")
+    public Object alianceinsertion(@RequestBody Aliance aliance) {
+        Connection conn = new OracleConnector(oracleUser).getConnection();
+
+        try {
+            PreparedStatement insertStatemento = conn.prepareStatement(String.format(
+                    "INSERT INTO ALIANCE (IP, ENDPOINT, KEY) VALUES ('%s', '%s', '%s')",
+                    aliance.IP, aliance.endpoint, aliance.key));
+            insertStatemento.executeUpdate();
+            return new WebSuccess("Aliance information inserted");
         } catch (Throwable e) {
             e.printStackTrace();
             return new WebError("Failed to insert information");

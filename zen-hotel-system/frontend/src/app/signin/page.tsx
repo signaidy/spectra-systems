@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Suspense } from "react";
 // Components
 import { SignInForm } from "@/components/signIn/signInForm";
 import { Footer } from "@/components/home/footer";
@@ -15,7 +16,9 @@ export default async function SignIn() {
           className="object-cover -z-10"
           priority
         />
-        <SignInForm />
+        <Suspense>
+          <SignInForm />
+        </Suspense>
       </section>
       <Footer />
     </>

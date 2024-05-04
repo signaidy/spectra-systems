@@ -14,7 +14,7 @@ export default function AgenciesAdministrationHome() {
       <AgencyCreationForm />
       <Suspense
         fallback={
-          <div className="flex flex-col gap-y-3 mt-5 mb-8 mr-8 flex-wrap">
+          <div className="flex gap-x-3 gap-y-3 mt-5 mb-8 mr-8 flex-wrap">
             {Array(5)
               .fill(0)
               .map((_, index) => (

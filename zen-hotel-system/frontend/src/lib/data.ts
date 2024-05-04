@@ -515,6 +515,26 @@ export async function getAlliances() {
   }
 }
 
+export async function confirmAlliance(key: string) {
+  try {
+    const database = client.db(process.env.DB_NAME);
+    const alliancesCollection = database.collection("alliances");
+
+    const result = await alliancesCollection.findOne({ key });
+
+    if (!result) {
+      throw new Error("Invalid Alliance");
+    }
+
+    const alliance = { ...result, _id: result._id.toString() };
+
+    return alliance as Alliance;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Failed to Confirm Alliance");
+  }
+}
+
 const generateCommentaryTree = function (
   commentaries: Commentary[],
   parentId: string | "" = ""

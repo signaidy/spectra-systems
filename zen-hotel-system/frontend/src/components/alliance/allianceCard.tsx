@@ -19,6 +19,10 @@ export function AllianceCard({ alliance }: { alliance: Alliance }) {
         <div className="font-bold">Discount</div>
         <div>{alliance.discount} %</div>
       </div>
+      <div className="flex flex-col text-sm">
+        <div className="font-bold">Key</div>
+        <div>{alliance.key}</div>
+      </div>
     </div>
   );
 }

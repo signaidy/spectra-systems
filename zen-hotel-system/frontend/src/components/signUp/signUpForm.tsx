@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useFormState } from "react-dom";
+import { useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 // Data
@@ -14,6 +15,9 @@ import { Input } from "@/components/ui/input";
 
 export function SignUpForm() {
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+
+  const params = searchParams.toString();
 
   const initialState = { error: "" };
   const [state, formAction] = useFormState(signUp, initialState);
@@ -33,11 +37,12 @@ export function SignUpForm() {
       action={formAction}
       className="flex justify-center items-center container"
     >
+      <input type="hidden" name="params" value={params} />
       <div className="flex flex-col bg-background p-3 rounded-lg border gap-y-5">
         <div className="flex flex-col">
           <div className="font-bold text-lg">Sign Up</div>
           <Button variant="link" className="p-0 self-start" asChild>
-            <Link href="/signin">Already have an account? Sign In</Link>
+            <Link href={`/signin?${searchParams.toString()}`}>Already have an account? Sign In</Link>
           </Button>
         </div>
         <div className="grid grid-cols-2 gap-x-5">

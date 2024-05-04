@@ -1,5 +1,6 @@
 <script lang="ts">
   import Graphics from "$lib/components/Graphics/+page.svelte";
+  import List from "$lib/components/List/+page.svelte"; 
 
   let selection = "";
 
@@ -27,5 +28,5 @@
 {#if selection == "Graphics"}
 <Graphics/>
 {:else}
-<p>LIST HERE</p>
+<List/>
 {/if}

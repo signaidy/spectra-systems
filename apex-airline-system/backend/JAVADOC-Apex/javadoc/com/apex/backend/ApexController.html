@@ -92,12 +92,15 @@ loadScripts(document, 'script');</script>
 @RestController
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ApexController</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">La clase `ApexController` es un controlador RESTful utilizado en la aplicación backend.
-
- Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con las funcionalidades
+<div class="block">La clase `ApexController` es un controlador RESTful utilizado en la
+ aplicación backend.
+ 
+ Este controlador maneja diversas solicitudes HTTP entrantes relacionadas con
+ las funcionalidades
  de la aplicacion.
-
- La clase utiliza anotaciones de Spring para definir los endpoints y manejar las peticiones.</div>
+ 
+ La clase utiliza anotaciones de Spring para definir los endpoints y manejar
+ las peticiones.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -143,6 +146,22 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#citysearch(int)" class="member-name-link">citysearch</a><wbr>(int&nbsp;id)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Actualiza la información de las ciudades buscadas en la tabla GRAPH2
+ aumentando
+ el valor de la busqueda correspondiente dependiendo del la ciudad buscada
+ en caso de que no encuentre dentro de la tabla inserta la ciudad con un
+ conteo de 1.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#citysearchgraph()" class="member-name-link">citysearchgraph</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Obtiene información sobre las ciuades buscadas y la cantidad de busquedas
+ asociadas a cada ciudad para generar los datos en la grafica
+ a la grafica respectiva</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createCity(java.lang.String)" class="member-name-link">createCity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;city)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">End point para registrar una ciudad.</div>
@@ -160,7 +179,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRating(com.apex.backend.Rating)" class="member-name-link">createRating</a><wbr>(<a href="Rating.html" title="class in com.apex.backend">Rating</a>&nbsp;rating)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">End point para crear una nueva calificación asociada a un vuelo específico por un usuario registrado.</div>
+<div class="block">End point para crear una nueva calificación asociada a un vuelo específico
+ por un usuario registrado.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createUser(com.apex.backend.User,java.lang.String)" class="member-name-link">createUser</a><wbr>(<a href="User.html" title="class in com.apex.backend">User</a>&nbsp;user,
@@ -192,7 +212,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCities()" class="member-name-link">getCities</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">End point para obtener la lista de todas las ciudades registradas en el sistema.</div>
+<div class="block">End point para obtener la lista de todas las ciudades registradas en el
+ sistema.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDiscount(int)" class="member-name-link">getDiscount</a><wbr>(int&nbsp;id)</code></div>
@@ -202,7 +223,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEmailParametersFlightModified(int)" class="member-name-link">getEmailParametersFlightModified</a><wbr>(int&nbsp;flightid)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">End point para obtener la información de los usuarios que han comprado un ticket de un vuelo modificado.</div>
+<div class="block">End point para obtener la información de los usuarios que han comprado un
+ ticket de un vuelo modificado.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFlights()" class="member-name-link">getFlights</a>()</code></div>
@@ -278,7 +300,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsers()" class="member-name-link">getUsers</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">End point para obtener la lista de todos los usuarios registrados en el sistema.</div>
+<div class="block">End point para obtener la lista de todos los usuarios registrados en el
+ sistema.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsertickets(int)" class="member-name-link">getUsertickets</a><wbr>(int&nbsp;id)</code></div>
@@ -299,9 +322,35 @@ loadScripts(document, 'script');</script>
 <div class="block">End point para realizar la compra de un boleto.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchdatatake()" class="member-name-link">searchdatatake</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Obtiene historial de búsquedas realizadas dentro del sistema.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchregistration(com.apex.backend.Search)" class="member-name-link">searchregistration</a><wbr>(<a href="Search.html" title="class in com.apex.backend">Search</a>&nbsp;search)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Registra búsquedas de vuelos en la base de datos.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#signIn(com.apex.backend.User)" class="member-name-link">signIn</a><wbr>(<a href="User.html" title="class in com.apex.backend">User</a>&nbsp;user)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">End point para el inicio de sesión de usuario.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#typesearch()" class="member-name-link">typesearch</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Obtiene información sobre tipos de búsqueda y la cantidad de busquedas
+ realizadas para cada uno de ellos para alimentar
+ a la grafica respectiva</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#typesearch(java.lang.String)" class="member-name-link">typesearch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Actualiza la información del tipo de búsqueda en la tabla GRAPH1 aumentando
+ el
+ valor de la busqueda dependiendo del tipo que se haya realizado o inserta el
+ dato
+ en caso de que no encuentre dentro de la tabla.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAboutUs(com.apex.backend.Aboutus)" class="member-name-link">updateAboutUs</a><wbr>(<a href="Aboutus.html" title="class in com.apex.backend">Aboutus</a>&nbsp;au)</code></div>
@@ -355,6 +404,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">End point para actualizar la información de un usuario existente.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#userspurchasedata()" class="member-name-link">userspurchasedata</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Obtiene información de las compras realizadas por cada tipo de usuario
+ adjuntando su conteo de valores
+ para posteriormente ser utilizados en el FE para generar datos estadisticos
+ respecto a esta informacion</div>
+</div>
 </div>
 </div>
 </div>
@@ -393,14 +450,16 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ApexController.Greeting.html" title="class in com.apex.backend">ApexController.Greeting</a></span>&nbsp;<span class="element-name">greeting</span><wbr><span class="parameters">(@RequestParam(value="name",defaultValue="World")
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 <div class="block">End point para obtener un saludo personalizado.
-
- Este método maneja la solicitud GET a la ruta "/greeting" y devuelve un saludo personalizado 
+ 
+ Este método maneja la solicitud GET a la ruta "/greeting" y devuelve un
+ saludo personalizado
  con el nombre proporcionado en el parámetro `name`.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>name</code> - Nombre de la persona a saludar (valor por defecto: "World").</dd>
 <dt>Returns:</dt>
-<dd>Objeto `Greeting` que contiene el identificador del saludo y el contenido del mensaje.</dd>
+<dd>Objeto `Greeting` que contiene el identificador del saludo y el
+         contenido del mensaje.</dd>
 </dl>
 </section>
 </li>
@@ -415,8 +474,9 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>user</code> - Objeto `User` que contiene las credenciales del usuario.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del login, se devuelve un objeto `WebError` 
-         indicando un error, un objeto `LoggedUser` con los datos del usuario logueado,</dd>
+<dd>Dependiendo del resultado del login, se devuelve un objeto `WebError`
+         indicando un error, un objeto `LoggedUser` con los datos del usuario
+         logueado,</dd>
 </dl>
 </section>
 </li>
@@ -429,18 +489,25 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;token)</span></div>
 <div class="block">End point para crear un nuevo usuario en el sistema.
-
- Este método maneja la solicitud POST a la ruta "/create-user/{token}" y registra un nuevo usuario.</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/create-user/{token}" y
+ registra un nuevo usuario.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>user</code> - Objeto `User` que contiene la información del usuario a crear (correo electrónico, contraseña, 
-         nombre, apellido, país de origen, número de pasaporte, edad).
-         La contraseña se espera en texto plano y será encriptada antes de guardarla.</dd>
-<dd><code>token</code> - Token de reCAPTCHA v2 para verificar que la solicitud no sea de un bot.</dd>
+<dd><code>user</code> - Objeto `User` que contiene la información del usuario a crear
+              (correo electrónico, contraseña,
+              nombre, apellido, país de origen, número de pasaporte, edad).
+              La contraseña se espera en texto plano y será encriptada antes
+              de guardarla.</dd>
+<dd><code>token</code> - Token de reCAPTCHA v2 para verificar que la solicitud no sea de
+              un bot.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebError`: En caso de error (correo electrónico duplicado, error de reCAPTCHA, error genérico).
-         * `LoggedUser`: Objeto que contiene la información del usuario registrado exitosamente.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebError`: En caso de error (correo electrónico duplicado, error
+         de reCAPTCHA, error genérico).
+         * `LoggedUser`: Objeto que contiene la información del usuario
+         registrado exitosamente.</dd>
 </dl>
 </section>
 </li>
@@ -451,17 +518,21 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getUser</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id)</span></div>
 <div class="block">End point para obtener la información básica de un usuario.
-
- Este método maneja la solicitud GET a la ruta "/get-user/{id}" y devuelve 
- un resumen de la información del usuario identificado por el parámetro `{id}`.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/get-user/{id}" y devuelve
+ un resumen de la información del usuario identificado por el parámetro
+ `{id}`.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>id</code> - Identificador único del usuario (valor esperado: número entero).</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * `User`: Objeto que contiene el nombre y correo electrónico del usuario encontrado 
-                   (se usa un record temporal dentro del método).
-         * `WebError`: En caso de error (usuario no encontrado, error genérico).</dd>
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * `User`: Objeto que contiene el nombre y correo electrónico del
+         usuario encontrado
+         (se usa un record temporal dentro del método).
+         * `WebError`: En caso de error (usuario no encontrado, error
+         genérico).</dd>
 </dl>
 </section>
 </li>
@@ -470,13 +541,16 @@ loadScripts(document, 'script');</script>
 <h3>getUsers</h3>
 <div class="member-signature"><span class="annotations">@GetMapping("/get-users")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getUsers</span>()</div>
-<div class="block">End point para obtener la lista de todos los usuarios registrados en el sistema.
-
- Este método maneja la solicitud GET a la ruta "/get-users" y devuelve una lista 
+<div class="block">End point para obtener la lista de todos los usuarios registrados en el
+ sistema.
+ 
+ Este método maneja la solicitud GET a la ruta "/get-users" y devuelve una
+ lista
  con la información detallada de todos los usuarios.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Lista de objetos `LoggedUser` que contienen la información completa de cada usuario registrado.</dd>
+<dd>Lista de objetos `LoggedUser` que contienen la información completa
+         de cada usuario registrado.</dd>
 </dl>
 </section>
 </li>
@@ -487,17 +561,21 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateUser</span><wbr><span class="parameters">(@RequestBody
  <a href="User.html" title="class in com.apex.backend">User</a>&nbsp;user)</span></div>
 <div class="block">End point para actualizar la información de un usuario existente.
-
- Este método maneja la solicitud POST a la ruta "/update-user" y permite modificar 
+ 
+ Este método maneja la solicitud POST a la ruta "/update-user" y permite
+ modificar
  los datos del usuario enviado en el cuerpo de la petición (`@RequestBody`).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>user</code> - Objeto `User` que contiene la información actualizada del usuario 
-        (nombre, apellido, país de origen, número de pasaporte opcional, rol, edad opcional, porcentaje opcional).
-        Se espera que el objeto `user` tenga establecido el identificador único (`userId`) 
-        para identificar al usuario a actualizar.</dd>
+<dd><code>user</code> - Objeto `User` que contiene la información actualizada del usuario
+             (nombre, apellido, país de origen, número de pasaporte opcional,
+             rol, edad opcional, porcentaje opcional).
+             Se espera que el objeto `user` tenga establecido el identificador
+             único (`userId`)
+             para identificar al usuario a actualizar.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la actualización, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado de la actualización, se devuelve uno de los
+         siguientes objetos:
          * `WebSuccess`: En caso de éxito en la actualización del usuario.
          * `WebError`: En caso de error (error genérico).</dd>
 </dl>
@@ -510,15 +588,19 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createFlight</span><wbr><span class="parameters">(@RequestBody
  <a href="Flight.html" title="class in com.apex.backend">Flight</a>&nbsp;flight)</span></div>
 <div class="block">End point para crear un nuevo registro de vuelo en el sistema.
-
- Este método maneja la solicitud POST a la ruta "/create-flight" y registra un nuevo vuelo.</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/create-flight" y registra un
+ nuevo vuelo.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>flight</code> - Objeto `Flight` que contiene la información del vuelo a crear 
-        (ciudad de origen, ciudad destino, fecha y hora de salida, fecha y hora de llegada, 
-         capacidad y precio de tickets turista, capacidad y precio de tickets premium, detalles del vuelo, tipo de vuelo).</dd>
+<dd><code>flight</code> - Objeto `Flight` que contiene la información del vuelo a crear
+               (ciudad de origen, ciudad destino, fecha y hora de salida,
+               fecha y hora de llegada,
+               capacidad y precio de tickets turista, capacidad y precio de
+               tickets premium, detalles del vuelo, tipo de vuelo).</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
          * `WebSuccess`: En caso de éxito en la creación del vuelo.
          * `WebError`: En caso de error (error genérico).</dd>
 </dl>
@@ -537,21 +619,31 @@ loadScripts(document, 'script');</script>
  @RequestParam(value="passengers",defaultValue="")
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;passengers)</span></div>
 <div class="block">End point para buscar vuelos de ida (one-way) disponibles en el sistema.
-
- Este método maneja la solicitud GET a la ruta "/get-one-way-flights" y permite buscar vuelos 
- de un origen a un destino específico, filtrados por fecha de salida y cantidad de pasajeros 
+ 
+ Este método maneja la solicitud GET a la ruta "/get-one-way-flights" y
+ permite buscar vuelos
+ de un origen a un destino específico, filtrados por fecha de salida y
+ cantidad de pasajeros
  (informada como cadena de texto).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>originCity</code> - Parámetro opcional para filtrar por ciudad de origen (valor por defecto vacío).</dd>
-<dd><code>destinationCity</code> - Parámetro opcional para filtrar por ciudad destino (valor por defecto vacío).</dd>
-<dd><code>departureDay</code> - Parámetro opcional para filtrar por fecha de salida (formato YYYY-MM-DD, valor por defecto vacío).</dd>
-<dd><code>passengers</code> - Parámetro opcional para informar la cantidad de pasajeros (cadena de texto, valor por defecto vacío).</dd>
+<dd><code>originCity</code> - Parámetro opcional para filtrar por ciudad de origen
+                        (valor por defecto vacío).</dd>
+<dd><code>destinationCity</code> - Parámetro opcional para filtrar por ciudad destino
+                        (valor por defecto vacío).</dd>
+<dd><code>departureDay</code> - Parámetro opcional para filtrar por fecha de salida
+                        (formato YYYY-MM-DD, valor por defecto vacío).</dd>
+<dd><code>passengers</code> - Parámetro opcional para informar la cantidad de
+                        pasajeros (cadena de texto, valor por defecto vacío).</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * Lista de objetos `FlightRecord`: En caso de encontrar vuelos que coincidan con los filtros. 
-             Cada objeto `FlightRecord` contiene la información del vuelo y detalles adicionales.
-         * Arreglo vacío (`Object[]`): Si no se encuentran vuelos que coincidan con los filtros. 
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * Lista de objetos `FlightRecord`: En caso de encontrar vuelos que
+         coincidan con los filtros.
+         Cada objeto `FlightRecord` contiene la información del vuelo y
+         detalles adicionales.
+         * Arreglo vacío (`Object[]`): Si no se encuentran vuelos que
+         coincidan con los filtros.
          * `WebError`: En caso de error (error genérico).</dd>
 </dl>
 </section>
@@ -563,16 +655,21 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createCommentary</span><wbr><span class="parameters">(@RequestBody
  <a href="Commentary.html" title="class in com.apex.backend">Commentary</a>&nbsp;commentary)</span></div>
 <div class="block">End point para crear un nuevo comentario asociado a un vuelo específico.
-
- Este método maneja la solicitud POST a la ruta "/create-commentary" y registra un nuevo comentario 
+ 
+ Este método maneja la solicitud POST a la ruta "/create-commentary" y
+ registra un nuevo comentario
  enviado en el cuerpo de la petición (`@RequestBody`).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>commentary</code> - Objeto `Commentary` que contiene la información del comentario 
-        (identificador del comentario padre opcional, identificador del usuario que realiza el comentario, 
-         contenido del comentario, identificador del vuelo asociado).</dd>
+<dd><code>commentary</code> - Objeto `Commentary` que contiene la información del
+                   comentario
+                   (identificador del comentario padre opcional, identificador
+                   del usuario que realiza el comentario,
+                   contenido del comentario, identificador del vuelo
+                   asociado).</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la creación del comentario, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado de la creación del comentario, se devuelve
+         uno de los siguientes objetos:
          * `WebSuccess`: En caso de éxito en la creación del comentario.
          * `WebError`: En caso de error (error genérico).</dd>
 </dl>
@@ -584,18 +681,24 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping("/create-rating")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createRating</span><wbr><span class="parameters">(@RequestBody
  <a href="Rating.html" title="class in com.apex.backend">Rating</a>&nbsp;rating)</span></div>
-<div class="block">End point para crear una nueva calificación asociada a un vuelo específico por un usuario registrado.
-
- Este método maneja la solicitud POST a la ruta "/create-rating" y registra una nueva calificación 
- enviada en el cuerpo de la petición (`@RequestBody`). Solo se permite una calificación por usuario y vuelo.</div>
+<div class="block">End point para crear una nueva calificación asociada a un vuelo específico
+ por un usuario registrado.
+ 
+ Este método maneja la solicitud POST a la ruta "/create-rating" y registra
+ una nueva calificación
+ enviada en el cuerpo de la petición (`@RequestBody`). Solo se permite una
+ calificación por usuario y vuelo.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>rating</code> - Objeto `Rating` que contiene la información de la calificación 
-        (identificador del usuario que realiza la calificación, identificador del vuelo asociado, valor de la calificación).</dd>
+<dd><code>rating</code> - Objeto `Rating` que contiene la información de la calificación
+               (identificador del usuario que realiza la calificación,
+               identificador del vuelo asociado, valor de la calificación).</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la creación de la calificación, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado de la creación de la calificación, se
+         devuelve uno de los siguientes objetos:
          * `WebSuccess`: En caso de éxito en la creación de la calificación.
-         * `WebError`: En caso de error (error genérico o intento de calificar un vuelo ya calificado).</dd>
+         * `WebError`: En caso de error (error genérico o intento de calificar
+         un vuelo ya calificado).</dd>
 </dl>
 </section>
 </li>
@@ -605,12 +708,14 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/get-all-tickets")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getAllTickets</span>()</div>
 <div class="block">End point para obtener la lista de todos los tickets del sistema.
-
- Este método maneja la solicitud GET a la ruta "/get-all-tickets" y devuelve una lista 
+ 
+ Este método maneja la solicitud GET a la ruta "/get-all-tickets" y devuelve
+ una lista
  con la información de todos los tickets registrados.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Lista de objetos `TicketRecord` que contienen la información de cada ticket 
+<dd>Lista de objetos `TicketRecord` que contienen la información de cada
+         ticket
          (incluyendo datos del usuario asociado si existe).</dd>
 </dl>
 </section>
@@ -621,13 +726,16 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/get-all-flights")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getFlights</span>()</div>
 <div class="block">End point para obtener la lista de todos los vuelos del sistema.
-
- Este método maneja la solicitud GET a la ruta "/get-all-flights" y devuelve una lista 
+ 
+ Este método maneja la solicitud GET a la ruta "/get-all-flights" y devuelve
+ una lista
  con la información detallada de todos los vuelos registrados.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Lista de objetos `CompleteFlightRecord` que contienen la información completa de cada vuelo, 
-         incluyendo la cantidad disponible de tickets por tipo (económico y premium), 
+<dd>Lista de objetos `CompleteFlightRecord` que contienen la información
+         completa de cada vuelo,
+         incluyendo la cantidad disponible de tickets por tipo (económico y
+         premium),
          y su estado (activo o inactivo).</dd>
 </dl>
 </section>
@@ -637,13 +745,16 @@ loadScripts(document, 'script');</script>
 <h3>getCities</h3>
 <div class="member-signature"><span class="annotations">@GetMapping("/get-cities")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getCities</span>()</div>
-<div class="block">End point para obtener la lista de todas las ciudades registradas en el sistema.
-
- Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve una lista 
+<div class="block">End point para obtener la lista de todas las ciudades registradas en el
+ sistema.
+ 
+ Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve una
+ lista
  con información básica de todas las ciudades.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Lista de objetos `City` que contienen el identificador único (city_id) y el nombre de cada ciudad.</dd>
+<dd>Lista de objetos `City` que contienen el identificador único
+         (city_id) y el nombre de cada ciudad.</dd>
 </dl>
 </section>
 </li>
@@ -653,14 +764,18 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/ticket-information")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getAllticketinfo</span>()</div>
 <div class="block">End point para obtener la información de un ticket específico.
-
- Este método maneja la solicitud GET a la ruta "/ticket-information" y devuelve la información completa de ese ticket.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/ticket-information" y
+ devuelve la información completa de ese ticket.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * Objeto `Ticket` que contiene la información detallada de un ticket 
-           (identificador, precio, identificador de vuelo asociado, tipo y estado).
-         * `WebError`: En caso de error (error genérico o ticket no encontrado).</dd>
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * Objeto `Ticket` que contiene la información detallada de un ticket
+         (identificador, precio, identificador de vuelo asociado, tipo y
+         estado).
+         * `WebError`: En caso de error (error genérico o ticket no
+         encontrado).</dd>
 </dl>
 </section>
 </li>
@@ -671,18 +786,24 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getUsertickets</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;id)</span></div>
 <div class="block">End point para obtener la lista de tickets asociados a un usuario registrado.
-
- Este método maneja la solicitud GET a la ruta "/user_tickets/{id}" donde `{id}` representa el identificador 
- del usuario. Devuelve una lista con la información detallada de todos los tickets del usuario especificado.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/user_tickets/{id}" donde
+ `{id}` representa el identificador
+ del usuario. Devuelve una lista con la información detallada de todos los
+ tickets del usuario especificado.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>id</code> - Identificador del usuario del cual se desean obtener los tickets.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * Lista de objetos `UserTicket` que contienen la información detallada de cada ticket asociado 
-         al usuario (identificador de ticket, precio, tipo, estado, identificador de vuelo asociado, 
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * Lista de objetos `UserTicket` que contienen la información
+         detallada de cada ticket asociado
+         al usuario (identificador de ticket, precio, tipo, estado,
+         identificador de vuelo asociado,
          origen, destino, fecha de salida y llegada del vuelo).
-         * `WebError`: En caso de error (error genérico o si el usuario no posee tickets).</dd>
+         * `WebError`: En caso de error (error genérico o si el usuario no
+         posee tickets).</dd>
 </dl>
 </section>
 </li>
@@ -693,20 +814,28 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getHistoricpurchases</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;id)</span></div>
 <div class="block">End point para obtener el historial de compras de un usuario registrado.
-
- Este método maneja la solicitud GET a la ruta "/historical_purchases/{id}" donde `{id}` representa el identificador 
- del usuario. Devuelve una lista con la información detallada de todas las compras históricas 
+ 
+ Este método maneja la solicitud GET a la ruta "/historical_purchases/{id}"
+ donde `{id}` representa el identificador
+ del usuario. Devuelve una lista con la información detallada de todas las
+ compras históricas
  (independientemente del estado actual de los tickets) asociadas al usuario.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>id</code> - Identificador del usuario del cual se desea obtener el historial de compras.</dd>
+<dd><code>id</code> - Identificador del usuario del cual se desea obtener el historial de
+           compras.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * Lista de objetos `User_purchases` que contienen la información detallada de cada compra histórica 
-         del usuario (número de compra, ticket asociado, tipo de ticket, origen, destino, fecha de compra, 
-         precio, método de pago, fecha de salida, fecha de llegada, nombre de usuario, descuento aplicado 
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * Lista de objetos `User_purchases` que contienen la información
+         detallada de cada compra histórica
+         del usuario (número de compra, ticket asociado, tipo de ticket,
+         origen, destino, fecha de compra,
+         precio, método de pago, fecha de salida, fecha de llegada, nombre de
+         usuario, descuento aplicado
          e identificador del usuario).
-         * `WebError`: En caso de error (error genérico o si el usuario no posee un historial de compras).</dd>
+         * `WebError`: En caso de error (error genérico o si el usuario no
+         posee un historial de compras).</dd>
 </dl>
 </section>
 </li>
@@ -716,17 +845,23 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/inventory")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getInvetory</span>()</div>
 <div class="block">End point para obtener la lista de todos los vuelos del sistema.
-
- Este método maneja la solicitud GET a la ruta "/inventory" y devuelve una lista 
+ 
+ Este método maneja la solicitud GET a la ruta "/inventory" y devuelve una
+ lista
  con la información básica de todos los vuelos registrados.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * Lista de objetos `FLIGHTS` que contienen la información esencial de cada vuelo 
-         (origen, destino, fechas de salida y llegada, cantidades y precios disponibles por tipo 
-         (económico y premium), detalles, tipo de vuelo (regular o charter), estado 
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * Lista de objetos `FLIGHTS` que contienen la información esencial de
+         cada vuelo
+         (origen, destino, fechas de salida y llegada, cantidades y precios
+         disponibles por tipo
+         (económico y premium), detalles, tipo de vuelo (regular o charter),
+         estado
          (activo o inactivo) e identificador del vuelo).
-         * `WebError`: En caso de error (error genérico o si no hay vuelos registrados).</dd>
+         * `WebError`: En caso de error (error genérico o si no hay vuelos
+         registrados).</dd>
 </dl>
 </section>
 </li>
@@ -736,16 +871,20 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/aboutus")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getAbout</span>()</div>
 <div class="block">End point para obtener la información de la página "Acerca de Nosotros".
-
- Este método maneja la solicitud GET a la ruta "/aboutus" y devuelve un objeto 
+ 
+ Este método maneja la solicitud GET a la ruta "/aboutus" y devuelve un objeto
  que contiene la información configurada para la sección "Acerca de Nosotros".</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los siguientes objetos:
-         * Objeto `aboutus` que contiene la configuración completa de la sección "Acerca de Nosotros" 
-         (lema, GIF animado, enlace de Youtube, cantidad de tarjetas informativas, títulos, textos e imágenes 
+<dd>Dependiendo del resultado de la búsqueda, se devuelve uno de los
+         siguientes objetos:
+         * Objeto `aboutus` que contiene la configuración completa de la
+         sección "Acerca de Nosotros"
+         (lema, GIF animado, enlace de Youtube, cantidad de tarjetas
+         informativas, títulos, textos e imágenes
          de cada tarjeta).
-         * `WebError`: En caso de error (error genérico o si no se encuentra la información configurada).</dd>
+         * `WebError`: En caso de error (error genérico o si no se encuentra
+         la información configurada).</dd>
 </dl>
 </section>
 </li>
@@ -756,15 +895,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateAboutUs</span><wbr><span class="parameters">(@RequestBody
  <a href="Aboutus.html" title="class in com.apex.backend">Aboutus</a>&nbsp;au)</span></div>
 <div class="block">End point para actualizar el contenido de la página "About us".
-
- Este método maneja la solicitud POST a la ruta "/update-aboutus" y actualiza el contenido de la página "About Us".</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/update-aboutus" y actualiza
+ el contenido de la página "About Us".</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>au</code> - Objeto `AboutUs` que contiene la estructura de la página "About us".</dd>
+<dd><code>au</code> - Objeto `AboutUs` que contiene la estructura de la página "About
+           us".</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante la modificación dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante la modificación dentro de la
+         base de datos.</dd>
 </dl>
 </section>
 </li>
@@ -781,19 +925,27 @@ loadScripts(document, 'script');</script>
  @PathVariable
  int&nbsp;discount)</span></div>
 <div class="block">End point para realizar la compra de un boleto.
-
- Este método maneja la solicitud POST a la ruta "/purchase/{amount}/{method}/{discount}" donde amount es la cantidad, method es el tipo
- de compra y discount es el descuento aplicado. Registra la compra de un boleto en la base de datos.</div>
+ 
+ Este método maneja la solicitud POST a la ruta
+ "/purchase/{amount}/{method}/{discount}" donde amount es la cantidad, method
+ es el tipo
+ de compra y discount es el descuento aplicado. Registra la compra de un
+ boleto en la base de datos.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>ticket</code> - Objeto `Ticket_purchase` que contiene la estructura del ticket.</dd>
-<dd><code>amount</code> - Valor numérico representando la cantidad de tickets a comprar.</dd>
+<dd><code>ticket</code> - Objeto `Ticket_purchase` que contiene la estructura del
+                 ticket.</dd>
+<dd><code>amount</code> - Valor numérico representando la cantidad de tickets a
+                 comprar.</dd>
 <dd><code>method</code> - String indicando el tipo de tarjeta utilizado para la compra.</dd>
 <dd><code>discount</code> - Valor numérico indicando el descuento de la compra.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * Una lista con objetios de tipo `userTickets` representando los tickets del usuario.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos o si el usuario no posee tickets.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * Una lista con objetios de tipo `userTickets` representando los
+         tickets del usuario.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos o si el usuario no posee tickets.</dd>
 </dl>
 </section>
 </li>
@@ -806,17 +958,22 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category)</span></div>
 <div class="block">End point para obtener información sobre los tickets disponibles para compra.
-
- Este método maneja la solicitud GET a la ruta "/availabletickets/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
- y category es la categoría del ticket a comprar. Devuelve la información de los tickets disponibles para la compra.</div>
+ 
+ Este método maneja la solicitud GET a la ruta
+ "/availabletickets/{flight_id}/{category}" donde flight_id es el
+ identificador del vuelo,
+ y category es la categoría del ticket a comprar. Devuelve la información de
+ los tickets disponibles para la compra.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>flight_id</code> - Valor numérico indicando el identificador del vuelo.</dd>
 <dd><code>category</code> - String indicando la categoría del ticket a comprar.</dd>
 <dt>Returns:</dt>
 <dd>Se devuelve uno de los siguientes objetos:
-         * Una lista con objetos de tipo `Availabletickets` representando los tickets del usuario.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.</dd>
+         * Una lista con objetos de tipo `Availabletickets` representando los
+         tickets del usuario.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos o si no hay tickets disponibles.</dd>
 </dl>
 </section>
 </li>
@@ -829,17 +986,22 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category)</span></div>
 <div class="block">End point para obtener la cantidad de tickets disponibles de un vuelo.
-
- Este método maneja la solicitud GET a la ruta "/ticketsamount/{flight_id}/{category}" donde flight_id es el identificador del vuelo,
- y category es la categoría del ticket a comprar. Devuelve la cantidad de tickets disponibles para la compra.</div>
+ 
+ Este método maneja la solicitud GET a la ruta
+ "/ticketsamount/{flight_id}/{category}" donde flight_id es el identificador
+ del vuelo,
+ y category es la categoría del ticket a comprar. Devuelve la cantidad de
+ tickets disponibles para la compra.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>flight_id</code> - Valor numérico indicando el identificador del vuelo.</dd>
 <dd><code>category</code> - String indicando la categoría del ticket a comprar.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
          * La cantidad de tickets disponibles para el vuelo y categoría.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay tickets disponibles.</dd>
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos o si no hay tickets disponibles.</dd>
 </dl>
 </section>
 </li>
@@ -849,13 +1011,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/purchaselogs")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getpurchaselogs</span>()</div>
 <div class="block">End point para obtener los registros de compra.
-
- Este método maneja la solicitud GET a la ruta "/purchaselogs" y devuelve una lista con la información detallada de todas las compras realizadas.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/purchaselogs" y devuelve una
+ lista con la información detallada de todas las compras realizadas.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Una lista con objetos de tipo `purchases` representando los registros de compra.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay compras realizadas.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Una lista con objetos de tipo `purchases` representando los
+         registros de compra.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos o si no hay compras realizadas.</dd>
 </dl>
 </section>
 </li>
@@ -865,13 +1031,16 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/header")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getHeader</span>()</div>
 <div class="block">End point para obtener la información del header.
-
- Este método maneja la solicitud GET a la ruta "/header" y devuelve un objeto con la información configurada para el header.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/header" y devuelve un objeto
+ con la información configurada para el header.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
          * Un objeto de tipo `Header` representando la información del header.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos.</dd>
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -882,15 +1051,19 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateHeader</span><wbr><span class="parameters">(@RequestBody
  <a href="Header.html" title="class in com.apex.backend">Header</a>&nbsp;head)</span></div>
 <div class="block">End point para actualizar la información del header.
-
- Este método maneja la solicitud POST a la ruta "/update-header" y actualiza la información del header.</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/update-header" y actualiza
+ la información del header.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>head</code> - Valor correspondiente al de la clase para acceso a atributos</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -901,16 +1074,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateFlightandTickets</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;flight_id)</span></div>
 <div class="block">End point para la cancelación de un vuelo.
-
- Este método maneja la solicitud POST a la ruta "/cancelation/{flight_id}" donde flight_id es el identificador del vuelo.
+ 
+ Este método maneja la solicitud POST a la ruta "/cancelation/{flight_id}"
+ donde flight_id es el identificador del vuelo.
  Cancela un vuelo y los tickets asociados a él.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>flight_id</code> - Valor numérico indicando el identificador del vuelo.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -921,16 +1098,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateIndividualTicket</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;ticket_id)</span></div>
 <div class="block">End point para la cancelación individual de tickets.
-
- Este método maneja la solicitud POST a la ruta "/ticketcanceled/{ticket_id}" donde ticket_id es el identificador del ticket.
+ 
+ Este método maneja la solicitud POST a la ruta "/ticketcanceled/{ticket_id}"
+ donde ticket_id es el identificador del ticket.
  Cancela un tickets individual.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>ticket_id</code> - Valor numérico indicando el identificador del ticket.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -941,16 +1122,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getDiscount</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;id)</span></div>
 <div class="block">End point para obtener el descuento de un usuario.
-
- Este método maneja la solicitud GET a la ruta "/discount/{id}" donde id es el identificador del usuario.
+ 
+ Este método maneja la solicitud GET a la ruta "/discount/{id}" donde id es el
+ identificador del usuario.
  Obtiene el descuento aplicado a un usuario.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>id</code> - Valor numérico indicando el identificador del usuario.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Un objeto de tipo `Discount` representando el porcentaje de descuento.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Un objeto de tipo `Discount` representando el porcentaje de
+         descuento.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -963,17 +1148,21 @@ loadScripts(document, 'script');</script>
  @PathVariable
  int&nbsp;flight_id)</span></div>
 <div class="block">End point para actualizar la información de un vuelo.
-
- Este método maneja la solicitud POST a la ruta "/update-flight/{flight_id}" donde flight_id es el identificador del vuelo.
+ 
+ Este método maneja la solicitud POST a la ruta "/update-flight/{flight_id}"
+ donde flight_id es el identificador del vuelo.
  Actualiza la información de un vuelo.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>flight</code> - Objeto `Flight` que contiene la estructura del vuelo.</dd>
 <dd><code>flight_id</code> - Valor numérico indicando el identificador del vuelo.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -984,12 +1173,15 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getFooter</span>()</div>
 <div class="block">End point para obtener la información del footer.
  
- Este método maneja la solicitud GET a la ruta "/footer" y devuelve un objeto con la información configurada para el footer.</div>
+ Este método maneja la solicitud GET a la ruta "/footer" y devuelve un objeto
+ con la información configurada para el footer.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
          * Un objeto de tipo `Footer` representando la información del footer.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos.</dd>
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1000,15 +1192,19 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateFooter</span><wbr><span class="parameters">(@RequestBody
  <a href="Footer.html" title="class in com.apex.backend">Footer</a>&nbsp;footer)</span></div>
 <div class="block">End point para actualizar la información del footer.
-
- Este método maneja la solicitud POST a la ruta "/update-footer" y actualiza la información del footer.</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/update-footer" y actualiza
+ la información del footer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>footer</code> - Objeto de tipo `Footer` representando la estructura del footer.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1018,13 +1214,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/partners")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getPartners</span>()</div>
 <div class="block">End point para obtener la información de los partners.
-
- Este método maneja la solicitud GET a la ruta "/partners" y devuelve un objeto con la información de los partners.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/partners" y devuelve un
+ objeto con la información de los partners.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Un objeto de tipo `Partner` representando la información de los partners.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Un objeto de tipo `Partner` representando la información de los
+         partners.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1035,15 +1235,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updatePartners</span><wbr><span class="parameters">(@RequestBody
  <a href="Partners.html" title="class in com.apex.backend">Partners</a>&nbsp;partner)</span></div>
 <div class="block">End point para actualizar la información de los partners.
-
- Este método maneja la solicitud POST a la ruta "/update-partners" y actualiza la información de los partners.</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/update-partners" y actualiza
+ la información de los partners.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>partner</code> - Objeto de tipo `Partners` representando la estructura de los partners.</dd>
+<dd><code>partner</code> - Objeto de tipo `Partners` representando la estructura de los
+                partners.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1053,17 +1258,24 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/modification-notification/{flightid}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getEmailParametersFlightModified</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;flightid)</span></div>
-<div class="block">End point para obtener la información de los usuarios que han comprado un ticket de un vuelo modificado.
-
- Este método maneja la solicitud GET a la ruta "/modification-notification/{flightid}" donde flightid es el identificador del vuelo.
- Obtiene la información de los usuarios que han comprado un ticket de un vuelo modificado.</div>
+<div class="block">End point para obtener la información de los usuarios que han comprado un
+ ticket de un vuelo modificado.
+ 
+ Este método maneja la solicitud GET a la ruta
+ "/modification-notification/{flightid}" donde flightid es el identificador
+ del vuelo.
+ Obtiene la información de los usuarios que han comprado un ticket de un vuelo
+ modificado.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>flightid</code> - Valor numérico indicando el identificador del vuelo.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Una lista con objetos de tipo `userinformation` representando la información de los usuarios.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Una lista con objetos de tipo `userinformation` representando la
+         información de los usuarios.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos o si no hay información disponible.</dd>
 </dl>
 </section>
 </li>
@@ -1074,16 +1286,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createCity</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;city)</span></div>
 <div class="block">End point para registrar una ciudad.
-
- Este método maneja la solicitud POST a la ruta "/create-city/{city}" donde city es el nombre de la ciudad.
+ 
+ Este método maneja la solicitud POST a la ruta "/create-city/{city}" donde
+ city es el nombre de la ciudad.
  Registra una ciudad en la base de datos.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>city</code> - Valor de tipo String indicando el nombre de la ciudad.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1096,17 +1312,21 @@ loadScripts(document, 'script');</script>
  @PathVariable
  int&nbsp;id)</span></div>
 <div class="block">End point para actualizar el nombre de una ciudad.
-
- Este método maneja la solicitud POST a la ruta "/update-city/{city}/{id}" donde city es el nombre de la ciudad y id es el identificador de la ciudad.
+ 
+ Este método maneja la solicitud POST a la ruta "/update-city/{city}/{id}"
+ donde city es el nombre de la ciudad y id es el identificador de la ciudad.
  Actualiza el nombre de una ciudad en la base de datos.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>city</code> - Valor de tipo String indicando el nombre de la ciudad.</dd>
 <dd><code>id</code> - Valor numérico indicando el identificador de la ciudad.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1116,13 +1336,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping("/home")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getHome</span>()</div>
 <div class="block">End point para obtener la información de la página de inicio.
-
- Este método maneja la solicitud GET a la ruta "/home" y devuelve un objeto con la información configurada para la página de inicio.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/home" y devuelve un objeto
+ con la información configurada para la página de inicio.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Un objeto de tipo `Home` representando la información de la página de inicio.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Un objeto de tipo `Home` representando la información de la página
+         de inicio.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1133,15 +1357,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">updateHome</span><wbr><span class="parameters">(@RequestBody
  <a href="Home.html" title="class in com.apex.backend">Home</a>&nbsp;Home)</span></div>
 <div class="block">End point para actualizar la información de la página de inicio.
-
- Este método maneja la solicitud POST a la ruta "/update-home" y actualiza la información de la página de inicio.</div>
+ 
+ Este método maneja la solicitud POST a la ruta "/update-home" y actualiza la
+ información de la página de inicio.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>Home</code> - Objeto de tipo `Home` representando la estructura de la página de inicio.</dd>
+<dd><code>Home</code> - Objeto de tipo `Home` representando la estructura de la página de
+             inicio.</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado del registro, se devuelve uno de los siguientes objetos:
-         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado exitosamente.
-         * `WebError`: En caso de error durante el registro dentro de la base de datos.</dd>
+<dd>Dependiendo del resultado del registro, se devuelve uno de los
+         siguientes objetos:
+         * `WebSuccess`: Mensaje que confirma que la operación se ha realizado
+         exitosamente.
+         * `WebError`: En caso de error durante el registro dentro de la base
+         de datos.</dd>
 </dl>
 </section>
 </li>
@@ -1156,17 +1385,23 @@ loadScripts(document, 'script');</script>
  @RequestParam(value="departureDay",defaultValue="")
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;departureDay)</span></div>
 <div class="block">End point para obtener la información de los vuelos directos.
-
- Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y devuelve un objeto con la información de los vuelos directos.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/scale-flights-simple" y
+ devuelve un objeto con la información de los vuelos directos.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>origin</code> - Representa el pais seleccionado de busqueda el cual sera el origen</dd>
-<dd><code>destination</code> - Representa el pais seleccionado de busqueda el cual sera el destino</dd>
+<dd><code>origin</code> - Representa el pais seleccionado de busqueda el cual sera
+                     el origen</dd>
+<dd><code>destination</code> - Representa el pais seleccionado de busqueda el cual sera
+                     el destino</dd>
 <dd><code>departureDay</code> - Dia de salida establecido en la busqueda</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Una lista con objetos de tipo `FlightSimple` representando la información de los vuelos directos.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Una lista con objetos de tipo `FlightSimple` representando la
+         información de los vuelos directos.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos o si no hay información disponible.</dd>
 </dl>
 </section>
 </li>
@@ -1177,15 +1412,135 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getOneCity</span><wbr><span class="parameters">(@PathVariable
  int&nbsp;cityid)</span></div>
 <div class="block">End point para obtener la información de las ciudades.
-
- Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un objeto con la información de las ciudades.</div>
+ 
+ Este método maneja la solicitud GET a la ruta "/get-cities" y devuelve un
+ objeto con la información de las ciudades.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>cityid</code> - Id correspondiente al ID de la ciudad seleccionada</dd>
 <dt>Returns:</dt>
-<dd>Dependiendo del resultado de la consulta, se devuelve uno de los siguientes objetos:
-         * Una lista con objetos de tipo `City` representando la información de las ciudades.
-         * `WebError`: En caso de error durante la consulta dentro de la base de datos o si no hay información disponible.</dd>
+<dd>Dependiendo del resultado de la consulta, se devuelve uno de los
+         siguientes objetos:
+         * Una lista con objetos de tipo `City` representando la información
+         de las ciudades.
+         * `WebError`: En caso de error durante la consulta dentro de la base
+         de datos o si no hay información disponible.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="typesearch(java.lang.String)">
+<h3>typesearch</h3>
+<div class="member-signature"><span class="annotations">@PostMapping("/typesearch/{type}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">typesearch</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</span></div>
+<div class="block">Actualiza la información del tipo de búsqueda en la tabla GRAPH1 aumentando
+ el
+ valor de la busqueda dependiendo del tipo que se haya realizado o inserta el
+ dato
+ en caso de que no encuentre dentro de la tabla.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>type</code> - Tipo de búsqueda a actualizar (one-way o roundtrip)</dd>
+<dt>Returns:</dt>
+<dd>WebSuccess en caso de éxito, WebError en caso de fallo.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="typesearch()">
+<h3>typesearch</h3>
+<div class="member-signature"><span class="annotations">@GetMapping("/typesearch")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">typesearch</span>()</div>
+<div class="block">Obtiene información sobre tipos de búsqueda y la cantidad de busquedas
+ realizadas para cada uno de ellos para alimentar
+ a la grafica respectiva</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Lista de datagraphs o WebError.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="citysearch(int)">
+<h3>citysearch</h3>
+<div class="member-signature"><span class="annotations">@PostMapping("/citysearch/{id}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">citysearch</span><wbr><span class="parameters">(@PathVariable
+ int&nbsp;id)</span></div>
+<div class="block">Actualiza la información de las ciudades buscadas en la tabla GRAPH2
+ aumentando
+ el valor de la busqueda correspondiente dependiendo del la ciudad buscada
+ en caso de que no encuentre dentro de la tabla inserta la ciudad con un
+ conteo de 1.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>id</code> - Identificador de la ciudad.</dd>
+<dt>Returns:</dt>
+<dd>WebSuccess en caso de éxito, WebError en caso de fallo.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="citysearchgraph()">
+<h3>citysearchgraph</h3>
+<div class="member-signature"><span class="annotations">@GetMapping("/citysearchgraph")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">citysearchgraph</span>()</div>
+<div class="block">Obtiene información sobre las ciuades buscadas y la cantidad de busquedas
+ asociadas a cada ciudad para generar los datos en la grafica
+ a la grafica respectiva</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Lista de datagraphs o WebError.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="userspurchasedata()">
+<h3>userspurchasedata</h3>
+<div class="member-signature"><span class="annotations">@GetMapping("/userspurchasedata")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">userspurchasedata</span>()</div>
+<div class="block">Obtiene información de las compras realizadas por cada tipo de usuario
+ adjuntando su conteo de valores
+ para posteriormente ser utilizados en el FE para generar datos estadisticos
+ respecto a esta informacion</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Lista de datagraphs o WebError.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="searchregistration(com.apex.backend.Search)">
+<h3>searchregistration</h3>
+<div class="member-signature"><span class="annotations">@PostMapping("/searchregistration")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">searchregistration</span><wbr><span class="parameters">(@RequestBody
+ <a href="Search.html" title="class in com.apex.backend">Search</a>&nbsp;search)</span></div>
+<div class="block">Registra búsquedas de vuelos en la base de datos.
+ 
+ Este método recibe un objeto `Search` que toma los detalles de la
+ búsqueda (origen, destino, fechas, etc.)
+ e inserta la información en la tabla `SEARCHES`.
+ 
+ El método maneja dos escenarios: vuelos de ida y vuelta (con fecha de
+ regreso) y vuelos de ida
+ (sin fecha de regreso).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>search</code> - Objeto `Search` que contiene los detalles de la búsqueda.</dd>
+<dt>Returns:</dt>
+<dd>WebSuccess en caso de éxito, WebError en caso de fallo.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="searchdatatake()">
+<h3>searchdatatake</h3>
+<div class="member-signature"><span class="annotations">@GetMapping("/searchdatatake")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">searchdatatake</span>()</div>
+<div class="block">Obtiene historial de búsquedas realizadas dentro del sistema.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Lista de búsquedas o WebError.</dd>
 </dl>
 </section>
 </li>

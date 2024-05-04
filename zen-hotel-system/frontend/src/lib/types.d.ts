@@ -170,7 +170,7 @@ declare global {
     name: string;
     address: string;
     key: string;
-    discount: number;
+    discount: string;
   }
 }
 
