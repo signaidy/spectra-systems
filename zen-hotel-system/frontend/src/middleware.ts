@@ -7,8 +7,16 @@ import * as jose from "jose";
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
 
+  const params = new URLSearchParams(request.nextUrl.search);
+  params.set("pathname", request.nextUrl.pathname);
+
   if (!token) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    return NextResponse.redirect(
+      new URL(
+        `/signin?${params.toString()}`,
+        request.url
+      )
+    );
   }
 
   try {
