@@ -10,6 +10,12 @@ FROM node:21.7.2
 
 WORKDIR /usr/src/app
 
+ARG PUBLIC_BASE_URL
+ENV PUBLIC_BASE_URL=${PUBLIC_BASE_URL}
+
+ARG JWT_SECRET
+ENV JWT_SECRET=${JWT_SECRET}
+
 # Copy the rest of the source files into the image.
 COPY . .
 
