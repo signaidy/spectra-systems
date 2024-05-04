@@ -8,7 +8,7 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  marriot-system:
+  hilton-system:
     build:
       context: ../frontend
       args:
@@ -17,14 +17,14 @@ services:
         DB_NAME:
         EMAIL_CREDENTIALS:
     ports:
-      - 3000:3000
-  marriot-services:
+      - 3000:3006
+  hilton-services:
     build:
       context: ../backend
     env_file:
       - .env
     ports:
-      - 3001:3001
+      - 3001:3007
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
