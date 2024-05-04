@@ -5,7 +5,7 @@ import {
   parseTime,
   parseDate,
 } from "@internationalized/date";
-import { PUBLIC_BASE_URL } from '$env/static/public';
+import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
 export async function load({ locals }) {
   const response = await fetch(`${PUBLIC_BASE_URL}/get-cities`, {

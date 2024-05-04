@@ -1,8 +1,8 @@
 import { error, redirect } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
-import { JWT_SECRET } from "$env/static/private";
+import { JWT_SECRET } from "$env/dynamic/private";
 import jsonwebtoken from "jsonwebtoken";
-import { PUBLIC_BASE_URL } from "$env/static/public";
+import { PUBLIC_BASE_URL } from "$env/dynamic/public";
 
 const { sign } = jsonwebtoken;
 

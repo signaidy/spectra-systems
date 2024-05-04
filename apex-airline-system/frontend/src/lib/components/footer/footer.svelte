@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button";
   import { Copyright } from "lucide-svelte";
   import { onMount } from "svelte";
-  import { PUBLIC_BASE_URL } from '$env/static/public';
+  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
   let Logo; 
   let Text_Logo; 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import background from "$lib/assets/background.jpg";
   import { onMount } from "svelte";
-  import { PUBLIC_BASE_URL } from '$env/static/public';
+  import { PUBLIC_BASE_URL } from '$env/dynamic/public';
 
   let FeatureFlight1; 
   let FlightCountry1;
