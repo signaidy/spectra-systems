@@ -151,18 +151,25 @@ declare global {
 
   export interface Analytic {
     _id: string;
-    source: "web" | "rest" ,
-    location: string,
-    checkin: string,
-    checkout: string,
-    guests: number,
-    madeAt: string,
+    source: "web" | "rest";
+    location: string;
+    checkin: string;
+    checkout: string;
+    guests: number;
+    madeAt: string;
   }
 
   export interface Agency {
     _id: string;
     name: string;
     endpoint: string;
+  }
+
+  export interface Alliance {
+    _id: string;
+    name: string;
+    address: string;
+    key: string;
   }
 }
 

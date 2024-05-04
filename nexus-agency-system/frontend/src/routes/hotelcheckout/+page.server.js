@@ -8,6 +8,8 @@ export const actions = {
     const bundle = currentDate.toISOString().replace(/\W/g, '');
     console.log(bundle);
       const formData = await request.formData();
+      const providerId = formData.get("providerId")
+      const flightProviderId = formData.get("FlightProviderId")
       const flightId = formData.get("flight_id");
       const roundTrip = formData.get("roundTrip");
       const scale = formData.get("scale");
@@ -43,7 +45,7 @@ export const actions = {
         guests: guests,
         bundle: bundle
       };
-      const response = await fetch(`${PUBLIC_BACKEND_URL}/reservations`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/reservations?providerId=${providerId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,6 +54,7 @@ export const actions = {
       body: JSON.stringify(body),
     });
     const result = await response.json();
+    console.log(result)
     if(!result.ok){
       if (flightId != null) {
       let method = formData.get("paymenth_method");
@@ -83,7 +86,7 @@ export const actions = {
         bundle: bundle
       };
       console.log(body);
-      const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
+      const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}/${flightProviderId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +121,7 @@ export const actions = {
           bundle: bundle
         };
         console.log(body);
-        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}/${flightProviderId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -153,7 +156,7 @@ export const actions = {
           bundle: bundle
         };
         console.log(body);
-        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}/${flightProviderId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -187,7 +190,7 @@ export const actions = {
             bundle: bundle
           };
           console.log(body);
-          const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}`, {
+          const response = await fetch(`${PUBLIC_BACKEND_URL}/flights/purchase/${amount}/${method}/${flightProviderId}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

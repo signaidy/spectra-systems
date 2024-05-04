@@ -195,7 +195,7 @@ public class FlightController {
      * @throws JsonProcessingException
      */
     // Endpoint for purchasing a flight
-    @PostMapping("/purchase/{amount}/{method}")
+    @PostMapping("/purchase/{amount}/{method}/{providerId}")
     public ResponseEntity<Map<String, String>> purchaseFlight(
             @PathVariable int amount,
             @PathVariable String method,

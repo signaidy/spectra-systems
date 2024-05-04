@@ -20,7 +20,7 @@
 
   const handleCheckout = (hotel, guests, roomType, price, hotelname, beds, city, bedAmount, providerId) => {
     goto(
-      `/hotelcheckout?hotelid=${hotel}&checkin=${checkin}&checkout=${checkout}&roomtype=${roomType}&price=${price}&guests=${guests}&hotelname=${hotelname}&beds=${beds}&city=${city}&bedAmount=${bedAmount}`
+      `/hotelcheckout?hotelid=${hotel}&checkin=${checkin}&checkout=${checkout}&roomtype=${roomType}&price=${price}&guests=${guests}&hotelname=${hotelname}&beds=${beds}&city=${city}&bedAmount=${bedAmount}&providerId=${providerId}`
     );
   };
 </script>
@@ -84,6 +84,7 @@
                 room[roomType].beds.size, 
                 city,
                 room[roomType].beds.amount,
+                providerId
               )}>Continue</Button
           >
         </div>

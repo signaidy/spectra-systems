@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 // Components
 import { SectionTitle } from "@/components/user/sectionTitle";
-import { Agencies } from "@/components/agencies/agencies";
+import { Alliances } from "@/components/alliance/alliances";
 import { AllianceCreationForm } from "@/components/alliance/allianceCreationForm";
 
 export default function AllianceAdministrationHome() {
@@ -27,7 +27,7 @@ export default function AllianceAdministrationHome() {
         }
       >
         <div className="flex gap-x-3 gap-y-3 mt-5 mb-8 mr-8 flex-wrap">
-          <Agencies />
+          <Alliances />
         </div>
       </Suspense>
     </>

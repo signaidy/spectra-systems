@@ -172,8 +172,8 @@ public class FlightService {
 
         for (Provider provider : flightProviders) {
             String providerUrl = provider.getProviderUrl();
+            Long providerId = provider.getId();
 
-            // 1. One-Way Flights
             // Construct URL with query parameters for one-way flights
             UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(providerUrl + "/get-one-way-flights")
                     .queryParam("originCity", originCity)
@@ -189,9 +189,11 @@ public class FlightService {
             );
 
             externalFlight[] providerFlights = responseEntity.getBody();
+            for (externalFlight flight : providerFlights) {
+                flight.setProviderId(providerId);
+            }
             allFlights.addAll(Arrays.asList(providerFlights)); // Add one-way flights
 
-            // 2. Scale Flights (Optional)
             // Construct URL with query parameters for scale flights
             builder = UriComponentsBuilder.fromUriString(providerUrl + "/scale-flights")
                     .queryParam("originCity", originCity)
@@ -206,7 +208,9 @@ public class FlightService {
             );
 
             externalFlight[] scaleFlights = responseEntity.getBody();
-
+            for (externalFlight flight : scaleFlights) {
+                flight.setProviderId(providerId);
+            }
             for (externalFlight scaleFlight : scaleFlights) {
                 // Format arrival date for secondary flight search
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -228,7 +232,9 @@ public class FlightService {
                 );
 
                 externalFlight[] secondaryFlights = secondaryResponseEntity.getBody();
-
+                for (externalFlight flight : secondaryFlights) {
+                    flight.setProviderId(providerId);
+                }
                 if (secondaryFlights != null && secondaryFlights.length > 0) {
                     // Set connecting flight for the scale flight (assuming a setter exists)
                     scaleFlight.setScale(secondaryFlights[0]);
@@ -290,7 +296,6 @@ public class FlightService {
      */
     public void purchaseFlight(int amount, String method, Long providerId, FlightPurchaseRequest purchaseRequest) throws HttpServerErrorException, JsonProcessingException  {
         // Set discount and user_id
-        int discount = 20;
         long userIdPurchase = 1;
 
         if (providerId == null) {
@@ -303,32 +308,73 @@ public class FlightService {
             throw new RuntimeException("Provider not found for flight purchase with ID: " + providerId); // Handle provider not found
         }
         Provider provider = providerOptional.get();
-    
+        int discount = (int) (provider.getPercentageDiscount() * 100);
         // Construct the URL for purchasing a flight based on provider URL format (assuming a POST request to a specific endpoint)
-        String apiUrl = provider.getProviderUrl() + "/purchase-flight/" + amount + '/' + method + '/' + discount;
+        String apiUrl = provider.getProviderUrl() + "/purchase/" + amount + '/' + method + '/' + discount;
 
         // Create request body
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        // Construct the URL to retrieve available tickets
+        String ticketsUrl = provider.getProviderUrl() + "/availabletickets/" + purchaseRequest.getFlightId() + "/" + purchaseRequest.getType();
+
+        // Make a GET request to retrieve available tickets
+        ResponseEntity<String> ticketsResponse = restTemplate.getForEntity(ticketsUrl, String.class);
+
+        // Parse the response to extract the ticket_id
+        ObjectMapper TobjectMapper = new ObjectMapper();
+        JsonNode ticketsResponseBody = TobjectMapper.readTree(ticketsResponse.getBody());
+        // Extract ticket_id from the first ticket
+
+        List<Long> ticketIds = new ArrayList<>();
+        if (ticketsResponseBody.isArray()) {
+            for (JsonNode ticketNode : ticketsResponseBody) {
+                Long ticketId = ticketNode.get("ticket_id").asLong();
+                ticketIds.add(ticketId);
+            }
+        } else {
+            throw new RuntimeException("Unexpected response format: Not an array");
+        }
+        Long firstTicketId = ticketIds.get(0);
+        
+        logger.info("TicketId: {}", firstTicketId);
+
         // Create the body as JSON
         String requestBody = "{"
                 + "\"user_id\": \"" + userIdPurchase + "\","
-                + "\"flight_id\": \"" + purchaseRequest.getFlightId() + "\","
-                + "\"state\": \"" + purchaseRequest.getState() + "\","
-                + "\"type\": \"" + purchaseRequest.getType() + "\"\""
+                + "\"ticket_id\": \"" + firstTicketId + "\""
                 + "}";
+
+        logger.info("Sending HTTP request to: {}", apiUrl);
+        logger.debug("Request body: {}", requestBody);
 
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, requestEntity, String.class);
 
+        logger.info("Received HTTP response with status code: {}", response.getStatusCode());
+        logger.debug("Response body: {}", response.getBody());
         
         // Check if the purchase was successful
         if (response.getStatusCode() == HttpStatus.OK) {
+            // Check if the response body contains an error message
+            ObjectMapper EobjectMapper = new ObjectMapper();
+            JsonNode EresponseBody = EobjectMapper.readTree(response.getBody());
+            
+            if (EresponseBody.has("error")) {
+                String errorMessage = EresponseBody.get("error").asText();
+                // Handle the error case appropriately
+                logger.error("Error received from the external service: {}", errorMessage);
+                // You can throw an exception or handle it based on your application's requirements
+                // For example:
+                throw new RuntimeException("Error received from the external service: " + errorMessage);
+            }
             // Create and save Flight object
             for (int i = 0; i < amount; i++) {
-                Flight flight = new Flight(purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate(), purchaseRequest.getType(), purchaseRequest.getPrice(), purchaseRequest.getBundle());
+                Flight flight = new Flight(firstTicketId ,purchaseRequest.getUserId(), purchaseRequest.getFlightId().toString(), purchaseRequest.getDepartureDate(), purchaseRequest.getDepartureLocation(), purchaseRequest.getArrivalLocation(), purchaseRequest.getReturnDate(), purchaseRequest.getType(), purchaseRequest.getPrice(), purchaseRequest.getBundle());
+                flight.setProviderId(providerId);
+                logger.info("Sending HTTP request to: {}", flight.getId());
                 flightRepository.save(flight);
             }
 
