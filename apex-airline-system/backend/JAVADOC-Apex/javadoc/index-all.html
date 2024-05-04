@@ -65,7 +65,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html" class="type-name-link" title="class in com.apex.backend">ApexController</a> - Class in <a href="com/apex/backend/package-summary.html">com.apex.backend</a></dt>
 <dd>
-<div class="block">La clase `ApexController` es un controlador RESTful utilizado en la aplicación backend.</div>
+<div class="block">La clase `ApexController` es un controlador RESTful utilizado en la
+ aplicación backend.</div>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#%3Cinit%3E()" class="member-name-link">ApexController()</a> - Constructor for class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>&nbsp;</dd>
@@ -133,6 +134,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <a href="./com/apex/backend/City.html#param-cityId"><code>cityId</code></a> record component.</div>
 </dd>
+<dt><a href="com/apex/backend/ApexController.html#citysearch(int)" class="member-name-link">citysearch(int)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Actualiza la información de las ciudades buscadas en la tabla GRAPH2
+ aumentando
+ el valor de la busqueda correspondiente dependiendo del la ciudad buscada
+ en caso de que no encuentre dentro de la tabla inserta la ciudad con un
+ conteo de 1.</div>
+</dd>
+<dt><a href="com/apex/backend/ApexController.html#citysearchgraph()" class="member-name-link">citysearchgraph()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Obtiene información sobre las ciuades buscadas y la cantidad de busquedas
+ asociadas a cada ciudad para generar los datos en la grafica
+ a la grafica respectiva</div>
+</dd>
 <dt><a href="com/apex/backend/package-summary.html">com.apex.backend</a> - package com.apex.backend</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/apex/backend/FlightRecord.html#commentaries()" class="member-name-link">commentaries()</a> - Method in record class com.apex.backend.<a href="com/apex/backend/FlightRecord.html" title="class in com.apex.backend">FlightRecord</a></dt>
@@ -193,7 +208,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#createRating(com.apex.backend.Rating)" class="member-name-link">createRating(Rating)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
-<div class="block">End point para crear una nueva calificación asociada a un vuelo específico por un usuario registrado.</div>
+<div class="block">End point para crear una nueva calificación asociada a un vuelo específico
+ por un usuario registrado.</div>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#createUser(com.apex.backend.User,java.lang.String)" class="member-name-link">createUser(User, String)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
@@ -380,7 +396,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#getCities()" class="member-name-link">getCities()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
-<div class="block">End point para obtener la lista de todas las ciudades registradas en el sistema.</div>
+<div class="block">End point para obtener la lista de todas las ciudades registradas en el
+ sistema.</div>
 </dd>
 <dt><a href="com/apex/backend/OracleConnector.html#getConnection()" class="member-name-link">getConnection()</a> - Method in class com.apex.backend.<a href="com/apex/backend/OracleConnector.html" title="class in com.apex.backend">OracleConnector</a></dt>
 <dd>
@@ -392,7 +409,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#getEmailParametersFlightModified(int)" class="member-name-link">getEmailParametersFlightModified(int)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
-<div class="block">End point para obtener la información de los usuarios que han comprado un ticket de un vuelo modificado.</div>
+<div class="block">End point para obtener la información de los usuarios que han comprado un
+ ticket de un vuelo modificado.</div>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#getFlights()" class="member-name-link">getFlights()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
@@ -448,7 +466,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#getUsers()" class="member-name-link">getUsers()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
-<div class="block">End point para obtener la lista de todos los usuarios registrados en el sistema.</div>
+<div class="block">End point para obtener la lista de todos los usuarios registrados en el
+ sistema.</div>
 </dd>
 <dt><a href="com/apex/backend/ApexController.html#getUsertickets(int)" class="member-name-link">getUsertickets(int)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
@@ -560,7 +579,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Clase para establecer una conexión a una base de datos Oracle.</div>
 </dd>
-<dt><a href="com/apex/backend/OracleConnector.html#%3Cinit%3E()" class="member-name-link">OracleConnector()</a> - Constructor for class com.apex.backend.<a href="com/apex/backend/OracleConnector.html" title="class in com.apex.backend">OracleConnector</a></dt>
+<dt><a href="com/apex/backend/OracleConnector.html#%3Cinit%3E(java.lang.String)" class="member-name-link">OracleConnector(String)</a> - Constructor for class com.apex.backend.<a href="com/apex/backend/OracleConnector.html" title="class in com.apex.backend">OracleConnector</a></dt>
 <dd>
 <div class="block">Crea una nueva instancia de `OracleConnector` e intenta establecer una conexión 
  a la base de datos Oracle configurada.</div>
@@ -658,6 +677,22 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
+<dt><a href="com/apex/backend/Search.html" class="type-name-link" title="class in com.apex.backend">Search</a> - Class in <a href="com/apex/backend/package-summary.html">com.apex.backend</a></dt>
+<dd>
+<div class="block">Clase que representa los criterios de búsqueda para vuelos.</div>
+</dd>
+<dt><a href="com/apex/backend/Search.html#%3Cinit%3E(int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">Search(int, int, String, String, int, String, String, String)</a> - Constructor for class com.apex.backend.<a href="com/apex/backend/Search.html" title="class in com.apex.backend">Search</a></dt>
+<dd>
+<div class="block">Constructor para la clase `Search`.</div>
+</dd>
+<dt><a href="com/apex/backend/ApexController.html#searchdatatake()" class="member-name-link">searchdatatake()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Obtiene historial de búsquedas realizadas dentro del sistema.</div>
+</dd>
+<dt><a href="com/apex/backend/ApexController.html#searchregistration(com.apex.backend.Search)" class="member-name-link">searchregistration(Search)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Registra búsquedas de vuelos en la base de datos.</div>
+</dd>
 <dt><a href="com/apex/backend/ApexController.html#signIn(com.apex.backend.User)" class="member-name-link">signIn(User)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
 <dd>
 <div class="block">End point para el inicio de sesión de usuario.</div>
@@ -761,6 +796,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <a href="./com/apex/backend/TicketRecord.html#param-type"><code>type</code></a> record component.</div>
 </dd>
+<dt><a href="com/apex/backend/ApexController.html#typesearch()" class="member-name-link">typesearch()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Obtiene información sobre tipos de búsqueda y la cantidad de busquedas
+ realizadas para cada uno de ellos para alimentar
+ a la grafica respectiva</div>
+</dd>
+<dt><a href="com/apex/backend/ApexController.html#typesearch(java.lang.String)" class="member-name-link">typesearch(String)</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Actualiza la información del tipo de búsqueda en la tabla GRAPH1 aumentando
+ el
+ valor de la busqueda dependiendo del tipo que se haya realizado o inserta el
+ dato
+ en caso de que no encuentre dentro de la tabla.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:U">U</h2>
 <dl class="index">
@@ -831,6 +880,13 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/apex/backend/TicketRecord.html#userName()" class="member-name-link">userName()</a> - Method in record class com.apex.backend.<a href="com/apex/backend/TicketRecord.html" title="class in com.apex.backend">TicketRecord</a></dt>
 <dd>
 <div class="block">Returns the value of the <a href="./com/apex/backend/TicketRecord.html#param-userName"><code>userName</code></a> record component.</div>
+</dd>
+<dt><a href="com/apex/backend/ApexController.html#userspurchasedata()" class="member-name-link">userspurchasedata()</a> - Method in class com.apex.backend.<a href="com/apex/backend/ApexController.html" title="class in com.apex.backend">ApexController</a></dt>
+<dd>
+<div class="block">Obtiene información de las compras realizadas por cada tipo de usuario
+ adjuntando su conteo de valores
+ para posteriormente ser utilizados en el FE para generar datos estadisticos
+ respecto a esta informacion</div>
 </dd>
 </dl>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a></main>
