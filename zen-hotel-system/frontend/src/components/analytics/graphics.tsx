@@ -27,6 +27,7 @@ export async function Graphics() {
 
   function getLineAnalytics(data: Analytic[]) {
     const results: {
+      // @ts-ignore
       [key: string]: { location: string; [key: string]: number };
     } = {};
 
@@ -42,6 +43,7 @@ export async function Graphics() {
       }
 
       if (!results[analytic.location]) {
+        // @ts-ignore
         results[analytic.location] = {
           location: analytic.location,
         };
@@ -63,6 +65,7 @@ export async function Graphics() {
     }
 
     for (const property in results) {
+      // @ts-ignore
       results[property] = Object.fromEntries(
         Object.entries(results[property]).sort()
       );
