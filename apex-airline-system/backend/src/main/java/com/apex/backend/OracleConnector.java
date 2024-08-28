@@ -28,7 +28,7 @@ public class OracleConnector {
             System.out.println("USER:   " + username);
             OracleDataSource ods = new OracleDataSource();
             ods = new OracleDataSource();
-            ods.setURL("jdbc:oracle:thin:@137.184.88.75:1521/FREE");
+            ods.setURL("jdbc:oracle:thin:@host.docker.internal:1521/FREE");
             ods.setUser(username);
             ods.setPassword("sudoadmin");
             conn = ods.getConnection();
