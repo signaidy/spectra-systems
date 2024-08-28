@@ -115,7 +115,7 @@ public class FlightService {
     public List<externalFlight> getAllFlightsFromOtherBackend() {
         List<externalFlight> allFlights = new ArrayList<>();
     
-        // // Find all providers with type FLIGHT
+        // Find all providers with type FLIGHT
         // List<Provider> flightProviders = providerRepository.findByType(Type.AEROLINEA);
     
         // for (Provider provider : flightProviders) {
@@ -168,7 +168,7 @@ public class FlightService {
         List<externalFlight> allFlights = new ArrayList<>(); // List to store all flights
 
         // Find all providers with type FLIGHT
-        List<Provider> flightProviders = providerRepository.findByType(Type.AEROLINEA);
+        // List<Provider> flightProviders = providerRepository.findByType(Type.AEROLINEA);
 
         // for (Provider provider : flightProviders) {
         //     String providerUrl = provider.getProviderUrl();
@@ -257,7 +257,7 @@ public class FlightService {
         List<City> allCities = new ArrayList<>();
     
         // Find all providers with type AEROLINEA
-        List<Provider> aerolíneaProviders = providerRepository.findByType(Type.AEROLINEA);
+        // List<Provider> aerolíneaProviders = providerRepository.findByType(Type.AEROLINEA);
         // for (Provider provider : aerolíneaProviders) {
         //     String providerUrl = provider.getProviderUrl();
             
