@@ -4,7 +4,6 @@ node('windows-host') {
   }
   stage('SonarQube Analysis') {
     withSonarQubeEnv('my-sonarqube') {
-      sh "ls"
       sh "cd ./apex-airline-system/backend"
       sh "./gradlew sonar"
     }
