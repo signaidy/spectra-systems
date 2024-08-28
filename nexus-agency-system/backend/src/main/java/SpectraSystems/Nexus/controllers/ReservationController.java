@@ -105,58 +105,58 @@ public class ReservationController {
         if (providerId == null) {
             return ResponseEntity.badRequest().body(null);
         }
+        return ResponseEntity.badRequest().body(null);
+        // // Find the provider by ID
+        // Optional<Provider> providerOptional = providerRepository.findById(providerId);
+        // if (!providerOptional.isPresent()) {
+        //     return ResponseEntity.notFound().build(); // Provider with ID not found
+        // }
+        // Provider provider = providerOptional.get();
 
-        // Find the provider by ID
-        Optional<Provider> providerOptional = providerRepository.findById(providerId);
-        if (!providerOptional.isPresent()) {
-            return ResponseEntity.notFound().build(); // Provider with ID not found
-        }
-        Provider provider = providerOptional.get();
+        // // Construct the URL for creating reservation based on provider URL format
+        // String apiUrl = provider.getProviderUrl() + "/create-reservation";
 
-        // Construct the URL for creating reservation based on provider URL format
-        String apiUrl = provider.getProviderUrl() + "/create-reservation";
+        // RestTemplate restTemplate = new RestTemplate();
 
-        RestTemplate restTemplate = new RestTemplate();
+        // // Prepare the request body
+        // Map<String, Object> requestBody = new HashMap<>();
+        // requestBody.put("hotelId", reservation.getHotelId());
+        // requestBody.put("userId", HOTEL_USER_ID);
+        // String formattedCheckin = API_DATE_FORMAT.format(reservation.getDateStart());
+        // requestBody.put("checkin", formattedCheckin);
+        // String formattedCheckout = API_DATE_FORMAT.format(reservation.getDateEnd());
+        // requestBody.put("checkout", formattedCheckout);
+        // requestBody.put("roomType", reservation.getRoomType());
+        // requestBody.put("roomPrice", reservation.getPrice());
+        // requestBody.put("guests", reservation.getGuests());
+        // requestBody.put("stayDays", reservation.getTotalDays());
+        // requestBody.put("totalPrice", reservation.getTotalPrice());
 
-        // Prepare the request body
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("hotelId", reservation.getHotelId());
-        requestBody.put("userId", HOTEL_USER_ID);
-        String formattedCheckin = API_DATE_FORMAT.format(reservation.getDateStart());
-        requestBody.put("checkin", formattedCheckin);
-        String formattedCheckout = API_DATE_FORMAT.format(reservation.getDateEnd());
-        requestBody.put("checkout", formattedCheckout);
-        requestBody.put("roomType", reservation.getRoomType());
-        requestBody.put("roomPrice", reservation.getPrice());
-        requestBody.put("guests", reservation.getGuests());
-        requestBody.put("stayDays", reservation.getTotalDays());
-        requestBody.put("totalPrice", reservation.getTotalPrice());
+        // try {
+        //     // Make a POST request to the provider's URL
+        //     ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
 
-        try {
-            // Make a POST request to the provider's URL
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(apiUrl, requestBody, String.class);
+        //     if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.CREATED) {
+        //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        //     }
 
-            if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.CREATED) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
+        //     // Parse the response to extract reservation ID
+        //     ObjectMapper objectMapper = new ObjectMapper();
+        //     JsonNode rootNode = objectMapper.readTree(responseEntity.getBody());
+        //     String reservationId = rootNode.get("_id").asText();
 
-            // Parse the response to extract reservation ID
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(responseEntity.getBody());
-            String reservationId = rootNode.get("_id").asText();
+        //     reservation.setReservationNumber(reservationId);
 
-            reservation.setReservationNumber(reservationId);
-
-            Reservation createdReservation = reservationService.createReservation(reservation);
-            sendPurchaseConfirmationEmail(reservation.getUser());
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
-        } catch (RestClientResponseException e) {
-            System.out.println("Error creating reservation with provider: " + provider.getProviderName() + ", URL: " + apiUrl);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        //     Reservation createdReservation = reservationService.createReservation(reservation);
+        //     sendPurchaseConfirmationEmail(reservation.getUser());
+        //     return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
+        // } catch (RestClientResponseException e) {
+        //     System.out.println("Error creating reservation with provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        // }
     }
 
     
@@ -222,41 +222,41 @@ public class ReservationController {
 
         List<Map<String, Object>> allHotels = new ArrayList<>();
         // Find all providers with type HOTEL
-        List<Provider> hotelProviders = providerRepository.findByType(Type.HOTEL);
+        // List<Provider> hotelProviders = providerRepository.findByType(Type.HOTEL);
 
-        for (Provider provider : hotelProviders) {
-            String providerUrl = provider.getProviderUrl();
-            // Construct the URL with query parameters
-            String apiUrl = providerUrl + "/get-filtered-hotels?city=" + city;
-            if (checkIn != null) {
-                apiUrl += "&check-in=" + checkIn;
-            }
-            if (checkOut != null) {
-                apiUrl += "&check-out=" + checkOut;
-            }
-            if (guests != null) {
-                apiUrl += "&guests=" + guests;
-            }
+        // for (Provider provider : hotelProviders) {
+        //     String providerUrl = provider.getProviderUrl();
+        //     // Construct the URL with query parameters
+        //     String apiUrl = providerUrl + "/get-filtered-hotels?city=" + city;
+        //     if (checkIn != null) {
+        //         apiUrl += "&check-in=" + checkIn;
+        //     }
+        //     if (checkOut != null) {
+        //         apiUrl += "&check-out=" + checkOut;
+        //     }
+        //     if (guests != null) {
+        //         apiUrl += "&guests=" + guests;
+        //     }
 
-            // Make a request to the provider's URL
-            try {
-                ResponseEntity<List<Map<String, Object>>> responseEntity = restTemplate.exchange(
-                        apiUrl,
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<Map<String, Object>>>() {}
-                );
-                List<Map<String, Object>> providerHotels = responseEntity.getBody();
-                // Add provider ID to each hotel
-                for (Map<String, Object> hotel : providerHotels) {
-                    hotel.put("providerId", provider.getId());
-                }
-                allHotels.addAll(providerHotels);
-            } catch (RestClientResponseException e) {
-                // Handle potential exceptions during the request (optional)
-                System.out.println("Error fetching hotels from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
-            }
-        }
+        //     // Make a request to the provider's URL
+        //     try {
+        //         ResponseEntity<List<Map<String, Object>>> responseEntity = restTemplate.exchange(
+        //                 apiUrl,
+        //                 HttpMethod.GET,
+        //                 null,
+        //                 new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+        //         );
+        //         List<Map<String, Object>> providerHotels = responseEntity.getBody();
+        //         // Add provider ID to each hotel
+        //         for (Map<String, Object> hotel : providerHotels) {
+        //             hotel.put("providerId", provider.getId());
+        //         }
+        //         allHotels.addAll(providerHotels);
+        //     } catch (RestClientResponseException e) {
+        //         // Handle potential exceptions during the request (optional)
+        //         System.out.println("Error fetching hotels from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+        //     }
+        // }
         return ResponseEntity.ok().body(allHotels);
     }
 
@@ -275,39 +275,39 @@ public class ReservationController {
         if (providerId == null) {
             return ResponseEntity.badRequest().body(null);
         }
-
+        return ResponseEntity.badRequest().body(null);
         // Find the provider by ID
-        Optional<Provider> providerOptional = providerRepository.findById(providerId);
-        if (!providerOptional.isPresent()) {
-            return ResponseEntity.notFound().build(); // Provider with ID not found
-        }
+        // Optional<Provider> providerOptional = providerRepository.findById(providerId);
+        // if (!providerOptional.isPresent()) {
+        //     return ResponseEntity.notFound().build(); // Provider with ID not found
+        // }
 
-        Provider provider = providerOptional.get();
-        String apiUrl = provider.getProviderUrl() + "/get-hotel-by-id/" + id;
-        RestTemplate restTemplate = new RestTemplate();
+        // Provider provider = providerOptional.get();
+        // String apiUrl = provider.getProviderUrl() + "/get-hotel-by-id/" + id;
+        // RestTemplate restTemplate = new RestTemplate();
 
-        try {
-            ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
-            Map<String, Object> hotel = response.getBody();
-            // Check if the response contains hotel data
-            if (hotel == null) {
-                return ResponseEntity.notFound().build();
-            }
+        // try {
+        //     ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
+        //     Map<String, Object> hotel = response.getBody();
+        //     // Check if the response contains hotel data
+        //     if (hotel == null) {
+        //         return ResponseEntity.notFound().build();
+        //     }
         
-            // Create a new mutable map to construct the response body
-            Map<String, Object> responseBody = new HashMap<>(constructResponse(hotel));
+        //     // Create a new mutable map to construct the response body
+        //     Map<String, Object> responseBody = new HashMap<>(constructResponse(hotel));
             
-            // Add the providerId field to the response body
-            responseBody.put("providerId", providerId);
+        //     // Add the providerId field to the response body
+        //     responseBody.put("providerId", providerId);
         
-            return ResponseEntity.ok().body(responseBody);
-        } catch (RestClientResponseException e) {
-            System.out.println("Error fetching hotel from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        //     return ResponseEntity.ok().body(responseBody);
+        // } catch (RestClientResponseException e) {
+        //     System.out.println("Error fetching hotel from provider: " + provider.getProviderName() + ", URL: " + apiUrl);
+        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        // }
         
         
     }
@@ -336,31 +336,31 @@ public class ReservationController {
     List<String> allHotelCities = new ArrayList<>();
     
     // Find all providers with type HOTEL
-    List<Provider> hotelProviders = providerRepository.findByType(Type.HOTEL);
+    // // List<Provider> hotelProviders = providerRepository.findByType(Type.HOTEL);
     
-    for (Provider provider : hotelProviders) {
-        String providerUrl = provider.getProviderUrl();
+    // // for (Provider provider : hotelProviders) {
+    // //     String providerUrl = provider.getProviderUrl();
         
-        // Make a request to the provider's URL to get cities
-        try {
-            ResponseEntity<List<String>> responseEntity = restTemplate.exchange(
-                providerUrl + "/get-cities",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<String>>() {}
-            );
-            List<String> providerHotelCities = responseEntity.getBody();
+    // //     // Make a request to the provider's URL to get cities
+    // //     try {
+    // //         ResponseEntity<List<String>> responseEntity = restTemplate.exchange(
+    // //             providerUrl + "/get-cities",
+    // //             HttpMethod.GET,
+    // //             null,
+    // //             new ParameterizedTypeReference<List<String>>() {}
+    // //         );
+    // //         List<String> providerHotelCities = responseEntity.getBody();
             
-            // Filter new hotel cities by comparing names with allHotelCities
-            for (String cityName : providerHotelCities) {
-                if (!allHotelCities.contains(cityName)) {
-                    allHotelCities.add(cityName);
-                }
-            }
-        } catch (RestClientResponseException e) {
-            System.out.println("Error fetching cities from provider: " + provider.getProviderName() + ", URL: " + providerUrl);
-        }
-    }        
+    // //         // Filter new hotel cities by comparing names with allHotelCities
+    // //         for (String cityName : providerHotelCities) {
+    // //             if (!allHotelCities.contains(cityName)) {
+    // //                 allHotelCities.add(cityName);
+    // //             }
+    // //         }
+    // //     } catch (RestClientResponseException e) {
+    // //         System.out.println("Error fetching cities from provider: " + provider.getProviderName() + ", URL: " + providerUrl);
+    // //     }
+    //      }        
         return allHotelCities;
     }
 
