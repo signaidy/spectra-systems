@@ -3,7 +3,7 @@ node('windows-host') {
     checkout scm
   }
   stage('SonarQube Analysis') {
-    withSonarQubeEnv() {
+    withSonarQubeEnv('my-sonarqube') {
       sh "cd ./apex-airline-system/backend"
       sh "./gradlew sonar"
     }
