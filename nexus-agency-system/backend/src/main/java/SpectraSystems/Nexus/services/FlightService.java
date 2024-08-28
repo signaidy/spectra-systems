@@ -256,9 +256,8 @@ public class FlightService {
     public List<City> getAllCitiesFromOtherBackend() {
         List<City> allCities = new ArrayList<>();
     
-        // // Find all providers with type AEROLINEA
+        // Find all providers with type AEROLINEA
         // List<Provider> aerolíneaProviders = providerRepository.findByType(Type.AEROLINEA);
-        
         // for (Provider provider : aerolíneaProviders) {
         //     String providerUrl = provider.getProviderUrl();
             
