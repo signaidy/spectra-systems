@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - Carlos'Main
+      - Carlos'Dev
+      - Carlos'QA
 
 jobs:
   build:
