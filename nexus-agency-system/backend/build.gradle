@@ -23,8 +23,10 @@ java {
 
 sonar {
   properties {
-    property "sonar.projectKey", "spectra-systems"
-    property "sonar.projectName", "spectra-systems"
+    property "sonar.projectName", "nexus"
+    property "sonar.host.url", "http://127.0.0.1:9000"
+	property "sonar.login", "admin"
+	property "sonar.password", "W0lf3n5t31n!"
   }
 }
 
