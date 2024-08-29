@@ -30,8 +30,12 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+      - name: Make gradlew executable        
+        working-directory: ./nexus-agency-system/backend/
+        run: chmod +x ./gradlew
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: ./gradlew build sonar --info
+        working-directory: ./nexus-agency-system/backend/
+        run: ./gradlew build sonar
