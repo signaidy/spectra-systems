@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - Carlos'Main
-      - Carlos'Dev
-      - Carlos'QA
 
 jobs:
   build:
