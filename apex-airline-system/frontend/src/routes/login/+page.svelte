@@ -4,11 +4,6 @@
   import { Label } from "$lib/components/ui/label";
   import { Input } from "$lib/components/ui/input";
   import { Button } from "$lib/components/ui/button";
-  import { Loader2 } from "lucide-svelte";
-
-  export let form;
-
-  let loading = false;
 </script>
 
 <div

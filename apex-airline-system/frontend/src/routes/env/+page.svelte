@@ -1,16 +1,3 @@
-<script lang="ts">
-  import { enhance } from "$app/forms";
-
-  import { Label } from "$lib/components/ui/label";
-  import { Input } from "$lib/components/ui/input";
-  import { Button } from "$lib/components/ui/button";
-  import { Loader2 } from "lucide-svelte";
-
-  export let form;
-
-  let loading = false;
-</script>
-
 <div
   class="min-h-[calc(100vh-5rem)] bg-[url('$lib/assets/home-background.jpg')] bg-cover bg-fixed"
 >
