@@ -24,7 +24,7 @@ java {
 sonar {
   properties {
     property "sonar.projectName", "spectra-systems"
-    property "sonar.host.url", "http://localhost:9000"
+    property "sonar.host.url", "https://xzjb59q0-9000.use.devtunnels.ms"
 	property "sonar.login", "admin"
 	property "sonar.password", "admin1"	
   }
