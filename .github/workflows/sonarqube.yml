@@ -38,4 +38,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         working-directory: ./nexus-agency-system/backend/
-        run: ./gradlew sonar
+        run: ./gradlew build sonar
