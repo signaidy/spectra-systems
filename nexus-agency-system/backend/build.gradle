@@ -24,7 +24,7 @@ java {
 sonar {
   properties {
     property "sonar.projectName", "nexus"
-    property "sonar.host.url", "http://127.0.0.1:9000"
+    property "sonar.host.url", "https://1e11-179-60-175-137.ngrok-free.app"
 	property "sonar.login", "admin"
 	property "sonar.password", "W0lf3n5t31n!"
   }
@@ -60,6 +60,6 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
+// tasks.named('test') {
+// 	useJUnitPlatform()
+// }
