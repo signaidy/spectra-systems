@@ -60,6 +60,6 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
+// tasks.named('test') {
+// 	useJUnitPlatform()
+// }
