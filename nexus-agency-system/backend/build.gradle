@@ -24,7 +24,7 @@ java {
 sonar {
   properties {
     property "sonar.projectName", "nexus"
-    property "sonar.host.url", "https://c838-2803-c800-4040-2300-e892-7cca-745a-5a8b.ngrok-free.app"
+    property "sonar.host.url", "https://xzjb59q0-9000.use.devtunnels.ms/"
 	property "sonar.login", "admin"
 	property "sonar.password", "admin1"
   }
