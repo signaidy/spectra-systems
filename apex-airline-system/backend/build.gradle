@@ -38,5 +38,6 @@ sonar {
     property "sonar.projectKey", "NqMax_spectra-systems_a95daaf7-6d29-43d1-b7fd-ba908d678e43"
     property "sonar.projectName", "spectra-systems"
     property "sonar.token", "squ_416aa275c1ed0b1581f1a02c30af60096119b8ce"
+	property "sonar.exclusions:", "**/*.java"
   }
 }
