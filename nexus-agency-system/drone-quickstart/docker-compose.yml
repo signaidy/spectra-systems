@@ -8,8 +8,8 @@ services:
         environment:
         - DRONE_SERVER_HOST=localhost
         - DRONE_SERVER_PROTO=http
-        - DRONE_SERVER_PROXY_HOST=https://xzjb59q0-8080.use.devtunnels.ms/
-        - DRONE_SERVER_PROXY_PROTO=https
+        - DRONE_SERVER_PROXY_HOST=http://xzjb59q0-8080.use.devtunnels.ms/
+        - DRONE_SERVER_PROXY_PROTO=http
         - DRONE_RPC_SECRET=bea26a2221fd8090ea38720fc445eca6
         - DRONE_COOKIE_SECRET=e8206356c843d81e05ab6735e7ebf075
         - DRONE_COOKIE_TIMEOUT=720h
@@ -25,8 +25,8 @@ services:
         environment:
         - DRONE_SERVER_HOST=localhost
         - DRONE_SERVER_PROTO=http
-        - DRONE_SERVER_PROXY_HOST=https://xzjb59q0-8080.use.devtunnels.ms/
-        - DRONE_SERVER_PROXY_PROTO=https
+        - DRONE_SERVER_PROXY_HOST=http://xzjb59q0-8080.use.devtunnels.ms/
+        - DRONE_SERVER_PROXY_PROTO=http
         - DRONE_RPC_SECRET=bea26a2221fd8090ea38720fc445eca6
         - DRONE_COOKIE_SECRET=e8206356c843d81e05ab6735e7ebf075
         - DRONE_COOKIE_TIMEOUT=720h
@@ -44,7 +44,7 @@ services:
         environment:
         - DRONE_RPC_HOST=proxy
         - DRONE_RPC_PROTO=http
-        - DRONE_RPC_SECRET=4a1afe78652fd6d9f1aa65a101634af3
+        - DRONE_RPC_SECRET=bea26a2221fd8090ea38720fc445eca6
         - DRONE_TMATE_ENABLED=true
         volumes:
         - /var/run/docker.sock:/var/run/docker.sock
@@ -57,6 +57,7 @@ services:
         image: haproxy
         ports:
             - "8080:80"
+            - "80:80"
         volumes:
         - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
         depends_on: 
