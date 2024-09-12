@@ -1,0 +1,56 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: sonar_analysis
+    image: sonarsource/sonar-scanner-cli
+    commands:
+      - sonar-scanner
+
+  - name: build_image
+    image: plugins/docker
+    settings:
+      repo: your-docker-repo/your-project
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+
+  - name: deploy_to_dev
+    image: your-deployment-image
+    when:
+      branch:
+        - dev
+    environment:
+      ENV_NAME: "Carlos'Dev"
+    commands:
+      - ./deploy.sh dev
+
+  - name: deploy_to_qa
+    image: your-deployment-image
+    when:
+      branch:
+        - uat
+    environment:
+      ENV_NAME: "Carlos'QA"
+    commands:
+      - ./deploy.sh qa
+
+  - name: deploy_to_prod
+    image: your-deployment-image
+    when:
+      branch:
+        - master
+    environment:
+      ENV_NAME: "Carlos'Main"
+    commands:
+      - ./deploy.sh prod
+
+trigger:
+  event:
+    - push
+    - pull_request
