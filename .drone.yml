@@ -4,51 +4,41 @@ name: default
 
 steps:
   - name: sonar_analysis
-    image: sonarsource/sonar-scanner-cli
+    image: gradle:jdk21
     commands:
-      - sonar-scanner
-
-  - name: build_image
-    image: plugins/docker
-    settings:
-      repo: your-docker-repo/your-project
-      tags:
-        - latest
-        - ${DRONE_COMMIT_SHA}
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-
-  - name: deploy_to_dev
-    image: your-deployment-image
+      - cd /nexus-agency-system/backend
+      - ./gradlew build sonar -Dsonar.qualitygate.wait=true --info
     when:
       branch:
-        - dev
-    environment:
-      ENV_NAME: "Carlos'Dev"
-    commands:
-      - ./deploy.sh dev
+        - "Carlos'Main"
+        - "Carlos'QA"
+        - "Carlos'Dev"
 
-  - name: deploy_to_qa
-    image: your-deployment-image
+  - name: stop_and_redeploy_backend
+    image: docker
+    commands:
+      - cd /nexus-agency-system/backend
+      - docker stop nexusback || true
+      - docker rm nexusback || true
+      - docker run -d --name nexusback nexusback
     when:
       branch:
-        - uat
-    environment:
-      ENV_NAME: "Carlos'QA"
-    commands:
-      - ./deploy.sh qa
+        - "Carlos'Main"
+        - "Carlos'QA"
+        - "Carlos'Dev"
 
-  - name: deploy_to_prod
-    image: your-deployment-image
+  - name: stop_and_redeploy_frontend
+    image: docker
+    commands:
+      - cd /nexus-agency-system/frontend
+      - docker stop nexusfront || true
+      - docker rm nexusfront || true
+      - docker run -d --name nexusfront nexusfront
     when:
       branch:
-        - master
-    environment:
-      ENV_NAME: "Carlos'Main"
-    commands:
-      - ./deploy.sh prod
+        - "Carlos'Main"
+        - "Carlos'QA"
+        - "Carlos'Dev"
 
 trigger:
   event:
