@@ -10,7 +10,7 @@ steps:
       - ./gradlew build sonar -Dsonar.qualitygate.wait=true --info
     when:
       branch:
-        - "Carlos'Main"
+        - "main"
         - "Carlos'QA"
         - "Carlos'Dev"
 
@@ -23,7 +23,7 @@ steps:
       - docker run -d --name nexusback nexusback
     when:
       branch:
-        - "Carlos'Main"
+        - "main"
         - "Carlos'QA"
         - "Carlos'Dev"
 
@@ -36,7 +36,7 @@ steps:
       - docker run -d --name nexusfront nexusfront
     when:
       branch:
-        - "Carlos'Main"
+        - "main"
         - "Carlos'QA"
         - "Carlos'Dev"
 
