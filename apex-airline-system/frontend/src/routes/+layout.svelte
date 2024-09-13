@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Header from "$lib/components/header/header.svelte";
+  // import Header from "$lib/components/header/header.svelte";
   import "../app.css";
 
-  export let data;
+  // export let data;
 </script>
 
-<Header {data} />
+<!-- <Header {data} /> -->
 <slot />

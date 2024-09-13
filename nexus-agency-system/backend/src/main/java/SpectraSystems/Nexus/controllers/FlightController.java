@@ -173,7 +173,11 @@ public class FlightController {
      */
     @GetMapping("/avianca/cities")
     public ResponseEntity<List<City>> getAllCitiesFromOtherBackend() {
+        
         List<City> cities = flightService.getAllCitiesFromOtherBackend();
+        if(true){
+            cities = flightService.getAllCitiesFromOtherBackend();
+        }
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
