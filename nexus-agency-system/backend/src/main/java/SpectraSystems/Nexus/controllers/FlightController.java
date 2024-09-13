@@ -173,6 +173,7 @@ public class FlightController {
      */
     @GetMapping("/avianca/cities")
     public ResponseEntity<List<City>> getAllCitiesFromOtherBackend() {
+        
         List<City> cities = flightService.getAllCitiesFromOtherBackend();
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
@@ -253,6 +254,7 @@ public class FlightController {
                     reservationRepository.save(reservation);
                     sendCancellationEmail(reservation.getUser(), "reservation");
                 }
+            
                 if (true) {
                     reservationsWithSameBundle = null;
                 }
