@@ -12,10 +12,9 @@ services:
     build:
       context: ../frontend
       args:
-        MONGODB_URI:
-        JWT_SECRET:
-        DB_NAME:
-        EMAIL_CREDENTIALS:
+        MONGODB_URI: 
+        JWT_SECRET: 
+        EMAIL_CREDENTIALS: 
     ports:
       - 3000:3000
   marriot-services:
