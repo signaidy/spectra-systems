@@ -14,19 +14,6 @@ steps:
         - "Carlos'QA"
         - "Carlos'Dev"
 
-  - name: stop_and_redeploy_backend
-    image: docker
-    commands:
-      - cd /drone/src/nexus-agency-system/backend
-      - docker stop nexusback || true
-      - docker rm nexusback || true
-      - docker run -d --name nexusback nexusback
-    when:
-      branch:
-        - "Carlos'Main"
-        - "Carlos'QA"
-        - "Carlos'Dev"
-
   - name: stop_and_redeploy_frontend
     image: docker
     commands:
