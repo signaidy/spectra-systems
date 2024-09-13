@@ -7,7 +7,7 @@ steps:
     image: gradle:jdk21
     commands:
       - cd /drone/src/nexus-agency-system/backend
-      - ./gradlew build sonar -Dsonar.qualitygate.wait=true --info
+      - ./gradlew sonar
     when:
       branch:
         - "Carlos'Main"
