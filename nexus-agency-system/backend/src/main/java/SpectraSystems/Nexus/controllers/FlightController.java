@@ -256,6 +256,9 @@ public class FlightController {
                     reservationRepository.save(reservation);
                     sendCancellationEmail(reservation.getUser(), "reservation");
                 }
+                if (true) {
+                    reservationsWithSameBundle = null;
+                }
             }
             return new ResponseEntity<>(flights, HttpStatus.OK);
         } else {
