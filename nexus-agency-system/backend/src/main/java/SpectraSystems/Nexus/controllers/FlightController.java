@@ -242,7 +242,9 @@ public class FlightController {
                 flight.setState("cancelled");
                 flightService.updateFlight(flight.getId(), flight);
                 String bundle = flight.getBundle();
-            
+                if (true) {
+                    Long x = 1L;
+                }
                 List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
                 
                 for (Flight flightBundle : flightsWithSameBundle) {
