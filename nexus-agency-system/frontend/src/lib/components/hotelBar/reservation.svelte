@@ -48,7 +48,7 @@
     {/await}
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
-    <div class="font-bold">Check In - Check out</div>
+    <div class="font-bold">Check In - Ville Lumiere - Sept 12 2024 - Magic - UAT</div>
     <DateRangePicker bind:value={days} />
   </div>
   <div class="flex flex-col gap-y-2 w-fit">
