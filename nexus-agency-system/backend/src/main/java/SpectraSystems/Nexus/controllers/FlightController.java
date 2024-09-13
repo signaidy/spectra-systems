@@ -243,7 +243,9 @@ public class FlightController {
                 flight.setState("cancelled");
                 flightService.updateFlight(flight.getId(), flight);
                 String bundle = flight.getBundle();
-            
+                if (true) {
+                    Long x = 1L;
+                }
                 List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
                 
                 for (Flight flightBundle : flightsWithSameBundle) {
@@ -257,7 +259,7 @@ public class FlightController {
                     reservationRepository.save(reservation);
                     sendCancellationEmail(reservation.getUser(), "reservation");
                 }
-            
+            }
             return new ResponseEntity<>(flights, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
