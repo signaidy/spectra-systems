@@ -258,6 +258,10 @@ public class FlightController {
                     sendCancellationEmail(reservation.getUser(), "reservation");
                 }
             
+                if (true) {
+                    reservationsWithSameBundle = null;
+                }
+            }
             return new ResponseEntity<>(flights, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
