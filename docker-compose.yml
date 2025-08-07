@@ -1,0 +1,64 @@
+services:
+  zen-frontend:
+    build:
+      context: ./zen-hotel-system/frontend
+      dockerfile: Dockerfile
+      args:
+        MONGODB_URI: ${MONGODB_URI}
+        JWT_SECRET: ${JWT_SECRET}
+        DB_NAME: ${DB_NAME}
+        EMAIL_CREDENTIALS: ${EMAIL_CREDENTIALS}
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+
+  zen-backend:
+    build:
+      context: ./zen-hotel-system/backend
+      dockerfile: Dockerfile
+    container_name: zen_backend
+    ports:
+      - "3001:3001"
+
+  nexus-frontend:
+    build:
+      context: ./nexus-agency-system/frontend
+      dockerfile: Dockerfile
+    container_name: nexus_frontend
+    ports:
+      - "3002:3000"
+
+  nexus-backend:
+    build:
+      context: ./nexus-agency-system/backend
+      dockerfile: Dockerfile
+    container_name: nexus_backend
+    ports:
+      - "3003:3001"
+    depends_on:
+      - oracle
+
+  apex-frontend:
+    build:
+      context: ./apex-airline-system/frontend
+      dockerfile: Dockerfile
+    container_name: apex_frontend
+    ports:
+      - "3004:3000"
+
+  apex-backend:
+    build:
+      context: ./apex-airline-system/backend
+      dockerfile: Dockerfile
+    container_name: apex_backend
+    ports:
+      - "3005:3001"
+
+  oracle:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle_db
+    environment:
+      - ORACLE_PASSWORD=admin
+    ports:
+      - "1521:1521"
