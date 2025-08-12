@@ -18,3 +18,8 @@ COPY . .
 EXPOSE 42069
 
 CMD gradle bootRun
+
+# Expose default Spring Boot port
+EXPOSE 8080
+
+# Profiles/DB via environment variables; see .env.* files
