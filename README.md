@@ -17,8 +17,6 @@ a
 Change QA
 why
 
-
-
 ## CI/CD Setup (Nexus)
 
 1. **GitHub Secrets (repo → Settings → Secrets → Actions)**:
