@@ -1,26 +1,6 @@
+version: "3.8"
+
 services:
-  zen-frontend:
-    build:
-      context: ./zen-hotel-system/frontend
-      dockerfile: Dockerfile
-      args:
-        MONGODB_URI: ${MONGODB_URI}
-        JWT_SECRET: ${JWT_SECRET}
-        DB_NAME: ${DB_NAME}
-        EMAIL_CREDENTIALS: ${EMAIL_CREDENTIALS}
-    env_file:
-      - .env
-    ports:
-      - "3000:3000"
-
-  zen-backend:
-    build:
-      context: ./zen-hotel-system/backend
-      dockerfile: Dockerfile
-    container_name: zen_backend
-    ports:
-      - "3001:3001"
-
   nexus-frontend:
     build:
       context: ./nexus-agency-system/frontend
@@ -28,6 +8,7 @@ services:
     container_name: nexus_frontend
     ports:
       - "3002:3000"
+    # add env_file/environment if your frontend needs it
 
   nexus-backend:
     build:
@@ -38,27 +19,64 @@ services:
       - "3003:3001"
     depends_on:
       - oracle
-
-  apex-frontend:
-    build:
-      context: ./apex-airline-system/frontend
-      dockerfile: Dockerfile
-    container_name: apex_frontend
-    ports:
-      - "3004:3000"
-
-  apex-backend:
-    build:
-      context: ./apex-airline-system/backend
-      dockerfile: Dockerfile
-    container_name: apex_backend
-    ports:
-      - "3005:3001"
+    # If your backend reads DB connection from env, put them here:
+    # environment:
+    #   - DB_HOST=oracle
+    #   - DB_PORT=1521
+    #   - DB_USER=system
+    #   - DB_PASSWORD=admin
+    #   - DB_SERVICE=FREEPDB1
 
   oracle:
     image: gvenzl/oracle-free:latest
     container_name: oracle_db
     environment:
       - ORACLE_PASSWORD=admin
+      # Optional: set ORACLE_DATABASE to create a PDB name
+      # - ORACLE_DATABASE=FREEPDB1
     ports:
       - "1521:1521"
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "echo 'SELECT 1 FROM dual;' | sqlplus -s system/admin@//localhost:1521/FREEPDB1 || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+
+  # --- SonarQube stack ---
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    depends_on:
+      - sonarqube-db
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+  sonarqube-db:
+    image: postgres:15
+    container_name: sonarqube_db
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    volumes:
+      - sonarqube_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar -d sonar"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_db:
+

@@ -1,0 +1,24 @@
+services:
+  nexus:
+    build: .
+    image: nexus-app:dev
+    container_name: nexus-dev
+    env_file: .env.dev
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    container_name: nexus-db-dev
+    environment:
+      MYSQL_DATABASE: nexus_dev
+      MYSQL_USER: nexus
+      MYSQL_PASSWORD: nexus
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - nexus-dev-db:/var/lib/mysql
+
+volumes:
+  nexus-dev-db:
