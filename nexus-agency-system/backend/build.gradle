@@ -7,14 +7,6 @@ plugins {
     id "jacoco"
 }
 
-sourceSets {
-    main {
-        java {
-            './src/main/java/SpectraSystems/Nexus'
-        }
-    }
-}
-
 group = 'SpectraSystems'
 version = '0.0.1-SNAPSHOT'
 
@@ -22,32 +14,24 @@ java {
     sourceCompatibility = '21'
 }
 
-sonar {
-  properties {
-    // identify the project
-    property "sonar.projectKey", "spectra-systems_nexus-backend"
-    property "sonar.projectName", "spectra-systems :: nexus-backend"
+// SonarQube config
+sonarqube {
+    properties {
+        // Identidad del proyecto
+        property "sonar.projectKey", "spectra-systems_nexus-backend"
+        property "sonar.projectName", "spectra-systems :: nexus-backend"
 
-    // where your sources really are (matches your sourceSets)
-    property "sonar.sources", "src/main/java/SpectraSystems/Nexus"
-    // if you have tests under the standard path, keep this; otherwise you can remove
-    property "sonar.tests", "src/test/java"
+        // Rutas estándar
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
 
-    // compiled classes for analysis
-    property "sonar.java.binaries", "build/classes/java/main"
+        // Clases compiladas
+        property "sonar.java.binaries", "build/classes/java/main"
 
-    // coverage (JaCoCo XML)
-    property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
-
-    // your server URL (ok to keep your tunnel here if it’s reachable)
-    property "sonar.host.url", "https://xzjb59q0-9000.use.devtunnels.ms"
-
-    // ⚠️ prefer a token at runtime instead of login/password in the file:
-    // property "sonar.token", will be provided via -Dsonar.token=... or env
-    // If you insist on basic auth, you can keep these, but token is recommended:
-    // property "sonar.login", "admin"
-    // property "sonar.password", "admin1"
-  }
+        // Cobertura (JaCoCo XML)
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.java.source", "21"
+    }
 }
 
 javadoc {
@@ -64,14 +48,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation('com.oracle.database.jdbc:ojdbc8-production:19.18.0.0')
+
+    implementation 'com.oracle.database.jdbc:ojdbc8-production:19.18.0.0'
+
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -92,4 +80,3 @@ jacocoTestReport {
         html.required = true
     }
 }
-
