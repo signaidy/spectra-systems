@@ -37,7 +37,7 @@ public class FlightController {
     private final FlightRepository flightRepository;
     private final ReservationRepository reservationRepository;
     private final UserService userService;
-    private final cancelled = "cancelled";
+    private static final String Cancelled = "cancelled";
 
 
     // private static final Logger logger = LoggerFactory.getLogger(FlightController.class); Use for loggin errors lmao
@@ -241,20 +241,20 @@ public class FlightController {
         List<Flight> flights = flightService.getFlightsByFlightNumber(flightNumber);
         if (!flights.isEmpty()) {
             for (Flight flight : flights) {
-                flight.setState(cancelled);
+                flight.setState(Cancelled);
                 flightService.updateFlight(flight.getId(), flight);
                 String bundle = flight.getBundle();
             
                 List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
                 
                 for (Flight flightBundle : flightsWithSameBundle) {
-                    flightBundle.setState(cancelled);
+                    flightBundle.setState(Cancelled);
                     flightRepository.save(flightBundle);
                     sendCancellationEmail(flightBundle.getUser(), "flight");
                 }
                 List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
                 for (Reservation reservation : reservationsWithSameBundle) {
-                    reservation.setState(cancelled);
+                    reservation.setState(Cancelled);
                     reservationRepository.save(reservation);
                     sendCancellationEmail(reservation.getUser(), "reservation");
                 }
@@ -275,20 +275,20 @@ public class FlightController {
         Optional<Flight> optionalFlight = flightService.getFlightById(id);
         if(optionalFlight.isPresent()){
             Flight flight = optionalFlight.get();
-            flight.setState(cancelled);
+            flight.setState(Cancelled);
             flightRepository.save(flight);
             String bundle = flight.getBundle();
             
             List<Flight> flightsWithSameBundle = flightRepository.findByBundle(bundle);
             
             for (Flight flights : flightsWithSameBundle) {
-                flights.setState(cancelled);
+                flights.setState(Cancelled);
                 flightRepository.save(flights);
                 sendCancellationEmail(flights.getUser(), "flight");
             }
             List<Reservation> reservationsWithSameBundle = reservationRepository.findByBundle(bundle);
             for (Reservation reservation : reservationsWithSameBundle) {
-                reservation.setState(cancelled);
+                reservation.setState(Cancelled);
                 reservationRepository.save(reservation);
                 sendCancellationEmail(reservation.getUser(), "reservation");
             }
