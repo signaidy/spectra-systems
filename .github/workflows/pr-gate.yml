@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew sonarqube \
+          ./gradlew sonar \
             -Dsonar.host.url=${SONAR_HOST_URL} \
             -Dsonar.login=${SONAR_TOKEN} \
             -Dsonar.qualitygate.wait=true 2>&1 | tee sonar.log
