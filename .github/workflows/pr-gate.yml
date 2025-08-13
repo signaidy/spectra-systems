@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew clean test build -x integrationTest 2>&1 | tee build.log
+          ./gradlew clean test jacocoTestReport build 2>&1 | tee build.log
 
       - name: SonarQube Scan (Quality Gate)
         id: sonar
@@ -53,14 +53,13 @@ jobs:
             -Dsonar.login=${SONAR_TOKEN} \
             -Dsonar.qualitygate.wait=true 2>&1 | tee sonar.log
 
-      # Recopila detalles de error si falló alguno de los pasos anteriores
       - name: Collect error details (on failure)
         if: ${{ failure() }}
         id: err
         shell: bash
         run: |
           {
-            echo "error_message<<'EOF'"
+            echo "error_message<<EOF"
             echo "=== Build (tail) ==="
             tail -n 80 build.log || true
             echo
@@ -69,7 +68,6 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      # Notificación de éxito
       - name: Notify (Success)
         if: ${{ success() }}
         uses: dawidd6/action-send-mail@v3
@@ -78,7 +76,7 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
-          from: "ci@spectra-systems"
+          from: "${{ secrets.SMTP_USERNAME }}"
           to: "${{ secrets.MAIL_TO_LEAD }},${{ secrets.MAIL_TO_PO }}"
           subject: "Test Merge for pull request #${{ github.event.pull_request.number }} success for spectra system ${{ github.base_ref }}"
           body: |
@@ -92,7 +90,6 @@ jobs:
             Ver PR:
             ${{ github.event.pull_request.html_url }}
 
-      # Notificación de fallo (incluye errores)
       - name: Notify (Failure)
         if: ${{ failure() }}
         uses: dawidd6/action-send-mail@v3
@@ -101,7 +98,7 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
-          from: "ci@spectra-systems"
+          from: "${{ secrets.SMTP_USERNAME }}"
           to: "${{ secrets.MAIL_TO_LEAD }},${{ secrets.MAIL_TO_PO }}"
           subject: "Test Merge for pull request #${{ github.event.pull_request.number }} fail for spectra system ${{ github.base_ref }}"
           body: |
