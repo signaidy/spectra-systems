@@ -50,7 +50,7 @@ jobs:
           set -o pipefail
           ./gradlew sonar \
             -Dsonar.host.url=${SONAR_HOST_URL} \
-            -Dsonar.login=${SONAR_TOKEN} \
+            -Dsonar.token=${SONAR_TOKEN} \
             -Dsonar.qualitygate.wait=true 2>&1 | tee sonar.log
 
       - name: Collect error details (on failure)
