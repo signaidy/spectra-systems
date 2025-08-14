@@ -103,12 +103,29 @@ pipeline {
       steps {
         dir("${FRONTEND_DIR}") {
           sh """
+            echo "PWD on host:"
+            pwd
+            echo "Host listing:"
+            ls -la
+
             docker -H tcp://dind:2375 run --rm \
               -v \$(pwd):/app -w /app \
               -e PUBLIC_BACKEND_URL='${PUBLIC_BACKEND_URL}' \
+              --user 1000:1000 \
               node:20-bullseye bash -lc '
                 set -e
-                npm ci
+                echo "PWD in container: \$PWD"
+                echo "Container listing:"
+                ls -la
+                echo "Node & npm versions:"
+                node -v && npm -v
+                if [ -f package-lock.json ]; then
+                  echo "Lockfile found. Running npm ci..."
+                  npm ci --no-audit --no-fund
+                else
+                  echo "No package-lock.json found. Running npm install..."
+                  npm install --no-audit --no-fund
+                fi
                 npm run build
               '
           """
