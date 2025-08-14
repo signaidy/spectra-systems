@@ -41,7 +41,7 @@ pipeline {
       when {
         allOf {
           expression { return env.CHANGE_ID == null }                 // not a PR
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }       // only merged-to branches
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }       // only merged-to branches
         }
       }
       steps {
@@ -54,7 +54,7 @@ pipeline {
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
@@ -73,7 +73,7 @@ pipeline {
             env.PUBLIC_BACKEND_URL = 'http://localhost:8082'
             env.FRONTEND_PORT = '3002'
             env.BACKEND_PORT  = '8082'
-          } else { // master
+          } else { // main
             env.SPRING_PROFILE = 'prod'
             env.DB_USER = 'nexus_prod'
             env.DB_PASS = 'nexus_prod'
@@ -100,7 +100,7 @@ pipeline {
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
@@ -117,7 +117,7 @@ pipeline {
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
@@ -145,7 +145,7 @@ pipeline {
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
@@ -174,7 +174,7 @@ PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
@@ -189,7 +189,7 @@ PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
-          anyOf { branch 'dev'; branch 'uat'; branch 'master' }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
