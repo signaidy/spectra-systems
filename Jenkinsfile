@@ -113,7 +113,7 @@ pipeline {
       }
     }
 
-    stage('Build Frontend (Node in Jenkins workspace)') {
+    stage('Build Frontend (Docker build on DinD)') {
       when {
         allOf {
           expression { return env.CHANGE_ID == null }
@@ -122,21 +122,12 @@ pipeline {
       }
       steps {
         dir("${FRONTEND_DIR}") {
-          script {
-            // Run Node in a container on the Jenkins agent so the workspace is mounted correctly
-            docker.image('node:20-bullseye').inside('-u 1000:1000') {
-              sh '''
-                set -e
-                node -v && npm -v
-                if [ -f package-lock.json ]; then
-                  npm ci --no-audit --no-fund
-                else
-                  npm install --no-audit --no-fund
-                fi
-                PUBLIC_BACKEND_URL='"${PUBLIC_BACKEND_URL}"' npm run build
-              '''
-            }
-          }
+          sh """
+            docker build \
+              --build-arg VITE_API_URL='${PUBLIC_BACKEND_URL}' \
+              -t local/spectra-frontend:${BRANCH_NAME}-${GIT_COMMIT:0:7} \
+              -f Dockerfile .
+          """
         }
       }
     }
