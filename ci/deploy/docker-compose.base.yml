@@ -1,0 +1,35 @@
+services:
+  oracle:
+    image: gvenzl/oracle-free:latest
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-admin}
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'select 1 from dual;' | sqlplus -s system/${ORACLE_PASSWORD}@localhost:1521/FREEPDB1 || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+    volumes:
+      - oracle_data_${ENV}:/opt/oracle/oradata
+
+  backend:
+    image: spectra/nexus-backend:${ENV}
+    env_file:
+      - ../.env.ci
+    environment:
+      # ajusta URL Oracle según app
+      SPRING_DATASOURCE_URL: "jdbc:oracle:thin:@oracle:1521/FREEPDB1"
+      SPRING_DATASOURCE_USERNAME: "system"
+      SPRING_DATASOURCE_PASSWORD: "${ORACLE_PASSWORD:-admin}"
+    depends_on:
+      oracle:
+        condition: service_healthy
+
+  frontend:
+    image: spectra/nexus-frontend:${ENV}
+    env_file:
+      - ../.env.ci
+    depends_on:
+      - backend
+
+volumes:
+  oracle_data_${ENV}:

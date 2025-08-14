@@ -1,0 +1,17 @@
+services:
+  oracle:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-nexus
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_SYS_PASSWORD:-admin}    # SYS/SYSTEM password
+      ORACLE_CHARACTERSET: AL32UTF8
+      ORACLE_PDB: FREEPDB1
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./db/init:/container-entrypoint-initdb.d  # scripts de inicialización
+    restart: unless-stopped
+
+volumes:
+  oracle_data:
