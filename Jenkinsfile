@@ -40,13 +40,17 @@ pipeline {
     stage('Checkout') {
       when {
         allOf {
-          expression { return env.CHANGE_ID == null }                 // not a PR
-          anyOf { branch 'dev'; branch 'uat'; branch 'main' }       // only merged-to branches
+          expression { return env.CHANGE_ID == null }
+          anyOf { branch 'dev'; branch 'uat'; branch 'main' }
         }
       }
       steps {
-        checkout scm
-        script { echo "Building branch: ${env.BRANCH_NAME}" }
+        script {
+          def scmVars = checkout scm     // <- returns a map with GIT_COMMIT, etc.
+          env.GIT_COMMIT = scmVars.GIT_COMMIT
+          env.SHORT_SHA  = (env.GIT_COMMIT ?: 'unknown').take(7)
+          echo "Building branch: ${env.BRANCH_NAME} @ ${env.SHORT_SHA}"
+        }
       }
     }
 
@@ -125,7 +129,7 @@ pipeline {
           sh """
             docker build \
               --build-arg VITE_API_URL='${PUBLIC_BACKEND_URL}' \
-              -t local/spectra-frontend:${BRANCH_NAME}-${GIT_COMMIT:0:7} \
+              -t local/spectra-frontend:${BRANCH_NAME}-${SHORT_SHA} \
               -f Dockerfile .
           """
         }
