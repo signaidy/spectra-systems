@@ -128,8 +128,8 @@ pipeline {
         dir("${FRONTEND_DIR}") {
           sh """
             docker build \
-              --build-arg VITE_API_URL='${PUBLIC_BACKEND_URL}' \
-              -t local/spectra-frontend:${BRANCH_NAME}-${SHORT_SHA} \
+              --build-arg PUBLIC_BACKEND_URL='${PUBLIC_BACKEND_URL}' \
+              -t local/spectra-frontend:${BRANCH_NAME}-${GIT_COMMIT.take(7)} \
               -f Dockerfile .
           """
         }
