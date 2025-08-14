@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew clean test jacocoTestReport build 2>&1 | tee build.log
+          ./gradlew clean test jacocoTestReport build 2>&1
 
       - name: SonarQube Scan (Quality Gate)
         id: sonar
@@ -51,7 +51,7 @@ jobs:
           ./gradlew sonar \
             -Dsonar.host.url=${SONAR_HOST_URL} \
             -Dsonar.token=${SONAR_TOKEN} \
-            -Dsonar.qualitygate.wait=true 2>&1 | tee sonar.log
+            -Dsonar.qualitygate.wait=true 2>&1 --info
 
       - name: Collect error details (on failure)
         if: ${{ failure() }}
