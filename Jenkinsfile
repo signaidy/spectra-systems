@@ -102,11 +102,15 @@ pipeline {
     stage('Build Frontend (Node)') {
       steps {
         dir("${FRONTEND_DIR}") {
-          // Construimos la app estática (o preview) con PUBLIC_BACKEND_URL
           sh """
-            export PUBLIC_BACKEND_URL='${PUBLIC_BACKEND_URL}'
-            npm ci
-            npm run build
+            docker -H tcp://dind:2375 run --rm \
+              -v \$(pwd):/app -w /app \
+              -e PUBLIC_BACKEND_URL='${PUBLIC_BACKEND_URL}' \
+              node:20-bullseye bash -lc '
+                set -e
+                npm ci
+                npm run build
+              '
           """
         }
       }
@@ -115,26 +119,26 @@ pipeline {
     stage('Prepare .env.deploy') {
       steps {
         writeFile file: "${DEPLOY_ENVFILE}", text: """
-# === Oracle compartido (un contenedor) ===
-ORACLE_HOST=${ORACLE_HOST}
-ORACLE_PORT=${ORACLE_PORT}
-ORACLE_SVC=${ORACLE_SVC}
+          # === Oracle compartido (un contenedor) ===
+          ORACLE_HOST=${ORACLE_HOST}
+          ORACLE_PORT=${ORACLE_PORT}
+          ORACLE_SVC=${ORACLE_SVC}
 
-# === Backend Spring ===
-SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}
-DB_URL=${DB_URL}
-DB_USER=${DB_USER}
-DB_PASS=${DB_PASS}
-JWT_SECRET=${JWT_SECRET}
-SPRING_JPA_DIALECT=${ORACLE_DIALECT}
+          # === Backend Spring ===
+          SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}
+          DB_URL=${DB_URL}
+          DB_USER=${DB_USER}
+          DB_PASS=${DB_PASS}
+          JWT_SECRET=${JWT_SECRET}
+          SPRING_JPA_DIALECT=${ORACLE_DIALECT}
 
-# Puertos expuestos por ambiente
-BACKEND_PORT=${BACKEND_PORT}
-FRONTEND_PORT=${FRONTEND_PORT}
+          # Puertos expuestos por ambiente
+          BACKEND_PORT=${BACKEND_PORT}
+          FRONTEND_PORT=${FRONTEND_PORT}
 
-# === Frontend ===
-PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
-"""
+          # === Frontend ===
+          PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+          """
         sh "cat ${DEPLOY_ENVFILE}"
       }
     }
