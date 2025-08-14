@@ -1,108 +1,159 @@
 pipeline {
   agent any
-  options { timestamps() }
-
+  options {
+    timestamps()
+    ansiColor('xterm')
+  }
   environment {
-    APP_DIR = 'nexus-agency-system/backend'
+    // Paths relativos en el repo
+    BACKEND_DIR = "nexus-agency-system/backend"
+    FRONTEND_DIR = "nexus-agency-system/frontend"
+
+    // Docker Compose deploy file
+    DEPLOY_COMPOSE = "ci/compose.deploy.yml"
+    DEPLOY_ENVFILE = ".env.deploy"
+
+    // Oracle compartido (ajusta host/puerto si no es local)
+    ORACLE_HOST = "host.docker.internal"
+    ORACLE_PORT = "1521"
+    ORACLE_SVC  = "FREEPDB1"   // para gvenzl/oracle-free, el servicio por defecto suele ser FREEPDB1
+    ORACLE_DIALECT = "org.hibernate.dialect.OracleDialect"
+
+    // JWT por rama (simples por ahora)
+    JWT_DEV  = "super-secret-dev"
+    JWT_UAT  = "super-secret-uat"
+    JWT_PROD = "super-secret-prod"
   }
 
   stages {
-    stage('Select Environment') {
-      steps {
-        script {
-          if (env.BRANCH_NAME == 'dev') {
-            env.DEPLOY_ENV = 'dev'
-            env.COMPOSE = 'docker-compose.dev.yml'
-            env.TAG = 'dev'
-          } else if (env.BRANCH_NAME == 'uat') {
-            env.DEPLOY_ENV = 'uat'
-            env.COMPOSE = 'docker-compose.uat.yml'
-            env.TAG = 'uat'
-          } else if (env.BRANCH_NAME == 'master') {
-            env.DEPLOY_ENV = 'prod'
-            env.COMPOSE = 'docker-compose.prod.yml'
-            env.TAG = 'prod'
-          } else {
-            error("Branch ${env.BRANCH_NAME} not deployable")
-          }
-        }
-      }
-    }
-
     stage('Checkout') {
       steps {
         checkout scm
-        dir("${APP_DIR}") {
-          script {
-            if (isUnix()) {
-              sh 'ls -la'
-            } else {
-              bat 'dir'
-            }
-          }
+        script {
+          echo "Building branch: ${env.BRANCH_NAME}"
         }
       }
     }
 
-    stage('Build App (Gradle)') {
+    stage('Set env by branch') {
       steps {
-        dir("${APP_DIR}") {
-          script {
-            if (isUnix()) {
-              sh './gradlew clean build -x test'
-            } else {
-              bat 'gradlew.bat clean build -x test'
-            }
+        script {
+          // Mapea rama → perfil/usuarios/schema y URLs
+          if (env.BRANCH_NAME == 'dev') {
+            env.SPRING_PROFILE = 'dev'
+            env.DB_USER = 'nexus_dev'
+            env.DB_PASS = 'nexus_dev'
+            env.PUBLIC_BACKEND_URL = 'http://localhost:8081' // puerto que expondremos backend DEV
+            env.FRONTEND_PORT = '3001'
+            env.BACKEND_PORT  = '8081'
+          } else if (env.BRANCH_NAME == 'uat') {
+            env.SPRING_PROFILE = 'uat'
+            env.DB_USER = 'nexus_uat'
+            env.DB_PASS = 'nexus_uat'
+            env.PUBLIC_BACKEND_URL = 'http://localhost:8082'
+            env.FRONTEND_PORT = '3002'
+            env.BACKEND_PORT  = '8082'
+          } else if (env.BRANCH_NAME == 'master') {
+            env.SPRING_PROFILE = 'prod'
+            env.DB_USER = 'nexus_prod'
+            env.DB_PASS = 'nexus_prod'
+            env.PUBLIC_BACKEND_URL = 'http://localhost:8083'
+            env.FRONTEND_PORT = '3003'
+            env.BACKEND_PORT  = '8083'
+          } else {
+            // Si otra rama, trata como dev para pruebas
+            env.SPRING_PROFILE = 'dev'
+            env.DB_USER = 'nexus_dev'
+            env.DB_PASS = 'nexus_dev'
+            env.PUBLIC_BACKEND_URL = 'http://localhost:8081'
+            env.FRONTEND_PORT = '3001'
+            env.BACKEND_PORT  = '8081'
           }
+
+          // Construye URL JDBC Oracle
+          env.DB_URL = "jdbc:oracle:thin:@${ORACLE_HOST}:${ORACLE_PORT}/${ORACLE_SVC}"
+
+          // JWT por perfil simple
+          env.JWT_SECRET =
+            (env.SPRING_PROFILE == 'prod' ? JWT_PROD :
+             env.SPRING_PROFILE == 'uat'  ? JWT_UAT  : JWT_DEV)
+
+          echo "Profile: ${env.SPRING_PROFILE}"
+          echo "DB_URL : ${env.DB_URL}"
+          echo "Schema : ${env.DB_USER}"
+          echo "Backend Port: ${env.BACKEND_PORT}"
+          echo "Frontend Port: ${env.FRONTEND_PORT}"
+          echo "Public Backend URL for FE: ${env.PUBLIC_BACKEND_URL}"
         }
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Build Backend (Gradle)') {
       steps {
-        dir("${APP_DIR}") {
-          script {
-            if (isUnix()) {
-              sh "docker build -t nexus-app:${TAG} ."
-            } else {
-              bat "docker build -t nexus-app:%TAG% ."
-            }
-          }
+        dir("${BACKEND_DIR}") {
+          sh """
+            ./gradlew --version || chmod +x ./gradlew
+            ./gradlew clean build -x test
+          """
         }
       }
     }
 
-    stage('Deploy with Docker Compose') {
+    stage('Build Frontend (Node)') {
       steps {
-        dir("${APP_DIR}") {
-          script {
-            if (isUnix()) {
-              sh "docker compose -f ${COMPOSE} up -d --build"
-              sh "docker image prune -f"
-            } else {
-              bat "docker compose -f %COMPOSE% up -d --build"
-              bat "docker image prune -f"
-            }
-          }
+        dir("${FRONTEND_DIR}") {
+          // Construimos la app estática (o preview) con PUBLIC_BACKEND_URL
+          sh """
+            export PUBLIC_BACKEND_URL='${PUBLIC_BACKEND_URL}'
+            npm ci
+            npm run build
+          """
         }
+      }
+    }
+
+    stage('Prepare .env.deploy') {
+      steps {
+        writeFile file: "${DEPLOY_ENVFILE}", text: """
+# === Oracle compartido (un contenedor) ===
+ORACLE_HOST=${ORACLE_HOST}
+ORACLE_PORT=${ORACLE_PORT}
+ORACLE_SVC=${ORACLE_SVC}
+
+# === Backend Spring ===
+SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}
+DB_URL=${DB_URL}
+DB_USER=${DB_USER}
+DB_PASS=${DB_PASS}
+JWT_SECRET=${JWT_SECRET}
+SPRING_JPA_DIALECT=${ORACLE_DIALECT}
+
+# Puertos expuestos por ambiente
+BACKEND_PORT=${BACKEND_PORT}
+FRONTEND_PORT=${FRONTEND_PORT}
+
+# === Frontend ===
+PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+"""
+        sh "cat ${DEPLOY_ENVFILE}"
+      }
+    }
+
+    stage('Deploy (docker compose up)') {
+      steps {
+        sh """
+          docker compose --env-file ${DEPLOY_ENVFILE} -f ${DEPLOY_COMPOSE} up -d --build
+        """
       }
     }
   }
 
   post {
     success {
-      emailext(
-        subject: "[Deploy OK] Nexus -> ${env.DEPLOY_ENV}",
-        to: 'lead.dev@your-domain,product.owner@your-domain',
-        body: "Deployment succeeded on ${env.DEPLOY_ENV}.\nBuild: ${env.BUILD_URL}"
-      )
+      echo "Deployed ${env.BRANCH_NAME} OK"
     }
     failure {
-      emailext(
-        subject: "[Deploy FAILED] Nexus -> ${env.DEPLOY_ENV}",
-        to: 'lead.dev@your-domain,product.owner@your-domain',
-        body: "Deployment FAILED on ${env.DEPLOY_ENV}.\nBuild: ${env.BUILD_URL}"
-      )
+      echo "Deployment failed for ${env.BRANCH_NAME}"
     }
   }
 }

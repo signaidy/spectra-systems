@@ -1,0 +1,12 @@
+workflow-aggregator
+git
+github
+github-branch-source
+credentials
+plain-credentials
+credentials-binding
+email-ext
+mailer
+matrix-auth
+pipeline-stage-view
+blueocean

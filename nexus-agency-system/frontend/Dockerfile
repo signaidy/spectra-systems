@@ -1,29 +1,21 @@
-# Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
-
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
-
-ARG NODE_VERSION=lts
-
-# Base Image
-FROM node:21.7.2
+# Usamos Node LTS
+FROM node:20
 
 WORKDIR /usr/src/app
 
-ARG PUBLIC_BACKEND_URL
-ENV PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+# Variable para el build (expuesta al cliente)
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
 
-# Copy the rest of the source files into the image.
+# Copiamos el código
 COPY . .
 
-# Download dependencies as a separate step to take adv antage of Docker's caching.
-# Leverage a cache mount to /root/.npm to speed up subsequent builds.
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci
+# Instalar deps y construir
+RUN --mount=type=cache,target=/root/.npm npm ci
 RUN npm run build
 
-# Expose the port that the application listens on.
-EXPOSE 3000
+# Exponer puerto de preview (Vite usa 4173 por defecto)
+EXPOSE 4173
 
-# Run the application.
-CMD npm run preview
+# Ejecutar preview en 0.0.0.0 para accesos externos
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
