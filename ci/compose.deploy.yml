@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  nexus-backend:
+    build:
+      context: ../nexus-agency-system/backend
+      dockerfile: Dockerfile
+    container_name: nexus-backend-${SPRING_PROFILES_ACTIVE}
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - token.secret.key=${JWT_SECRET}
+      - spring.jpa.properties.hibernate.dialect=${SPRING_JPA_DIALECT}
+    ports:
+      - "${BACKEND_PORT}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    depends_on: []
+
+  nexus-frontend:
+    build:
+      context: ../nexus-agency-system/frontend
+      dockerfile: Dockerfile
+      args:
+        PUBLIC_BACKEND_URL: ${PUBLIC_BACKEND_URL}
+    container_name: nexus-frontend-${SPRING_PROFILES_ACTIVE}
+    environment:
+      - PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    restart: unless-stopped

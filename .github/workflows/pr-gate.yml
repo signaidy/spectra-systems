@@ -33,12 +33,20 @@ jobs:
             ~/.gradle/wrapper
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
+      # Comprobamos conectividad con SonarQube antes de analizar
+      - name: Preflight Sonar connectivity
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          echo "Pinging SonarQube: ${SONAR_HOST_URL}"
+          curl -sS -o /dev/null -w "%{http_code}\n" "${SONAR_HOST_URL}/api/system/status"
+
       - name: Build + Unit tests
         id: build
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew clean test jacocoTestReport build 2>&1 | tee build.log
+          ./gradlew --no-daemon clean test jacocoTestReport build 2>&1 | tee build.log
 
       - name: SonarQube Scan (Quality Gate)
         id: sonar
@@ -48,10 +56,12 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew sonar \
-            -Dsonar.host.url=${SONAR_HOST_URL} \
-            -Dsonar.token=${SONAR_TOKEN} \
-            -Dsonar.qualitygate.wait=true 2>&1 | tee sonar.log
+          ./gradlew --no-daemon sonar \
+            -Dsonar.host.url="${SONAR_HOST_URL}" \
+            -Dsonar.token="${SONAR_TOKEN}" \
+            -Dsonar.qualitygate.wait=true \
+            -Dsonar.scanner.dumpToFile=sonar-dump.properties \
+            --info --stacktrace 2>&1 | tee sonar.log
 
       - name: Collect error details (on failure)
         if: ${{ failure() }}
@@ -59,12 +69,15 @@ jobs:
         shell: bash
         run: |
           {
-            echo "error_message<<EOF"
+            echo "error_message<<'EOF'"
             echo "=== Build (tail) ==="
             tail -n 80 build.log || true
             echo
             echo "=== Sonar (tail) ==="
-            tail -n 80 sonar.log || true
+            tail -n 120 sonar.log || true
+            echo
+            echo "=== Sonar effective props (first lines) ==="
+            head -n 80 sonar-dump.properties || true
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 

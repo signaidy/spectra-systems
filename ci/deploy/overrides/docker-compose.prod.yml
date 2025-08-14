@@ -1,0 +1,10 @@
+services:
+  backend:
+    ports:
+      - "8083:8080"
+  frontend:
+    ports:
+      - "3003:3000"
+  oracle:
+    ports:
+      - "1523:1521"

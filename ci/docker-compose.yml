@@ -10,8 +10,12 @@ services:
       - "8080:8080"
       - "50000:50000"
     environment:
+      # OJO: quitamos el wizard para entorno reproducible
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - DOCKER_HOST=tcp://dind:2375
+      # usuario/clave admin usados por el groovy init
+      - JENKINS_ADMIN_ID=${JENKINS_ADMIN_ID}
+      - JENKINS_ADMIN_PASSWORD=${JENKINS_ADMIN_PASSWORD}
     volumes:
       - jenkins_home:/var/jenkins_home
       - /etc/localtime:/etc/localtime:ro
@@ -19,7 +23,6 @@ services:
       - dind
     restart: unless-stopped
 
-  # Docker daemon para que Jenkins pueda construir imágenes
   dind:
     image: docker:24.0-dind
     container_name: dind
