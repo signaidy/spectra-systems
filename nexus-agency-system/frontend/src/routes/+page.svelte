@@ -30,7 +30,7 @@
             >
               <div class="flex leading-5">
                 <Plane />
-                <p>Airline search</p>
+                <p>Airline search + MAGIC 14-07-2025-DEV</p>
               </div>
             </button>
             <button
