@@ -7,31 +7,25 @@ pipeline {
   }
 
   environment {
-    // Repo-relative paths
     BACKEND_DIR   = "nexus-agency-system/backend"
     FRONTEND_DIR  = "nexus-agency-system/frontend"
 
-    // Docker Compose deploy file
     DEPLOY_COMPOSE = "ci/compose.deploy.yml"
     DEPLOY_ENVFILE = ".env.deploy"
 
-    // DIND endpoint (Docker client will talk to the dind service)
     DOCKER_HOST = "tcp://dind:2375"
 
-    // Oracle (shared)
     ORACLE_HOST = "host.docker.internal"
     ORACLE_PORT = "1521"
     ORACLE_SVC  = "FREEPDB1"
     ORACLE_DIALECT = "org.hibernate.dialect.OracleDialect"
 
-    // ⚠️ Consider moving these to Jenkins credentials
     JWT_DEV  = "super-secret-dev"
     JWT_UAT  = "super-secret-uat"
     JWT_PROD = "super-secret-prod"
   }
 
   triggers {
-    // Webhooks will trigger builds; keep empty poll as a fallback
     pollSCM('')
   }
 
@@ -188,7 +182,6 @@ PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
         }
       }
       steps {
-        // DOCKER_HOST is already set globally; this runs compose on the dind daemon
         sh '''
           docker compose --env-file ${DEPLOY_ENVFILE} -f ${DEPLOY_COMPOSE} up -d --build
         '''
