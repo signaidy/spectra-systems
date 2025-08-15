@@ -17,7 +17,6 @@ services:
       - JENKINS_ADMIN_PASSWORD=${JENKINS_ADMIN_PASSWORD}
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /media/kq/Windows/docker/jenkins_tmp:/tmp
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - dind
@@ -67,20 +66,7 @@ services:
 
 volumes:
   jenkins_home:
-    name: ci_jenkins_home 
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /media/kq/Windows/docker/jenkins_home
-
-  sonarqube_logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /media/kq/Windows/docker/sonarqube/logs
-      
+  sonarqube_logs:      
   dind_storage:
   sonarqube_data:
   sonarqube_extensions:
