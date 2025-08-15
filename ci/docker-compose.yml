@@ -5,12 +5,11 @@ services:
       dockerfile: Dockerfile.jenkins
     image: jenkins-with-docker:lts
     container_name: jenkins
-    user: root
+    user: jenkins
     ports:
       - "8080:8080"
       - "50000:50000"
     environment:
-      # OJO: quitamos el wizard para entorno reproducible
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - DOCKER_HOST=tcp://dind:2375
       # usuario/clave admin usados por el groovy init
@@ -67,8 +66,8 @@ services:
 
 volumes:
   jenkins_home:
+  sonarqube_logs:      
   dind_storage:
   sonarqube_data:
   sonarqube_extensions:
-  sonarqube_logs:
   sonar_db:
