@@ -1,0 +1,10 @@
+services:
+  frontend:
+    ports:
+      - "3003:3003"
+    environment:
+      - PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+
+  backend:
+    ports:
+      - "8083:8083"
